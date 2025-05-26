@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Structure Overview
+
+This is a React-based personal website project, built with Vite and TypeScript. It uses Tailwind CSS for styling and React Router for navigation.
+
+## Key Files and Directories:
+
+- **`index.html`**: The main HTML entry point. It loads the React application. ([index.html](mdc:index.html))
+- **`src/main.tsx`**: The main entry point for the React application. It renders the root `App` component. ([src/main.tsx](mdc:src/main.tsx))
+- **`src/App.tsx`**: The root React component. It sets up routing using React Router and includes the main layout components like `Navbar` and `Footer`. It also wraps the application with `ThemeProvider` for dark/light mode functionality. ([src/App.tsx](mdc:src/App.tsx))
+- **`package.json`**: Defines project dependencies, scripts (like `dev`, `build`, `lint`), and metadata. ([package.json](mdc:package.json))
+- **`vite.config.ts`**: Configuration file for Vite, the build tool. It specifies the output directory (`docs/`) and other build-related settings. ([vite.config.ts](mdc:vite.config.ts))
+- **`tailwind.config.js`**: Configuration for Tailwind CSS, used for styling. ([tailwind.config.js](mdc:tailwind.config.js))
+- **`tsconfig.json`**: TypeScript compiler options. ([tsconfig.json](mdc:tsconfig.json))
+
+## Source Code Structure (`src/`):
+
+- **`src/components/`**: Contains reusable React components, categorized into:
+    - `common/`: Components used across multiple pages (e.g., `Navbar`, `Footer`).
+    - `blog/`: Components specific to the blog section.
+    - `gallery/`: Components specific to the image gallery.
+    - `home/`: Components specific to the home page.
+- **`src/pages/`**: Contains top-level page components that are mapped to routes. Examples include `HomePage`, `GalleryPage`, `BlogPage`. ([src/pages/](mdc:src/pages))
+- **`src/context/`**: Holds React context providers, such as `ThemeContext` for managing light/dark themes. ([src/context/](mdc:src/context))
+- **`src/data/`**: Likely contains static data used by the application, such as blog post content or gallery image information. ([src/data/](mdc:src/data))
+- **`src/types/`**: Defines TypeScript types and interfaces used throughout the project. ([src/types/](mdc:src/types))
+- **`src/index.css`**: Global CSS styles and Tailwind CSS imports. ([src/index.css](mdc:src/index.css))
+
+## Build and Deployment:
+
+- The `vite build` command (triggered by `npm run build`) compiles the TypeScript code, bundles the assets, and outputs the static site to the `docs/` directory.
+- The `docs/` directory is typically used for deploying static sites, often with services like GitHub Pages.
+
+## Other Important Directories:
+
+- **`.github/workflows/`**: Contains GitHub Actions workflows, likely for CI/CD (e.g., building and deploying the site on push). ([.github/workflows/](mdc:.github/workflows))
+- **`.bolt/`**: Likely related to Bolt, a project management tool, though its specific use here isn't detailed in the provided file structure.
+- **`eslint.config.js`**: Configuration for ESLint, a code linter.
+- **`postcss.config.js`**: Configuration for PostCSS, often used with Tailwind CSS.
