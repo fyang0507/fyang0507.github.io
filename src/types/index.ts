@@ -17,6 +17,13 @@ export interface BlogPost {
   date: string;
   tags: string[];
   readingTime?: number;
+  // Bilingual support
+  isMultilingual?: boolean;
+  title_zh?: string;
+  excerpt_zh?: string;
+  content_zh?: string;
+  tags_zh?: string[];
+  languages?: string[];
 }
 
 export interface SocialLink {

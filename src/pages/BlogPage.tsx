@@ -9,9 +9,12 @@ const BlogPage: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filteredPosts, setFilteredPosts] = useState(postsWithReadingTime);
   
-  // Get all unique tags from posts
+  // Get all unique tags from posts (including Chinese tags)
   const allTags = Array.from(
-    new Set(postsWithReadingTime.flatMap(post => post.tags))
+    new Set(postsWithReadingTime.flatMap(post => [
+      ...post.tags,
+      ...(post.tags_zh || [])
+    ]))
   ).sort();
   
   // Handle tag selection/deselection
@@ -32,7 +35,9 @@ const BlogPage: React.FC = () => {
     } else {
       setFilteredPosts(
         postsWithReadingTime.filter(post => 
-          selectedTags.some(tag => post.tags.includes(tag))
+          selectedTags.some(tag => 
+            post.tags.includes(tag) || (post.tags_zh && post.tags_zh.includes(tag))
+          )
         )
       );
     }
@@ -130,14 +135,49 @@ const BlogPage: React.FC = () => {
                                 #{tag}
                               </button>
                             ))}
+                            {post.tags_zh && post.tags_zh.map(tag => (
+                              <button
+                                key={tag}
+                                onClick={() => handleTagSelect(tag)}
+                                className={`tag cursor-pointer ${
+                                  selectedTags.includes(tag) ? 
+                                  'ring-2 ring-primary-500 dark:ring-primary-400' : ''
+                                }`}
+                              >
+                                #{tag}
+                              </button>
+                            ))}
                           </div>
                           
-                          {/* Title */}
-                          <Link to={`/blog/${post.id}`} className="no-underline">
-                            <h2 className="text-2xl font-bold mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-                              {post.title}
-                            </h2>
-                          </Link>
+                          {/* Chinese Title and Excerpt (if available) - Prioritized */}
+                          {post.isMultilingual && post.title_zh && (
+                            <div className="mb-4">
+                              <Link to={`/blog/${post.id}?lang=zh`} className="no-underline">
+                                <h2 className="text-2xl font-bold mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                                  {post.title_zh}
+                                </h2>
+                              </Link>
+                              
+                              {post.excerpt_zh && (
+                                <p className="text-slate-600 dark:text-slate-400">
+                                  {post.excerpt_zh}
+                                </p>
+                              )}
+                            </div>
+                          )}
+
+                          {/* English Title and Excerpt */}
+                          <div className={`mb-4 ${post.isMultilingual && post.title_zh ? 'border-l-4 border-slate-200 dark:border-slate-700 pl-4' : ''}`}>
+                            <Link to={`/blog/${post.id}`} className="no-underline">
+                              <h3 className={`${post.isMultilingual && post.title_zh ? 'text-xl text-slate-700 dark:text-slate-300' : 'text-2xl'} font-bold mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors`}>
+                                {post.title}
+                              </h3>
+                            </Link>
+                            
+                            <p className={`${post.isMultilingual && post.title_zh ? 'text-slate-500 dark:text-slate-500' : 'text-slate-600 dark:text-slate-400'}`}>
+                              {post.excerpt}
+                            </p>
+                          </div>
                           
                           {/* Meta */}
                           <div className="flex items-center text-sm text-slate-500 dark:text-slate-400 mb-4">
@@ -157,18 +197,24 @@ const BlogPage: React.FC = () => {
                             </div>
                           </div>
                           
-                          {/* Excerpt */}
-                          <p className="text-slate-600 dark:text-slate-400 mb-4">
-                            {post.excerpt}
-                          </p>
-                          
-                          {/* Read More */}
-                          <Link 
-                            to={`/blog/${post.id}`} 
-                            className="inline-block btn-primary"
-                          >
-                            Read More
-                          </Link>
+                          {/* Read More Buttons */}
+                          <div className="flex flex-wrap gap-3">
+                            {post.isMultilingual && post.content_zh && (
+                              <Link 
+                                to={`/blog/${post.id}?lang=zh`} 
+                                className="btn-primary"
+                              >
+                                阅读中文
+                              </Link>
+                            )}
+                            
+                            <Link 
+                              to={`/blog/${post.id}`} 
+                              className={post.isMultilingual && post.content_zh ? "btn-secondary" : "btn-primary"}
+                            >
+                              Read More
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </motion.article>

@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { postsWithReadingTime } from '../data/posts';
-import { Clock, Calendar, ArrowLeft } from 'lucide-react';
+import { Clock, Calendar, ArrowLeft, Languages } from 'lucide-react';
 import ShareButtons from '../components/blog/ShareButtons';
 
 const BlogPost: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
-  const [post, setPost] = useState(postsWithReadingTime.find(p => p.id === postId));
+  const [searchParams] = useSearchParams();
+  const post = postsWithReadingTime.find(p => p.id === postId);
   const [relatedPosts, setRelatedPosts] = useState<typeof postsWithReadingTime>([]);
+  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'zh'>('en');
+  
+  // Initialize language from URL parameter
+  useEffect(() => {
+    const langParam = searchParams.get('lang');
+    if (langParam === 'zh' && post?.isMultilingual) {
+      setCurrentLanguage('zh');
+    } else {
+      setCurrentLanguage('en');
+    }
+  }, [searchParams, post]);
   
   // Parse markdown-like content to HTML
   const renderContent = (content: string) => {
     // Simple parser for headers, paragraphs, and lists
-    let html = content
+    const html = content
       // Headers
       .replace(/^# (.*$)/gim, '<h1>$1</h1>')
       .replace(/^## (.*$)/gim, '<h2>$1</h2>')
@@ -29,6 +41,32 @@ const BlogPost: React.FC = () => {
       .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
     
     return { __html: html };
+  };
+
+  // Get current content based on selected language
+  const getCurrentContent = () => {
+    if (!post) return { title: '', excerpt: '', content: '', tags: [] };
+    
+    if (currentLanguage === 'zh' && post.content_zh) {
+      return {
+        title: post.title_zh || post.title,
+        excerpt: post.excerpt_zh || post.excerpt,
+        content: post.content_zh,
+        tags: post.tags_zh || post.tags,
+      };
+    }
+    
+    return {
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      tags: post.tags,
+    };
+  };
+
+  // Toggle language
+  const toggleLanguage = () => {
+    setCurrentLanguage(prev => prev === 'en' ? 'zh' : 'en');
   };
   
   // Find related posts based on tags
@@ -53,6 +91,8 @@ const BlogPost: React.FC = () => {
       </div>
     );
   }
+
+  const currentContent = getCurrentContent();
   
   return (
     <main className="pt-24 pb-16">
@@ -69,6 +109,24 @@ const BlogPost: React.FC = () => {
             Back to All Posts
           </Link>
         </motion.div>
+
+        {/* Language Toggle */}
+        {post.isMultilingual && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="mb-6 flex justify-end"
+          >
+            <button
+              onClick={toggleLanguage}
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              <Languages size={16} className="mr-2" />
+              {currentLanguage === 'en' ? '中文' : 'English'}
+            </button>
+          </motion.div>
+        )}
         
         {/* Article Header */}
         <header className="mb-8">
@@ -78,7 +136,7 @@ const BlogPost: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-wrap gap-2 mb-4"
           >
-            {post.tags.map(tag => (
+            {currentContent.tags.map(tag => (
               <Link
                 key={tag}
                 to={`/blog?tag=${tag}`}
@@ -93,8 +151,9 @@ const BlogPost: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
+            key={currentLanguage} // Force re-animation on language change
           >
-            {post.title}
+            {currentContent.title}
           </motion.h1>
           
           <motion.div
@@ -129,7 +188,7 @@ const BlogPost: React.FC = () => {
           >
             <img 
               src={post.coverImage} 
-              alt={post.title} 
+              alt={currentContent.title} 
               className="w-full h-auto aspect-video object-cover"
             />
           </motion.div>
@@ -140,14 +199,15 @@ const BlogPost: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
+          key={currentLanguage} // Force re-animation on language change
           className="prose dark:prose-invert prose-lg max-w-none mb-12"
-          dangerouslySetInnerHTML={renderContent(post.content)}
+          dangerouslySetInnerHTML={renderContent(currentContent.content)}
         />
         
         {/* Share Buttons */}
         <div className="border-t border-b border-slate-200 dark:border-slate-700 py-6 mb-12">
           <ShareButtons 
-            title={post.title}
+            title={currentContent.title}
             url={window.location.href}
           />
         </div>

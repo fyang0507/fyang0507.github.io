@@ -26,14 +26,18 @@ const processedPosts: BlogPost[] = Object.entries(markdownFiles).map(([path, raw
       return null; // Skip this post
     }
 
-    // Type assertion for frontmatter (consider defining a more specific type for frontmatter)
+    // Type assertion for frontmatter (including bilingual fields)
     const fm = frontmatter as {
       title: string;
       excerpt: string;
       coverImage: string;
       date: string; // Assuming YYYY-MM-DD format
       tags: string[];
-      // Add other optional fields if any
+      // Bilingual fields
+      title_zh?: string;
+      excerpt_zh?: string;
+      tags_zh?: string[];
+      languages?: string[];
     };
 
     if (!fm.title || typeof fm.title !== 'string') {
@@ -57,20 +61,34 @@ const processedPosts: BlogPost[] = Object.entries(markdownFiles).map(([path, raw
       return null;
     }
 
+    // Split content by Chinese delimiter
+    const contentParts = markdownBody.split('---zh---');
+    const englishContent = contentParts[0].trim();
+    const chineseContent = contentParts[1]?.trim() || null;
+
+    // Check if post is multilingual
+    const isMultilingual = fm.languages && fm.languages.length > 1;
 
     const id = `${fm.date}_${sanitizeTitleForId(fm.title)}`;
-    const wordCount = markdownBody.split(/\s+/).length;
+    const wordCount = englishContent.split(/\s+/).length;
     const readingTime = Math.ceil(wordCount / 200);
 
     return {
       id,
       title: fm.title,
       excerpt: fm.excerpt,
-      content: markdownBody, // Store the raw markdown body
+      content: englishContent, // Store the English content
       coverImage: fm.coverImage,
       date: fm.date,
       tags: fm.tags,
       readingTime,
+      // Bilingual fields
+      isMultilingual,
+      title_zh: fm.title_zh,
+      excerpt_zh: fm.excerpt_zh,
+      content_zh: chineseContent,
+      tags_zh: fm.tags_zh,
+      languages: fm.languages,
     };
   } catch (e) {
     console.error(`Error processing file ${path}:`, e);

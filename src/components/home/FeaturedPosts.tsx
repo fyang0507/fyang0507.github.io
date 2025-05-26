@@ -76,18 +76,34 @@ const FeaturedPosts: React.FC = () => {
                   ))}
                 </div>
                 
-                {/* Title */}
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                  {post.title}
-                </h3>
-                
-                {/* Excerpt */}
-                <p className="text-slate-600 dark:text-slate-400 mb-4 flex-grow">
-                  {post.excerpt}
-                </p>
+                {/* Chinese Title and Excerpt (if available) - Prioritized */}
+                {post.isMultilingual && post.title_zh && (
+                  <div className="mb-3">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                      {post.title_zh}
+                    </h3>
+                    
+                    {post.excerpt_zh && (
+                      <p className="text-slate-600 dark:text-slate-400 text-sm">
+                        {post.excerpt_zh}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* English Title and Excerpt */}
+                <div className={`mb-3 ${post.isMultilingual && post.title_zh ? 'border-l-2 border-slate-200 dark:border-slate-700 pl-3' : ''}`}>
+                  <h4 className={`${post.isMultilingual && post.title_zh ? 'text-lg text-slate-700 dark:text-slate-300' : 'text-xl'} font-bold mb-2 ${post.isMultilingual && post.title_zh ? '' : 'group-hover:text-primary-600 dark:group-hover:text-primary-400'} transition-colors`}>
+                    {post.title}
+                  </h4>
+                  
+                  <p className={`${post.isMultilingual && post.title_zh ? 'text-slate-500 dark:text-slate-500' : 'text-slate-600 dark:text-slate-400'} text-sm`}>
+                    {post.excerpt}
+                  </p>
+                </div>
                 
                 {/* Footer */}
-                <div className="mt-4 flex justify-between items-center text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <div className="mt-auto flex justify-between items-center text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-700">
                   <time dateTime={post.date}>
                     {new Date(post.date).toLocaleDateString('en-US', { 
                       year: 'numeric',
@@ -102,16 +118,32 @@ const FeaturedPosts: React.FC = () => {
                   </div>
                 </div>
                 
-                <Link 
-                  to={`/blog/${post.id}`} 
-                  className="mt-6 text-primary-600 dark:text-primary-400 font-medium hover:text-primary-800 dark:hover:text-primary-300 flex items-center group"
-                >
-                  Read More
-                  <ArrowRight 
-                    className="ml-1 transition-transform group-hover:translate-x-1" 
-                    size={16} 
-                  />
-                </Link>
+                {/* Read More Buttons */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {post.isMultilingual && post.content_zh && (
+                    <Link 
+                      to={`/blog/${post.id}?lang=zh`} 
+                      className="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-800 dark:hover:text-primary-300 flex items-center group text-sm"
+                    >
+                      阅读中文
+                      <ArrowRight 
+                        className="ml-1 transition-transform group-hover:translate-x-1" 
+                        size={14} 
+                      />
+                    </Link>
+                  )}
+                  
+                  <Link 
+                    to={`/blog/${post.id}`} 
+                    className={`${post.isMultilingual && post.content_zh ? 'text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400' : 'text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300'} font-medium flex items-center group text-sm`}
+                  >
+                    Read More
+                    <ArrowRight 
+                      className="ml-1 transition-transform group-hover:translate-x-1" 
+                      size={14} 
+                    />
+                  </Link>
+                </div>
               </div>
             </motion.article>
           ))}
