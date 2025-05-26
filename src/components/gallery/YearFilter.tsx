@@ -1,39 +1,39 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-interface Category {
+interface Year {
   id: string;
   name: string;
 }
 
-interface CategoryFilterProps {
-  categories: Category[];
-  activeCategory: string;
-  onCategoryChange: (categoryId: string) => void;
+interface YearFilterProps {
+  years: Year[];
+  activeYear: string;
+  onYearChange: (yearId: string) => void;
 }
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({ 
-  categories, 
-  activeCategory, 
-  onCategoryChange 
+const YearFilter: React.FC<YearFilterProps> = ({ 
+  years, 
+  activeYear, 
+  onYearChange 
 }) => {
   return (
     <div className="overflow-x-auto pb-2">
       <div className="flex space-x-2">
-        {categories.map((category) => (
+        {years.map((year) => (
           <motion.button
-            key={category.id}
-            onClick={() => onCategoryChange(category.id)}
+            key={year.id}
+            onClick={() => onYearChange(year.id)}
             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors
               ${
-                activeCategory === category.id
-                  ? 'bg-primary-500 text-white dark:bg-primary-600'
+                activeYear === year.id
+                  ? 'bg-emerald-500 text-white dark:bg-emerald-600'
                   : 'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600'
               }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            {category.name}
+            {year.name}
           </motion.button>
         ))}
       </div>
@@ -41,4 +41,4 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   );
 };
 
-export default CategoryFilter;
+export default YearFilter; 
