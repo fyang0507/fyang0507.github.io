@@ -213,12 +213,12 @@ const BlogPost: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="rounded-lg overflow-hidden shadow-lg mb-8"
+            className="rounded-lg overflow-hidden shadow-lg mb-8 group cursor-pointer"
           >
             <img 
               src={post.coverImage} 
               alt={currentContent.title} 
-              className="w-full h-auto aspect-video object-cover"
+              className="w-full h-auto aspect-video object-cover transition-transform duration-700 ease-out scale-110 group-hover:scale-125"
             />
           </motion.div>
         </header>
@@ -274,11 +274,11 @@ const BlogPost: React.FC = () => {
                     className="card group"
                   >
                     <Link to={getRelatedPostLink()} className="block no-underline">
-                      <div className="h-40 overflow-hidden">
+                      <div className="h-40 overflow-hidden rounded-t-lg">
                         <img 
                           src={relatedPost.coverImage} 
                           alt={getRelatedPostTitle()} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 ease-out scale-105 group-hover:scale-115"
                         />
                       </div>
                       

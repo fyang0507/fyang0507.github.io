@@ -182,3 +182,92 @@
     @apply animate-slide-up;
   }
 }
+
+@layer utilities {
+  /* Custom zoom/scale utilities for hover effects */
+  .scale-107 {
+    transform: scale(1.07);
+  }
+  
+  .scale-108 {
+    transform: scale(1.08);
+  }
+  
+  .scale-112 {
+    transform: scale(1.12);
+  }
+  
+  .scale-115 {
+    transform: scale(1.15);
+  }
+  
+  .scale-118 {
+    transform: scale(1.18);
+  }
+  
+  .scale-125 {
+    transform: scale(1.25);
+  }
+  
+  .scale-130 {
+    transform: scale(1.30);
+  }
+  
+  /* Hover variants */
+  .hover\:scale-107:hover {
+    transform: scale(1.07);
+  }
+  
+  .hover\:scale-108:hover {
+    transform: scale(1.08);
+  }
+  
+  .hover\:scale-112:hover {
+    transform: scale(1.12);
+  }
+  
+  .hover\:scale-115:hover {
+    transform: scale(1.15);
+  }
+  
+  .hover\:scale-118:hover {
+    transform: scale(1.18);
+  }
+  
+  .hover\:scale-125:hover {
+    transform: scale(1.25);
+  }
+  
+  .hover\:scale-130:hover {
+    transform: scale(1.30);
+  }
+  
+  /* Group hover variants */
+  .group:hover .group-hover\:scale-107 {
+    transform: scale(1.07);
+  }
+  
+  .group:hover .group-hover\:scale-108 {
+    transform: scale(1.08);
+  }
+  
+  .group:hover .group-hover\:scale-112 {
+    transform: scale(1.12);
+  }
+  
+  .group:hover .group-hover\:scale-115 {
+    transform: scale(1.15);
+  }
+  
+  .group:hover .group-hover\:scale-118 {
+    transform: scale(1.18);
+  }
+  
+  .group:hover .group-hover\:scale-125 {
+    transform: scale(1.25);
+  }
+  
+  .group:hover .group-hover\:scale-130 {
+    transform: scale(1.30);
+  }
+}

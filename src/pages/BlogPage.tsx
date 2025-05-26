@@ -109,12 +109,12 @@ const BlogPage: React.FC = () => {
                     >
                       <div className="md:flex">
                         {/* Image (left on desktop) */}
-                        <div className="md:w-1/3">
+                        <div className="md:w-1/3 overflow-hidden group">
                           <Link to={`/blog/${post.id}`} className="block h-full">
                             <img 
                               src={post.coverImage} 
                               alt={post.title} 
-                              className="h-48 md:h-full w-full object-cover"
+                              className="h-48 md:h-full w-full object-cover transition-transform duration-600 ease-out scale-110 group-hover:scale-118"
                             />
                           </Link>
                         </div>

@@ -38,11 +38,11 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({ photos, onPhotoClick }) => {
           onMouseLeave={() => setHoveredId(null)}
           onClick={() => onPhotoClick(photo)}
         >
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-lg">
             <img 
               src={photo.imageUrl} 
               alt={photo.title}
-              className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-auto object-cover transition-transform duration-500 ease-out scale-115 group-hover:scale-130"
               loading="lazy"
             />
           </div>

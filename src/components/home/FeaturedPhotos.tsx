@@ -58,8 +58,8 @@ const FeaturedPhotos: React.FC = () => {
                 <img 
                   src={photo.imageUrl} 
                   alt={photo.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 
-                            group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out scale-115
+                            group-hover:scale-130"
                 />
                 
                 {/* Overlay with details */}

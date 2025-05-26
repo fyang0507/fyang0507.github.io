@@ -53,12 +53,12 @@ const FeaturedPosts: React.FC = () => {
               className="card group h-full flex flex-col"
             >
               {/* Image */}
-              <div className="aspect-[16/9] overflow-hidden">
+              <div className="aspect-[16/9] overflow-hidden rounded-t-lg">
                 <img 
                   src={post.coverImage} 
                   alt={post.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 
-                            group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out scale-110
+                            group-hover:scale-125"
                 />
               </div>
               
