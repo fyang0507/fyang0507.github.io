@@ -125,7 +125,7 @@ const FeaturedPosts: React.FC = () => {
                       to={`/blog/${post.id}?lang=zh`} 
                       className="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-800 dark:hover:text-primary-300 flex items-center group text-sm"
                     >
-                      阅读中文
+                      阅读全文
                       <ArrowRight 
                         className="ml-1 transition-transform group-hover:translate-x-1" 
                         size={14} 
