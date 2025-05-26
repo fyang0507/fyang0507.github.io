@@ -22,9 +22,11 @@ jobs:
         run: npm run build
 
       - name: Commit and push docs folder
+        env: 
+          DOC_AUTOBUILD_TOKEN: ${{ secrets.DOC_AUTOBUILD_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add docs
           git commit -m "Auto-build docs [skip ci]" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${DOC_AUTOBUILD_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
