@@ -17,9 +17,9 @@ const Hero: React.FC = () => {
           className="order-2 lg:order-1"
         >
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight text-slate-900 dark:text-white">
-            <span className="text-primary-600 dark:text-primary-400">Your Name</span>
+            <span className="text-primary-600 dark:text-primary-400">Fred Yang</span>
             <br />
-            <span className="text-3xl md:text-4xl lg:text-5xl">AI Engineer & Photographer</span>
+            <span className="text-xl md:text-2xl lg:text-3xl">AI/ML Engineer & Photographer</span>
           </h1>
           
           <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 my-6 max-w-2xl">

@@ -32,16 +32,17 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ className = '', iconSize = 20
       <SocialLink href="https://github.com" ariaLabel="GitHub">
         <Github size={iconSize} />
       </SocialLink>
-      <SocialLink href="https://linkedin.com" ariaLabel="LinkedIn">
+      <SocialLink href="https://www.linkedin.com/in/runtong-yang/" ariaLabel="LinkedIn">
         <Linkedin size={iconSize} />
       </SocialLink>
+      {/* TODO: replace with WeChat */}
       <SocialLink href="https://twitter.com" ariaLabel="Twitter">
-        <Twitter size={iconSize} />
+        <Twitter size={iconSize} /> 
       </SocialLink>
-      <SocialLink href="https://instagram.com" ariaLabel="Instagram">
+      <SocialLink href="https://www.instagram.com/yangruntong/" ariaLabel="Instagram">
         <Instagram size={iconSize} />
       </SocialLink>
-      <SocialLink href="mailto:example@example.com" ariaLabel="Email">
+      <SocialLink href="mailto:fredyang0507@gmail.com" ariaLabel="Email">
         <Mail size={iconSize} />
       </SocialLink>
     </div>

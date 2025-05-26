@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
           to="/" 
           className="text-xl md:text-2xl font-bold no-underline text-slate-900 dark:text-white hover:no-underline"
         >
-          Your Name
+          Fred Yang
         </Link>
         
         {/* Desktop Menu */}

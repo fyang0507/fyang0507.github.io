@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Section */}
           <div className="col-span-2">
-            <h3 className="text-lg font-bold mb-4">Your Name</h3>
+            <h3 className="text-lg font-bold mb-4">Fred Yang</h3>
             <p className="text-slate-600 dark:text-slate-400 mb-4">
               Photographer and blogger passionate about capturing moments and sharing stories.
             </p>
