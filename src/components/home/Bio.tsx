@@ -46,11 +46,11 @@ const Bio: React.FC = () => {
               <div className="pt-4">
                 <h4 className="text-lg font-semibold mb-3">Areas of Expertise</h4>
                 <div className="flex flex-wrap gap-2">
-                  <span className="tag bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-100">Machine Learning</span>
-                  <span className="tag bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-100">Computer Vision</span>
-                  <span className="tag bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-100">Deep Learning</span>
-                  <span className="tag bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-100">Photography</span>
-                  <span className="tag bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100">Image Processing</span>
+                  <span className="tag">Machine Learning</span>
+                  <span className="tag">Computer Vision</span>
+                  <span className="tag">Deep Learning</span>
+                  <span className="tag">Photography</span>
+                  <span className="tag">Image Processing</span>
                 </div>
               </div>
             </div>
