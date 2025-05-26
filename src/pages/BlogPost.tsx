@@ -42,13 +42,26 @@ const BlogPost: React.FC = () => {
   // Parse markdown content to HTML
   const renderContent = (content: string) => {
     try {
-      // Pre-process content to handle multiple blank lines
-      // Replace multiple consecutive newlines with special markers
-      const processedContent = content
-        // Replace 3+ consecutive newlines with a large spacing div
-        .replace(/\n\n\n+/g, '\n\n<div class="prose-spacing-large"></div>\n\n')
-        // Replace exactly 2 newlines (paragraph breaks) with enhanced spacing
-        .replace(/\n\n/g, '\n\n<div class="prose-spacing-medium"></div>\n\n');
+      let processedContent = content;
+      
+      // For English content, convert single line breaks to paragraph breaks
+      // This is needed because the markdown files use single line breaks between paragraphs
+      if (currentLanguage === 'en') {
+        processedContent = content
+          // First, protect existing double line breaks by replacing them with a marker
+          .replace(/\n\n/g, '___DOUBLE_BREAK___')
+          // Convert single line breaks to double line breaks (paragraph separation)
+          .replace(/\n/g, '\n\n')
+          // Restore the original double line breaks (now they become quadruple)
+          .replace(/___DOUBLE_BREAK___/g, '\n\n\n\n');
+      }
+      
+      // Handle multiple blank lines for spacing
+      processedContent = processedContent
+        // Replace 4+ consecutive newlines with a large spacing div
+        .replace(/\n\n\n\n+/g, '\n\n<div class="prose-spacing-large"></div>\n\n')
+        // Replace exactly 3 newlines with enhanced spacing
+        .replace(/\n\n\n/g, '\n\n<div class="prose-spacing-medium"></div>\n\n');
       
       const html = marked(processedContent);
       return { __html: html };
@@ -216,7 +229,7 @@ const BlogPost: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           key={currentLanguage} // Force re-animation on language change
-          className="prose dark:prose-invert prose-lg max-w-none mb-12"
+          className={`prose dark:prose-invert prose-lg max-w-none mb-12 lang-${currentLanguage}`}
           dangerouslySetInnerHTML={renderContent(currentContent.content)}
         />
         
@@ -231,39 +244,58 @@ const BlogPost: React.FC = () => {
         {/* Related Posts */}
         {relatedPosts.length > 0 && (
           <div className="mb-12">
-            <h3 className="text-2xl font-bold mb-6">Related Posts</h3>
+            <h3 className="text-2xl font-bold mb-6">
+              {currentLanguage === 'zh' ? '相关文章' : 'Related Posts'}
+            </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedPosts.map(relatedPost => (
-                <motion.div
-                  key={relatedPost.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="card group"
-                >
-                  <Link to={`/blog/${relatedPost.id}`} className="block no-underline">
-                    <div className="h-40 overflow-hidden">
-                      <img 
-                        src={relatedPost.coverImage} 
-                        alt={relatedPost.title} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    
-                    <div className="p-4">
-                      <h4 className="text-lg font-bold group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                        {relatedPost.title}
-                      </h4>
-                      
-                      <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 mt-2">
-                        <Clock size={12} className="mr-1" />
-                        <span>{relatedPost.readingTime} min read</span>
+              {relatedPosts.map(relatedPost => {
+                // Determine the appropriate link and title based on current language
+                const getRelatedPostLink = () => {
+                  if (currentLanguage === 'zh' && relatedPost.isMultilingual && relatedPost.content_zh) {
+                    return `/blog/${relatedPost.id}?lang=zh`;
+                  }
+                  return `/blog/${relatedPost.id}`;
+                };
+                
+                const getRelatedPostTitle = () => {
+                  if (currentLanguage === 'zh' && relatedPost.title_zh) {
+                    return relatedPost.title_zh;
+                  }
+                  return relatedPost.title;
+                };
+                
+                return (
+                  <motion.div
+                    key={relatedPost.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="card group"
+                  >
+                    <Link to={getRelatedPostLink()} className="block no-underline">
+                      <div className="h-40 overflow-hidden">
+                        <img 
+                          src={relatedPost.coverImage} 
+                          alt={getRelatedPostTitle()} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                      
+                      <div className="p-4">
+                        <h4 className="text-lg font-bold group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                          {getRelatedPostTitle()}
+                        </h4>
+                        
+                        <div className="flex items-center text-xs text-slate-500 dark:text-slate-400 mt-2">
+                          <Clock size={12} className="mr-1" />
+                          <span>{relatedPost.readingTime} min read</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         )}

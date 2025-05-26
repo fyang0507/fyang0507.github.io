@@ -204,7 +204,7 @@ const BlogPage: React.FC = () => {
                                 to={`/blog/${post.id}?lang=zh`} 
                                 className="btn-primary"
                               >
-                                阅读中文
+                                阅读全文
                               </Link>
                             )}
                             
