@@ -10,5 +10,17 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
+    esbuildOptions: {
+      inject: ['./src/buffer-polyfill.ts'],
+      define: {
+        global: 'globalThis',
+        'process.env': JSON.stringify({}),
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      buffer: 'buffer/',
+    },
   },
 });
