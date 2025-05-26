@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { marked } from 'marked';
 import { postsWithReadingTime } from '../data/posts';
 import { Clock, Calendar, ArrowLeft, Languages } from 'lucide-react';
 import ShareButtons from '../components/blog/ShareButtons';
@@ -32,34 +33,30 @@ const BlogPost: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentLanguage]);
   
-  // Parse markdown-like content to HTML
+  // Configure marked options for better Chinese support
+  marked.setOptions({
+    breaks: true, // Convert line breaks to <br>
+    gfm: true, // Enable GitHub Flavored Markdown
+  });
+
+  // Parse markdown content to HTML
   const renderContent = (content: string) => {
-    // Simple parser for headers, paragraphs, lists, and blockquotes
-    const html = content
-      // Headers
-      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-      // Blockquotes
-      .replace(/^> (.*$)/gim, '<blockquote><p>$1</p></blockquote>')
-      // Fix multiple consecutive blockquotes
-      .replace(/<\/blockquote>\s*<blockquote>/g, '')
-      // Lists
-      .replace(/^\s*\n\* (.*$)/gim, '<ul>\n<li>$1</li>\n</ul>')
-      .replace(/^\s*\n- (.*$)/gim, '<ul>\n<li>$1</li>\n</ul>')
-      // Fix list closing tags
-      .replace(/<\/ul>\s*\n<ul>/g, '')
-      // Paragraphs
-      .replace(/^\s*\n([^\n]+)\n/gim, '<p>$1</p>')
-      // Bold and Italic (process bold first to avoid conflicts)
-      .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>') // Bold + Italic
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
-      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
-      // Alternative underscore syntax
-      .replace(/__(.*?)__/g, '<strong>$1</strong>') // Bold with underscores
-      .replace(/_(.*?)_/g, '<em>$1</em>'); // Italic with underscores
-    
-    return { __html: html };
+    try {
+      // Pre-process content to handle multiple blank lines
+      // Replace multiple consecutive newlines with special markers
+      const processedContent = content
+        // Replace 3+ consecutive newlines with a large spacing div
+        .replace(/\n\n\n+/g, '\n\n<div class="prose-spacing-large"></div>\n\n')
+        // Replace exactly 2 newlines (paragraph breaks) with enhanced spacing
+        .replace(/\n\n/g, '\n\n<div class="prose-spacing-medium"></div>\n\n');
+      
+      const html = marked(processedContent);
+      return { __html: html };
+    } catch (error) {
+      console.error('Error parsing markdown:', error);
+      // Fallback to plain text if parsing fails
+      return { __html: `<p>${content.replace(/\n/g, '<br>')}</p>` };
+    }
   };
 
   // Get current content based on selected language

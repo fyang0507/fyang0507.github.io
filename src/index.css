@@ -65,6 +65,65 @@
   a {
     @apply text-primary-600 dark:text-primary-400 hover:underline transition-all duration-200;
   }
+  
+  /* Chinese text improvements */
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    @apply font-bold;
+    line-height: 1.3;
+    /* Better line height for Chinese characters */
+  }
+  
+  .prose h4 {
+    @apply text-xl md:text-2xl mb-3;
+    /* Add h4 styles that were missing */
+  }
+  
+  .prose p {
+    @apply leading-relaxed;
+    /* Improved line spacing for mixed Chinese/English content */
+    line-height: 2.0;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+  }
+  
+  /* Improve Chinese character rendering */
+  .prose {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Better spacing for Chinese punctuation */
+    word-spacing: 0.05em;
+  }
+  
+  /* Specific improvements for Chinese content */
+  .prose blockquote {
+    @apply border-l-4 border-primary-200 dark:border-primary-700 pl-4 italic;
+    margin: 1.5em 0;
+  }
+  
+  .prose ul, .prose ol {
+    @apply my-4;
+    padding-left: 1.5em;
+  }
+  
+  .prose li {
+    @apply my-2;
+    line-height: 1.6;
+  }
+  
+  /* Custom spacing for multiple blank lines */
+  .prose .prose-spacing-medium {
+    height: 1.5em;
+  }
+  
+  .prose .prose-spacing-large {
+    height: 2.5em;
+  }
+  
+  /* Better spacing for Chinese paragraphs */
+  .prose p + p {
+    margin-top: 1.5em;
+  }
 }
 
 @layer components {
