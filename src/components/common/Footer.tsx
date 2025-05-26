@@ -44,14 +44,36 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-bold mb-4">Contact</h3>
             <address className="not-italic text-slate-600 dark:text-slate-400">
-              <p>Email: example@example.com</p>
-              <p>Location: City, Country</p>
+              <p>Email: fredyang0507@gmail.com</p>
+              <p>Location: New York, NY</p>
             </address>
           </div>
         </div>
         
         <div className="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-sm text-slate-600 dark:text-slate-400">
           <p>© {currentYear} Your Name. All rights reserved.</p>
+          <p className="flex flex-wrap items-center justify-center">
+            Developed with {'\u00A0'}
+            <a
+              href="https://cursor.sh/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center"
+            >
+              <img src="https://www.cursor.com/assets/images/logo.svg" alt="Cursor Logo" className="h-4 w-4 mr-1" />
+              Cursor
+            </a>
+            {'\u00A0'} and {'\u00A0'}
+            <a
+              href="https://bolt.new/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center"
+            >
+              <img src="https://pbs.twimg.com/profile_images/1880702021122342912/fe9TlQqJ_400x400.jpg" alt="Bolt Logo" className="h-4 w-4 mr-1" />
+              Bolt
+            </a>.
+          </p>
         </div>
       </div>
     </footer>
