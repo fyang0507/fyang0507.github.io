@@ -12,6 +12,11 @@ const BlogPost: React.FC = () => {
   const [relatedPosts, setRelatedPosts] = useState<typeof postsWithReadingTime>([]);
   const [currentLanguage, setCurrentLanguage] = useState<'en' | 'zh'>('en');
   
+  // Scroll to top when component mounts or postId changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [postId]);
+  
   // Initialize language from URL parameter
   useEffect(() => {
     const langParam = searchParams.get('lang');
@@ -22,14 +27,23 @@ const BlogPost: React.FC = () => {
     }
   }, [searchParams, post]);
   
+  // Scroll to top when language changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentLanguage]);
+  
   // Parse markdown-like content to HTML
   const renderContent = (content: string) => {
-    // Simple parser for headers, paragraphs, and lists
+    // Simple parser for headers, paragraphs, lists, and blockquotes
     const html = content
       // Headers
       .replace(/^# (.*$)/gim, '<h1>$1</h1>')
       .replace(/^## (.*$)/gim, '<h2>$1</h2>')
       .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      // Blockquotes
+      .replace(/^> (.*$)/gim, '<blockquote><p>$1</p></blockquote>')
+      // Fix multiple consecutive blockquotes
+      .replace(/<\/blockquote>\s*<blockquote>/g, '')
       // Lists
       .replace(/^\s*\n\* (.*$)/gim, '<ul>\n<li>$1</li>\n</ul>')
       .replace(/^\s*\n- (.*$)/gim, '<ul>\n<li>$1</li>\n</ul>')
@@ -37,8 +51,13 @@ const BlogPost: React.FC = () => {
       .replace(/<\/ul>\s*\n<ul>/g, '')
       // Paragraphs
       .replace(/^\s*\n([^\n]+)\n/gim, '<p>$1</p>')
-      // Bold
-      .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>');
+      // Bold and Italic (process bold first to avoid conflicts)
+      .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>') // Bold + Italic
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+      // Alternative underscore syntax
+      .replace(/__(.*?)__/g, '<strong>$1</strong>') // Bold with underscores
+      .replace(/_(.*?)_/g, '<em>$1</em>'); // Italic with underscores
     
     return { __html: html };
   };
