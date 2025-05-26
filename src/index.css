@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-text: 15 23 42; /* slate-900 */
+    --color-text-muted: 100 116 139; /* slate-500 */
+    --color-background: 248 250 252; /* slate-50 */
+    --color-background-secondary: 241 245 249; /* slate-100 */
+    --color-border: 226 232 240; /* slate-200 */
+    --color-card: 255 255 255; /* white */
+    --color-shadow: 0 0 0; /* black */
+    --shadow-opacity: 0.1;
+    
+    /* Animation durations */
+    --transition-slow: 500ms;
+    --transition-medium: 300ms;
+    --transition-fast: 150ms;
+  }
+  
+  .dark {
+    --color-text: 248 250 252; /* slate-50 */
+    --color-text-muted: 148 163 184; /* slate-400 */
+    --color-background: 15 23 42; /* slate-900 */
+    --color-background-secondary: 30 41 59; /* slate-800 */
+    --color-border: 51 65 85; /* slate-700 */
+    --color-card: 30 41 59; /* slate-800 */
+    --shadow-opacity: 0.3;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-light dark:bg-dark text-slate-900 dark:text-slate-50;
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    transition: background-color var(--transition-medium) ease, 
+                color var(--transition-medium) ease;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+    line-height: 1.2;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl mb-6;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl mb-5;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl mb-4;
+  }
+  
+  p {
+    @apply leading-relaxed my-4;
+  }
+  
+  a {
+    @apply text-primary-600 dark:text-primary-400 hover:underline transition-all duration-200;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden 
+    border border-slate-200 dark:border-slate-700
+    transition-all duration-300;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-500 hover:bg-primary-600 text-white
+    focus:ring-primary-500 focus:ring-opacity-50;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600
+    text-slate-800 dark:text-white focus:ring-slate-500 focus:ring-opacity-50;
+  }
+  
+  .tag {
+    @apply inline-block px-2.5 py-0.5 rounded-full text-xs font-medium
+    bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-100
+    transition-colors duration-200;
+  }
+  
+  /* Animation classes */
+  .fade-in {
+    @apply animate-fade-in;
+  }
+  
+  .slide-up {
+    @apply animate-slide-up;
+  }
+}
