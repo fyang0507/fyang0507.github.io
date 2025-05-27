@@ -88,7 +88,7 @@ const GalleryPage: React.FC = () => {
                   setActiveCategory('all');
                   setActiveYear('all');
                 }}
-                className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-medium"
+                className="text-sm text-primary-600 dark:text-primary-300 hover:text-primary-800 dark:hover:text-primary-100 font-medium"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

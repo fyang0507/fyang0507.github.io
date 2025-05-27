@@ -31,7 +31,7 @@ const FeaturedPosts: React.FC = () => {
           >
             <Link 
               to="/blog" 
-              className="group flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-medium hover:no-underline"
+              className="group flex items-center text-primary-600 dark:text-primary-300 hover:text-primary-800 dark:hover:text-primary-100 font-medium hover:no-underline"
             >
               Read All Posts
               <ArrowRight 
@@ -133,7 +133,7 @@ const FeaturedPosts: React.FC = () => {
                   {post.isMultilingual && post.content_zh && (
                     <Link 
                       to={`/blog/${post.id}?lang=zh`} 
-                      className="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-800 dark:hover:text-primary-300 flex items-center group text-sm"
+                      className="text-primary-600 dark:text-primary-300 font-medium hover:text-primary-800 dark:hover:text-primary-100 flex items-center group text-sm"
                     >
                       阅读全文
                       <ArrowRight 
@@ -145,7 +145,7 @@ const FeaturedPosts: React.FC = () => {
                   
                   <Link 
                     to={`/blog/${post.id}`} 
-                    className={`${post.isMultilingual && post.content_zh ? 'text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400' : 'text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300'} font-medium flex items-center group text-sm`}
+                    className={`${post.isMultilingual && post.content_zh ? 'text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-200' : 'text-primary-600 dark:text-primary-300 hover:text-primary-800 dark:hover:text-primary-100'} font-medium flex items-center group text-sm`}
                   >
                     Read More
                     <ArrowRight 

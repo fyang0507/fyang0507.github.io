@@ -31,7 +31,7 @@ const FeaturedPhotos: React.FC = () => {
           >
             <Link 
               to="/gallery" 
-              className="group flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-medium hover:no-underline"
+              className="group flex items-center text-primary-600 dark:text-primary-300 hover:text-primary-800 dark:hover:text-primary-100 font-medium hover:no-underline"
             >
               View All Work
               <ArrowRight 

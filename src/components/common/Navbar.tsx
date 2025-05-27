@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
           <Link 
             to="/" 
             className={`no-underline text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 hover:no-underline transition-colors ${
-              isActive('/') ? 'text-primary-600 dark:text-primary-400 font-medium' : ''
+              isActive('/') ? 'text-primary-600 dark:text-primary-300 font-medium' : ''
             }`}
           >
             Home
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
           <Link 
             to="/gallery" 
             className={`no-underline text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 hover:no-underline transition-colors ${
-              isActive('/gallery') ? 'text-primary-600 dark:text-primary-400 font-medium' : ''
+              isActive('/gallery') ? 'text-primary-600 dark:text-primary-300 font-medium' : ''
             }`}
           >
             Gallery
@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
           <Link 
             to="/blog" 
             className={`no-underline text-slate-700 dark:text-slate-300 hover:text-primary-500 dark:hover:text-primary-400 hover:no-underline transition-colors ${
-              isActive('/blog') ? 'text-primary-600 dark:text-primary-400 font-medium' : ''
+              isActive('/blog') ? 'text-primary-600 dark:text-primary-300 font-medium' : ''
             }`}
           >
             Blog
@@ -111,7 +111,7 @@ const Navbar: React.FC = () => {
             to="/" 
             className={`py-2 px-4 rounded-md no-underline hover:no-underline ${
               isActive('/') 
-                ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 font-medium' 
+                ? 'text-primary-600 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/30 font-medium' 
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
             }`}
           >
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
             to="/gallery" 
             className={`py-2 px-4 rounded-md no-underline hover:no-underline ${
               isActive('/gallery') 
-                ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 font-medium' 
+                ? 'text-primary-600 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/30 font-medium' 
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
             }`}
           >
@@ -131,7 +131,7 @@ const Navbar: React.FC = () => {
             to="/blog" 
             className={`py-2 px-4 rounded-md no-underline hover:no-underline ${
               isActive('/blog') 
-                ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30 font-medium' 
+                ? 'text-primary-600 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/30 font-medium' 
                 : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
             }`}
           >

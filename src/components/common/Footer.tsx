@@ -23,17 +23,17 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-bold mb-4">Navigation</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400">
+                <Link to="/" className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-300">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/gallery" className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400">
+                <Link to="/gallery" className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-300">
                   Gallery
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400">
+                <Link to="/blog" className="text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-300">
                   Blog
                 </Link>
               </li>
@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
               href="https://cursor.sh/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center"
+              className="text-primary-600 dark:text-primary-300 hover:underline inline-flex items-center"
             >
               <img src="https://www.cursor.com/assets/images/logo.svg" alt="Cursor Logo" className="h-4 w-4 mr-1" />
               Cursor
@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
               href="https://bolt.new/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center"
+              className="text-primary-600 dark:text-primary-300 hover:underline inline-flex items-center"
             >
               <img src="https://pbs.twimg.com/profile_images/1880702021122342912/fe9TlQqJ_400x400.jpg" alt="Bolt Logo" className="h-4 w-4 mr-1" />
               Bolt
