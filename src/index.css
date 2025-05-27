@@ -101,14 +101,27 @@
     margin: 1.5em 0;
   }
   
-  .prose ul, .prose ol {
-    @apply my-4;
-    padding-left: 1.5em;
+  /* Override typography plugin list styles for better visibility */
+  .prose ol {
+    list-style-type: decimal !important;
+    padding-left: 1.625em !important;
+  }
+  
+  .prose ul {
+    list-style-type: disc !important;
+    padding-left: 1.625em !important;
+  }
+  
+  .prose ol > li::marker,
+  .prose ul > li::marker {
+    color: rgb(var(--color-text)) !important;
+    font-weight: 600 !important;
   }
   
   .prose li {
     @apply my-2;
     line-height: 1.6;
+    display: list-item !important;
   }
   
   /* Custom spacing for multiple blank lines */
