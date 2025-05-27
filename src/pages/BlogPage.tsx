@@ -156,6 +156,11 @@ const BlogPage: React.FC = () => {
                                 <h2 className="text-2xl font-bold mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                                   {post.title_zh}
                                 </h2>
+                                {post.subtitle_zh && (
+                                  <p className="text-lg text-slate-600 dark:text-slate-400 mb-2 italic">
+                                    {post.subtitle_zh}
+                                  </p>
+                                )}
                               </Link>
                               
                               {post.excerpt_zh && (
@@ -172,6 +177,11 @@ const BlogPage: React.FC = () => {
                               <h3 className={`${post.isMultilingual && post.title_zh ? 'text-xl text-slate-700 dark:text-slate-300' : 'text-2xl'} font-bold mb-2 hover:text-primary-600 dark:hover:text-primary-400 transition-colors`}>
                                 {post.title}
                               </h3>
+                              {post.subtitle && (
+                                <p className={`${post.isMultilingual && post.title_zh ? 'text-base text-slate-500 dark:text-slate-500' : 'text-lg text-slate-600 dark:text-slate-400'} mb-2 italic`}>
+                                  {post.subtitle}
+                                </p>
+                              )}
                             </Link>
                             
                             <p className={`${post.isMultilingual && post.title_zh ? 'text-slate-500 dark:text-slate-500' : 'text-slate-600 dark:text-slate-400'}`}>

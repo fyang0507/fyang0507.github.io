@@ -11,6 +11,7 @@ export interface Photo {
 export interface BlogPost {
   id: string;
   title: string;
+  subtitle?: string;
   excerpt: string;
   content: string;
   coverImage: string;
@@ -20,6 +21,7 @@ export interface BlogPost {
   // Bilingual support
   isMultilingual?: boolean;
   title_zh?: string;
+  subtitle_zh?: string;
   excerpt_zh?: string;
   content_zh?: string;
   tags_zh?: string[];

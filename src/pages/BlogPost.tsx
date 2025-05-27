@@ -74,11 +74,12 @@ const BlogPost: React.FC = () => {
 
   // Get current content based on selected language
   const getCurrentContent = () => {
-    if (!post) return { title: '', excerpt: '', content: '', tags: [] };
+    if (!post) return { title: '', subtitle: '', excerpt: '', content: '', tags: [] };
     
     if (currentLanguage === 'zh' && post.content_zh) {
       return {
         title: post.title_zh || post.title,
+        subtitle: post.subtitle_zh || post.subtitle || '',
         excerpt: post.excerpt_zh || post.excerpt,
         content: post.content_zh,
         tags: post.tags_zh || post.tags,
@@ -87,6 +88,7 @@ const BlogPost: React.FC = () => {
     
     return {
       title: post.title,
+      subtitle: post.subtitle || '',
       excerpt: post.excerpt,
       content: post.content,
       tags: post.tags,
@@ -184,6 +186,18 @@ const BlogPost: React.FC = () => {
           >
             {currentContent.title}
           </motion.h1>
+          
+          {currentContent.subtitle && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              key={`${currentLanguage}-subtitle`} // Force re-animation on language change
+              className="text-xl text-slate-600 dark:text-slate-400 italic mt-4 mb-6"
+            >
+              {currentContent.subtitle}
+            </motion.p>
+          )}
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
