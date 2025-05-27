@@ -11,6 +11,66 @@
     <meta property="og:description" content="Fred Yang's personal website showcasing photography and blog posts" />
     <meta property="og:type" content="website" />
     <title>Fred Yang</title>
+    <script>
+      // Comprehensive Buffer polyfill for gray-matter
+      if (typeof globalThis.Buffer === 'undefined') {
+        function BufferPolyfill(data, encoding) {
+          if (typeof data === 'string') {
+            const encoder = new TextEncoder();
+            const uint8Array = encoder.encode(data);
+            Object.setPrototypeOf(uint8Array, BufferPolyfill.prototype);
+            return uint8Array;
+          } else if (data instanceof ArrayBuffer) {
+            const uint8Array = new Uint8Array(data);
+            Object.setPrototypeOf(uint8Array, BufferPolyfill.prototype);
+            return uint8Array;
+          } else if (Array.isArray(data)) {
+            const uint8Array = new Uint8Array(data);
+            Object.setPrototypeOf(uint8Array, BufferPolyfill.prototype);
+            return uint8Array;
+          } else if (data && typeof data.length === 'number') {
+            const uint8Array = new Uint8Array(data);
+            Object.setPrototypeOf(uint8Array, BufferPolyfill.prototype);
+            return uint8Array;
+          }
+          return new Uint8Array(data || 0);
+        }
+
+        BufferPolyfill.prototype = Object.create(Uint8Array.prototype);
+        BufferPolyfill.prototype.constructor = BufferPolyfill;
+
+        BufferPolyfill.isBuffer = function(obj) {
+          return obj instanceof BufferPolyfill || obj instanceof Uint8Array;
+        };
+
+        BufferPolyfill.from = function(data, encoding) {
+          return new BufferPolyfill(data, encoding);
+        };
+
+        BufferPolyfill.alloc = function(size, fill, encoding) {
+          const buf = new Uint8Array(size);
+          if (fill !== undefined) {
+            buf.fill(fill);
+          }
+          Object.setPrototypeOf(buf, BufferPolyfill.prototype);
+          return buf;
+        };
+
+        BufferPolyfill.allocUnsafe = function(size) {
+          const buf = new Uint8Array(size);
+          Object.setPrototypeOf(buf, BufferPolyfill.prototype);
+          return buf;
+        };
+
+        BufferPolyfill.prototype.toString = function(encoding, start, end) {
+          const decoder = new TextDecoder(encoding || 'utf8');
+          const slice = this.slice(start || 0, end || this.length);
+          return decoder.decode(slice);
+        };
+
+        globalThis.Buffer = BufferPolyfill;
+      }
+    </script>
   </head>
   <body class="bg-light dark:bg-dark transition-colors duration-300">
     <div id="root"></div>
