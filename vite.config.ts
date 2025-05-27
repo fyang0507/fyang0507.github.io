@@ -7,9 +7,17 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'docs',
+    rollupOptions: {
+      external: [],
+    },
+  },
+  define: {
+    global: 'globalThis',
+    'process.env': JSON.stringify({}),
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
+    include: ['buffer'],
     esbuildOptions: {
       inject: ['./src/buffer-polyfill.ts'],
       define: {
@@ -20,7 +28,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      buffer: 'buffer/',
+      buffer: 'buffer',
+      process: 'process/browser',
     },
   },
 });

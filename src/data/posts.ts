@@ -1,3 +1,4 @@
+import '../buffer-polyfill';
 import { BlogPost } from '../types';
 import matter from 'gray-matter';
 
@@ -51,7 +52,7 @@ const generateExcerpt = (content: string, wordLimit: number = 20): string => {
 };
 
 // Vite's glob import to get all markdown files
-const markdownFiles = import.meta.glob('/src/markdown/posts/*.md', { eager: true, as: 'raw' });
+const markdownFiles = import.meta.glob('/src/markdown/posts/*.md', { eager: true, query: '?raw', import: 'default' });
 
 const processedPosts: BlogPost[] = Object.entries(markdownFiles).map(([path, rawContent]) => {
   try {

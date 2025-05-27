@@ -16,6 +16,7 @@
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.344.0",
     "marked": "^15.0.12",
+    "process": "^0.11.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-masonry-css": "^1.0.16",
