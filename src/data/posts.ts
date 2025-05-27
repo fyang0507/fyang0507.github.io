@@ -69,12 +69,14 @@ const processedPosts: BlogPost[] = Object.entries(markdownFiles).map(([path, raw
     // Type assertion for frontmatter (including bilingual fields)
     const fm = frontmatter as {
       title: string;
+      subtitle?: string;
       excerpt?: string; // Now optional
       coverImage: string;
       date: string; // Assuming YYYY-MM-DD format
       tags: string[];
       // Bilingual fields
       title_zh?: string;
+      subtitle_zh?: string;
       excerpt_zh?: string;
       tags_zh?: string[];
       languages?: string[];
@@ -121,6 +123,7 @@ const processedPosts: BlogPost[] = Object.entries(markdownFiles).map(([path, raw
     return {
       id,
       title: fm.title,
+      subtitle: fm.subtitle,
       excerpt,
       content: englishContent, // Store the English content
       coverImage: fm.coverImage,
@@ -130,6 +133,7 @@ const processedPosts: BlogPost[] = Object.entries(markdownFiles).map(([path, raw
       // Bilingual fields
       isMultilingual,
       title_zh: fm.title_zh,
+      subtitle_zh: fm.subtitle_zh,
       excerpt_zh,
       content_zh: chineseContent,
       tags_zh: fm.tags_zh,

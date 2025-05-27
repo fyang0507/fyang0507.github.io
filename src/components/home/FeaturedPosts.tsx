@@ -82,6 +82,11 @@ const FeaturedPosts: React.FC = () => {
                     <h3 className="text-xl font-bold mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                       {post.title_zh}
                     </h3>
+                    {post.subtitle_zh && (
+                      <p className="text-base text-slate-600 dark:text-slate-400 mb-2 italic">
+                        {post.subtitle_zh}
+                      </p>
+                    )}
                     
                     {post.excerpt_zh && (
                       <p className="text-slate-600 dark:text-slate-400 text-sm">
@@ -96,6 +101,11 @@ const FeaturedPosts: React.FC = () => {
                   <h4 className={`${post.isMultilingual && post.title_zh ? 'text-lg text-slate-700 dark:text-slate-300' : 'text-xl'} font-bold mb-2 ${post.isMultilingual && post.title_zh ? '' : 'group-hover:text-primary-600 dark:group-hover:text-primary-400'} transition-colors`}>
                     {post.title}
                   </h4>
+                  {post.subtitle && (
+                    <p className={`${post.isMultilingual && post.title_zh ? 'text-sm text-slate-500 dark:text-slate-500' : 'text-base text-slate-600 dark:text-slate-400'} mb-2 italic`}>
+                      {post.subtitle}
+                    </p>
+                  )}
                   
                   <p className={`${post.isMultilingual && post.title_zh ? 'text-slate-500 dark:text-slate-500' : 'text-slate-600 dark:text-slate-400'} text-sm`}>
                     {post.excerpt}
