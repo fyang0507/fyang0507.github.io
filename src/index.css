@@ -283,4 +283,26 @@
   .group:hover .group-hover\:scale-130 {
     transform: scale(1.30);
   }
+
+  /* Performance optimizations for gallery */
+  .gallery-image {
+    will-change: transform;
+    transform: translateZ(0); /* Force hardware acceleration */
+    backface-visibility: hidden;
+  }
+  
+  .gallery-overlay {
+    will-change: opacity;
+    transform: translateZ(0);
+  }
+  
+  /* Optimize hover transitions */
+  .gallery-item {
+    contain: layout style paint;
+  }
+  
+  /* Reduce paint operations */
+  .masonry-column {
+    contain: layout;
+  }
 }
