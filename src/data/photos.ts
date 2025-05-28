@@ -764,30 +764,52 @@ export const photos: Photo[] = [
   },
 ];
 
-// Dynamically generate categories from the photos data
-export const getUniqueCategories = (): { id: string; name: string }[] => {
-  const categories = [...new Set(photos.map(photo => photo.category))]
-    .sort(); // Sort alphabetically
+// Dynamically generate categories from the photos data with counts, sorted by count
+export const getUniqueCategories = (): { id: string; name: string; count: number }[] => {
+  // Count photos per category
+  const categoryCounts = photos.reduce((acc, photo) => {
+    acc[photo.category] = (acc[photo.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  
+  // Get unique categories and sort by count (descending)
+  const categories = Object.entries(categoryCounts)
+    .sort(([, a], [, b]) => b - a) // Sort by count descending
+    .map(([category, count]) => ({ 
+      id: category, 
+      name: category.charAt(0).toUpperCase() + category.slice(1),
+      count
+    }));
   
   return [
-    { id: 'all', name: 'All' },
-    ...categories.map(category => ({ 
-      id: category, 
-      name: category.charAt(0).toUpperCase() + category.slice(1) 
-    }))
+    { id: 'all', name: 'All', count: photos.length },
+    ...categories
   ];
 };
 
 export const photoCategories = getUniqueCategories();
 
-// Extract unique years from photos and create year filter options
-export const getUniqueYears = (): { id: string; name: string }[] => {
-  const years = [...new Set(photos.map(photo => new Date(photo.date).getFullYear()))]
-    .sort((a, b) => b - a); // Sort in descending order (newest first)
+// Extract unique years from photos and create year filter options with counts
+export const getUniqueYears = (): { id: string; name: string; count: number }[] => {
+  // Count photos per year
+  const yearCounts = photos.reduce((acc, photo) => {
+    const year = new Date(photo.date).getFullYear().toString();
+    acc[year] = (acc[year] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  
+  // Get unique years and sort by year (descending)
+  const years = Object.entries(yearCounts)
+    .sort(([a], [b]) => parseInt(b) - parseInt(a)) // Sort by year descending
+    .map(([year, count]) => ({ 
+      id: year, 
+      name: year,
+      count
+    }));
   
   return [
-    { id: 'all', name: 'All Years' },
-    ...years.map(year => ({ id: year.toString(), name: year.toString() }))
+    { id: 'all', name: 'All Years', count: photos.length },
+    ...years
   ];
 };
 
