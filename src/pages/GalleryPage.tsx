@@ -186,7 +186,7 @@ const GalleryPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Photography Gallery
+            Gallery
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

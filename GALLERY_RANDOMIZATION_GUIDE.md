@@ -2,7 +2,7 @@
 
 ## Overview
 
-The photography gallery now supports randomized and date-sorted viewing modes, dynamic photo counts, and intelligent category sorting based on photo frequency.
+The gallery now supports randomized and date-sorted viewing modes, dynamic photo counts, and intelligent category sorting based on photo frequency.
 
 ## Features
 

@@ -1,8 +1,8 @@
-# Photography Gallery Features
+# Gallery Features
 
 ## Year Filtering
 
-The photography gallery now supports filtering by year in addition to the existing category filtering. This feature allows users to view photos from specific years or browse all photos chronologically.
+The gallery now supports filtering by year in addition to the existing category filtering. This feature allows users to view photos from specific years or browse all photos chronologically.
 
 ### Features
 
