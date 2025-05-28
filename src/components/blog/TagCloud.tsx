@@ -9,10 +9,7 @@ interface TagCloudProps {
 
 const TagCloud: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagSelect }) => {
   return (
-    <div className="mb-8">
-      <h3 className="text-xl font-bold mb-4">Filter by Tags</h3>
-      
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 p-2">
         {tags.map((tag) => {
           const isSelected = selectedTags.includes(tag);
           
@@ -31,7 +28,6 @@ const TagCloud: React.FC<TagCloudProps> = ({ tags, selectedTags, onTagSelect }) 
             </motion.button>
           );
         })}
-      </div>
     </div>
   );
 };

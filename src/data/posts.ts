@@ -151,5 +151,47 @@ processedPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getT
 
 export const postsWithReadingTime: BlogPost[] = processedPosts;
 
+// Extract unique years from posts and create year filter options
+export const getUniqueYears = (): { id: string; name: string }[] => {
+  const years = [...new Set(processedPosts.map(post => new Date(post.date).getFullYear()))]
+    .sort((a, b) => b - a); // Sort in descending order (newest first)
+  
+  if (years.length === 0) {
+    return [{ id: 'all', name: 'All Years' }];
+  }
+  
+  const currentYear = new Date().getFullYear();
+  const recentYears = years.filter(year => year >= currentYear - 2); // Most recent 3 years (current + 2 previous)
+  const olderYears = years.filter(year => year < currentYear - 2);
+  
+  const result = [{ id: 'all', name: 'All Years' }];
+  
+  // Add recent years individually
+  recentYears.forEach(year => {
+    result.push({ id: year.toString(), name: year.toString() });
+  });
+  
+  // Add grouped older years if any exist
+  if (olderYears.length > 0) {
+    const oldestYear = Math.min(...olderYears);
+    const newestOldYear = Math.max(...olderYears);
+    
+    if (oldestYear === newestOldYear) {
+      // Only one older year
+      result.push({ id: oldestYear.toString(), name: oldestYear.toString() });
+    } else {
+      // Multiple older years - group them
+      result.push({ 
+        id: 'older', 
+        name: `${oldestYear}-${newestOldYear}` 
+      });
+    }
+  }
+  
+  return result;
+};
+
+export const postYears = getUniqueYears();
+
 // Optionally, if you need a plain 'posts' array without readingTime for some reason:
 // export const posts: Omit<BlogPost, 'readingTime'>[] = processedPosts.map(({ readingTime, ...rest }) => rest);

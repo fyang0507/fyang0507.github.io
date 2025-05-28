@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { postsWithReadingTime } from '../data/posts';
+import { postsWithReadingTime, postYears } from '../data/posts';
 import { Clock, Calendar } from 'lucide-react';
 import TagCloud from '../components/blog/TagCloud';
+import YearFilter from '../components/blog/YearFilter';
 
 const BlogPage: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [activeYear, setActiveYear] = useState('all');
   const [filteredPosts, setFilteredPosts] = useState(postsWithReadingTime);
   
   // Get all unique tags from posts (including Chinese tags)
@@ -28,20 +30,37 @@ const BlogPage: React.FC = () => {
     });
   };
   
-  // Filter posts when selected tags change
+  // Filter posts when selected tags or year change
   useEffect(() => {
-    if (selectedTags.length === 0) {
-      setFilteredPosts(postsWithReadingTime);
-    } else {
-      setFilteredPosts(
-        postsWithReadingTime.filter(post => 
-          selectedTags.some(tag => 
-            post.tags.includes(tag) || (post.tags_zh && post.tags_zh.includes(tag))
-          )
+    let filtered = postsWithReadingTime;
+    
+    // Filter by tags (AND logic - post must have ALL selected tags)
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(post => 
+        selectedTags.every(tag => 
+          post.tags.includes(tag) || (post.tags_zh && post.tags_zh.includes(tag))
         )
       );
     }
-  }, [selectedTags]);
+    
+    // Filter by year
+    if (activeYear !== 'all') {
+      if (activeYear === 'older') {
+        // Filter for older years (more than 2 years ago)
+        const currentYear = new Date().getFullYear();
+        filtered = filtered.filter(post => 
+          new Date(post.date).getFullYear() < currentYear - 2
+        );
+      } else {
+        // Filter for specific year
+        filtered = filtered.filter(post => 
+          new Date(post.date).getFullYear().toString() === activeYear
+        );
+      }
+    }
+    
+    setFilteredPosts(filtered);
+  }, [selectedTags, activeYear]);
   
   return (
     <main className="pt-24 pb-16">
@@ -60,26 +79,84 @@ const BlogPage: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-2xl mx-auto text-slate-600 dark:text-slate-400 text-lg"
           >
-            Thoughts, tutorials, and insights on photography, creativity, and visual storytelling.
+            Dialogues at the crossroads of artificial intelligence, visual art, and the enduring mysteries of human experience.
           </motion.p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar with Tags */}
+          {/* Sidebar with Filters */}
           <div className="lg:col-span-1 order-2 lg:order-1">
-            <div className="sticky top-24">
-              <TagCloud 
-                tags={allTags} 
-                selectedTags={selectedTags} 
-                onTagSelect={handleTagSelect} 
-              />
+            <div className="sticky top-24 space-y-8 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-4">
+              
+              {/* Tag Filter */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-slate-800 dark:text-slate-200">
+                  Filter by Tags
+                </h3>
+                <TagCloud 
+                  tags={allTags} 
+                  selectedTags={selectedTags} 
+                  onTagSelect={handleTagSelect} 
+                />
+              </div>
+              
+              {/* Year Filter */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-slate-800 dark:text-slate-200">
+                  Filter by Year
+                </h3>
+                <YearFilter 
+                  years={postYears} 
+                  activeYear={activeYear} 
+                  onYearChange={setActiveYear} 
+                />
+              </div>
             </div>
           </div>
           
           {/* Blog Posts */}
           <div className="lg:col-span-3 order-1 lg:order-2">
-            <motion.div layout className="space-y-8">
-              <AnimatePresence>
+            {/* Clear Filters and Results Counter */}
+            <div className="flex justify-between items-start">
+              {/* Clear Filters Button - Aligned with Filter by Tags heading */}
+              <div className="h-7 flex items-center">
+                <AnimatePresence>
+                  {(selectedTags.length > 0 || activeYear !== 'all') && (
+                    <motion.button
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={{ duration: 0.2 }}
+                      onClick={() => {
+                        setSelectedTags([]);
+                        setActiveYear('all');
+                      }}
+                      className="text-lg font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 whitespace-nowrap"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Clear All Filters
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+              </div>
+              
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-slate-600 dark:text-slate-400 text-right text-sm mt-1"
+              >
+                Showing {filteredPosts.length} of {postsWithReadingTime.length} posts
+                {selectedTags.length > 0 && ` with tags: ${selectedTags.join(', ')}`}
+                {activeYear !== 'all' && ` from ${activeYear === 'older' ? 'older years' : activeYear}`}
+              </motion.p>
+            </div>
+            
+            <div className="mb-6"></div>
+            
+            <motion.div className="space-y-8">
+              <AnimatePresence mode="popLayout">
                 {filteredPosts.length === 0 ? (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -87,24 +164,34 @@ const BlogPage: React.FC = () => {
                     exit={{ opacity: 0 }}
                     className="text-center py-12"
                   >
-                    <p className="text-lg text-slate-600 dark:text-slate-400">
-                      No posts found with the selected tags.
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
+                      No posts found with the current filters.
                     </p>
-                    <button 
-                      onClick={() => setSelectedTags([])}
-                      className="mt-4 btn-secondary"
+                    <motion.button 
+                      onClick={() => {
+                        setSelectedTags([]);
+                        setActiveYear('all');
+                      }}
+                      className="btn-secondary"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      Clear Filters
-                    </button>
+                      Clear All Filters
+                    </motion.button>
                   </motion.div>
                 ) : (
                   filteredPosts.map((post) => (
                     <motion.article
                       key={post.id}
-                      layout
+                      layout="position"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
+                      transition={{
+                        layout: { duration: 0.3, ease: "easeInOut" },
+                        opacity: { duration: 0.2 },
+                        y: { duration: 0.3 }
+                      }}
                       className="card overflow-hidden"
                     >
                       <div className="md:flex">
