@@ -77,7 +77,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({ photos, onPhotoClick }) => {
     const estimatedWidth = 380; // Approximate width of each image container
     
     // Ensure height is always larger than width
-    const minRequiredHeight = estimatedWidth + 50; // At least 50px taller than width
+    const minRequiredHeight = estimatedWidth + 75; // At least 75px taller than width
     
     // Base height range depending on aspect ratio (but always > width)
     let minHeight: number;
@@ -107,11 +107,11 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({ photos, onPhotoClick }) => {
     
     // Add additional random variation layers
     const variation1 = (randomFactor2 - 0.5) * 200; // stretch or squeeze an image
-    const variation2 = (randomFactor3 - 0.5) * 300; // increase the height of the image
+    const variation2 = (randomFactor3 - 0.5) * 350; // increase the height of the image
     
     // Occasionally make some images significantly larger (but not too extreme)
     const isLarger = randomFactor1 > 0.8; // 10% chance
-    const sizeBonus = isLarger ? 100 + (randomFactor2 * 50) : 0; // 0-200px bonus
+    const sizeBonus = isLarger ? 100 + (randomFactor2 * 50) : 0; // 0-100px bonus
     
     // Calculate final height
     let finalHeight = Math.round(baseHeight + variation1 + variation2 + sizeBonus);
