@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { postsWithReadingTime, postYears } from '../data/posts';
+import { postsWithReadingTime } from '../data/posts';
 import { Clock, Calendar } from 'lucide-react';
 import TagCloud from '../components/blog/TagCloud';
 import YearFilter from '../components/blog/YearFilter';
@@ -18,6 +18,72 @@ const BlogPage: React.FC = () => {
       ...(post.tags_zh || [])
     ]))
   ).sort();
+
+  // Calculate dynamic years with counts based on current tag filter
+  const dynamicYears = useMemo(() => {
+    let postsToCount = postsWithReadingTime;
+    
+    // If tag filter is active, only count posts with those tags
+    if (selectedTags.length > 0) {
+      postsToCount = postsWithReadingTime.filter(post => 
+        selectedTags.every(tag => 
+          post.tags.includes(tag) || (post.tags_zh && post.tags_zh.includes(tag))
+        )
+      );
+    }
+    
+    // Count posts per year
+    const yearCounts = postsToCount.reduce((acc, post) => {
+      const year = new Date(post.date).getFullYear().toString();
+      acc[year] = (acc[year] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    if (Object.keys(yearCounts).length === 0) {
+      return [{ id: 'all', name: 'All Years', count: 0 }];
+    }
+    
+    const currentYear = new Date().getFullYear();
+    const years = Object.keys(yearCounts).map(year => parseInt(year)).sort((a, b) => b - a);
+    const recentYears = years.filter(year => year >= currentYear - 2);
+    const olderYears = years.filter(year => year < currentYear - 2);
+    
+    const result = [{ id: 'all', name: 'All Years', count: postsToCount.length }];
+    
+    // Add recent years individually
+    recentYears.forEach(year => {
+      result.push({ 
+        id: year.toString(), 
+        name: year.toString(),
+        count: yearCounts[year.toString()]
+      });
+    });
+    
+    // Add grouped older years if any exist
+    if (olderYears.length > 0) {
+      const oldestYear = Math.min(...olderYears);
+      const newestOldYear = Math.max(...olderYears);
+      const olderYearsCount = olderYears.reduce((sum, year) => sum + yearCounts[year.toString()], 0);
+      
+      if (oldestYear === newestOldYear) {
+        // Only one older year
+        result.push({ 
+          id: oldestYear.toString(), 
+          name: oldestYear.toString(),
+          count: yearCounts[oldestYear.toString()]
+        });
+      } else {
+        // Multiple older years - group them
+        result.push({ 
+          id: 'older', 
+          name: `${oldestYear}-${newestOldYear}`,
+          count: olderYearsCount
+        });
+      }
+    }
+    
+    return result;
+  }, [selectedTags]);
   
   // Handle tag selection/deselection
   const handleTagSelect = (tag: string) => {
@@ -106,7 +172,7 @@ const BlogPage: React.FC = () => {
                   Filter by Year
                 </h3>
                 <YearFilter 
-                  years={postYears} 
+                  years={dynamicYears} 
                   activeYear={activeYear} 
                   onYearChange={setActiveYear} 
                 />

@@ -151,39 +151,54 @@ processedPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getT
 
 export const postsWithReadingTime: BlogPost[] = processedPosts;
 
-// Extract unique years from posts and create year filter options
-export const getUniqueYears = (): { id: string; name: string }[] => {
-  const years = [...new Set(processedPosts.map(post => new Date(post.date).getFullYear()))]
-    .sort((a, b) => b - a); // Sort in descending order (newest first)
+// Extract unique years from posts and create year filter options with counts
+export const getUniqueYears = (): { id: string; name: string; count: number }[] => {
+  // Count posts per year
+  const yearCounts = processedPosts.reduce((acc, post) => {
+    const year = new Date(post.date).getFullYear().toString();
+    acc[year] = (acc[year] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
   
-  if (years.length === 0) {
-    return [{ id: 'all', name: 'All Years' }];
+  if (Object.keys(yearCounts).length === 0) {
+    return [{ id: 'all', name: 'All Years', count: 0 }];
   }
   
   const currentYear = new Date().getFullYear();
-  const recentYears = years.filter(year => year >= currentYear - 2); // Most recent 3 years (current + 2 previous)
+  const years = Object.keys(yearCounts).map(year => parseInt(year)).sort((a, b) => b - a);
+  const recentYears = years.filter(year => year >= currentYear - 2);
   const olderYears = years.filter(year => year < currentYear - 2);
   
-  const result = [{ id: 'all', name: 'All Years' }];
+  const result = [{ id: 'all', name: 'All Years', count: processedPosts.length }];
   
   // Add recent years individually
   recentYears.forEach(year => {
-    result.push({ id: year.toString(), name: year.toString() });
+    result.push({ 
+      id: year.toString(), 
+      name: year.toString(),
+      count: yearCounts[year.toString()]
+    });
   });
   
   // Add grouped older years if any exist
   if (olderYears.length > 0) {
     const oldestYear = Math.min(...olderYears);
     const newestOldYear = Math.max(...olderYears);
+    const olderYearsCount = olderYears.reduce((sum, year) => sum + yearCounts[year.toString()], 0);
     
     if (oldestYear === newestOldYear) {
       // Only one older year
-      result.push({ id: oldestYear.toString(), name: oldestYear.toString() });
+      result.push({ 
+        id: oldestYear.toString(), 
+        name: oldestYear.toString(),
+        count: yearCounts[oldestYear.toString()]
+      });
     } else {
       // Multiple older years - group them
       result.push({ 
         id: 'older', 
-        name: `${oldestYear}-${newestOldYear}` 
+        name: `${oldestYear}-${newestOldYear}`,
+        count: olderYearsCount
       });
     }
   }
