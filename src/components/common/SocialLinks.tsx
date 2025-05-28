@@ -29,7 +29,7 @@ interface SocialLinksProps {
 const SocialLinks: React.FC<SocialLinksProps> = ({ className = '', iconSize = 20 }) => {
   return (
     <div className={`flex items-center space-x-4 ${className}`}>
-      <SocialLink href="https://github.com" ariaLabel="GitHub">
+      <SocialLink href="https://github.com/fyang0507" ariaLabel="GitHub">
         <Github size={iconSize} />
       </SocialLink>
       <SocialLink href="https://www.linkedin.com/in/runtong-yang/" ariaLabel="LinkedIn">
