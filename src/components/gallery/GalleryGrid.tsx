@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
 import { Photo } from '../../types';
@@ -11,7 +11,6 @@ interface GalleryGridProps {
 
 const GalleryGrid: React.FC<GalleryGridProps> = memo(({ photos, onPhotoClick }) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [aspectRatios, setAspectRatios] = useState<Record<string, number>>({});
 
   // Breakpoint columns for masonry layout
   const breakpointColumnsObj = {
@@ -20,113 +19,57 @@ const GalleryGrid: React.FC<GalleryGridProps> = memo(({ photos, onPhotoClick }) 
     640: 1
   };
 
-  // Auto-detect aspect ratios when component mounts or photos change
-  useEffect(() => {
-    const loadImageAspectRatios = async () => {
-      const ratios: Record<string, number> = {};
-      
-      const promises = photos.map((photo) => {
-        return new Promise<void>((resolve) => {
-          const img = new Image();
-          img.onload = () => {
-            ratios[photo.id] = img.width / img.height;
-            resolve();
-          };
-          img.onerror = () => {
-            // Fallback to 1:1 aspect ratio if image fails to load
-            ratios[photo.id] = 1;
-            resolve();
-          };
-          img.src = photo.imageUrl;
-        });
-      });
-
-      await Promise.all(promises);
-      setAspectRatios(ratios);
-    };
-
-    loadImageAspectRatios();
-  }, [photos]);
-
   // Memoized function to generate a seeded random number based on photo ID
   const getSeededRandom = useCallback((photoId: string): number => {
-    let hash = 0;
-    for (let i = 0; i < photoId.length; i++) {
-      const char = photoId.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
-    }
-    // Use a different approach for better distribution
-    const normalized = Math.abs(hash) / 2147483647; // Normalize to 0-1
-    return normalized;
+    // Convert ID to number and use Math.sin for excellent distribution
+    const num = parseInt(photoId, 10);
+    
+    // Math.sin creates excellent pseudo-random distribution
+    // Multiply by large number to get different ranges of sin wave
+    const randomValue = Math.sin(num * 12.9898) * 43758.5453;
+    
+    // Return fractional part (always between 0-1)
+    return randomValue - Math.floor(randomValue);
   }, []);
 
   // Memoized image styles to avoid recalculation on every render
   const imageStyles = useMemo(() => {
+    console.log('🔍 Debugging height calculation...');
     const styles: Record<string, { height: string }> = {};
     
     photos.forEach((photo) => {
-      // Use auto-detected aspect ratio, fallback to manual one, then to 1
-      const aspectRatio = aspectRatios[photo.id] || photo.aspectRatio || 1;
+      // Get single random value for this photo
+      const randomFactor = getSeededRandom(photo.id) * 0.25;
       
-      // Get multiple random values for better variation
-      const randomFactor1 = getSeededRandom(photo.id);
-      const randomFactor2 = getSeededRandom(photo.id + 'height');
-      const randomFactor3 = getSeededRandom(photo.id + 'bonus');
-      
-      // Calculate approximate container width based on screen size and columns
+      // Define absolute limits
       const estimatedWidth = 380; // Approximate width of each image container
+      const minHeight = estimatedWidth + 25; // Always ensure height > width
+      const maxHeight = 800; // Absolute maximum
       
-      // Ensure height is always larger than width
-      const minRequiredHeight = estimatedWidth + 75; // At least 75px taller than width
+      // Calculate base height with reduced random variation
+      const heightRange = maxHeight - minHeight; // 395px range
+      let finalHeight = Math.round(minHeight + (randomFactor * heightRange));
       
-      // Base height range depending on aspect ratio (but always > width)
-      let minHeight: number;
-      let maxHeight: number;
+      // Hero bonus: occasionally make images dramatically larger
+      const heroRandomFactor = getSeededRandom(photo.id + 'hero'); // Different seed for hero decision
+      const isHero = heroRandomFactor > 0.85; // 15% chance to be a hero image
       
-      if (aspectRatio > 1.3) {
-        // Wide horizontal images - need more height to counteract their natural width
-        minHeight = Math.max(minRequiredHeight, 400);
-        maxHeight = 700;
-      } else if (aspectRatio > 1.0) {
-        // Slightly horizontal images  
-        minHeight = Math.max(minRequiredHeight, 350);
-        maxHeight = 600;
-      } else if (aspectRatio > 0.8) {
-        // Square-ish images
-        minHeight = Math.max(minRequiredHeight, 320);
-        maxHeight = 550;
-      } else {
-        // Vertical images - naturally tall, but ensure still > width
-        minHeight = Math.max(minRequiredHeight, 300);
-        maxHeight = 500;
+      if (isHero) {
+        const heroBonus = 50 + (heroRandomFactor * 50); // 200-500px bonus
+        finalHeight += heroBonus;
+        finalHeight = Math.min(finalHeight, 800); // Cap hero images at 1200px
       }
-      
-      // Calculate height using continuous random distribution (not categories)
-      const heightRange = maxHeight - minHeight;
-      const baseHeight = minHeight + (randomFactor1 * heightRange);
-      
-      // Add additional random variation layers
-      const variation1 = (randomFactor2 - 0.5) * 200; // stretch or squeeze an image
-      const variation2 = (randomFactor3 - 0.5) * 350; // increase the height of the image
-      
-      // Occasionally make some images significantly larger (but not too extreme)
-      const isLarger = randomFactor1 > 0.8; // 10% chance
-      const sizeBonus = isLarger ? 100 + (randomFactor2 * 50) : 0; // 0-100px bonus
-      
-      // Calculate final height
-      let finalHeight = Math.round(baseHeight + variation1 + variation2 + sizeBonus);
-      
-      // Ensure minimum (always > width) and reasonable maximum
-      finalHeight = Math.max(minRequiredHeight, Math.min(900, finalHeight));
+
+      console.log(`Photo ID: ${photo.id}, Random: ${randomFactor.toFixed(3)}, Hero: ${isHero}, Height: ${finalHeight}px`);
 
       styles[photo.id] = {
         height: `${finalHeight}px`,
       };
     });
     
+    console.log('📊 Height distribution:', Object.values(styles).map(s => s.height));
     return styles;
-  }, [photos, aspectRatios, getSeededRandom]);
+  }, [photos, getSeededRandom]);
 
   // Optimized hover handlers
   const handleMouseEnter = useCallback((photoId: string) => {

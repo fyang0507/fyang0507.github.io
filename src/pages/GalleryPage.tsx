@@ -7,7 +7,7 @@ import { photos, photoCategories, photoYears } from '../data/photos';
 import { Photo } from '../types';
 import { motion } from 'framer-motion';
 
-const PHOTOS_PER_PAGE = 16; // optimize for GitHub Pages performance
+const PHOTOS_PER_PAGE = 18; // optimize for GitHub Pages performance
 
 const GalleryPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
