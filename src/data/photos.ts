@@ -234,6 +234,30 @@ export const photos: Photo[] = [
     category: 'cityscape',
     date: '2022-07-04',
   },
+  {
+    id: '30',
+    title: 'Lakeshore',
+    description: 'Michigan, USA',
+    imageUrl: '/images/gallery/2021-10-lakeshore.jpg',
+    category: 'landscape',
+    date: '2021-10-03',
+  },
+  {
+    id: '31',
+    title: 'Central Park',
+    description: 'New York, NY',
+    imageUrl: '/images/gallery/2022-04-centralpark.jpg',
+    category: 'abstract',
+    date: '2022-04-10',
+  },
+  {
+    id: '32',
+    title: 'New York City',
+    description: 'New York, NY',
+    imageUrl: '/images/gallery/2022-05-nyc.jpg',
+    category: 'cityscape',
+    date: '2022-05-21',
+  },
 ];
 
 // Dynamically generate categories from the photos data

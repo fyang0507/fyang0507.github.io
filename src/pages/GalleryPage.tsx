@@ -30,6 +30,9 @@ const GalleryPage: React.FC = () => {
       );
     }
     
+    // Sort by date in descending order (newest first)
+    filtered = filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    
     setFilteredPhotos(filtered);
   }, [activeCategory, activeYear]);
   
