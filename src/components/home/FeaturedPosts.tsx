@@ -66,7 +66,15 @@ const FeaturedPosts: React.FC = () => {
               <div className="p-6 flex-grow flex flex-col">
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-3">
-                  {post.tags.slice(0, 3).map(tag => (
+                  {post.tags.slice(0, 2).map(tag => (
+                    <span 
+                      key={tag} 
+                      className="tag"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                  {post.tags_zh && post.tags_zh.slice(0, 2).map(tag => (
                     <span 
                       key={tag} 
                       className="tag"
