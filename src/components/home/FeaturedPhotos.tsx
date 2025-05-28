@@ -57,7 +57,7 @@ const FeaturedPhotos: React.FC = () => {
               <div className="aspect-[4/3] overflow-hidden">
                 <img 
                   src={photo.imageUrl} 
-                  alt={photo.title} 
+                  alt={photo.location} 
                   className="w-full h-full object-cover transition-transform duration-700 ease-out scale-115
                             group-hover:scale-130"
                 />
@@ -69,8 +69,7 @@ const FeaturedPhotos: React.FC = () => {
                               hoveredIndex === index ? 'opacity-100' : 'opacity-0 md:opacity-70'
                             }`}
                 >
-                  <h3 className="text-white text-xl md:text-2xl font-bold">{photo.title}</h3>
-                  <p className="text-white/80 mt-2">{photo.description}</p>
+                  <h3 className="text-white text-xl md:text-2xl font-bold">{photo.location}</h3>
                   
                   <div className="mt-4 flex justify-between items-center">
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm">

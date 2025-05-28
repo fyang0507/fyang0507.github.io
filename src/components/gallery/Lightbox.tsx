@@ -114,7 +114,7 @@ const Lightbox: React.FC<LightboxProps> = ({
             <div className="relative w-full max-h-[80vh] flex items-center justify-center">
               <img
                 src={currentPhoto.imageUrl}
-                alt={currentPhoto.title}
+                alt={currentPhoto.location}
                 className="max-w-full max-h-[80vh] object-contain"
               />
             </div>
@@ -123,8 +123,7 @@ const Lightbox: React.FC<LightboxProps> = ({
             <div className="w-full mt-4 text-white px-4 py-3 bg-black/30 backdrop-blur-sm rounded-lg">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-xl font-bold">{currentPhoto.title}</h3>
-                  <p className="text-white/80 mt-1">{currentPhoto.description}</p>
+                  <h3 className="text-xl font-bold">{currentPhoto.location}</h3>
                 </div>
                 
                 <div className="flex items-center space-x-4 text-sm text-white/70">

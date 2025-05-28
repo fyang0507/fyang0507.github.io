@@ -109,7 +109,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = memo(({ photos, onPhotoClick }) 
           >
             <img 
               src={photo.imageUrl} 
-              alt={photo.title}
+              alt={photo.location}
               className="w-full h-full object-cover transition-transform duration-300 ease-out gallery-image"
               style={{
                 transform: hoveredId === photo.id ? 'scale(1.35)' : 'scale(1.1)'
@@ -126,7 +126,7 @@ const GalleryGrid: React.FC<GalleryGridProps> = memo(({ photos, onPhotoClick }) 
             }`}
           >
             <h3 className="text-white text-xl font-semibold">
-              {photo.title}
+              {photo.location}
             </h3>
             
             <div className="flex justify-between items-center mt-2">
