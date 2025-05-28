@@ -225,7 +225,15 @@ export const photos: Photo[] = [
     imageUrl: '/images/gallery/2021-10-michigan.jpg',
     category: 'landscape',
     date: '2021-10-04',
-  }  
+  },
+  {
+    id: '29',
+    title: 'Independence Day Fireworks',
+    description: 'New York, NY',
+    imageUrl: '/images/gallery/2022-07-firework.jpg',
+    category: 'cityscape',
+    date: '2022-07-04',
+  },
 ];
 
 // Dynamically generate categories from the photos data
