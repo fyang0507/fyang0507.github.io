@@ -24,7 +24,7 @@ export const photos: Photo[] = [
     description: 'Venice, Italy',
     imageUrl: '/images/gallery/2015-04-venice.jpg',
     category: 'cityscape',
-    date: '2015-04-08', 
+    date: '2015-04-08',
   },
   {
     id: '4',
