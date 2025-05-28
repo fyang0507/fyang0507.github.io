@@ -109,7 +109,7 @@ const GalleryPage: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-2xl mx-auto text-slate-600 dark:text-slate-400 text-lg"
           >
-            A collection of my favorite photographs from around the world, capturing moments of beauty and intrigue.
+            People, Years, Life: In search of decisive moments where the mundane becomes miraculous, where time freezes to unveil the sacred geometry of fleeting souls.
           </motion.p>
         </div>
         
