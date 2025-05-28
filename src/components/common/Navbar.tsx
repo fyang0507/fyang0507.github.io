@@ -45,9 +45,13 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <Link 
           to="/" 
-          className="text-xl md:text-2xl font-bold no-underline text-slate-900 dark:text-white hover:no-underline"
+          className="flex items-center no-underline hover:no-underline"
         >
-          Fred Yang
+          <img 
+            src="/favicon.png" 
+            alt="Fred Yang" 
+            className="h-10 w-10 md:h-12 md:w-12 object-contain"
+          />
         </Link>
         
         {/* Desktop Menu */}
