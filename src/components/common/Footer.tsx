@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
           <div className="col-span-2">
             <h3 className="text-lg font-bold mb-4">Fred Yang</h3>
             <p className="text-slate-600 dark:text-slate-400 mb-4">
-              Photographer and blogger passionate about capturing moments and sharing stories.
+              Where Computational Intelligence Meets Creative Vision.
             </p>
             <SocialLinks />
           </div>
@@ -43,10 +43,14 @@ const Footer: React.FC = () => {
           {/* Contact */}
           <div>
             <h3 className="text-lg font-bold mb-4">Contact</h3>
-            <address className="not-italic text-slate-600 dark:text-slate-400">
-              <p>Email: fredyang0507@gmail.com</p>
-              <p>Location: New York, NY</p>
-            </address>
+            <div className="space-y-2">
+              <div className="text-slate-600 dark:text-slate-400">
+                Email: fredyang0507@gmail.com
+              </div>
+              <div className="text-slate-600 dark:text-slate-400">
+                Location: New York, NY
+              </div>
+            </div>
           </div>
         </div>
         

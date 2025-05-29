@@ -32,25 +32,24 @@ const Bio: React.FC = () => {
               <h3>Where AI Meets Artistry</h3>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
-                As an AI/ML engineer with a passion for photography, I bridge the gap between computational precision and creative expression. My work explores the fascinating intersection of artificial intelligence and visual storytelling.
+                As an AI/ML engineer with a passion for photography, I bridge the gap between computational precision and creative expression. 
               </p>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
-                In my engineering work, I develop cutting-edge AI solutions that push the boundaries of what's possible. Behind the lens, I capture moments that reveal the subtle interplay of light, composition, and emotion. This unique perspective allows me to see patterns and possibilities that others might miss.
+              By day I design and ship production‑grade machine‑learning systems—optimizing models, wrangling data pipelines, and translating research into reliable products. Off the clock you’ll find me behind a camera chasing light, lines, and stories. This blend of computational rigour and creative exploration shapes how I work: I prototype fast, iterate with intention, and measure what matters.
               </p>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
-                Through my blog, I share insights that blend these two worlds—from AI-powered image processing techniques to the art of visual composition. Join me in exploring how technology and creativity can enhance each other.
+                I thrive in collaborative teams that value curiosity, craftsmanship, and clear communication. Long term, I’m driven by an entrepreneurial mindset: I love zero‑to‑one challenges and am happiest when ideas move from whiteboard to real‑world impact. Let’s build something remarkable together.
               </p>
               
               <div className="pt-4">
                 <h4 className="text-lg font-semibold mb-3">Areas of Expertise</h4>
                 <div className="flex flex-wrap gap-2">
+                  <span className="tag">Agentic Systems</span>
                   <span className="tag">Machine Learning</span>
-                  <span className="tag">Computer Vision</span>
-                  <span className="tag">Deep Learning</span>
+                  <span className="tag">Data Science</span>
                   <span className="tag">Photography</span>
-                  <span className="tag">Image Processing</span>
                 </div>
               </div>
             </div>

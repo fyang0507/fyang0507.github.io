@@ -27,7 +27,8 @@ const Hero: React.FC = () => {
           </p>
           
           <div className="text-xl md:text-2xl font-medium text-slate-800 dark:text-slate-200 italic mb-8 border-l-4 border-primary-500 pl-4 py-2">
-            "Where computational intelligence meets creative expression"
+            "Code, Camera & Curiosity"<br/>
+            "世如未竟天工卷，格物致知珞玉心"
           </div>
           
           <div className="flex items-center space-x-6 mb-8">

@@ -7,8 +7,10 @@ import { Link } from 'react-router-dom';
 const FeaturedPhotos: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   
-  // Select first 4 photos for featured section
-  const featuredPhotos = photos.slice(0, 4);
+  // Select 4 most recent photos by date
+  const recentPhotos = photos
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 4);
   
   return (
     <section className="py-24 bg-slate-50 dark:bg-slate-800" id="featured">
@@ -20,7 +22,7 @@ const FeaturedPhotos: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Featured Photography
+            Most Recent Photography
           </motion.h2>
           
           <motion.div
@@ -43,7 +45,7 @@ const FeaturedPhotos: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {featuredPhotos.map((photo, index) => (
+          {recentPhotos.map((photo, index) => (
             <motion.div
               key={photo.id}
               initial={{ opacity: 0, y: 30 }}
