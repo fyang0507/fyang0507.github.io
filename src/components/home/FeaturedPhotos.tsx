@@ -22,7 +22,7 @@ const FeaturedPhotos: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            Most Recent Photography
+            Recent Photography
           </motion.h2>
           
           <motion.div

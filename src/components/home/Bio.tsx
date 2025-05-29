@@ -36,7 +36,7 @@ const Bio: React.FC = () => {
               </p>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
-              By day I design and ship production‑grade machine‑learning systems—optimizing models, wrangling data pipelines, and translating research into reliable products. Off the clock you’ll find me behind a camera chasing light, lines, and stories. This blend of computational rigour and creative exploration shapes how I work: I prototype fast, iterate with intention, and measure what matters.
+              By day I design and ship agentic and machine‑learning systems—optimizing models and prompts, wrangling data pipelines, and translating research into reliable products. Off the clock you’ll find me behind a camera chasing light, lines, and stories. This blend of computational rigour and creative exploration shapes how I work: I prototype fast, iterate with intention, and measure what matters.
               </p>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
