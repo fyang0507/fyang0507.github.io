@@ -25,9 +25,9 @@ const Bio: React.FC = () => {
                 }}
               >
                 <img 
-                  src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg" 
-                  alt="Portrait" 
-                  className="w-full h-full object-cover"
+                  src="/images/portrait.JPG" 
+                  alt="Fred Yang - Portrait" 
+                  className="w-full h-full object-cover transform scale-105"
                   style={{ 
                     outline: 'none !important', 
                     border: 'none !important',
