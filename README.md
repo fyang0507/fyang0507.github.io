@@ -1,4 +1,13 @@
 # Personal Website - fyang0507.github.io
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Ffyang0507.github.io)](https://fyang0507.github.io)
+[![GitHub Pages](https://img.shields.io/badge/Deployed%20on-GitHub%20Pages-blue)](https://fyang0507.github.io)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Built with ❤️ using <a href="https://cursor.sh/" target="_blank" rel="noopener noreferrer"><img src="https://www.cursor.com/assets/images/logo.svg" alt="Cursor Logo" height="16" width="16" style="display: inline; vertical-align: middle; margin-right: 4px;" />Cursor</a> and <a href="https://bolt.new/" target="_blank" rel="noopener noreferrer"><img src="https://pbs.twimg.com/profile_images/1880702021122342912/fe9TlQqJ_400x400.jpg" alt="Bolt Logo" height="16" width="16" style="display: inline; vertical-align: middle; margin-right: 4px;" />Bolt</a>.
 
 A modern, responsive personal website built with React, TypeScript, and Vite. Features a bilingual blog system, interactive photo gallery, and optimized performance.
 
@@ -197,4 +206,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-Built with ❤️ using React, TypeScript, and modern web technologies.
+Built with ❤️ using <a href="https://cursor.sh/" target="_blank" rel="noopener noreferrer"><img src="https://www.cursor.com/assets/images/logo.svg" alt="Cursor Logo" height="16" width="16" style="display: inline; vertical-align: middle; margin-right: 4px;" />Cursor</a> and <a href="https://bolt.new/" target="_blank" rel="noopener noreferrer"><img src="https://pbs.twimg.com/profile_images/1880702021122342912/fe9TlQqJ_400x400.jpg" alt="Bolt Logo" height="16" width="16" style="display: inline; vertical-align: middle; margin-right: 4px;" />Bolt</a>.

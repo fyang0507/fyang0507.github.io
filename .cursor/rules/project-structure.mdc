@@ -26,39 +26,40 @@ This is a React-based personal website project, built with Vite and TypeScript. 
 - **[`src/index.css`](mdc:src/index.css)**: Global CSS styles and Tailwind CSS imports.
 - **[`src/components/`](mdc:src/components)**: Contains reusable React components, categorized into:
     - [`common/`](mdc:src/components/common): Components used across multiple pages (e.g., `Navbar`, `Footer`).
-    - [`blog/`](mdc:src/components/blog): Components specific to the blog section.
-    - [`gallery/`](mdc:src/components/gallery): Components specific to the image gallery.
+    - [`blog/`](mdc:src/components/blog): Components specific to the blog section (YearFilter, TagCloud, ShareButtons).
+    - [`gallery/`](mdc:src/components/gallery): Components specific to the image gallery (GalleryGrid, Lightbox, YearFilter, CategoryFilter, SortButton).
     - [`home/`](mdc:src/components/home): Components specific to the home page.
 - **[`src/pages/`](mdc:src/pages)**: Contains top-level page components that are mapped to routes. Examples include `HomePage`, `GalleryPage`, `BlogPage`.
 - **[`src/context/`](mdc:src/context)**: Holds React context providers, such as `ThemeContext` for managing light/dark themes.
-- **[`src/data/`](mdc:src/data)**: Contains static data used by the application, such as blog post content or gallery image information.
-- **[`src/markdown/posts/`](mdc:src/markdown/posts)**: Contains markdown files for blog posts.
+- **[`src/data/`](mdc:src/data)**: Contains static data used by the application, including blog post processing (`posts.ts`) and gallery photo data (`photos.ts`).
+- **[`src/markdown/posts/`](mdc:src/markdown/posts)**: Contains 21 markdown files for blog posts spanning from 2015 to 2025, with bilingual content support.
 - **[`src/types/`](mdc:src/types)**: Defines TypeScript types and interfaces used throughout the project.
 
 ## Assets and Images:
 
 - **[`public/images/`](mdc:public/images)**: Public image assets served directly by the web server:
-    - [`blog/covers/`](mdc:public/images/blog/covers): Cover images for blog posts.
-    - [`gallery/`](mdc:public/images/gallery): Gallery images.
+    - [`blog/covers/`](mdc:public/images/blog/covers): Cover images for blog posts (21 images, all migrated to local storage).
+    - [`gallery/`](mdc:public/images/gallery): Gallery images (96 photos from 2015-2025 across multiple categories).
 - **[`docs/`](mdc:docs)**: Build output directory for the static site:
     - [`assets/`](mdc:docs/assets): Compiled and optimized assets.
     - [`images/`](mdc:docs/images): Processed images for the built site.
 
-## Documentation and Guides:
+## Documentation and Guides (All Updated and Current):
 
-- **[`README.md`](mdc:README.md)**: Main project documentation.
-- **[`DEPLOYMENT.md`](mdc:DEPLOYMENT.md)**: Deployment instructions and guidelines.
-- **[`BLOG_SUBTITLES_GUIDE.md`](mdc:BLOG_SUBTITLES_GUIDE.md)**: Guide for managing blog post subtitles.
-- **[`BLOG_YEAR_FILTER_GUIDE.md`](mdc:BLOG_YEAR_FILTER_GUIDE.md)**: Guide for implementing year-based blog filtering.
-- **[`COVER_IMAGES_GUIDE.md`](mdc:COVER_IMAGES_GUIDE.md)**: Guide for managing blog post cover images.
-- **[`GALLERY_FEATURES.md`](mdc:GALLERY_FEATURES.md)**: Documentation of gallery features.
-- **[`GALLERY_PERFORMANCE_OPTIMIZATIONS.md`](mdc:GALLERY_PERFORMANCE_OPTIMIZATIONS.md)**: Performance optimization guide for the gallery.
-- **[`GALLERY_RANDOMIZATION_GUIDE.md`](mdc:GALLERY_RANDOMIZATION_GUIDE.md)**: Guide for gallery image randomization features.
+- **[`README.md`](mdc:README.md)**: Comprehensive project documentation with setup, features, and usage instructions.
+- **[`DEPLOYMENT.md`](mdc:DEPLOYMENT.md)**: Deployment instructions and guidelines for GitHub Pages.
+- **[`BLOG_SUBTITLES_GUIDE.md`](mdc:BLOG_SUBTITLES_GUIDE.md)**: Complete guide for managing blog post subtitles with bilingual support.
+- **[`BLOG_YEAR_FILTER_GUIDE.md`](mdc:BLOG_YEAR_FILTER_GUIDE.md)**: Guide for implementing year-based blog filtering with dynamic counts.
+- **[`COVER_IMAGES_GUIDE.md`](mdc:COVER_IMAGES_GUIDE.md)**: Updated guide showing all 21 blog posts have migrated to local cover images.
+- **[`GALLERY_FEATURES.md`](mdc:GALLERY_FEATURES.md)**: Documentation of gallery features with current category and year data.
+- **[`GALLERY_PERFORMANCE_OPTIMIZATIONS.md`](mdc:GALLERY_PERFORMANCE_OPTIMIZATIONS.md)**: Detailed performance optimization guide for the gallery.
+- **[`GALLERY_RANDOMIZATION_GUIDE.md`](mdc:GALLERY_RANDOMIZATION_GUIDE.md)**: Guide for gallery image randomization and sorting features.
 
 ## Build and Deployment:
 
 - The `vite build` command (triggered by `npm run build`) compiles the TypeScript code, bundles the assets, and outputs the static site to the [`docs/`](mdc:docs) directory.
 - The [`docs/`](mdc:docs) directory is used for deploying static sites, particularly with GitHub Pages.
+- Automatic deployment via GitHub Actions when pushing to the main branch.
 
 ## CI/CD and Tooling:
 
@@ -66,3 +67,10 @@ This is a React-based personal website project, built with Vite and TypeScript. 
 - **[`.bolt/`](mdc:.bolt)**: Bolt project management tool configuration.
 - **[`.npmrc`](mdc:.npmrc)**: npm configuration file.
 - **[`.gitignore`](mdc:.gitignore)**: Git ignore patterns for the project.
+
+## Current Project Status:
+
+- **Blog System**: 21 posts with full bilingual support, year filtering, and local cover images
+- **Gallery**: 96 photos across 9 categories spanning 2015-2025 with advanced filtering
+- **Performance**: Optimized with pagination, lazy loading, and hardware acceleration
+- **Documentation**: All guides reviewed and updated to reflect current implementation

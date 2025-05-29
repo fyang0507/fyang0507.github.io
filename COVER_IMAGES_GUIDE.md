@@ -74,16 +74,36 @@ coverImage: ''
 coverImage: '/images/blog/covers/2015-05-12_复活随笔.jpg'
 ```
 
-## Current Posts to Migrate
+## Current Blog Posts Status
 
-Based on your existing posts, here are the ones that need cover images:
+Based on the existing posts in `src/markdown/posts/`, here are all the current blog posts with their cover image status:
 
-1. **2015-05-12_复活随笔.md** - ✅ Updated (needs actual image file)
-2. **2023-08-15_the-art-of-landscape-photography.md** - Currently using Pexels
-3. **2023-09-22_understanding-exposure-in-photography.md** - Currently using Pexels  
-4. **2023-10-10_portrait-photography-connecting-with-your-subject.md** - Currently using Pexels
-5. **2023-11-07_the-power-of-black-and-white-photography.md** - Currently using Pexels
-6. **2023-12-18_the-ethics-of-street-photography.md** - Currently using Pexels
+### ✅ **Posts with Cover Images** (Already migrated):
+1. **2025-03-23_夏威夷没有愤怒.md** - ✅ Has cover image
+2. **2024-12-18_我们生活的故事04.md** - ✅ Has cover image
+3. **2024-10-23_那些看似无辜的.md** - ✅ Has cover image
+4. **2024-04-23_香港森林.md** - ✅ Has cover image
+5. **2023-12-28_我们生活的故事03.md** - ✅ Has cover image
+6. **2023-05-27_三城记.md** - ✅ Has cover image
+7. **2022-11-27_我们生活的故事02.md** - ✅ Has cover image
+8. **2021-11-28_我们生活的故事01.md** - ✅ Has cover image
+9. **2019-12-29_救赎山.md** - ✅ Has cover image
+10. **2019-12-02_被许诺和被荒芜的.md** - ✅ Has cover image
+11. **2019-01-09_他和他的猫.md** - ✅ Has cover image
+12. **2018-12-28_加州打卡.md** - ✅ Has cover image
+13. **2018-10-20_纽约层积.md** - ✅ Has cover image
+14. **2018-03-15_流与逆流.md** - ✅ Has cover image
+15. **2017-12-02_社会人.md** - ✅ Has cover image
+16. **2017-05-01_巡礼之年.md** - ✅ Has cover image
+17. **2016-08-10_片道东瀛.md** - ✅ Has cover image
+18. **2015-05-17_巴黎的呼吸.md** - ✅ Has cover image
+19. **2015-06-13_为什么是阿赫兰.md** - ✅ Has cover image
+20. **2015-05-09_到南方去.md** - ✅ Has cover image
+
+### ⚠️ **Posts with Potential Issues**:
+1. **2015-04-12_复活随笔.md** - Has cover image `2015-05-12_复活随笔.jpg` (date mismatch)
+
+**Note**: All posts appear to have corresponding cover images in the `public/images/blog/covers/` directory. The migration to local images has been completed successfully.
 
 ## Benefits of Local Images
 

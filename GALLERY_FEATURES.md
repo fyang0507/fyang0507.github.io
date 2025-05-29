@@ -20,7 +20,8 @@ The gallery now supports filtering by year in addition to the existing category 
 1. **`src/data/photos.ts`**:
    - Added `getUniqueYears()` function to extract unique years from photo dates
    - Added `photoYears` export for use in components
-   - Added sample photos from different years (2022, 2023, 2024)
+   - Added `getUniqueCategories()` function with dynamic counting and sorting
+   - Contains 96 photos spanning from 2015 to 2025
 
 2. **`src/components/gallery/YearFilter.tsx`** (New):
    - Similar interface to `CategoryFilter` but for year selection
@@ -36,11 +37,23 @@ The gallery now supports filtering by year in addition to the existing category 
 ### Usage
 
 Users can now:
-- Filter photos by category (All, Landscape, Architecture, Portrait, Street, Abstract, Wildlife)
-- Filter photos by year (All Years, 2024, 2023, 2022)
-- Use both filters together (e.g., "Landscape photos from 2023")
+- Filter photos by category (All, Landscape, Cityscape, Architecture, People, Street, Creature, Black and White, Abstract)
+- Filter photos by year (All Years, 2025, 2024, 2023, 2022, 2021, 2019, 2018, 2016, 2015)
+- Use both filters together (e.g., "Landscape photos from 2024")
 - Clear all filters with a single click
 - See how many photos match their current filter selection
+
+### Current Categories
+
+The gallery includes the following photo categories (sorted by frequency):
+- **Landscape**: Nature scenes, mountains, water bodies
+- **Cityscape**: Urban environments and skylines
+- **Architecture**: Buildings, structures, and architectural details
+- **People**: Portraits and human subjects
+- **Street**: Street photography and urban life
+- **Creature**: Animals, plants, and living subjects
+- **Black and White**: Monochrome photography
+- **Abstract**: Abstract compositions and artistic interpretations
 
 ### Technical Notes
 
@@ -49,12 +62,19 @@ Users can now:
 - The year filter automatically updates when new photos with different years are added
 - Both filters use the same visual design pattern for consistency
 - All animations and interactions are preserved from the original gallery experience
+- Categories are dynamically sorted by photo count (most popular first)
 
-### Sample Data
+### Current Data
 
 The gallery now includes photos from:
-- **2024**: 2 photos (Desert Sunset, Modern Portrait)
-- **2023**: 10 photos (original sample data)
-- **2022**: 3 photos (Golden Hour Landscape, Vintage Street Scene, Industrial Abstract)
+- **2025**: 2 photos (Hawaii landscapes)
+- **2024**: 20 photos (Seoul, Europe travel, Northern lights)
+- **2023**: 15 photos (Various locations)
+- **2022**: 8 photos (Travel and urban scenes)
+- **2021**: 25 photos (East Coast US travel)
+- **2019**: 8 photos (New York, Canada)
+- **2018**: 8 photos (International travel)
+- **2016**: 2 photos (Tokyo, Japan)
+- **2015**: 8 photos (Europe travel)
 
-This provides a good demonstration of the year filtering functionality across multiple years. 
+This provides comprehensive coverage across multiple years and demonstrates the year filtering functionality effectively. 
