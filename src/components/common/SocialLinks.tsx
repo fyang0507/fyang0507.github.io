@@ -92,7 +92,7 @@ const WeChatQRLink: React.FC<WeChatQRLinkProps> = ({ iconSize }) => {
                   transition-all duration-300 hover:scale-110 relative"
       >
         <img 
-          src={theme === 'dark' ? "public/images/wechat-icon-dark.png" : "public/images/wechat-icon-light.png"}
+          src={theme === 'dark' ? "/images/wechat-icon-dark.png" : "/images/wechat-icon-light.png"}
           alt="WeChat" 
           width={iconSize} 
           height={iconSize}
