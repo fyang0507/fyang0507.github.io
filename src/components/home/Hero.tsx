@@ -59,13 +59,13 @@ const Hero: React.FC = () => {
           className="order-1 lg:order-2"
         >
           <div className="relative">
-            <div className="w-full h-[500px] relative rounded-lg overflow-hidden shadow-2xl">
+            <div className="w-[95%] h-[600px] mx-auto relative rounded-lg overflow-hidden shadow-2xl">
               <img 
-                src="https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg" 
-                alt="AI and Photography" 
-                className="w-full h-full object-cover"
+                src="/images/hero.JPG" 
+                alt="Fred Yang - AI/ML Engineer & Photographer" 
+                className="w-full h-full object-cover brightness-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
             
             {/* Floating accent elements */}
