@@ -55,9 +55,9 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-sm text-slate-600 dark:text-slate-400">
-          <p>© {currentYear} Your Name. All rights reserved.</p>
+          <p>© {currentYear} Fred Yang. All rights reserved.</p>
           <p className="flex flex-wrap items-center justify-center">
-            Developed with {'\u00A0'}
+            Made with {'\u00A0'}
             <a
               href="https://cursor.sh/"
               target="_blank"
