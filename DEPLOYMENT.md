@@ -28,11 +28,13 @@ When you push to the `main` branch:
 To test the build locally:
 
 ```bash
-# Run the test build script
-./scripts/test-build.sh
-
-# Or manually:
+# Build the project
 npm run build
+
+# Preview the built site locally
+npm run preview
+
+# Or serve the docs folder directly
 npx serve docs
 ```
 
