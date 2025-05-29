@@ -9,35 +9,60 @@ This is a React-based personal website project, built with Vite and TypeScript. 
 
 ## Key Files and Directories:
 
-- **`index.html`**: The main HTML entry point. It loads the React application. ([index.html](mdc:index.html))
-- **`src/main.tsx`**: The main entry point for the React application. It renders the root `App` component. ([src/main.tsx](mdc:src/main.tsx))
-- **`src/App.tsx`**: The root React component. It sets up routing using React Router and includes the main layout components like `Navbar` and `Footer`. It also wraps the application with `ThemeProvider` for dark/light mode functionality. ([src/App.tsx](mdc:src/App.tsx))
-- **`package.json`**: Defines project dependencies, scripts (like `dev`, `build`, `lint`), and metadata. ([package.json](mdc:package.json))
-- **`vite.config.ts`**: Configuration file for Vite, the build tool. It specifies the output directory (`docs/`) and other build-related settings. ([vite.config.ts](mdc:vite.config.ts))
-- **`tailwind.config.js`**: Configuration for Tailwind CSS, used for styling. ([tailwind.config.js](mdc:tailwind.config.js))
-- **`tsconfig.json`**: TypeScript compiler options. ([tsconfig.json](mdc:tsconfig.json))
+- **[`index.html`](mdc:index.html)**: The main HTML entry point. It loads the React application.
+- **[`package.json`](mdc:package.json)**: Defines project dependencies, scripts (like `dev`, `build`, `lint`), and metadata.
+- **[`vite.config.ts`](mdc:vite.config.ts)**: Configuration file for Vite, the build tool. It specifies the output directory (`docs/`) and other build-related settings.
+- **[`tailwind.config.js`](mdc:tailwind.config.js)**: Configuration for Tailwind CSS, used for styling.
+- **[`tsconfig.json`](mdc:tsconfig.json)**: Main TypeScript compiler options.
+- **[`tsconfig.app.json`](mdc:tsconfig.app.json)**: TypeScript configuration for the application code.
+- **[`tsconfig.node.json`](mdc:tsconfig.node.json)**: TypeScript configuration for Node.js tooling.
+- **[`eslint.config.js`](mdc:eslint.config.js)**: Configuration for ESLint, a code linter.
+- **[`postcss.config.js`](mdc:postcss.config.js)**: Configuration for PostCSS, used with Tailwind CSS.
 
 ## Source Code Structure (`src/`):
 
-- **`src/components/`**: Contains reusable React components, categorized into:
-    - `common/`: Components used across multiple pages (e.g., `Navbar`, `Footer`).
-    - `blog/`: Components specific to the blog section.
-    - `gallery/`: Components specific to the image gallery.
-    - `home/`: Components specific to the home page.
-- **`src/pages/`**: Contains top-level page components that are mapped to routes. Examples include `HomePage`, `GalleryPage`, `BlogPage`. ([src/pages/](mdc:src/pages))
-- **`src/context/`**: Holds React context providers, such as `ThemeContext` for managing light/dark themes. ([src/context/](mdc:src/context))
-- **`src/data/`**: Likely contains static data used by the application, such as blog post content or gallery image information. ([src/data/](mdc:src/data))
-- **`src/types/`**: Defines TypeScript types and interfaces used throughout the project. ([src/types/](mdc:src/types))
-- **`src/index.css`**: Global CSS styles and Tailwind CSS imports. ([src/index.css](mdc:src/index.css))
+- **[`src/main.tsx`](mdc:src/main.tsx)**: The main entry point for the React application. It renders the root `App` component.
+- **[`src/App.tsx`](mdc:src/App.tsx)**: The root React component. It sets up routing using React Router and includes the main layout components like `Navbar` and `Footer`. It also wraps the application with `ThemeProvider` for dark/light mode functionality.
+- **[`src/index.css`](mdc:src/index.css)**: Global CSS styles and Tailwind CSS imports.
+- **[`src/components/`](mdc:src/components)**: Contains reusable React components, categorized into:
+    - [`common/`](mdc:src/components/common): Components used across multiple pages (e.g., `Navbar`, `Footer`).
+    - [`blog/`](mdc:src/components/blog): Components specific to the blog section.
+    - [`gallery/`](mdc:src/components/gallery): Components specific to the image gallery.
+    - [`home/`](mdc:src/components/home): Components specific to the home page.
+- **[`src/pages/`](mdc:src/pages)**: Contains top-level page components that are mapped to routes. Examples include `HomePage`, `GalleryPage`, `BlogPage`.
+- **[`src/context/`](mdc:src/context)**: Holds React context providers, such as `ThemeContext` for managing light/dark themes.
+- **[`src/data/`](mdc:src/data)**: Contains static data used by the application, such as blog post content or gallery image information.
+- **[`src/markdown/posts/`](mdc:src/markdown/posts)**: Contains markdown files for blog posts.
+- **[`src/types/`](mdc:src/types)**: Defines TypeScript types and interfaces used throughout the project.
+
+## Assets and Images:
+
+- **[`public/images/`](mdc:public/images)**: Public image assets served directly by the web server:
+    - [`blog/covers/`](mdc:public/images/blog/covers): Cover images for blog posts.
+    - [`gallery/`](mdc:public/images/gallery): Gallery images.
+- **[`docs/`](mdc:docs)**: Build output directory for the static site:
+    - [`assets/`](mdc:docs/assets): Compiled and optimized assets.
+    - [`images/`](mdc:docs/images): Processed images for the built site.
+
+## Documentation and Guides:
+
+- **[`README.md`](mdc:README.md)**: Main project documentation.
+- **[`DEPLOYMENT.md`](mdc:DEPLOYMENT.md)**: Deployment instructions and guidelines.
+- **[`BLOG_SUBTITLES_GUIDE.md`](mdc:BLOG_SUBTITLES_GUIDE.md)**: Guide for managing blog post subtitles.
+- **[`BLOG_YEAR_FILTER_GUIDE.md`](mdc:BLOG_YEAR_FILTER_GUIDE.md)**: Guide for implementing year-based blog filtering.
+- **[`COVER_IMAGES_GUIDE.md`](mdc:COVER_IMAGES_GUIDE.md)**: Guide for managing blog post cover images.
+- **[`GALLERY_FEATURES.md`](mdc:GALLERY_FEATURES.md)**: Documentation of gallery features.
+- **[`GALLERY_PERFORMANCE_OPTIMIZATIONS.md`](mdc:GALLERY_PERFORMANCE_OPTIMIZATIONS.md)**: Performance optimization guide for the gallery.
+- **[`GALLERY_RANDOMIZATION_GUIDE.md`](mdc:GALLERY_RANDOMIZATION_GUIDE.md)**: Guide for gallery image randomization features.
 
 ## Build and Deployment:
 
-- The `vite build` command (triggered by `npm run build`) compiles the TypeScript code, bundles the assets, and outputs the static site to the `docs/` directory.
-- The `docs/` directory is typically used for deploying static sites, often with services like GitHub Pages.
+- The `vite build` command (triggered by `npm run build`) compiles the TypeScript code, bundles the assets, and outputs the static site to the [`docs/`](mdc:docs) directory.
+- The [`docs/`](mdc:docs) directory is used for deploying static sites, particularly with GitHub Pages.
 
-## Other Important Directories:
+## CI/CD and Tooling:
 
-- **`.github/workflows/`**: Contains GitHub Actions workflows, likely for CI/CD (e.g., building and deploying the site on push). ([.github/workflows/](mdc:.github/workflows))
-- **`.bolt/`**: Likely related to Bolt, a project management tool, though its specific use here isn't detailed in the provided file structure.
-- **`eslint.config.js`**: Configuration for ESLint, a code linter.
-- **`postcss.config.js`**: Configuration for PostCSS, often used with Tailwind CSS.
+- **[`.github/workflows/`](mdc:.github/workflows)**: Contains GitHub Actions workflows for CI/CD (e.g., building and deploying the site on push).
+- **[`.bolt/`](mdc:.bolt)**: Bolt project management tool configuration.
+- **[`.npmrc`](mdc:.npmrc)**: npm configuration file.
+- **[`.gitignore`](mdc:.gitignore)**: Git ignore patterns for the project.
