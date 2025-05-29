@@ -4,11 +4,11 @@ import SocialLinks from '../common/SocialLinks';
 
 const Hero: React.FC = () => {
   return (
-    <section className="min-h-screen relative flex items-center pt-16">
+    <section className="relative pt-16 pb-24">
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-white dark:from-primary-950/30 dark:to-dark -z-10"></div>
       
-      <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16">
+      <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-16 pb-8">
         {/* Text Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -37,10 +37,10 @@ const Hero: React.FC = () => {
           
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
             <a 
-              href="#featured" 
+              href="/blog" 
               className="btn-primary flex items-center justify-center"
             >
-              View Featured Work
+              View Blogs
             </a>
             <a 
               href="/gallery" 

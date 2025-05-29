@@ -41,6 +41,31 @@
                 color var(--transition-medium) ease;
   }
   
+  /* Prevent any blue borders or outlines on images */
+  img {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  
+  img:focus,
+  img:active,
+  img:hover {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Prevent browser default image loading borders */
+  img[src*="pexels"],
+  img[src*="http"] {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold;
     line-height: 1.2;

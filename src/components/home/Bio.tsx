@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Bio: React.FC = () => {
   return (
-    <section className="py-24 bg-white dark:bg-slate-900" id="about">
+    <section className="pt-8 pb-16 bg-white dark:bg-slate-900" id="about">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -16,15 +16,27 @@ const Bio: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Bio Image */}
             <div className="relative">
-              <div className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-lg">
+              <div 
+                className="w-full aspect-[3/4] rounded-lg overflow-hidden shadow-lg"
+                style={{ 
+                  outline: 'none', 
+                  border: 'none',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                }}
+              >
                 <img 
                   src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg" 
                   alt="Portrait" 
                   className="w-full h-full object-cover"
+                  style={{ 
+                    outline: 'none !important', 
+                    border: 'none !important',
+                    boxShadow: 'none !important',
+                    WebkitAppearance: 'none',
+                    MozAppearance: 'none'
+                  }}
                 />
               </div>
-              {/* Decorative elements */}
-              <div className="absolute -bottom-5 -right-5 w-full h-full border-2 border-primary-500 dark:border-primary-400 rounded-lg -z-10"></div>
             </div>
             
             {/* Bio Content */}
@@ -36,11 +48,11 @@ const Bio: React.FC = () => {
               </p>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
-              By day I design and ship agentic and machine‑learning systems—optimizing models and prompts, wrangling data pipelines, and translating research into reliable products. Off the clock you’ll find me behind a camera chasing light, lines, and stories. This blend of computational rigour and creative exploration shapes how I work: I prototype fast, iterate with intention, and measure what matters.
+              By day I design and ship agentic and machine‑learning systems—optimizing models and prompts, wrangling data pipelines, and translating research into reliable products. Off the clock you'll find me behind a camera chasing light, lines, and stories. This blend of computational rigour and creative exploration shapes how I work: I prototype fast, iterate with intention, and measure what matters.
               </p>
               
               <p className="text-lg text-slate-700 dark:text-slate-300">
-                I thrive in collaborative teams that value curiosity, craftsmanship, and clear communication. Long term, I’m driven by an entrepreneurial mindset: I love zero‑to‑one challenges and am happiest when ideas move from whiteboard to real‑world impact. Let’s build something remarkable together.
+                I thrive in collaborative teams that value curiosity, craftsmanship, and clear communication. Long term, I'm driven by an entrepreneurial mindset: I love zero‑to‑one challenges and am happiest when ideas move from whiteboard to real‑world impact. Let's build something remarkable together.
               </p>
               
               <div className="pt-4">
