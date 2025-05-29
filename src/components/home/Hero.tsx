@@ -10,11 +10,11 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-16 pb-24">
+    <section className="relative py-12">
       {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-white dark:from-primary-950/30 dark:to-dark -z-10"></div>
       
-      <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-16 pb-8">
+      <div className="container-custom grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Text Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
           className="order-1 lg:order-2"
         >
           <div className="relative">
-            <div className="w-[80%] h-[650px] mx-auto relative rounded-lg overflow-hidden shadow-2xl group cursor-pointer">
+            <div className="w-[90%] h-[500px] mx-auto relative rounded-lg overflow-hidden shadow-2xl group cursor-pointer">
               {/* Animated Image (Default) */}
               <img 
                 src="/images/jojo.png" 

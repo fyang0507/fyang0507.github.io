@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Bio: React.FC = () => {
   return (
-    <section className="pt-8 pb-16 bg-white dark:bg-slate-900" id="about">
+    <section className="py-12 bg-white dark:bg-slate-900" id="about">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -11,7 +11,7 @@ const Bio: React.FC = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7 }}
         >
-          <h2 className="text-center mb-16">About Me</h2>
+          <h2 className="text-center mb-12">About Me</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Bio Image */}

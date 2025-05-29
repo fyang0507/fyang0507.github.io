@@ -50,11 +50,11 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-8 pb-16">
+    <section className="relative pt-20 pb-12">
       {/* Subtle Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 to-white dark:from-slate-900/50 dark:to-dark -z-10"></div>
       
-      <div className="container-custom pt-8 pb-4">
+      <div className="container-custom">
         <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             {!hasStarted ? (

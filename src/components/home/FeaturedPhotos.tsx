@@ -13,9 +13,9 @@ const FeaturedPhotos: React.FC = () => {
     .slice(0, 4);
   
   return (
-    <section className="py-16 bg-slate-50 dark:bg-slate-800" id="featured">
+    <section className="pt-12 pb-2 bg-slate-50 dark:bg-slate-800" id="featured">
       <div className="container-custom">
-        <div className="flex justify-between items-baseline mb-10">
+        <div className="flex justify-between items-baseline mb-8">
           <motion.h2
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
