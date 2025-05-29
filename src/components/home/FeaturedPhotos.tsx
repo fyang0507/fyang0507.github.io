@@ -13,9 +13,9 @@ const FeaturedPhotos: React.FC = () => {
     .slice(0, 4);
   
   return (
-    <section className="py-24 bg-slate-50 dark:bg-slate-800" id="featured">
+    <section className="py-16 bg-slate-50 dark:bg-slate-800" id="featured">
       <div className="container-custom">
-        <div className="flex justify-between items-baseline mb-16">
+        <div className="flex justify-between items-baseline mb-10">
           <motion.h2
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -44,7 +44,7 @@ const FeaturedPhotos: React.FC = () => {
           </motion.div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {recentPhotos.map((photo, index) => (
             <motion.div
               key={photo.id}
@@ -66,14 +66,14 @@ const FeaturedPhotos: React.FC = () => {
                 
                 {/* Overlay with details */}
                 <div 
-                  className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-6 flex flex-col justify-end
+                  className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-5 flex flex-col justify-end
                             transition-opacity duration-300 ${
                               hoveredIndex === index ? 'opacity-100' : 'opacity-0 md:opacity-70'
                             }`}
                 >
                   <h3 className="text-white text-xl md:text-2xl font-bold">{photo.location}</h3>
                   
-                  <div className="mt-4 flex justify-between items-center">
+                  <div className="mt-3 flex justify-between items-center">
                     <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm">
                       {photo.category}
                     </span>

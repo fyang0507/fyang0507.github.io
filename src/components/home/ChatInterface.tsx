@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Sparkles } from 'lucide-react';
+import { Send, Sparkles, User, Bot } from 'lucide-react';
 import { aiIntroResponse, typingConfig } from '../../data/aiIntro';
 
 const ChatInterface: React.FC = () => {
@@ -50,163 +50,174 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-16 pb-24">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-white dark:from-primary-950/30 dark:to-dark -z-10"></div>
+    <section className="relative pt-8 pb-16">
+      {/* Subtle Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-50/50 to-white dark:from-slate-900/50 dark:to-dark -z-10"></div>
       
-      <div className="container-custom pt-16 pb-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="container-custom pt-8 pb-4">
+        <div className="max-w-3xl mx-auto">
           <AnimatePresence mode="wait">
             {!hasStarted ? (
               <motion.div
                 key="input-state"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="space-y-6"
               >
-                {/* Header */}
-                <div className="text-center mb-12">
-                  <div className="flex items-center justify-center mb-4">
-                    <Sparkles className="text-primary-600 dark:text-primary-300 mr-2" size={32} />
-                  </div>
+                {/* Minimal Header */}
+                <div className="text-center space-y-3">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                    className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-500 shadow-lg shadow-primary-500/25"
+                  >
+                    <Sparkles className="text-white" size={24} />
+                  </motion.div>
                 </div>
 
-                {/* Input Field */}
-                <div className="relative max-w-3xl mx-auto">
-                  <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                    <textarea
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      placeholder="Ask me anything..."
-                      readOnly
-                      className="w-full p-6 pr-16 text-lg bg-transparent border-none outline-none resize-none text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
-                      rows={3}
-                      style={{ minHeight: '120px' }}
-                    />
-                    
-                    {/* Send Button */}
-                    <motion.button
-                      onClick={startConversation}
-                      disabled={!inputValue.trim()}
-                      className="absolute bottom-4 right-4 w-12 h-12 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-300 dark:disabled:bg-slate-600 text-white rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center group disabled:cursor-not-allowed"
-                      whileHover={{ scale: inputValue.trim() ? 1.05 : 1 }}
-                      whileTap={{ scale: inputValue.trim() ? 0.95 : 1 }}
-                    >
-                      <Send 
-                        size={20} 
-                        className={`transition-transform ${inputValue.trim() ? 'group-hover:translate-x-0.5' : ''}`} 
+                {/* Modern Input Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="relative"
+                >
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary-500/10 to-primary-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+                    <div className="relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                      <textarea
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        placeholder="Ask me anything about Fred..."
+                        readOnly
+                        className="w-full p-4 pr-14 text-base bg-transparent border-none outline-none resize-none text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 leading-relaxed"
+                        rows={2}
+                        style={{ minHeight: '70px' }}
                       />
-                    </motion.button>
+                      
+                      {/* Send Button */}
+                      <motion.button
+                        onClick={startConversation}
+                        disabled={!inputValue.trim()}
+                        className="absolute bottom-3 right-3 w-10 h-10 bg-primary-500 hover:bg-primary-600 disabled:bg-slate-300 dark:disabled:bg-slate-600 text-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center group disabled:cursor-not-allowed"
+                        whileHover={{ scale: inputValue.trim() ? 1.05 : 1 }}
+                        whileTap={{ scale: inputValue.trim() ? 0.95 : 1 }}
+                      >
+                        <Send 
+                          size={16} 
+                          className={`transition-transform ${inputValue.trim() ? 'group-hover:translate-x-0.5' : ''}`} 
+                        />
+                      </motion.button>
+                    </div>
                   </div>
-                  
-                  {/* Subtle hint */}
-                  <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-4">
-                    Press the send button to start the conversation
-                  </p>
-                </div>
+                </motion.div>
               </motion.div>
             ) : (
               <motion.div
                 key="chat-state"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="space-y-6"
               >
                 {/* Chat Header */}
-                <div className="text-center mb-8">
-                  <div className="flex items-center justify-center mb-2">
-                    <Sparkles className="text-primary-600 dark:text-primary-300 mr-2" size={24} />
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="text-center"
+                >
+                  <div className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">From ChatGPT's memory</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Chat Container */}
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-                  <div className="p-6 md:p-8 space-y-6">
-                    
-                    {/* User Message */}
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                      className="flex justify-end"
-                    >
-                      <div className="max-w-[80%] relative">
-                        <div className="bg-primary-600 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-lg">
-                          <p className="text-sm md:text-base">{inputValue}</p>
-                        </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 text-right">
-                          You
-                        </div>
+                <div className="space-y-4">
+                  
+                  {/* User Message */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                    className="flex justify-end"
+                  >
+                    <div className="flex items-end space-x-3 max-w-[85%]">
+                      <div className="bg-primary-500 text-white rounded-2xl rounded-br-md px-2.5 shadow-sm">
+                        <p className="text-sm leading-relaxed">{inputValue}</p>
                       </div>
-                    </motion.div>
+                      <div className="flex-shrink-0 w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center">
+                        <User size={14} className="text-slate-600 dark:text-slate-400" />
+                      </div>
+                    </div>
+                  </motion.div>
 
-                    {/* AI Response */}
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.4 }}
-                      className="flex justify-start"
-                    >
-                      <div className="max-w-[90%] relative">
-                        <div className="bg-slate-100 dark:bg-slate-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-lg">
-                          <div className="flex items-start space-x-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center">
-                              <Sparkles size={16} className="text-white" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm md:text-base text-slate-800 dark:text-slate-200 whitespace-pre-line leading-relaxed">
-                                {displayedText}
-                                {isTyping && (
-                                  <motion.span
-                                    animate={{ opacity: [1, 0] }}
-                                    transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-                                    className="inline-block w-2 h-5 bg-primary-600 ml-1"
-                                  />
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                          ChatGPT {isTyping && (
-                            <span className="inline-flex items-center ml-2">
-                              <motion.div
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{ duration: 1, repeat: Infinity }}
-                                className="w-1 h-1 bg-primary-500 rounded-full mr-1"
-                              />
-                              <motion.div
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-                                className="w-1 h-1 bg-primary-500 rounded-full mr-1"
-                              />
-                              <motion.div
-                                animate={{ scale: [1, 1.2, 1] }}
-                                transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
-                                className="w-1 h-1 bg-primary-500 rounded-full"
-                              />
-                              <span className="ml-2 text-primary-600 dark:text-primary-400">typing...</span>
-                            </span>
+                  {/* AI Response */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                    className="flex justify-start"
+                  >
+                    <div className="flex items-start space-x-3 max-w-[90%]">
+                      <div className="flex-shrink-0 w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center shadow-sm">
+                        <Bot size={14} className="text-white" />
+                      </div>
+                      <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-bl-md px-3 py-2.5 shadow-sm">
+                        <div className="text-sm leading-relaxed text-slate-800 dark:text-slate-200 whitespace-pre-line">
+                          {displayedText}
+                          {isTyping && (
+                            <motion.span
+                              animate={{ opacity: [1, 0] }}
+                              transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                              className="inline-block w-0.5 h-4 bg-primary-500 ml-1 rounded-full"
+                            />
                           )}
                         </div>
+                        {isTyping && (
+                          <div className="flex items-center space-x-1 mt-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                            <motion.div
+                              animate={{ scale: [1, 1.2, 1] }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                              className="w-1 h-1 bg-primary-500 rounded-full"
+                            />
+                            <motion.div
+                              animate={{ scale: [1, 1.2, 1] }}
+                              transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                              className="w-1 h-1 bg-primary-500 rounded-full"
+                            />
+                            <motion.div
+                              animate={{ scale: [1, 1.2, 1] }}
+                              transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                              className="w-1 h-1 bg-primary-500 rounded-full"
+                            />
+                            <span className="ml-2 text-xs text-slate-500 dark:text-slate-400">AI is typing...</span>
+                          </div>
+                        )}
                       </div>
-                    </motion.div>
-                  </div>
+                    </div>
+                  </motion.div>
                 </div>
 
                 {/* Disclaimer */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                  className="mt-6 text-left"
+                  transition={{ duration: 0.5, delay: 1 }}
+                  className="text-left"
                 >
-                  <p className="text-sm text-slate-500 dark:text-slate-400 italic">
-                    Unedited responses from ChatGPT based on the following prompt: <br />
-                    "Based on our past interactions, please introduce me to a visitor to my personal website who doesn't know me before." <br />
-                    Retrieved May 28, 2025.
-                  </p>
+                  <div className="px-4 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                      Unedited responses from ChatGPT based on the prompt: <br />
+                      <span className="font-medium">"Based on our past interactions, please introduce me to a visitor to my personal website who doesn't know me before."</span> <br />
+                      <br />
+                      Retrieved May 28, 2025.
+                    </p>
+                  </div>
                 </motion.div>
               </motion.div>
             )}

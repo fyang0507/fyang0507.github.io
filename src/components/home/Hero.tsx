@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import SocialLinks from '../common/SocialLinks';
 
 const Hero: React.FC = () => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  const toggleImage = () => {
+    setIsRevealed(!isRevealed);
+  };
+
   return (
     <section className="relative pt-16 pb-24">
       {/* Background Gradient */}
@@ -59,18 +65,43 @@ const Hero: React.FC = () => {
           className="order-1 lg:order-2"
         >
           <div className="relative">
-            <div className="w-[95%] h-[600px] mx-auto relative rounded-lg overflow-hidden shadow-2xl">
+            <div className="w-[80%] h-[650px] mx-auto relative rounded-lg overflow-hidden shadow-2xl group cursor-pointer">
+              {/* Animated Image (Default) */}
               <img 
-                src="/images/hero.JPG" 
-                alt="Fred Yang - AI/ML Engineer & Photographer" 
-                className="w-full h-full object-cover brightness-110"
+                src="/images/jojo.png" 
+                alt="Fred Yang - Animated Avatar" 
+                className={`w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                  isRevealed ? 'opacity-0' : 'opacity-100'
+                }`}
               />
+              
+              {/* Real Image (Revealed) */}
+              <img 
+                src="/images/portrait.JPG" 
+                alt="Fred Yang - AI/ML Engineer & Photographer" 
+                className={`absolute inset-0 w-full h-full object-cover brightness-110 transition-opacity duration-700 ease-in-out ${
+                  isRevealed ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+              
+              {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              
+              {/* Toggle Button */}
+              <button
+                onClick={toggleImage}
+                className="absolute bottom-4 right-4 bg-black/70 hover:bg-black/80 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20 flex items-center space-x-2 group-hover:bg-black/80"
+                aria-label={isRevealed ? "Show animated version" : "Reveal real person"}
+              >
+                <span className="text-xs">
+                  {isRevealed ? "🎨 Back to anime" : "📸 Reveal real me"}
+                </span>
+              </button>
             </div>
             
             {/* Floating accent elements */}
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 rounded-lg bg-primary-500/20 dark:bg-primary-600/20 -z-10"></div>
-            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-lg bg-accent-500/20 dark:bg-accent-600/20 -z-10"></div>
+            <div className="absolute -bottom-3 -left-2 w-28 h-28 rounded-lg bg-primary-500/20 dark:bg-primary-600/20 -z-10"></div>
+            <div className="absolute -top-3 -right-2 w-28 h-28 rounded-lg bg-accent-500/20 dark:bg-accent-600/20 -z-10"></div>
           </div>
         </motion.div>
       </div>
