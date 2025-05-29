@@ -7,7 +7,6 @@ const ChatInterface: React.FC = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [displayedText, setDisplayedText] = useState('');
-  const [showActions, setShowActions] = useState(false);
   const [inputValue, setInputValue] = useState("Give me a short intro of Fred Yang.");
 
   const startConversation = () => {
@@ -43,7 +42,6 @@ const ChatInterface: React.FC = () => {
           setTimeout(typeNextCharacter, delay);
         } else {
           setIsTyping(false);
-          setTimeout(() => setShowActions(true), 500);
         }
       };
       
@@ -71,13 +69,7 @@ const ChatInterface: React.FC = () => {
                 <div className="text-center mb-12">
                   <div className="flex items-center justify-center mb-4">
                     <Sparkles className="text-primary-600 dark:text-primary-300 mr-2" size={32} />
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
-                      AI Assistant
-                    </h1>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400 text-xl">
-                    Ask me anything about Fred Yang
-                  </p>
                 </div>
 
                 {/* Input Field */}
@@ -87,6 +79,7 @@ const ChatInterface: React.FC = () => {
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       placeholder="Ask me anything..."
+                      readOnly
                       className="w-full p-6 pr-16 text-lg bg-transparent border-none outline-none resize-none text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
                       rows={3}
                       style={{ minHeight: '120px' }}
@@ -124,14 +117,11 @@ const ChatInterface: React.FC = () => {
                 <div className="text-center mb-8">
                   <div className="flex items-center justify-center mb-2">
                     <Sparkles className="text-primary-600 dark:text-primary-300 mr-2" size={24} />
-                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
-                      AI Assistant
-                    </h2>
                   </div>
                 </div>
 
                 {/* Chat Container */}
-                <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
                   <div className="p-6 md:p-8 space-y-6">
                     
                     {/* User Message */}
@@ -179,7 +169,7 @@ const ChatInterface: React.FC = () => {
                           </div>
                         </div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                          AI Assistant {isTyping && (
+                          ChatGPT {isTyping && (
                             <span className="inline-flex items-center ml-2">
                               <motion.div
                                 animate={{ scale: [1, 1.2, 1] }}
@@ -205,34 +195,19 @@ const ChatInterface: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <AnimatePresence>
-                  {showActions && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6 }}
-                      className="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
-                    >
-                      <motion.a
-                        href="/blog"
-                        className="btn-primary flex items-center justify-center"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        View Blogs
-                      </motion.a>
-                      <motion.a
-                        href="/gallery"
-                        className="btn-secondary flex items-center justify-center"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Explore Gallery
-                      </motion.a>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Disclaimer */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                  className="mt-6 text-left"
+                >
+                  <p className="text-sm text-slate-500 dark:text-slate-400 italic">
+                    Unedited responses from ChatGPT based on the following prompt: <br />
+                    "Based on our past interactions, please introduce me to a visitor to my personal website who doesn't know me before." <br />
+                    Retrieved May 28, 2025.
+                  </p>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
