@@ -160,7 +160,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ className = '', iconSize = 20
       <SocialLink href="https://github.com/fyang0507" ariaLabel="GitHub">
         <Github size={iconSize} />
       </SocialLink>
-      <SocialLink href="https://www.linkedin.com/in/runtong-yang/" ariaLabel="LinkedIn">
+      <SocialLink href="https://www.linkedin.com/in/fyang0507/" ariaLabel="LinkedIn">
         <Linkedin size={iconSize} />
       </SocialLink>
       <SocialLink href="https://www.instagram.com/yangruntong/" ariaLabel="Instagram">
