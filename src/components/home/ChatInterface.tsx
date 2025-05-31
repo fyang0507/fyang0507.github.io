@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Sparkles, User, Bot } from 'lucide-react';
 import { aiIntroResponse, typingConfig } from '../../data/aiIntro';
 
-const ChatInterface: React.FC = () => {
-  const [hasStarted, setHasStarted] = useState(false);
+interface ChatInterfaceProps {
+  onStart?: () => void;
+  autoStart?: boolean;
+  forceCompleted?: boolean;
+}
+
+const ChatInterface: React.FC<ChatInterfaceProps> = ({ onStart, autoStart, forceCompleted }) => {
+  const [hasStarted, setHasStarted] = useState(!!forceCompleted);
   const [isTyping, setIsTyping] = useState(false);
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState(forceCompleted ? aiIntroResponse : '');
   const [inputValue, setInputValue] = useState("Give me a short intro of Fred Yang.");
 
   const startConversation = () => {
     setHasStarted(true);
+    if (onStart) onStart();
     
     // Start typing after the transition animation
     setTimeout(() => {
@@ -48,6 +55,21 @@ const ChatInterface: React.FC = () => {
       typeNextCharacter();
     }, 600); // Wait for transition to complete
   };
+
+  useEffect(() => {
+    if (autoStart && !hasStarted && !forceCompleted) {
+      startConversation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoStart, forceCompleted]);
+
+  useEffect(() => {
+    if (forceCompleted) {
+      setHasStarted(true);
+      setIsTyping(false);
+      setDisplayedText(aiIntroResponse);
+    }
+  }, [forceCompleted]);
 
   return (
     <section className="relative pt-20 pb-12">
