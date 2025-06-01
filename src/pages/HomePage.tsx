@@ -26,6 +26,20 @@ const HomePage: React.FC = () => {
     setCheckedSession(true);
   }, []);
 
+  // Hide footer during landing mode
+  useEffect(() => {
+    if (!chatStarted) {
+      document.body.classList.add('hide-footer');
+    } else {
+      document.body.classList.remove('hide-footer');
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('hide-footer');
+    };
+  }, [chatStarted]);
+
   const handleStart = () => {
     setChatStarted(true);
     setShowTypewriter(true);

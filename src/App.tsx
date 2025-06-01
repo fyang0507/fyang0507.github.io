@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
+import ScrollToTop from './components/common/ScrollToTop';
 import HomePage from './pages/HomePage';
 import GalleryPage from './pages/GalleryPage';
 import BlogPage from './pages/BlogPage';
@@ -17,7 +18,7 @@ function AppRoutes() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:postId" element={<BlogPost />} />
       </Routes>
-      {location.pathname !== '/' && <Footer />}
+      <Footer />
     </div>
   );
 }

@@ -331,3 +331,8 @@
     contain: layout;
   }
 }
+
+/* Hide footer during homepage landing mode */
+body.hide-footer footer {
+  display: none;
+}
