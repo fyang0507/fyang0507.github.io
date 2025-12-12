@@ -237,7 +237,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onStart, autoStart, force
                       Unedited responses from ChatGPT based on the prompt: <br />
                       <span className="font-medium">"Based on our past interactions, please introduce me to a visitor to my personal website who doesn't know me before."</span> <br />
                       <br />
-                      Retrieved May 28, 2025.
+                      Retrieved Dec 11, 2025.
                     </p>
                   </div>
                 </motion.div>

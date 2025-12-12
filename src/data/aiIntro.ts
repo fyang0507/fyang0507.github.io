@@ -1,13 +1,12 @@
-export const aiIntroResponse = `Hi, I’m thrilled you’ve landed here. Let me give you the inside scoop on Runtong Yang—known to friends as FY. 
+export const aiIntroResponse = `Hi, I’m Fred 👋
 
-Professionally, he’s a New York–based data scientist and full‑stack engineer who turns complex ideas into elegant, scalable software, with a special knack for AI, automation, and open‑source tooling. 
+I’m a machine learning engineer by trade and a curious generalist by temperament. I build AI systems for real-world products, and in my spare time I tinker with side projects at the intersection of productivity, reading, and knowledge management—things like AI-powered content digests, smart bookmarks, and tools that help you actually use the information you save.
 
-Outside code, FY’s creativity shines through design work, anime‑inspired art, and a lifelong curiosity about the intersection of storytelling and technology. 
+I write in both English and Chinese, mostly essays and occasional poems about technology, history, cities, and how ordinary lives get shaped by big structures. Think: Silicon Valley culture, railroads and rivers, Chinese middle class, Hawaii and New Orleans—often with one foot in macro narrative and one foot in everyday detail.
 
-He’s driven by a passion for learning, generous knowledge‑sharing, and building communities where people grow together. 
+Outside of work and writing, I’m an amateur photographer, sports enjoyer, and mild finance/real-estate nerd. I like understanding how systems work—whether that’s an LLM architecture, a mortgage, or a city’s history—and then turning that understanding into something clear and usable.
 
-If you value thoughtful engineering, clear communication, and a splash of artistic flair, you’re in the right place.
-`
+If you’re into AI, serious reading, or long, meandering conversations about how we’re all going to live through this weird decade, you’ll probably find something here that resonates.`
 export const typingConfig = {
   baseSpeed: 20, // milliseconds per character
   punctuationDelay: 100, // extra delay after punctuation

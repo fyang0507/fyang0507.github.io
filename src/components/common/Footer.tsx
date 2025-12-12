@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="text-primary-600 dark:text-primary-300 hover:underline inline-flex items-center"
             >
-              <img src="https://pbs.twimg.com/profile_images/1880702021122342912/fe9TlQqJ_400x400.jpg" alt="Bolt Logo" className="h-4 w-4 mr-1" />
+              <img src="https://media.licdn.com/dms/image/v2/D4E0BAQFIco7PgXhYBg/company-logo_200_200/B4EZYbOkYjGYAI-/0/1744213526380/stackblitz_logo?e=2147483647&v=beta&t=cGpIiLBB_woyy5s4tKZAsIi6X3RighVTtllZRBKCf1Y" alt="Bolt Logo" className="h-4 w-4 mr-1" />
               Bolt
             </a>.
           </p>

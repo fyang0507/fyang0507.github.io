@@ -13,7 +13,7 @@ export const photos: Photo[] = [
     id: '2',
     location: 'Florence, Italy',
     imageUrl: '/images/gallery/2015-04-florence.jpg',
-    category: 'landscape',
+    category: 'cityscape',
     date: '2015-04-07',
   },
   {
@@ -286,7 +286,7 @@ export const photos: Photo[] = [
     id: '41',
     location: 'Kingston, Canada',
     imageUrl: '/images/gallery/2022-12-kingston.JPG',
-    category: 'landscape',
+    category: 'cityscape',
     date: '2022-12-08',
   },
   {
@@ -349,7 +349,7 @@ export const photos: Photo[] = [
     id: '51',
     location: 'New York, NY',
     imageUrl: '/images/gallery/2023-08-nyc.JPG',
-    category: 'landscape',
+    category: 'cityscape',
     date: '2023-08-19',
   },
   {
@@ -667,6 +667,90 @@ export const photos: Photo[] = [
     category: 'landscape',
     date: '2025-03-09',
   },
+  {
+    id: '97',
+    location: 'New York City, NY',
+    imageUrl: '/images/gallery/2025-09-central-park-couple.JPG',
+    category: 'people',
+    date: '2025-09-01',
+  },
+  {
+    id: '98',
+    location: 'New York City, NY',
+    imageUrl: '/images/gallery/2025-09-central-park-runner.JPG',
+    category: 'people',
+    date: '2025-09-01',
+  },
+  {
+    id: '99',
+    location: 'Garden of the Gods, CO',
+    imageUrl: '/images/gallery/2025-10-autum.JPG',
+    category: 'landscape',
+    date: '2025-10-14',
+  },
+  {
+    id: '100',
+    location: 'Ridgway, CO',
+    imageUrl: '/images/gallery/2025-10-snow-mountain.JPG',
+    category: 'landscape',
+    date: '2025-10-19',
+  },
+  {
+    id: '101',
+    location: 'Denver, CO',
+    imageUrl: '/images/gallery/2025-10-sunflower.JPG',
+    category: 'creature',
+    date: '2025-10-15',
+  },
+  {
+    id: '102',
+    location: 'Mosca, CO',
+    imageUrl: '/images/gallery/2025-10-sunset.JPG',
+    category: 'landscape',
+    date: '2025-10-17',
+  },
+  {
+    id: '103',
+    location: 'New Orleans, LA',
+    imageUrl: '/images/gallery/2025-11-cafe.JPG',
+    category: 'people',
+    date: '2025-11-23',
+  },
+  {
+    id: '104',
+    location: 'New Orleans, LA',
+    imageUrl: '/images/gallery/2025-11-couple-2.JPG',
+    category: 'people',
+    date: '2025-11-23',
+  },
+  {
+    id: '105',
+    location: 'New Orleans, LA',
+    imageUrl: '/images/gallery/2025-11-couple.JPG',
+    category: 'people',
+    date: '2025-11-23',
+  },
+  {
+    id: '106',
+    location: 'New Orleans, LA',
+    imageUrl: '/images/gallery/2025-11-decor.JPG',
+    category: 'street',
+    date: '2025-11-23',
+  },
+  {
+    id: '107',
+    location: 'New Orleans, LA',
+    imageUrl: '/images/gallery/2025-11-mary-queen.JPG',
+    category: 'cityscape',
+    date: '2025-11-26',
+  },
+  {
+    id: '108',
+    location: 'New Orleans, LA',
+    imageUrl: '/images/gallery/2025-11-thanksgiving-parade.JPG',
+    category: 'cityscape',
+    date: '2025-11-27',
+  }
 ];
 
 // Dynamically generate categories from the photos data with counts, sorted by count
