@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<script>(function(){var r=document.documentElement;var t=localStorage.getItem('fy-theme');var l=localStorage.getItem('fy-lang')||'zh';if(t==='dark'){r.classList.add('dark');}r.classList.add(l==='zh'?'lang-zh':'lang-en');r.setAttribute('lang',l);})();</script>
+<style>
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  :root{
+    --paper:#FBF6EC; --paper2:#F3ECDD; --ink:#33302B; --soft:#6d6559;
+    --pencil:#938979; --mark:#D9695A; --line:#E4DAC7;
+    --wash-a:#B7D6D3; --wash-b:#F3C6A5; --wash-c:#E9A7A0; --wash-op:.8;
+    --card-shadow:0 1px 2px rgba(60,50,35,.05),0 10px 26px rgba(60,50,35,.06);
+    --disp-en:"Fraunces"; --disp-cn:"DingTalk JinBuTi";
+    --text-en:"Fraunces"; --text-cn:"Noto Serif SC";
+    --hand-en:"Caveat"; --hand-cn:"MuyaoPleased";
+    --util-en:"IBM Plex Mono"; --util-cn:"Noto Sans SC";
+  }
+  html.dark{
+    --paper:#1E1913; --paper2:#282018; --ink:#EFE5D3; --soft:#b0a591;
+    --pencil:#8f8471; --mark:#EE8E72; --line:#37301f; --wash-op:.34;
+    --card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);line-height:1.5;overflow-x:hidden;
+    font-family:var(--text-en),Georgia,serif;transition:background .3s,color .3s}
+  html.lang-zh body{font-family:var(--text-cn),serif}
+  a{color:inherit}
+  a:hover{color:var(--mark)}
+  html.lang-zh .en{display:none} html.lang-en .zh{display:none}
+  .display{font-family:var(--disp-en)} html.lang-zh .display{font-family:var(--disp-cn);font-weight:400}
+  .hand{font-family:var(--hand-en)} html.lang-zh .hand{font-family:var(--hand-cn)}
+  .util{font-family:var(--util-en);letter-spacing:.04em} html.lang-zh .util{font-family:var(--util-cn);letter-spacing:.02em}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  html.dark body::before{mix-blend-mode:screen;opacity:.03}
+  svg .stroke{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 46px;position:relative}
+  nav.rnav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--paper);z-index:100;transition:background .3s}
+  .brand{display:flex;align-items:center;gap:11px}
+  .back{font-family:var(--util-en);font-size:13px;letter-spacing:.04em;color:var(--soft);text-decoration:none}
+  html.lang-zh .back{font-family:var(--util-cn)}
+  .back:hover{color:var(--mark)}
+  nav.rnav .right{display:flex;align-items:center;gap:8px}
+  .btn{border:1.5px solid var(--line);background:var(--paper2);color:var(--soft);
+    height:34px;min-width:34px;padding:0 11px;border-radius:999px;cursor:pointer;font-size:13px;
+    font-family:var(--util-en);display:grid;place-items:center}
+  .btn:hover{color:var(--mark);border-color:var(--mark)}
+  article{max-width:640px;margin:0 auto;padding:56px 0 40px;position:relative}
+  .eyebrow{font-family:var(--hand-en);font-size:22px;color:var(--mark);transform:rotate(-2deg);display:inline-block;margin-bottom:10px}
+  html.lang-zh .eyebrow{font-family:var(--hand-cn)}
+  .kicker{display:inline-block;font-family:var(--util-en);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px;margin-bottom:16px}
+  html.lang-zh .kicker{font-family:var(--util-cn);letter-spacing:.08em;text-transform:none}
+  h1.title{font-family:var(--disp-en);font-size:clamp(34px,5vw,52px);line-height:1.1;letter-spacing:-.01em;font-weight:600}
+  html.lang-zh h1.title{font-family:var(--disp-cn);font-weight:400;line-height:1.2;letter-spacing:.02em}
+  h1.title em{font-style:italic;color:var(--mark)}
+  html.lang-zh h1.title em{font-style:normal;color:var(--mark)}
+  .meta{margin-top:18px;font-family:var(--util-en);font-size:13px;letter-spacing:.05em;color:var(--pencil);
+    display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  html.lang-zh .meta{font-family:var(--util-cn);letter-spacing:.02em}
+  .meta .dot{color:var(--line)}
+  .lede{margin-top:24px;font-size:20px;line-height:1.6;color:var(--soft)}
+  html.lang-zh .lede{font-size:18px;line-height:1.8}
+  .rule{border:0;border-top:1px solid var(--line);margin:30px 0}
+  .prose{position:relative}
+  .prose p{font-size:18px;line-height:1.72;margin:0 0 22px}
+  html.lang-zh .prose p{font-size:17px;line-height:1.8;margin-bottom:28px}
+  .prose h2{font-family:var(--disp-en);font-size:26px;font-weight:600;margin:40px 0 14px;letter-spacing:-.01em}
+  html.lang-zh .prose h2{font-family:var(--disp-cn);font-weight:400}
+  .prose em{font-style:italic}
+  .prose strong{font-weight:600;color:var(--ink)}
+  .prose .coral{color:var(--mark)}
+  .scribble{position:relative;white-space:nowrap}
+  .scribble svg{position:absolute;left:-2%;bottom:-9px;width:104%;height:9px;overflow:visible}
+  .mn{float:right;clear:right;width:210px;margin:6px -258px 20px 0;
+    font-family:var(--hand-en);font-size:17px;line-height:1.4;color:var(--soft);transform:rotate(-1deg)}
+  html.lang-zh .mn{font-family:var(--hand-cn);font-size:16px;line-height:1.6}
+  .mn .num{color:var(--mark);font-family:var(--util-en);font-size:12px;margin-right:5px}
+  .fnref{color:var(--mark);font-family:var(--util-en);font-size:.7em;position:relative;top:-.5em;vertical-align:baseline;cursor:pointer}
+  .pull{margin:34px 0;padding:4px 0 4px 22px;border-left:2px solid var(--mark)}
+  .pull p{font-family:var(--text-en);font-style:italic;font-size:23px;line-height:1.4;color:var(--ink);margin:0}
+  html.lang-zh .pull{border-left:0;margin:36px 0;padding:0 0 0 42px;position:relative}
+  html.lang-zh .pull::before{content:"「";position:absolute;left:-2px;top:0;color:var(--mark);
+    font-family:var(--text-cn);font-size:30px;line-height:1.62}
+  html.lang-zh .pull p{font-family:var(--text-cn);font-style:normal;font-size:24px;font-weight:500;line-height:1.62;color:var(--ink)}
+  figure.fig{margin:34px 0;text-align:center}
+  figure.fig .washbg{position:relative;display:inline-block;padding:10px 20px}
+  figcaption{font-family:var(--hand-en);font-size:17px;color:var(--pencil);margin-top:8px;transform:rotate(-1deg)}
+  html.lang-zh figcaption{font-family:var(--hand-cn);font-size:16px}
+  .stars{text-align:center;color:var(--pencil);letter-spacing:.5em;margin:34px 0;font-size:15px}
+  .foot{margin-top:16px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--soft);line-height:1.6}
+  .foot .fn{display:flex;gap:10px;margin-bottom:8px}
+  .foot .fn .num{color:var(--mark);font-family:var(--util-en);font-size:12px;flex:none;padding-top:2px}
+  .pn{display:flex;justify-content:space-between;gap:16px;margin:14px 0 8px}
+  .pn a{flex:1;border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--paper2);box-shadow:var(--card-shadow);text-decoration:none;color:inherit}
+  .pn a:hover{border-color:var(--mark);color:inherit}
+  .pn .lab{font-family:var(--util-en);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
+  html.lang-zh .pn .lab{font-family:var(--util-cn);letter-spacing:.04em;text-transform:none}
+  .pn .t{margin-top:6px;font-size:16px}
+  .pn .next{text-align:right}
+  footer{padding:26px 0 60px}
+  footer .row{display:flex;justify-content:space-between;align-items:center;gap:16px;
+    border-top:1px solid var(--line);padding-top:20px;font-family:var(--util-en);font-size:12.5px;color:var(--pencil)}
+  html.lang-zh footer .row{font-family:var(--util-cn)}
+  footer .row a{text-decoration:none}
+  footer .row a:hover{color:var(--mark)}
+  @media(max-width:1080px){
+    .mn{float:none;width:auto;margin:14px 0;padding:12px 16px;background:var(--paper2);
+      border:1px solid var(--line);border-radius:12px;transform:none}
+  }
+  @media(max-width:640px){
+    .wrap{padding:0 22px}
+    article{padding:36px 0 30px}
+    .prose p{font-size:17px}
+  }
+</style>
+</helmet>
+
+<div style="position:fixed;top:0;left:0;right:0;height:2px;z-index:120;background:transparent">
+  <div style="height:100%;background:var(--mark);transition:width .05s linear;width:{{ progWidth }}"></div>
+</div>
+
+<div class="wrap">
+  <nav class="rnav">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 60 60" aria-label="Fred avatar">
+        <g class="stroke">
+          <path d="M15 40 q-2 -22 15 -23 q17 1 15 23"></path><path d="M15 40 q15 9 30 0"></path>
+          <path d="M18 20 q10 -12 24 0"></path><circle cx="24" cy="30" r="4.2"></circle><circle cx="38" cy="30" r="4.2"></circle>
+          <path d="M28 30 h6" stroke-width="2"></path><path d="M27 40 q4 4 8 0"></path>
+        </g>
+        <circle cx="24" cy="30" r="1.6" fill="var(--ink)"></circle><circle cx="38" cy="30" r="1.6" fill="var(--ink)"></circle>
+      </svg>
+      <a class="back" href="Home v2.dc.html"><span class="en">← home</span><span class="zh">← 首页</span></a>
+    </div>
+    <div class="right">
+      <button class="btn" onClick="{{ toggleLang }}"><span class="en">中</span><span class="zh">EN</span></button>
+      <button class="btn" onClick="{{ toggleTheme }}">◐</button>
+    </div>
+  </nav>
+
+  <article>
+    <span class="kicker"><span class="en">Essay · 杂文</span><span class="zh">杂文 · Essay</span></span>
+    <div class="eyebrow"><span class="en">reading the present through myth</span><span class="zh">用神话读此刻</span></div>
+    <h1 class="title">
+      <span class="en">The <em>Chaotic</em> Era</span>
+      <span class="zh">乱<em>纪元</em></span>
+    </h1>
+    <div class="meta">
+      <span><span class="en">2026 · Jul</span><span class="zh">2026 年 7 月</span></span>
+      <span class="dot">·</span>
+      <span><span class="en">11 min read</span><span class="zh">约 11 分钟</span></span>
+      <span class="dot">·</span>
+      <span>中 / EN</span>
+    </div>
+    <p class="lede">
+      <span class="en">The men who run the AI labs keep reaching for the same three stories — and none of them is the one they think they're in.</span>
+      <span class="zh">经营 AI 实验室的那些人，反复伸手去够同样的三个故事——而他们身处的，没有一个是他们以为的那个。</span>
+    </p>
+
+    <hr class="rule">
+
+    <div class="prose">
+      <p>
+        <span class="en">In <em>The Three-Body Problem</em>, a civilization survives by sorting time into two kinds. In the Stable Era the suns behave, crops grow, and you can plan a life. Then, without warning, the Chaotic Era arrives: three suns pull in three directions, and the only sane move is to dehydrate — to roll yourself up and wait out a season that might last a day or a century.</span>
+        <span class="zh">在《三体》里，一个文明靠把时间分成两类而存活。恒纪元里太阳规矩、庄稼生长、你可以规划一生。然后毫无预兆地，乱纪元降临：三颗太阳朝三个方向拉扯，唯一清醒的选择是脱水——把自己卷起来，熬过一个可能持续一天、也可能持续一个世纪的季节。</span>
+        <span class="mn"><span class="num">1</span><span class="en">Cixin Liu, <em>三体</em> (2008). The dehydration image has never left me.</span><span class="zh">刘慈欣，《三体》（2008）。脱水这个意象，我一直忘不掉。</span></span>
+      </p>
+      <p>
+        <span class="en">I have started to think we are being asked to dehydrate. Every quarter a lab ships a model that reorders the ground under an entire profession, and the advice that follows is always some version of <em>wait, adapt, don't over-invest in the present shape of your work.</em> It is reasonable advice. It is also the advice you give people who live under three suns.</span>
+        <span class="zh">我开始觉得，我们正被要求脱水。每个季度都有实验室发布一个模型，把某个行业脚下的地面重新排列一遍，随之而来的建议永远是某种版本的<em>等一等、适应、别在当下这副形态的工作上过度投入。</em>这是合理的建议。它也正是你会对生活在三颗太阳下的人说的话。</span>
+      </p>
+
+      <div class="pull">
+        <p>
+          <span class="en">The people who profit most from the chaos are the ones most fluent in telling you it is a stable era.</span>
+          <span class="zh">从混乱中获利最多的人，恰恰最擅长告诉你：这是一个恒纪元。</span>
+        </p>
+      </div>
+
+      <p>
+        <span class="en">Watch how the founders narrate themselves and you notice they never pick the Chaotic Era story. They reach instead for <span class="scribble">clean myths<svg viewBox="0 0 120 9" preserveAspectRatio="none" aria-hidden="true"><path class="stroke" d="M2 5 q18 -6 34 -1 q22 5 44 -1 q20 -4 38 1" stroke-width="2.2"></path></svg></span> — Prometheus with the fire, the lone founder against the gods, the inevitable arc bending toward them. EVA gave us a cleaner mirror: a boy in a cockpit, told the fate of the species depends on him, quietly coming apart while the adults insist the plan is under control.</span>
+        <span class="zh">看看这些创始人如何叙述自己，你会发现他们从不挑乱纪元那个故事。他们伸手去够的是<span class="scribble">干净的神话<svg viewBox="0 0 120 9" preserveAspectRatio="none" aria-hidden="true"><path class="stroke" d="M2 5 q18 -6 34 -1 q22 5 44 -1 q20 -4 38 1" stroke-width="2.2"></path></svg></span>——盗火的普罗米修斯、独自对抗诸神的创业者、必然朝他们弯曲的历史弧线。EVA 给了我们一面更诚实的镜子：一个坐在驾驶舱里的少年，被告知整个物种的命运系于他一身，在大人们坚称"计划一切尽在掌握"时，悄悄地崩坏。</span>
+        <span class="fnref">2</span>
+        <span class="mn"><span class="num">2</span><span class="en">The pilots are always children. That is the part the founders skip.</span><span class="zh">驾驶员永远是孩子。这一段，创始人们跳过了。</span></span>
+      </p>
+
+      <figure class="fig">
+        <div class="washbg">
+          <svg viewBox="0 0 260 150" width="240" role="img" aria-label="Three small suns pulling on a rolled-up figure">
+            <defs>
+              <radialGradient id="wA" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="var(--wash-b)" stop-opacity="var(--wash-op)"></stop><stop offset="100%" stop-color="var(--wash-b)" stop-opacity="0"></stop></radialGradient>
+              <radialGradient id="wB" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="var(--wash-a)" stop-opacity="var(--wash-op)"></stop><stop offset="100%" stop-color="var(--wash-a)" stop-opacity="0"></stop></radialGradient>
+              <filter id="wob"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4" result="t"></feTurbulence><feDisplacementMap in="SourceGraphic" in2="t" scale="2.4"></feDisplacementMap></filter>
+            </defs>
+            <ellipse cx="70" cy="55" rx="70" ry="55" fill="url(#wB)"></ellipse>
+            <ellipse cx="195" cy="90" rx="70" ry="60" fill="url(#wA)"></ellipse>
+            <g filter="url(#wob)">
+              <circle class="stroke" cx="40" cy="38" r="13"></circle><path class="stroke" d="M40 20 v-7 M40 63 v7 M22 38 h-7 M58 38 h7 M27 25 l-5 -5 M53 25 l5 -5" stroke-width="1.6"></path>
+              <circle class="stroke" cx="210" cy="34" r="11"></circle><path class="stroke" d="M210 18 v-6 M194 34 h-6 M226 34 h6 M199 23 l-4 -4" stroke-width="1.6"></path>
+              <circle class="stroke" cx="225" cy="112" r="10"></circle><path class="stroke" d="M225 98 v-6 M211 112 h-6 M239 112 h6" stroke-width="1.6"></path>
+              <path class="stroke" d="M96 118 q-8 -30 22 -34 q34 -4 34 22 q0 20 -22 22 q-30 3 -34 -10 Z"></path>
+              <path class="stroke" d="M112 96 q10 -6 22 0 M110 108 q14 -5 28 0 M112 118 q12 -4 24 0" stroke-width="1.5"></path>
+              <circle cx="120" cy="102" r="1.7" fill="var(--ink)"></circle><circle cx="134" cy="102" r="1.7" fill="var(--ink)"></circle>
+              <path class="stroke" d="M120 111 q7 3 14 0" stroke-width="1.6"></path>
+            </g>
+          </svg>
+        </div>
+        <figcaption><span class="en">fig.1 — the only sane move is to roll up and wait.</span><span class="zh">图一 —— 唯一清醒的选择，是卷起来，等。</span></figcaption>
+      </figure>
+
+      <h2 class="display"><span class="en">Who gets to stay hydrated</span><span class="zh">谁有资格不脱水</span></h2>
+      <p>
+        <span class="en">Here is the asymmetry that the myth-making hides. Dehydration is cheap for capital and expensive for people. A fund can wait out any winter; it has no children to feed this year, no skill it spent a decade sharpening that a model just made ambient. When a founder tells a translator, a paralegal, a junior engineer to <strong>adapt</strong>, he is asking them to absorb, in their one finite career, a volatility he has diversified away.</span>
+        <span class="zh">这里藏着造神叙事掩盖的不对称。脱水对资本是廉价的，对人是昂贵的。一支基金可以熬过任何寒冬；它没有今年要喂养的孩子，也没有一门磨了十年、却被一个模型瞬间变成空气的手艺。当一个创始人叫译者、律师助理、初级工程师去<strong>适应</strong>时，他是在要求他们用自己唯一有限的职业生涯，去吸收一份他早已通过分散投资甩掉的波动。</span>
+      </p>
+      <p>
+        <span class="en">I build these systems end to end. I am not writing this from the outside. I write it because the part I refuse to dehydrate is exactly the part the story wants me to: the <span class="coral">human-scale</span> attention to the specific person on the other end of the tool. The machine is real, and it is powerful, and it is not the hero of this. We are.</span>
+        <span class="zh">我从头到尾地构建这些系统。我不是在局外写这些。我写，是因为我拒绝脱水的那一部分，恰恰是故事希望我脱掉的那一部分：对工具另一端那个具体的人的、<span class="coral">人的尺度</span>的关注。机器是真实的，是强大的，但它不是这件事的主角。我们才是。</span>
+      </p>
+
+      <div class="stars">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+      <p>
+        <span class="en">The Chaotic Era ends, in the novel, only when the civilization stops pretending the suns are predictable and builds its life around the truth that they are not. That is the whole move. Not the fire, not the founder, not the arc — just the refusal to be told, one more season, that the era is stable when your own body knows it isn't.</span>
+        <span class="zh">在小说里，乱纪元的终结，只发生在这个文明停止假装太阳可以预测、并围绕"它们不可预测"这一真相重建生活之时。全部的动作就是这个。不是火，不是创业者，不是弧线——只是拒绝再被告知一个季节："这是恒纪元"，当你自己的身体明明知道不是。</span>
+      </p>
+
+      <div class="foot">
+        <div class="fn"><span class="num">1</span><span><span class="en">Cixin Liu, <em>三体 / The Three-Body Problem</em> (2008).</span><span class="zh">刘慈欣，《三体》（2008）。</span></span></div>
+        <div class="fn"><span class="num">2</span><span><span class="en"><em>Neon Genesis Evangelion</em> (1995). The adults always have a plan; the plan always runs on a child.</span><span class="zh">《新世纪福音战士》（1995）。大人们永远有计划；计划永远靠一个孩子运转。</span></span></div>
+      </div>
+    </div>
+  </article>
+
+  <div class="pn">
+    <a class="prev" href="#">
+      <div class="lab"><span class="en">← previous</span><span class="zh">← 上一篇</span></div>
+      <div class="t"><span class="en">被剪辑的神 · The Edited God</span><span class="zh">被剪辑的神 · GOAT 叙事小史</span></div>
+    </a>
+    <a class="next" href="#">
+      <div class="lab"><span class="en">next →</span><span class="zh">下一篇 →</span></div>
+      <div class="t"><span class="en">香港森林 · Hong Kong, a Forest</span><span class="zh">香港森林</span></div>
+    </a>
+  </div>
+
+  <footer>
+    <div class="row">
+      <span>© 2026 Fred Yang · 杨</span>
+      <span>
+        <a href="#">email</a> &nbsp;·&nbsp; <a href="#">X</a> &nbsp;·&nbsp; <a href="#">GitHub</a>
+      </span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;zh&quot;,&quot;en&quot;],&quot;default&quot;:&quot;zh&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;四向矩阵 four-way matrix&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;四向矩阵 four-way matrix&quot;}}">
+class Component extends DCLogic {
+  state = { prog: 0 };
+  componentDidMount() {
+    this.apply(false);
+    this._onScroll = () => {
+      var h = document.documentElement;
+      var sc = h.scrollTop || document.body.scrollTop;
+      var max = h.scrollHeight - h.clientHeight;
+      this.setState({ prog: max > 0 ? (sc / max * 100) : 0 });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.lang !== this.props.lang || prevProps.theme !== this.props.theme) {
+      this.apply(true);
+    }
+  }
+  apply(fromTweaks) {
+    var r = document.documentElement;
+    var l = fromTweaks ? (this.props.lang || 'zh') : (localStorage.getItem('fy-lang') || this.props.lang || 'zh');
+    var t = fromTweaks ? (this.props.theme || 'light') : (localStorage.getItem('fy-theme') || this.props.theme || 'light');
+    r.classList.toggle('lang-zh', l === 'zh');
+    r.classList.toggle('lang-en', l !== 'zh');
+    r.classList.toggle('dark', t === 'dark');
+    r.setAttribute('lang', l);
+    if (fromTweaks) {
+      localStorage.setItem('fy-lang', l);
+      localStorage.setItem('fy-theme', t);
+    }
+  }
+  renderVals() {
+    return {
+      progWidth: (this.state.prog || 0).toFixed(2) + '%',
+      toggleLang: () => {
+        var r = document.documentElement;
+        var zh = !r.classList.contains('lang-zh');
+        r.classList.toggle('lang-zh', zh);
+        r.classList.toggle('lang-en', !zh);
+        r.setAttribute('lang', zh ? 'zh' : 'en');
+        localStorage.setItem('fy-lang', zh ? 'zh' : 'en');
+      },
+      toggleTheme: () => {
+        var r = document.documentElement;
+        var d = r.classList.toggle('dark');
+        localStorage.setItem('fy-theme', d ? 'dark' : 'light');
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

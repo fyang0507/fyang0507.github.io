@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
+  a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
+  .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
+  .hand{font-family:"MuyaoPleased","Caveat",cursive}
+  .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @keyframes gRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes birdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .gr{animation:gRise .5s cubic-bezier(.2,.7,.2,1) both}
+  .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
+  .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
+  .line-row{overflow-x:auto;overflow-y:hidden;display:flex;align-items:flex-start;gap:16px;scrollbar-width:thin;padding:10px 16px}
+
+  .card{background:var(--paper);border:2px solid var(--ink);padding:6px 6px 5px;box-shadow:0 6px 14px rgba(60,50,35,.1);transition:transform .2s ease}
+  .peg{width:15px;height:10px;background:var(--ink);margin:0 auto -2px;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
+  .bird{animation:birdBob 2.6s ease-in-out infinite}
+  @media (prefers-reduced-motion:reduce){.gr,.bird{animation:none!important;opacity:1!important}}
+  @media (max-width:640px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
+</style>
+</helmet>
+
+<div data-screen-label="gallery" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
+
+  <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+    <div class="gr" style="position:relative;transform:rotate(-1deg)">
+      <img src="./assets/sticker-peek.png" alt="" aria-hidden="true" style="position:absolute;left:-24px;bottom:-18px;width:52px;z-index:0">
+
+      <a href="Home v2.dc.html" class="display" style="position:relative;z-index:1;display:inline-block;white-space:nowrap;border:2.4px solid var(--ink);padding:8px 20px;font-size:26px;background:var(--paper)">Fred Yang · <b style="color:var(--mark);font-weight:600">杨</b></a>
+      <div class="hand gr" style="margin-top:10px;font-size:21px;color:var(--soft);animation-delay:.08s"><a href="Home v2.dc.html">← 回到桌面 back to the desk</a></div>
+    </div>
+    <div class="util gr" style="font-size:12.5px;color:var(--pencil);padding-top:10px;animation-delay:.16s">roll 01–09 · 35mm · 2015–2025</div>
+  </header>
+
+  <div style="width:min(1180px,100%);margin-top:40px">
+    <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
+      <h1 class="display gr" style="font-size:clamp(44px,6vw,68px);line-height:1.35;white-space:nowrap;flex-shrink:0">在拍<span style="color:var(--mark)">。</span></h1>
+      <div class="hand gr" style="font-size:clamp(19px,2.2vw,24px);color:var(--soft);padding-bottom:8px;animation-delay:.1s">晾在绳上的，是拍下的日常 <span style="color:var(--mark)">✦</span></div>
+      <img src="./assets/camera-light.png" alt="a small film camera" class="gr" style="width:76px;transform:rotate(-7deg);margin-left:auto;animation-delay:.2s">
+    </div>
+
+    <div class="gr" style="margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
+      <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="8">
+        <button class="{{ cat.cls }}" onClick="{{ cat.onClick }}">{{ cat.label }}</button>
+      </sc-for>
+    </div>
+    <div class="gr" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ years }}" as="yr" hint-placeholder-count="10">
+        <button class="{{ yr.cls }}" onClick="{{ yr.onClick }}">{{ yr.label }}</button>
+      </sc-for>
+    </div>
+    <div class="util gr" style="margin-top:12px;font-size:12px;color:var(--pencil)">显示 {{ visibleN }} / {{ filteredN }} 张 · 共 107 张</div>
+
+    <div class="gallery-wrap" style="position:relative;margin-top:28px">
+      <div class="line-back" style="opacity:.5;transform:scale(.84);transform-origin:left top;filter:blur(.3px)">
+        <div class="line-row" style="border-bottom:1.5px solid var(--line);padding-bottom:16px">
+          <sc-for list="{{ lineBack }}" as="p" hint-placeholder-count="6">
+            <div style="{{ p.wrapStyle }}">
+              <div class="peg"></div>
+              <div class="card">
+                <div style="aspect-ratio:4/3;overflow:hidden"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.loc }}"></image-slot></div>
+                <div class="hand" style="font-size:13px;color:var(--soft);padding:4px 2px 0">{{ p.loc }}</div>
+                <div class="util" style="font-size:9px;color:var(--pencil)">{{ p.dateLabel }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="opacity:.78;transform:scale(.93);transform-origin:left top;margin-top:18px">
+        <div class="line-row" style="border-bottom:1.5px solid var(--line);padding-bottom:16px">
+          <sc-for list="{{ lineMid }}" as="p" hint-placeholder-count="6">
+            <div style="{{ p.wrapStyle }}">
+              <div class="peg"></div>
+              <div class="card">
+                <div style="aspect-ratio:4/3;overflow:hidden"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.loc }}"></image-slot></div>
+                <div class="hand" style="font-size:13.5px;color:var(--soft);padding:4px 2px 0">{{ p.loc }}</div>
+                <div class="util" style="font-size:9.5px;color:var(--pencil)">{{ p.dateLabel }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;position:relative">
+        <div class="bird" style="position:absolute;left:14px;top:-36px;width:38px;height:37px;background-image:url('./assets/bird-strip-light.png');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;z-index:2" role="img" aria-label="a small bird"></div>
+        <div class="line-row" style="border-bottom:2.6px solid var(--ink);padding-bottom:18px">
+          <sc-for list="{{ lineFront }}" as="p" hint-placeholder-count="8">
+            <div style="{{ p.wrapStyle }}">
+              <div class="peg"></div>
+              <div class="card">
+                <div style="aspect-ratio:4/3;overflow:hidden"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.loc }}"></image-slot></div>
+                <div class="hand" style="font-size:15px;color:var(--soft);padding:5px 2px 0">{{ p.loc }}</div>
+                <div class="util" style="font-size:10px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-garland" style="display:none;flex-direction:column;align-items:center;position:relative;margin-top:14px;padding-top:16px">
+      <div style="position:absolute;left:50%;top:0;bottom:26px;width:2px;background:var(--line);transform:translateX(-50%)" aria-hidden="true"></div>
+      <sc-for list="{{ visibleAll }}" as="p" hint-placeholder-count="18">
+        <div style="{{ p.garlandWrap }}">
+          <div class="peg" style="margin:0 auto -2px"></div>
+          <div class="card" style="width:100%">
+            <div style="aspect-ratio:4/3;overflow:hidden"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.loc }}"></image-slot></div>
+            <div class="hand" style="font-size:16px;color:var(--soft);padding:6px 3px 0">{{ p.loc }}</div>
+            <div class="util" style="font-size:10.5px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ true }}">
+      <div style="text-align:center;margin-top:34px;position:relative">
+        <img src="./assets/sticker-happy.png" alt="" aria-hidden="true" style="position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)">
+        <button class="hand" onClick="{{ loadMore }}" style="border:1.5px solid var(--ink);background:var(--paper2);color:var(--ink);padding:10px 24px;border-radius:999px;font-size:19px;cursor:pointer">再晾一批 · load more（还有 {{ remaining }} 张）</button>
+      </div>
+    </sc-if>
+
+    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.02 — contact line · roll continues</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CAT_LABEL = {landscape:'Landscape',cityscape:'Cityscape',people:'People',architecture:'Architecture',street:'Street',creature:'Creature','black and white':'B & W',abstract:'Abstract'};
+
+const PHOTOS = [
+{id:1,loc:'Cinque Terre, Italy',cat:'landscape',date:'2015-04-06'},
+{id:2,loc:'Florence, Italy',cat:'cityscape',date:'2015-04-07'},
+{id:3,loc:'Venice, Italy',cat:'cityscape',date:'2015-04-08'},
+{id:4,loc:'Paris, France',cat:'cityscape',date:'2015-05-09'},
+{id:5,loc:'Lisse, Netherlands',cat:'creature',date:'2015-05-10'},
+{id:6,loc:'Kinderdijk, Netherlands',cat:'landscape',date:'2015-05-09'},
+{id:7,loc:'Cully, Switzerland',cat:'landscape',date:'2015-06-19'},
+{id:8,loc:'Nice, France',cat:'landscape',date:'2015-06-03'},
+{id:9,loc:'Tokyo, Japan',cat:'cityscape',date:'2016-07-10'},
+{id:10,loc:'Tokyo, Japan',cat:'cityscape',date:'2016-07-10'},
+{id:11,loc:'Stanford, CA',cat:'architecture',date:'2018-12-19'},
+{id:12,loc:'Philadelphia, PA',cat:'people',date:'2019-01-01'},
+{id:13,loc:'New York, NY',cat:'cityscape',date:'2019-05-11'},
+{id:14,loc:'Banff, Canada',cat:'landscape',date:'2019-08-18'},
+{id:15,loc:'New York, NY',cat:'architecture',date:'2021-02-01'},
+{id:16,loc:'Jersey City, NJ',cat:'creature',date:'2021-04-01'},
+{id:17,loc:'Doha, Qatar',cat:'cityscape',date:'2018-08-03'},
+{id:18,loc:'Toronto, Canada',cat:'cityscape',date:'2018-11-22'},
+{id:19,loc:'Ithaca, NY',cat:'architecture',date:'2021-05-27'},
+{id:20,loc:'Interlaken, NY',cat:'landscape',date:'2021-05-28'},
+{id:21,loc:'Niagara Falls, NY',cat:'landscape',date:'2021-05-29'},
+{id:22,loc:'Asbury Park, NJ',cat:'architecture',date:'2021-06-20'},
+{id:23,loc:'New York, NY',cat:'cityscape',date:'2021-07-04'},
+{id:24,loc:'RISD, RI',cat:'black and white',date:'2021-08-21'},
+{id:25,loc:'Newport, RI',cat:'architecture',date:'2021-08-22'},
+{id:26,loc:'Yale, CT',cat:'people',date:'2021-08-27'},
+{id:27,loc:'Yale, CT',cat:'architecture',date:'2021-08-27'},
+{id:28,loc:'Chassell, MI',cat:'landscape',date:'2021-10-04'},
+{id:29,loc:'New York, NY',cat:'cityscape',date:'2022-07-04'},
+{id:30,loc:'Pictured Rocks, MI',cat:'landscape',date:'2021-10-03'},
+{id:31,loc:'New York, NY',cat:'abstract',date:'2022-04-10'},
+{id:32,loc:'New York, NY',cat:'cityscape',date:'2022-05-21'},
+{id:33,loc:'New York, NY',cat:'people',date:'2022-06-26'},
+{id:34,loc:'New York, NY',cat:'people',date:'2022-07-10'},
+{id:35,loc:'New York, NY',cat:'street',date:'2022-07-10'},
+{id:36,loc:'New York, NY',cat:'cityscape',date:'2022-08-01'},
+{id:37,loc:'New York, NY',cat:'street',date:'2022-08-12'},
+{id:38,loc:'New York, NY',cat:'street',date:'2022-09-17'},
+{id:39,loc:'Cooperstown, NY',cat:'landscape',date:'2022-10-16'},
+{id:40,loc:'Bear Mountain, NY',cat:'black and white',date:'2022-10-30'},
+{id:41,loc:'Kingston, Canada',cat:'cityscape',date:'2022-12-08'},
+{id:42,loc:'Niagara Falls, Canada',cat:'landscape',date:'2022-12-13'},
+{id:43,loc:'New York, NY',cat:'architecture',date:'2023-03-26'},
+{id:45,loc:'Chengdu, China',cat:'street',date:'2023-05-11'},
+{id:46,loc:'Guangzhou, China',cat:'architecture',date:'2023-05-17'},
+{id:47,loc:'Chengdu, China',cat:'street',date:'2023-05-11'},
+{id:48,loc:'Wenchuan, China',cat:'landscape',date:'2023-05-14'},
+{id:49,loc:'Dongguan, China',cat:'cityscape',date:'2023-05-19'},
+{id:50,loc:'Cape May, NJ',cat:'landscape',date:'2023-07-02'},
+{id:51,loc:'New York, NY',cat:'cityscape',date:'2023-08-19'},
+{id:52,loc:'Albany, NY',cat:'cityscape',date:'2023-10-11'},
+{id:53,loc:'Lake George, NY',cat:'people',date:'2023-10-12'},
+{id:54,loc:'London, UK',cat:'people',date:'2023-11-09'},
+{id:55,loc:'London, UK',cat:'creature',date:'2023-11-08'},
+{id:56,loc:'London, UK',cat:'cityscape',date:'2023-11-09'},
+{id:57,loc:'London, UK',cat:'cityscape',date:'2023-11-09'},
+{id:58,loc:'Chengdu, China',cat:'cityscape',date:'2023-12-01'},
+{id:59,loc:'London, UK',cat:'creature',date:'2023-12-23'},
+{id:60,loc:'London, UK',cat:'architecture',date:'2023-12-20'},
+{id:61,loc:'London, UK',cat:'creature',date:'2023-12-23'},
+{id:62,loc:'Chengdu, China',cat:'creature',date:'2023-12-01'},
+{id:63,loc:'London, UK',cat:'architecture',date:'2023-12-29'},
+{id:64,loc:'London, UK',cat:'architecture',date:'2023-12-29'},
+{id:65,loc:'London, UK',cat:'cityscape',date:'2023-12-29'},
+{id:66,loc:'Cambridge, UK',cat:'architecture',date:'2024-01-03'},
+{id:67,loc:'Cambridge, UK',cat:'architecture',date:'2024-01-03'},
+{id:68,loc:'London, UK',cat:'people',date:'2024-01-01'},
+{id:69,loc:'Hong Kong, China',cat:'cityscape',date:'2024-04-20'},
+{id:70,loc:'Hong Kong, China',cat:'street',date:'2024-04-20'},
+{id:71,loc:'Hong Kong, China',cat:'people',date:'2024-04-20'},
+{id:72,loc:'Hong Kong, China',cat:'cityscape',date:'2024-04-20'},
+{id:73,loc:'Hong Kong',cat:'people',date:'2024-04-20'},
+{id:74,loc:'Hong Kong, China',cat:'people',date:'2024-04-22'},
+{id:75,loc:'Hong Kong, China',cat:'street',date:'2024-04-20'},
+{id:76,loc:'Hong Kong, China',cat:'cityscape',date:'2024-04-22'},
+{id:77,loc:'Seoul, South Korea',cat:'people',date:'2024-05-11'},
+{id:78,loc:'Seoul, South Korea',cat:'street',date:'2024-05-10'},
+{id:79,loc:'Seoul, South Korea',cat:'street',date:'2024-05-11'},
+{id:80,loc:'Seoul, South Korea',cat:'cityscape',date:'2024-05-11'},
+{id:81,loc:'Seoul, South Korea',cat:'people',date:'2024-05-12'},
+{id:82,loc:'Seoul, South Korea',cat:'people',date:'2024-05-11'},
+{id:83,loc:'Seoul, South Korea',cat:'street',date:'2024-05-11'},
+{id:84,loc:'Seoul, South Korea',cat:'cityscape',date:'2024-05-11'},
+{id:85,loc:'Antwerp, Belgium',cat:'people',date:'2024-10-17'},
+{id:86,loc:'Antwerp, Belgium',cat:'street',date:'2024-10-18'},
+{id:87,loc:'Antwerp, Belgium',cat:'architecture',date:'2024-10-18'},
+{id:88,loc:'Antwerp, Belgium',cat:'architecture',date:'2024-10-19'},
+{id:89,loc:'Düsseldorf, Germany',cat:'cityscape',date:'2024-10-16'},
+{id:90,loc:'Ghent, Belgium',cat:'architecture',date:'2024-10-19'},
+{id:91,loc:'Schloss Drachenburg, Germany',cat:'street',date:'2024-10-15'},
+{id:92,loc:'Amsterdam, Netherlands',cat:'street',date:'2024-10-12'},
+{id:93,loc:'Amsterdam, Netherlands',cat:'landscape',date:'2024-10-13'},
+{id:94,loc:'Ashokan, New York',cat:'landscape',date:'2024-10-11'},
+{id:95,loc:'Maui, HI',cat:'landscape',date:'2025-03-13'},
+{id:96,loc:'Honolulu, HI',cat:'landscape',date:'2025-03-09'},
+{id:97,loc:'New York City, NY',cat:'people',date:'2025-09-01'},
+{id:98,loc:'New York City, NY',cat:'people',date:'2025-09-01'},
+{id:99,loc:'Garden of the Gods, CO',cat:'landscape',date:'2025-10-14'},
+{id:100,loc:'Ridgway, CO',cat:'landscape',date:'2025-10-19'},
+{id:101,loc:'Denver, CO',cat:'creature',date:'2025-10-15'},
+{id:102,loc:'Mosca, CO',cat:'landscape',date:'2025-10-17'},
+{id:103,loc:'New Orleans, LA',cat:'people',date:'2025-11-23'},
+{id:104,loc:'New Orleans, LA',cat:'people',date:'2025-11-23'},
+{id:105,loc:'New Orleans, LA',cat:'people',date:'2025-11-23'},
+{id:106,loc:'New Orleans, LA',cat:'street',date:'2025-11-23'},
+{id:107,loc:'New Orleans, LA',cat:'cityscape',date:'2025-11-26'},
+{id:108,loc:'New Orleans, LA',cat:'cityscape',date:'2025-11-27'}
+];
+
+class Component extends DCLogic {
+  state = { activeCategory: 'all', activeYear: 'all', visibleCount: 18 };
+
+  renderVals() {
+    const st = this.state;
+    const matches = p => (st.activeCategory === 'all' || p.cat === st.activeCategory) && (st.activeYear === 'all' || p.date.slice(0,4) === st.activeYear);
+    const filtered = PHOTOS.filter(matches);
+    const visible = filtered.slice(0, st.visibleCount);
+
+    const catBase = st.activeYear === 'all' ? PHOTOS : PHOTOS.filter(p => p.date.slice(0,4) === st.activeYear);
+    const catCounts = {};
+    catBase.forEach(p => { catCounts[p.cat] = (catCounts[p.cat] || 0) + 1; });
+    const catOrder = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]);
+    const categories = [{ id:'all', label:'全部 ' + catBase.length, cls: st.activeCategory==='all' ? 'chip on' : 'chip',
+      onClick: () => this.setState({ activeCategory:'all', visibleCount:18 }) }]
+      .concat(catOrder.map(c => ({ id:c, label:(CAT_LABEL[c]||c) + ' ' + catCounts[c], cls: st.activeCategory===c ? 'chip on' : 'chip',
+        onClick: () => this.setState({ activeCategory:c, visibleCount:18 }) })));
+
+    const yrBase = st.activeCategory === 'all' ? PHOTOS : PHOTOS.filter(p => p.cat === st.activeCategory);
+    const yrCounts = {};
+    yrBase.forEach(p => { const y = p.date.slice(0,4); yrCounts[y] = (yrCounts[y] || 0) + 1; });
+    const yrOrder = Object.keys(yrCounts).sort((a,b) => b.localeCompare(a));
+    const years = [{ id:'all', label:'全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip',
+      onClick: () => this.setState({ activeYear:'all', visibleCount:18 }) }]
+      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip',
+        onClick: () => this.setState({ activeYear:y, visibleCount:18 }) })));
+
+    const decorate = (p, big) => {
+      const rot = ((p.id * 53) % 9) - 4;
+      const gx = (p.id % 2 === 0) ? -16 - (p.id % 3) * 4 : 16 + (p.id % 3) * 4;
+      return { ...p,
+        wrapStyle: 'flex:none;width:' + (big?152:128) + 'px;transform:rotate(' + rot + 'deg)',
+        garlandWrap: 'position:relative;z-index:1;width:min(76vw,320px);margin:0 0 30px;transform:translateX(' + gx + 'px) rotate(' + rot + 'deg)',
+        slotId: 'photo-' + p.id,
+        dateLabel: p.date.slice(0,7).replace('-','·'),
+        catLabel: CAT_LABEL[p.cat] || p.cat };
+    };
+
+    return {
+      categories, years,
+      lineFront: visible.filter((_,i) => i % 3 === 0).map(p => decorate(p, true)),
+      lineMid: visible.filter((_,i) => i % 3 === 1).map(p => decorate(p, false)),
+      lineBack: visible.filter((_,i) => i % 3 === 2).map(p => decorate(p, false)),
+      visibleAll: visible.map(p => decorate(p, true)),
+      filteredN: filtered.length,
+      visibleN: visible.length,
+      hasMore: st.visibleCount < filtered.length,
+      remaining: filtered.length - visible.length,
+      loadMore: () => this.setState(s => ({ visibleCount: s.visibleCount + 18 }))
+    };
+  }
+}
+</script>
+</body>
+</html>

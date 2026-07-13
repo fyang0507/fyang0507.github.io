@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<script>(function(){var r=document.documentElement;var l=localStorage.getItem('fy-lang')||'zh';r.classList.remove('dark');r.classList.add(l==='zh'?'lang-zh':'lang-en');r.setAttribute('lang',l);})();</script>
+<style>
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  :root{
+    --paper:#FBF6EC; --paper2:#F3ECDD; --ink:#33302B; --soft:#6d6559;
+    --pencil:#938979; --mark:#D9695A; --line:#E4DAC7;
+    --card-shadow:0 1px 2px rgba(60,50,35,.05),0 10px 26px rgba(60,50,35,.06);
+  }
+  html.dark{
+    --paper:#1E1913; --paper2:#282018; --ink:#EFE5D3; --soft:#b0a591;
+    --pencil:#8f8471; --mark:#EE8E72; --line:#37301f;
+    --card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Fraunces",Georgia,serif;transition:background .3s,color .3s}
+  html.lang-zh body{font-family:"Noto Serif SC",serif}
+  a{color:inherit;text-decoration:none}
+  a:hover{color:var(--mark)}
+  html.lang-zh .en{display:none!important} html.lang-en .zh{display:none!important}
+  .display{font-family:"Fraunces",serif} html.lang-zh .display{font-family:"DingTalk JinBuTi",serif;font-weight:400}
+  .hand{font-family:"Caveat",cursive} html.lang-zh .hand{font-family:"MuyaoPleased",cursive}
+  .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em} html.lang-zh .util{font-family:"Noto Sans SC",sans-serif;letter-spacing:.02em}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  html.dark body::before{mix-blend-mode:screen;opacity:.03}
+  svg .stroke{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .btn{border:1.5px solid var(--line);background:var(--paper2);color:var(--soft);
+    height:36px;min-width:36px;padding:0 12px;border-radius:999px;cursor:pointer;font-size:13px;
+    font-family:"IBM Plex Mono",monospace;display:grid;place-items:center}
+  .btn:hover{color:var(--mark);border-color:var(--mark)}
+  .im-l{display:block!important} .im-d{display:none!important}
+  html.dark .im-l{display:none!important} html.dark .im-d{display:block!important}
+  @keyframes fyDraw{to{stroke-dashoffset:0}}
+  @keyframes fyFade{from{opacity:0}to{opacity:1}}
+  @keyframes fyRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fyRiseR{from{opacity:0;transform:translateY(20px) rotate(var(--rot,0deg))}to{opacity:1;transform:translateY(0) rotate(var(--rot,0deg))}}
+  @keyframes fyOnsen{0%{transform:translateY(12px);opacity:0}28%{opacity:.4}60%{opacity:.22}100%{transform:translateY(-24px);opacity:0}}
+  .steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;opacity:0;animation:fyOnsen 3.1s ease-in-out infinite}
+  .steam .st2{animation-delay:1.05s}
+  .steam .st3{animation-delay:2.1s}
+  .hot{position:absolute;z-index:5}
+  .bookhold{position:absolute;z-index:2;pointer-events:none;animation:fyFade .9s ease .15s both}
+  .bookface{position:absolute;inset:0;background-size:600% 100%;background-position:0 0;background-repeat:no-repeat}
+  .scene:has(.bookwrap:hover) .bookface,.scene:has(.nav-write:hover) .bookface{animation:fyBook 1.15s steps(1,end) infinite}
+  .frameface{position:absolute;z-index:2;pointer-events:none;animation:fyFade .9s ease .15s both}
+  .fframe{position:absolute;inset:0;background-size:400% 100%;background-position:0 0;background-repeat:no-repeat}
+  @keyframes fyExp{0%{background-position:0% 0}25%{background-position:33.3333% 0}50%{background-position:66.6667% 0}75%,100%{background-position:100% 0}}
+  .scene:has(.framewrap:hover) .fframe,.scene:has(.nav-about:hover) .fframe{animation:fyExp 2.8s steps(1,end) infinite}
+  @keyframes fyBook{0%{background-position:0% 0}16.6%{background-position:20% 0}33.3%{background-position:40% 0}50%{background-position:60% 0}66.6%{background-position:80% 0}83.3%,100%{background-position:100% 0}}
+  .sceneflash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:6;background:radial-gradient(circle at 76.8% 71%,rgba(255,255,255,1) 0%,rgba(255,255,255,.7) 20%,rgba(255,255,255,0) 58%)}
+  .scene:has(.camwrap:hover) .sceneflash,.scene:has(.nav-shoot:hover) .sceneflash{animation:fyFlash .9s linear both}
+  @keyframes fyFlash{0%{opacity:0}5%{opacity:1}12%{opacity:.12}18%{opacity:.85}45%,100%{opacity:0}}
+  .fy-hold .drawn *,.fy-hold header *,.fy-hold .mnav,.fy-hold .util{animation-play-state:paused!important}
+  @keyframes fyLd{0%,15%{opacity:.1}30%,55%{opacity:1}70%,100%{opacity:.1}}
+  .oload span{animation:fyLd 1.3s linear infinite}
+  .oload span:nth-child(2){animation-delay:.22s}
+  .oload span:nth-child(3){animation-delay:.44s}
+  .kacha{position:absolute;left:79%;top:54.5%;font-size:2.7cqw;color:var(--mark);z-index:7;pointer-events:none;opacity:0;white-space:nowrap}
+  .scene:has(.camwrap:hover) .kacha,.scene:has(.nav-shoot:hover) .kacha{animation:fyKacha 1s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes fyKacha{0%{opacity:0;transform:translateY(8px) scale(.55) rotate(-5deg)}14%{opacity:1;transform:translateY(0) scale(1.08) rotate(-2deg)}30%{transform:scale(1) rotate(-2deg)}62%{opacity:1}100%{opacity:0;transform:translateY(-16px) rotate(-2deg)}}
+  .cstar{opacity:0;pointer-events:none}
+  .camwrap:hover .cstar,.scene:has(.nav-shoot:hover) .cstar{animation:fyStar .7s ease-out both}
+  @keyframes fyStar{0%{opacity:0;transform:scale(.3)}18%{opacity:1}100%{opacity:0;transform:scale(1.5)}}
+  @media (hover:none){
+    .bookface{animation:fyBookM 7s steps(1,end) 2.5s infinite}
+    .fframe{animation:fyExpM 9s steps(1,end) 3.5s infinite}
+    .sceneflash{animation:fyFlashM 9s linear 4s infinite}
+    .cstar{animation:fyStarM 9s linear 4s infinite}
+    .kacha{animation:fyKachaM 9s linear 4s infinite}
+  }
+  @keyframes fyExpM{0%,40%{background-position:0% 0}44%{background-position:33.3333% 0}56%{background-position:66.6667% 0}68%{background-position:100% 0}80%,100%{background-position:0% 0}}
+  @keyframes fyBookM{0%{background-position:0% 0}9%{background-position:20% 0}15%{background-position:40% 0}21%{background-position:60% 0}27%{background-position:80% 0}33%{background-position:100% 0}40%,100%{background-position:0% 0}}
+  @keyframes fyFlashM{0%,40%{opacity:0}42%{opacity:1}44%{opacity:.15}46%{opacity:.8}55%,100%{opacity:0}}
+  @keyframes fyKachaM{0%,40%{opacity:0;transform:translateY(8px) scale(.55) rotate(-5deg)}43%{opacity:1;transform:translateY(0) scale(1.05) rotate(-2deg)}52%{opacity:1;transform:scale(1) rotate(-2deg)}58%,100%{opacity:0;transform:translateY(-16px) rotate(-2deg)}}
+  @keyframes fyStarM{0%,40%{opacity:0;transform:scale(.3)}44%{opacity:1}54%,100%{opacity:0;transform:scale(1.5)}}
+  @keyframes fyCaret{0%,45%{opacity:1}50%,95%{opacity:0}}
+  .drawn .stroke{stroke-dasharray:1200;stroke-dashoffset:1200;animation:fyDraw .9s ease-out both}
+  .drawn .d2 .stroke{animation-delay:.25s}
+  .drawn .d3 .stroke{animation-delay:.32s}
+  .drawn .d4 .stroke{animation-delay:.4s}
+  .drawn .d5 .stroke{animation-delay:.48s}
+  .rise{animation:fyRise .8s cubic-bezier(.2,.7,.2,1) both}
+  .riser{animation:fyRiseR .8s cubic-bezier(.2,.7,.2,1) both}
+  .navnote{cursor:pointer;position:absolute;z-index:5}
+  .navnote .lbl{font-size:clamp(18px,3cqw,36px);color:var(--ink);display:inline-block;white-space:nowrap}
+  .navnote:hover .lbl{color:var(--mark)}
+  .mnav{display:none}
+  @media (max-width:760px){
+    .navnote,.arrows{display:none!important}
+    .mnav{display:flex!important}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .drawn .stroke,.rise,.riser{animation:none!important;stroke-dasharray:none!important;stroke-dashoffset:0!important;opacity:1!important}
+    .steam path,.bookface,.fframe,.sceneflash,.cstar,.kacha{animation:none!important}
+  }
+</style>
+</helmet>
+
+<div data-screen-label="home-v2" ref="{{ rootRef }}" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px">
+
+  <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;position:relative;z-index:6">
+    <div class="riser" style="--rot:-1deg;transform:rotate(-1deg);animation-delay:0s">
+      <div class="display" style="display:inline-block;white-space:nowrap;border:2.4px solid var(--ink);padding:8px 20px;font-size:30px;font-weight:600;letter-spacing:.02em;background:var(--paper)">Fred Yang · <b style="color:var(--mark);font-weight:600">杨</b></div>
+      <div class="hand rise" style="margin-top:10px;font-size:21px;color:var(--soft);animation-delay:.12s">
+        <span class="en">・essayist in 中文 &amp; EN　・builds AI end to end　・open to consulting · FDE</span>
+        <span class="zh">・写字的人 —— 中文 &amp; EN　・从头到尾造 AI　・开放咨询 · FDE</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="drawn scene" style="position:relative;width:min(1180px,100%,calc((100vh - 240px)*1.3333));margin-top:4px;container-type:inline-size">
+
+    <!-- the scene -->
+    <img class="im-l" src="./assets/desk-scene2-light.png" alt="A hand-drawn desk: laptop, a mug, a plant, a film camera" style="display:block;width:100%;position:relative;z-index:1;animation:fyFade .9s ease .15s both">
+    <img class="im-d" src="./assets/desk-scene2-dark.png" alt="A hand-drawn desk in dark ink" style="display:block;width:100%;position:relative;z-index:1;animation:fyFade .9s ease .15s both">
+
+    <!-- book flip overlay (frame 1 matches the scene's book angle) -->
+    <div class="bookhold" style="left:36.04%;top:61.50%;width:21.34%;aspect-ratio:462/355">
+      <div class="bookface im-l" style="background-image:url('./assets/book-flip2-light.png')"></div>
+      <div class="bookface im-d" style="background-image:url('./assets/book-flip2-dark.png')"></div>
+    </div>
+    <!-- picture-frame expression overlay: 0 neutral · 1 blink · 2 smile · 3 surprised -->
+    <div class="frameface" ref="{{ frameRef }}" style="left:55.23%;top:33.03%;width:15.54%;aspect-ratio:616/577" aria-hidden="true">
+      <div class="fframe im-l" style="background-image:url('./assets/frame-exp3-light.png')"></div>
+      <div class="fframe im-d" style="background-image:url('./assets/frame-exp3-dark.png')"></div>
+    </div>
+
+    <!-- annotation arrows (image coordinate space) -->
+    <svg class="arrows" viewBox="0 0 1448 1086" style="position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none" aria-hidden="true">
+      <g class="d2">
+        <path class="stroke" d="M500 1035 Q620 1010 640 935" stroke-width="2"></path>
+        <path class="stroke" d="M623 957 l17 -22 5 26" stroke-width="2"></path>
+      </g>
+      <g class="d3">
+        <path class="stroke" d="M430 110 Q480 140 498 240" stroke-width="2"></path>
+        <path class="stroke" d="M483 219 l15 21 7 -25" stroke-width="2"></path>
+      </g>
+      <g class="d4">
+        <path class="stroke" d="M1042 108 Q1035 225 952 342" stroke-width="2"></path>
+        <path class="stroke" d="M942 320 l10 24 18 -14" stroke-width="2"></path>
+      </g>
+      <g class="d5">
+        <path class="stroke" d="M960 1035 Q1030 1000 1040 903" stroke-width="2"></path>
+        <path class="stroke" d="M1026 925 l14 -22 9 25" stroke-width="2"></path>
+      </g>
+    </svg>
+
+    <!-- annotation notes -->
+    <a class="navnote nav-write" href="Writing.dc.html" style="left:27%;top:96%">
+      <span class="lbl hand rise" style="transform:rotate(-1.5deg);animation-delay:.2s"><span class="en">writing 在写</span><span class="zh">在写 writing</span></span>
+    </a>
+    <a class="navnote nav-build" href="Building.dc.html" style="left:23.5%;top:5%">
+      <span class="lbl hand rise" style="transform:rotate(-2deg);animation-delay:.26s"><span class="en">building 在造</span><span class="zh">在造 building</span></span>
+    </a>
+    <a class="navnote nav-about" href="About.dc.html" style="left:66.5%;top:3.6%">
+      <span class="lbl hand rise" style="transform:rotate(-2deg);animation-delay:.32s"><span class="en">about 关于</span><span class="zh">关于 about</span></span>
+    </a>
+    <a class="navnote nav-shoot" href="Gallery.dc.html" style="left:60%;top:96%">
+      <span class="lbl hand rise" style="transform:rotate(-1deg);animation-delay:.38s"><span class="en">shooting 在拍</span><span class="zh">在拍 shooting</span></span>
+    </a>
+
+    <!-- onsen steam over the mug -->
+    <svg class="steam" viewBox="0 0 100 110" style="position:absolute;left:26.3%;top:46.5%;width:6.8%;z-index:2;overflow:visible" aria-hidden="true">
+      <path class="st1" d="M25 92 q9 -11 0 -22 q-9 -11 0 -22"></path>
+      <path class="st2" d="M52 100 q10 -12 0 -24 q-10 -12 0 -24 q7 -9 3 -16"></path>
+      <path class="st3" d="M79 92 q9 -11 0 -22 q-9 -11 0 -22"></path>
+    </svg>
+
+    <!-- laptop: hover hotspot + handwritten typing on the blank screen -->
+    <div class="hot" ref="{{ lapRef }}" style="left:20%;top:23%;width:31%;height:32%"></div>
+    <div style="position:absolute;left:25.8%;top:28%;width:23%;font-family:'IBM Plex Mono',monospace;letter-spacing:.02em;font-size:1.75cqw;line-height:1.7;color:var(--soft);z-index:2;pointer-events:none;opacity:0;animation:fyFade .5s ease .35s both;white-space:pre-line"><span ref="{{ typeRef }}"></span><span style="display:inline-block;width:.55em;height:1.05em;background:var(--mark);vertical-align:-.15em;margin-left:2px;animation:fyCaret 1.15s infinite" aria-hidden="true"></span></div>
+
+    <!-- the bird, alive on the tabletop -->
+    <div ref="{{ birdRef }}" style="position:absolute;left:14%;top:67.5%;width:7%;aspect-ratio:308/317;z-index:3;transition:left .1s linear;animation:fyRise .5s cubic-bezier(.2,.7,.2,1) .35s backwards" role="img" aria-label="A small yellow bird hopping on the desk">
+      <div class="bframe im-l" style="position:absolute;inset:0;background-image:url('./assets/bird-strip6-light.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat"></div>
+      <div class="bframe im-d" style="position:absolute;inset:0;background-image:url('./assets/bird-strip6-dark.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat"></div>
+    </div>
+
+    <!-- hover hotspots & object animations -->
+    <div class="hot bookwrap" style="left:36%;top:62%;width:21%;height:22%"></div>
+    <div class="hot framewrap" style="left:56.5%;top:33%;width:12.5%;height:19%"></div>
+    <div class="hot camwrap" style="left:68.5%;top:63%;width:18%;height:18%">
+      <svg class="cstar" viewBox="0 0 40 40" style="position:absolute;left:34%;top:43%;width:24%" aria-hidden="true">
+        <g fill="none" stroke="var(--mark)" stroke-width="3" stroke-linecap="round">
+          <path d="M20 2 V12"></path><path d="M20 28 V38"></path>
+          <path d="M2 20 H12"></path><path d="M28 20 H38"></path>
+          <path d="M8.5 8.5 L14 14"></path><path d="M26 26 L31.5 31.5"></path>
+          <path d="M31.5 8.5 L26 14"></path><path d="M14 26 L8.5 31.5"></path>
+        </g>
+      </svg>
+    </div>
+    <div class="sceneflash" aria-hidden="true"></div>
+    <div class="kacha hand" aria-hidden="true"><span class="zh">咔嚓 click!</span><span class="en">click! 咔嚓</span> ✦</div>
+
+    <span style="position:absolute;left:56%;top:12%;color:var(--mark);font-size:clamp(12px,1.7cqw,20px);z-index:2;opacity:0;animation:fyFade .5s ease .55s both" aria-hidden="true">✦</span>
+  </div>
+
+  <!-- mobile nav -->
+  <nav class="mnav hand" style="width:min(1180px,100%);flex-wrap:wrap;gap:8px 26px;font-size:24px;margin-top:14px" aria-label="site">
+    <a href="Writing.dc.html" style="border-bottom:2px solid var(--mark)"><span class="en">writing 在写</span><span class="zh">在写 writing</span></a>
+    <a href="Building.dc.html" style="border-bottom:2px solid var(--mark)"><span class="en">building 在造</span><span class="zh">在造 building</span></a>
+    <a href="Gallery.dc.html" style="border-bottom:2px solid var(--mark)"><span class="en">shooting 在拍</span><span class="zh">在拍 shooting</span></a>
+    <a href="About.dc.html" style="border-bottom:2px solid var(--mark)"><span class="en">about 关于</span><span class="zh">关于 about</span></a>
+  </nav>
+
+  <div class="util rise" style="width:min(1180px,100%);font-size:12.5px;color:var(--pencil);margin-top:14px;animation-delay:.5s">fig.01 — <span class="en">a life, annotated</span><span class="zh">被注释的生活</span></div>
+
+  <!-- iris-in opener overlay -->
+  <div ref="{{ openRef }}" onClick="{{ skipOpener }}" style="position:fixed;inset:0;z-index:300;display:none;cursor:pointer">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;display:block" aria-hidden="true">
+      <defs>
+        <mask id="fyIrisMask">
+          <rect x="0" y="0" width="100%" height="100%" fill="white"></rect>
+          <circle class="ihole" cx="-200" cy="-200" r="0" fill="black"></circle>
+        </mask>
+      </defs>
+      <rect x="0" y="0" width="100%" height="100%" fill="#17120C" mask="url(#fyIrisMask)"></rect>
+    </svg>
+    <div class="oflock" data-oflock="1" style="position:absolute;inset:0;overflow:hidden" aria-hidden="true"></div>
+    <div class="hand" data-otag="1" style="position:absolute;left:42px;top:34px;font-size:23px;letter-spacing:.16em;color:#EFE5D3;opacity:0">日常 · ep.01</div>
+    <div class="oload util" data-oload="1" style="position:absolute;left:50%;top:56%;transform:translateX(-50%);font-size:14px;letter-spacing:.34em;color:#EFE5D3;opacity:.75">loading<span>.</span><span>.</span><span>.</span></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;opener&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;session&quot;,&quot;always&quot;,&quot;off&quot;],&quot;default&quot;:&quot;always&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;开场 opener&quot;}}">
+class Component extends DCLogic {
+  birdRef = React.createRef();
+  lapRef = React.createRef();
+  typeRef = React.createRef();
+  frameRef = React.createRef();
+  rootRef = React.createRef();
+  openRef = React.createRef();
+  componentDidMount() {
+    this.apply(false);
+    this._alive = true;
+    var self = this;
+    var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // laptop: idle = blinking caret only; typing on hover (laptop or 在造 note)
+    var typeEls = [this.lapRef.current].concat([].slice.call(document.querySelectorAll('.nav-build'))).filter(Boolean);
+    typeEls.forEach(function (el) {
+      el.addEventListener('mouseenter', function () { self.type(); });
+      el.addEventListener('mouseleave', function () { self.stopType(); });
+    });
+    if (matchMedia('(hover: none)').matches) this._typeLoop = setInterval(function () { self.type(); }, 8000);
+    // picture-frame expressions: 0 neutral · 1 blink · 2 smile · 3 surprised
+    var setF = function (i) {
+      var f = self.frameRef.current;
+      if (f) f.querySelectorAll('.fframe').forEach(function (el) { el.style.backgroundPosition = (i * 100 / 3) + '% 0'; });
+    };
+    this._surprised = false;
+    var blink = function () {
+      if (!self._alive) return;
+      self._blinkT = setTimeout(function () {
+        if (self._alive && !self._surprised) {
+          setF(1);
+          setTimeout(function () { if (!self._surprised) setF(0); }, 170);
+        }
+        blink();
+      }, 3200 + Math.random() * 3800);
+    };
+    if (!rm) blink();
+    [].slice.call(document.querySelectorAll('.camwrap,.nav-shoot')).forEach(function (el) {
+      el.addEventListener('mouseenter', function () {
+        self._surprised = true; setF(3);
+        clearTimeout(self._supT);
+        self._supT = setTimeout(function () { self._surprised = false; setF(0); }, 900);
+      });
+    });
+    if (!rm) this.birdLoop();
+    // iris-in opener
+    var mode = this.props.opener || 'session';
+    var played = false;
+    try { played = sessionStorage.getItem('fy-opener') === '1'; } catch (e) {}
+    if (mode !== 'off' && !rm && (mode === 'always' || !played)) this.runOpener();
+  }
+  runOpener() {
+    var self = this;
+    var ov = this.openRef.current, root = this.rootRef.current, bird = this.birdRef.current;
+    if (!ov || !root || !bird) return;
+    root.classList.add('fy-hold');
+    ov.style.display = 'block';
+    var W = window.innerWidth, H = window.innerHeight;
+    var hole = ov.querySelector('.ihole');
+    hole.setAttribute('cx', W / 2); hole.setAttribute('cy', H / 2);
+    var tag = ov.querySelector('[data-otag]');
+    tag.animate([{ opacity: 0 }, { opacity: .9 }], { duration: 500, delay: 200, fill: 'forwards' });
+    // Nichijou-style loading: a staggered line of birds hops across the bottom of the black screen.
+    // Fully decoupled from the desk bird — no landing handoff to mismatch.
+    var flock = ov.querySelector('[data-oflock]');
+    flock.innerHTML = '';
+    var groundY = H * .52;
+    var sprites = [];
+    var N = 5;
+    for (var i = 0; i < N; i++) {
+      var outer = document.createElement('div');
+      outer.style.cssText = 'position:absolute;left:0;top:' + (groundY - 44) + 'px;width:46px;height:45px;will-change:transform';
+      var inner = document.createElement('div');
+      inner.style.cssText = 'width:100%;height:100%;transform:scaleX(-1);background-image:url(./assets/bird-strip6-dark.png);background-size:600% 100%;background-position:0 0;background-repeat:no-repeat';
+      outer.appendChild(inner);
+      flock.appendChild(outer);
+      var D = 3400 + i * 120;                      // slight speed spread
+      outer.animate([
+        { transform: 'translateX(-70px)' },
+        { transform: 'translateX(' + (W + 70) + 'px)' }
+      ], { duration: D, delay: i * 300, easing: 'linear', fill: 'both' });
+      // small hop bounce, phase-shifted per bird
+      inner.animate([
+        { marginTop: '0px' }, { marginTop: '-6px' }, { marginTop: '0px' }
+      ], { duration: 360, delay: i * 90, iterations: Infinity, easing: 'ease-in-out' });
+      sprites.push({ el: inner, phase: i });
+    }
+    // 6-frame hop cycle, phase-shifted so the line ripples
+    var tick = 0;
+    this._opFlap = setInterval(function () {
+      tick++;
+      sprites.forEach(function (s) {
+        var f = (tick + s.phase) % 6;
+        s.el.style.backgroundPosition = (f * 20) + '% 0';
+      });
+    }, 95);
+    this._opT = [];
+    this._opT.push(setTimeout(function () {
+      var R = Math.hypot(W, H) * .8;
+      hole.animate([{ r: '0px' }, { r: R + 'px' }], { duration: 1150, easing: 'cubic-bezier(.6,.05,.25,1)', fill: 'forwards' });
+      tag.animate([{ opacity: .9 }, { opacity: 0 }], { duration: 420, delay: 480, fill: 'forwards' });
+      var ld = ov.querySelector('[data-oload]');
+      if (ld) ld.animate([{ opacity: .75 }, { opacity: 0 }], { duration: 300, delay: 300, fill: 'forwards' });
+      flock.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, delay: 500, fill: 'forwards' });
+    }, 2050));
+    this._opT.push(setTimeout(function () { self.endOpener(); }, 3400));
+  }
+  endOpener() {
+    (this._opT || []).forEach(clearTimeout);
+    clearInterval(this._opFlap);
+    var ov = this.openRef.current, root = this.rootRef.current;
+    if (ov) ov.style.display = 'none';
+    if (root) root.classList.remove('fy-hold');
+    try { sessionStorage.setItem('fy-opener', '1'); } catch (e) {}
+  }
+  componentWillUnmount() {
+    this._alive = false;
+    clearInterval(this._typer);
+    clearInterval(this._typeLoop);
+    clearTimeout(this._blinkT);
+    clearTimeout(this._supT);
+    (this._opT || []).forEach(clearTimeout);
+    clearInterval(this._opFlap);
+  }
+  stopType() {
+    clearInterval(this._typer);
+    var el = this.typeRef.current;
+    if (el) el.textContent = '';
+  }
+  type() {
+    var el = this.typeRef.current;
+    if (!el) return;
+    clearInterval(this._typer);
+    var txt = '$ make life\n> building agents…\n> writing essays…';
+    var i = 0;
+    el.textContent = '';
+    this._typer = setInterval(() => {
+      i++;
+      el.textContent = txt.slice(0, i);
+      if (i >= txt.length) clearInterval(this._typer);
+    }, 70);
+  }
+  birdLoop() {
+    var bird = this.birdRef.current;
+    if (!bird) return;
+    var frames = bird.querySelectorAll('.bframe');
+    var setF = function (i) { frames.forEach(function (f) { f.style.backgroundPosition = (i * 20) + '% 0'; }); };
+    var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+    var self = this, x = 14, dir = -1;
+    (async function () {
+      await sleep(2000);
+      while (self._alive) {
+        await sleep(500 + Math.random() * 1200);
+        if (x < 8) dir = 1; else if (x > 24) dir = -1; else if (Math.random() < .45) dir = -dir;
+        bird.style.transform = dir > 0 ? 'scaleX(-1)' : '';
+        var hops = 2 + Math.floor(Math.random() * 3);
+        for (var h = 0; h < hops && self._alive; h++) {
+          var seq = [[1, 90, 0], [2, 95, .3], [3, 105, .4], [4, 90, .3], [5, 70, 0], [0, 90, 0]];
+          for (var s = 0; s < seq.length; s++) {
+            setF(seq[s][0]);
+            x += seq[s][2] * 1.5 * dir;
+            bird.style.left = x + '%';
+            await sleep(seq[s][1]);
+          }
+          await sleep(130);
+        }
+      }
+    })();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.lang !== this.props.lang) {
+      this.apply(true);
+    }
+  }
+  apply(fromTweaks) {
+    var r = document.documentElement;
+    var l = fromTweaks ? (this.props.lang || 'zh') : (localStorage.getItem('fy-lang') || this.props.lang || 'zh');
+    r.classList.toggle('lang-zh', l === 'zh');
+    r.classList.toggle('lang-en', l !== 'zh');
+    r.classList.remove('dark');
+    r.setAttribute('lang', l);
+    if (fromTweaks) {
+      localStorage.setItem('fy-lang', l);
+    }
+  }
+  renderVals() {
+    return {
+      birdRef: this.birdRef,
+      lapRef: this.lapRef,
+      typeRef: this.typeRef,
+      frameRef: this.frameRef,
+      rootRef: this.rootRef,
+      openRef: this.openRef,
+      skipOpener: () => this.endOpener(),
+      toggleLang: () => {},
+      toggleTheme: () => {}
+    };
+  }
+}
+</script>
+</body>
+</html>

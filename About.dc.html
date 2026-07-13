@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
+  a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
+  .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
+  .hand{font-family:"MuyaoPleased","Caveat",cursive}
+  .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @keyframes aRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .ar{animation:aRise .5s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes chuuniPulse{0%{filter:drop-shadow(0 0 0 rgba(217,105,90,0))}30%{filter:drop-shadow(0 0 60px rgba(217,105,90,.9))}100%{filter:drop-shadow(0 0 20px rgba(217,105,90,.4))}}
+  @keyframes cardShake{0%,56%,100%{transform:translate(0,0) rotate(0deg)}58%{transform:translate(-7px,1px) rotate(-2.4deg)}60%{transform:translate(6px,-1px) rotate(1.8deg)}62%{transform:translate(-5px,1px) rotate(-1.2deg)}64%{transform:translate(3px,0) rotate(.7deg)}66%{transform:translate(-1.5px,0) rotate(-.3deg)}68%{transform:translate(0,0) rotate(0deg)}}
+  @keyframes birdFly{0%,50%{transform:translateX(-200px) scaleX(-1);opacity:0}55%{opacity:1}58%{transform:translateX(0px) scaleX(-1);opacity:1}80%{transform:translateX(0px) scaleX(-1);opacity:1}85%{transform:translateX(0px) scaleX(1);opacity:1}95%{transform:translateX(-200px) scaleX(1);opacity:0}100%{transform:translateX(-200px) scaleX(-1);opacity:0}}
+  @keyframes birdFlap{0%,49%{background-position:0 0}50%,100%{background-position:100% 0}}
+  @media (prefers-reduced-motion:reduce){.ar{animation:none!important;opacity:1!important}}
+</style>
+</helmet>
+
+<div data-screen-label="about" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
+
+  <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+    <div class="ar" style="position:relative;transform:rotate(-1deg)">
+      <img src="./assets/sticker-peek.png" alt="" aria-hidden="true" style="position:absolute;left:-24px;bottom:-16px;width:50px;z-index:0">
+      <a href="Home v2.dc.html" class="display" style="position:relative;z-index:1;display:inline-block;white-space:nowrap;border:2.4px solid var(--ink);padding:8px 20px;font-size:26px;background:var(--paper)">Fred Yang · <b style="color:var(--mark);font-weight:600">杨</b></a>
+      <div class="hand ar" style="margin-top:10px;font-size:21px;color:var(--soft);animation-delay:.08s"><a href="Home v2.dc.html">← 回到桌面 back to the desk</a></div>
+    </div>
+    <div class="util ar" style="font-size:12.5px;color:var(--pencil);padding-top:10px;animation-delay:.16s">field guide · vol. 01</div>
+  </header>
+
+  <div style="width:min(1180px,100%);margin-top:40px;display:flex;flex-direction:column;align-items:center">
+    <div style="width:100%;display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
+      <h1 class="display ar" style="font-size:clamp(44px,6vw,68px);line-height:1.35;white-space:nowrap;flex-shrink:0">关于<span style="color:var(--mark)">。</span></h1>
+      <div class="hand ar" style="font-size:clamp(19px,2.2vw,24px);color:var(--soft);padding-bottom:8px;animation-delay:.1s">一张卡片，两种形态 <span style="color:var(--mark)">✦</span></div>
+    </div>
+
+    <div class="ar" style="margin-top:38px;animation-delay:.18s;display:flex;flex-direction:column;align-items:center">
+      <div class="util" style="font-size:11px;color:var(--pencil);letter-spacing:.14em">FIELD GUIDE · SET 01 · 编号 001</div>
+
+      <div style="perspective:1600px;margin-top:24px;position:relative">
+
+        <!-- sticker: a bird flies in, bumps the card, sits a while, flies off, loops -->
+        <div style="position:absolute;bottom:-12px;left:-48px;width:58px;height:56px;z-index:6;animation:birdFly 6s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(60,50,35,.35))">
+          <div style="width:100%;height:100%;background-image:url('./assets/bird-strip-light.png');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;animation:birdFlap .28s steps(1) infinite"></div>
+        </div>
+
+        <!-- shake layer: 2D jitter only, triggered by the sticker impact -->
+        <div style="animation:cardShake 6s ease-in-out infinite">
+
+          <!-- reveal layer: 3D tilt, driven by JS state via hover -->
+          <div style="width:360px;height:522px;position:relative;transform-style:preserve-3d;transform:{{ cardTilt }};filter:{{ cardGlow }};transition:transform .5s ease, filter .6s ease;cursor:pointer" onMouseEnter="{{ onEnter }}" onMouseLeave="{{ onLeave }}">
+
+            <!-- FRONT: day form -->
+            <div style="position:absolute;inset:0;border-radius:14px;border:2.4px solid #33302B;background:#FBF6EC;padding:26px 26px 22px;box-shadow:0 26px 50px rgba(60,50,35,.3),0 2px 0 rgba(255,255,255,.6) inset;opacity:{{ frontOpacity }};backface-visibility:hidden;transform:{{ frontRotate }};transition:transform .6s ease, opacity .5s ease">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;position:relative">
+                <span class="util" style="font-size:11px;color:#938979">NO. 001</span>
+                <span class="util" style="font-size:10.5px;border:1px solid #33302B;border-radius:999px;padding:2px 9px">日间形态 · DAY</span>
+              </div>
+              <div style="margin-top:16px;display:flex;justify-content:center">
+                <img src="./assets/taku-sit-light.png" alt="Fred, illustrated, seated, holding a mug" style="width:148px">
+              </div>
+              <div style="text-align:center;margin-top:8px">
+                <div class="display" style="font-size:25px">杨 · Fred Yang</div>
+                <div style="font-style:italic;font-size:12.5px;color:#938979;margin-top:2px">Homo agentops, forma diurna</div>
+              </div>
+              <div style="margin-top:16px;border-top:1.5px dashed #E4DAC7;padding-top:13px;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:9px;font-size:12.5px"><span class="util" style="flex:none;width:70px;color:#938979">分布</span><span>办公室 · 视频会议 · 时区之间</span></div>
+                <div style="display:flex;gap:9px;font-size:12.5px"><span class="util" style="flex:none;width:70px;color:#938979">食性</span><span>咖啡因、日志、GitHub issues</span></div>
+                <div style="display:flex;gap:9px;font-size:12.5px"><span class="util" style="flex:none;width:70px;color:#938979">习性</span><span>把 agent 一行行搭起来，随手画架构图</span></div>
+                <div style="display:flex;gap:9px;font-size:12.5px"><span class="util" style="flex:none;width:70px;color:#938979">鸣叫声</span><span class="hand" style="color:#33302B;font-size:14px">"这个其实可以自动化"</span></div>
+                <div style="display:flex;gap:9px;font-size:12.5px"><span class="util" style="flex:none;width:70px;color:#938979">保护现状</span><span>open to consulting（工作日出没）</span></div>
+              </div>
+            </div>
+
+            <!-- BACK: night form / true form -->
+            <div style="position:absolute;inset:0;border-radius:14px;border:2.4px solid #D9695A;background:#1c1712;padding:24px 26px 20px;box-shadow:0 30px 60px rgba(0,0,0,.5),0 0 0 1px rgba(217,105,90,.3) inset;overflow:hidden;opacity:{{ backOpacity }};backface-visibility:hidden;transform:{{ backRotate }};transition:transform .6s ease, opacity .5s ease">
+              <svg viewBox="0 0 360 522" style="position:absolute;inset:0;width:100%;height:100%;opacity:.45" aria-hidden="true">
+                <g stroke="#D9695A" stroke-width="1">
+                  <path d="M180 240 L0 0 M180 240 L60 0 M180 240 L120 0 M180 240 L180 0 M180 240 L240 0 M180 240 L300 0 M180 240 L360 0 M180 240 L0 240 M180 240 L360 240 M180 240 L0 522 M180 240 L60 522 M180 240 L120 522 M180 240 L180 522 M180 240 L240 522 M180 240 L300 522 M180 240 L360 522"></path>
+                </g>
+              </svg>
+              <div style="position:relative;display:flex;justify-content:space-between;align-items:baseline">
+                <span class="util" style="font-size:11px;color:#D9695A">NO. 001-N</span>
+                <span class="util" style="font-size:10.5px;border:1px solid #D9695A;color:#D9695A;border-radius:999px;padding:2px 9px">夜间形态 · NIGHT</span>
+              </div>
+              <div class="hand" style="position:relative;text-align:center;margin-top:6px;font-size:23px;color:#D9695A;letter-spacing:.04em">真 ・ 形态解放</div>
+              <div class="util" style="position:relative;text-align:center;font-size:10.5px;color:#a89c86;margin-top:2px">分布 —— 书桌灯下 · 暗房 · 老城区街道</div>
+
+              <div style="position:relative;margin-top:10px;display:flex;justify-content:center;align-items:center;height:104px">
+                <img src="./assets/camera-light.png" alt="a small film camera" style="width:86px;filter:drop-shadow(0 0 20px rgba(217,105,90,.6))">
+              </div>
+              <div style="position:relative;text-align:center;margin-top:2px">
+                <div class="display" style="font-size:22px;color:#efe5d3">杨 · Fred Yang</div>
+                <div style="font-style:italic;font-size:11.5px;color:#a89c86;margin-top:2px">Homo agentops, forma nocturna</div>
+              </div>
+
+              <div style="position:relative;margin-top:14px;display:flex;flex-direction:column;gap:8px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:10px" class="util"><span style="color:#a89c86">感受力 FEEL</span><span style="color:#D9695A">92</span></div>
+                  <div style="height:5px;background:#3a3226;border-radius:3px;margin-top:3px"><div style="width:92%;height:100%;background:#D9695A;border-radius:3px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:10px" class="util"><span style="color:#a89c86">拖延值 DELAY</span><span style="color:#D9695A">78</span></div>
+                  <div style="height:5px;background:#3a3226;border-radius:3px;margin-top:3px"><div style="width:78%;height:100%;background:#D9695A;border-radius:3px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:10px" class="util"><span style="color:#a89c86">重写次数 REWRITE</span><span style="color:#D9695A">40+</span></div>
+                  <div style="height:5px;background:#3a3226;border-radius:3px;margin-top:3px"><div style="width:85%;height:100%;background:#D9695A;border-radius:3px"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:10px" class="util"><span style="color:#a89c86">显影耐心 PATIENCE</span><span style="color:#D9695A">65</span></div>
+                  <div style="height:5px;background:#3a3226;border-radius:3px;margin-top:3px"><div style="width:65%;height:100%;background:#D9695A;border-radius:3px"></div></div>
+                </div>
+              </div>
+              <div class="hand" style="position:relative;text-align:center;margin-top:14px;font-size:12px;color:#a89c86">保护现状 —— 偶尔出没，需预约（笑）</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="util" style="margin-top:24px;font-size:11px;color:var(--pencil)">图鉴收录中 · 以后的形态继续加在同一张卡上——不用再开一本图鉴</div>
+    </div>
+
+    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:48px">fig.04 — the entry, hovered</div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { revealed: false };
+  renderVals() {
+    const revealed = this.state.revealed;
+    return {
+      onEnter: () => this.setState({ revealed: true }),
+      onLeave: () => this.setState({ revealed: false }),
+      cardTilt: revealed ? 'rotateX(1deg) rotateY(4deg) scale(1.035)' : 'rotateX(6deg) rotateY(-10deg)',
+      cardGlow: revealed ? 'drop-shadow(0 0 34px rgba(217,105,90,.55))' : 'drop-shadow(0 0 0 rgba(217,105,90,0))',
+      frontRotate: revealed ? 'perspective(1400px) rotateY(180deg)' : 'perspective(1400px) rotateY(0deg)',
+      backRotate: revealed ? 'perspective(1400px) rotateY(0deg)' : 'perspective(1400px) rotateY(-180deg)',
+      frontOpacity: revealed ? 0 : 1,
+      backOpacity: revealed ? 1 : 0
+    };
+  }
+}
+</script>
+</body>
+</html>
