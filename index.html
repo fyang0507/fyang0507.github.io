@@ -52,7 +52,8 @@
   .steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;opacity:0;animation:fyOnsen 3.1s ease-in-out infinite}
   .steam .st2{animation-delay:1.05s}
   .steam .st3{animation-delay:2.1s}
-  .hot{position:absolute;z-index:5}
+  .hot{position:absolute;z-index:5;cursor:pointer}
+  .hot:focus-visible{outline:2px solid var(--mark);outline-offset:3px}
   .bookhold{position:absolute;z-index:2;pointer-events:none;animation:fyFade .9s ease .15s both}
   .bookface{position:absolute;inset:0;background-size:600% 100%;background-position:0 0;background-repeat:no-repeat}
   .scene:has(.bookwrap:hover) .bookface,.scene:has(.nav-write:hover) .bookface{animation:fyBook 1.15s steps(1,end) infinite}
@@ -110,7 +111,7 @@
 </style>
 </helmet>
 
-<div data-screen-label="home-v2" ref="{{ rootRef }}" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px">
+<div data-screen-label="home" ref="{{ rootRef }}" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px">
 
   <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;position:relative;z-index:6">
     <div class="riser" style="--rot:-1deg;transform:rotate(-1deg);animation-delay:0s">
@@ -181,7 +182,7 @@
     </svg>
 
     <!-- laptop: hover hotspot + handwritten typing on the blank screen -->
-    <div class="hot" ref="{{ lapRef }}" style="left:20%;top:23%;width:31%;height:32%"></div>
+    <a class="hot" ref="{{ lapRef }}" href="Building.dc.html" aria-label="Building — 在造" style="left:20%;top:23%;width:31%;height:32%"></a>
     <div style="position:absolute;left:25.8%;top:28%;width:23%;font-family:'IBM Plex Mono',monospace;letter-spacing:.02em;font-size:1.75cqw;line-height:1.7;color:var(--soft);z-index:2;pointer-events:none;opacity:0;animation:fyFade .5s ease .35s both;white-space:pre-line"><span ref="{{ typeRef }}"></span><span style="display:inline-block;width:.55em;height:1.05em;background:var(--mark);vertical-align:-.15em;margin-left:2px;animation:fyCaret 1.15s infinite" aria-hidden="true"></span></div>
 
     <!-- the bird, alive on the tabletop -->
@@ -191,9 +192,9 @@
     </div>
 
     <!-- hover hotspots & object animations -->
-    <div class="hot bookwrap" style="left:36%;top:62%;width:21%;height:22%"></div>
-    <div class="hot framewrap" style="left:56.5%;top:33%;width:12.5%;height:19%"></div>
-    <div class="hot camwrap" style="left:68.5%;top:63%;width:18%;height:18%">
+    <a class="hot bookwrap" href="Writing.dc.html" aria-label="Writing — 在写" style="left:36%;top:62%;width:21%;height:22%"></a>
+    <a class="hot framewrap" href="About.dc.html" aria-label="About — 关于" style="left:56.5%;top:33%;width:12.5%;height:19%"></a>
+    <a class="hot camwrap" href="Gallery.dc.html" aria-label="Shooting — 在拍" style="left:68.5%;top:63%;width:18%;height:18%">
       <svg class="cstar" viewBox="0 0 40 40" style="position:absolute;left:34%;top:43%;width:24%" aria-hidden="true">
         <g fill="none" stroke="var(--mark)" stroke-width="3" stroke-linecap="round">
           <path d="M20 2 V12"></path><path d="M20 28 V38"></path>
@@ -202,7 +203,7 @@
           <path d="M31.5 8.5 L26 14"></path><path d="M14 26 L8.5 31.5"></path>
         </g>
       </svg>
-    </div>
+    </a>
     <div class="sceneflash" aria-hidden="true"></div>
     <div class="kacha hand" aria-hidden="true"><span class="zh">咔嚓 click!</span><span class="en">click! 咔嚓</span> ✦</div>
 

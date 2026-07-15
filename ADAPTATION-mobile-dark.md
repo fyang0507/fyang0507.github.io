@@ -14,7 +14,7 @@ Priority: **P0** = broken/unusable · **P1** = parity gap · **P2** = polish.
 
 Two pages already do it right — lift their mechanics rather than reinventing:
 
-- **`Home v2.dc.html`** — full `html.dark` palette block, `.im-l/.im-d` asset
+- **`index.html`** — full `html.dark` palette block, `.im-l/.im-d` asset
   swapping (light vs dark PNGs), `@media (hover:none)` fallbacks that auto-play the
   hover animations on touch, a `<760px` breakpoint that swaps the interactive desk
   for a plain text nav (`.mnav`), and an inline boot script that reads the saved
