@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>About · Fred Yang</title>
 <meta name="description" content="Fred Yang is an AI/ML engineer, writer, and photographer in New York.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
@@ -19,7 +20,7 @@
 <style>
   @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
+  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;--tilt-perspective:1100px;--tilt-return:700ms;--tilt-follow:90ms;--tilt-glare-opacity:.18}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
   a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
@@ -41,11 +42,14 @@
   .field-card-wrap{position:relative;perspective:1800px}
   .card-bird{position:absolute;bottom:-12px;left:-48px;width:58px;height:56px;z-index:6;animation:birdFly 6s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(60,50,35,.26))}
   .card-bird-sprite{width:100%;height:100%;background-image:url('./assets/bird-strip-light.png');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;animation:birdFlap .28s steps(1) infinite}
-  .field-card{width:min(520px,92vw);height:680px;position:relative;transform-style:preserve-3d;cursor:pointer;outline:none;filter:drop-shadow(0 24px 28px rgba(60,50,35,.18));transition:filter .25s ease;animation:cardBump 6s ease-in-out infinite}
+  .field-card{width:min(520px,92vw);height:680px;position:relative;transform:perspective(var(--tilt-perspective)) rotateX(var(--tilt-rx,0deg)) rotateY(var(--tilt-ry,0deg));transform-style:preserve-3d;filter:drop-shadow(0 24px 28px rgba(60,50,35,.18));transition:transform var(--tilt-return) cubic-bezier(.22,1,.36,1),filter .25s ease;will-change:transform}
+  .field-card-wrap.is-tilting .field-card{transition:transform var(--tilt-follow) cubic-bezier(.22,1,.36,1),filter .25s ease}
+  .field-card-wrap.is-hover .field-card{filter:drop-shadow(0 28px 34px rgba(60,50,35,.26))}
+  .card-bump-layer{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:cardBump 6s ease-in-out infinite}
   .figure-number{position:absolute;right:4px;bottom:-25px;color:var(--pencil);font-size:11px;line-height:1;pointer-events:none}
-  .field-card:hover,.field-card:focus-visible{filter:drop-shadow(0 28px 34px rgba(60,50,35,.26))}
-  .field-card:focus-visible{outline:3px solid var(--mark);outline-offset:7px;border-radius:18px}
   .card-face{position:absolute;inset:0;border-radius:16px;padding:28px;overflow:hidden;backface-visibility:hidden;transition:transform .58s cubic-bezier(.2,.72,.25,1),opacity .36s ease}
+  .tilt-glare{position:absolute;inset:0;z-index:5;border-radius:16px;pointer-events:none;opacity:0;mix-blend-mode:screen;background:radial-gradient(circle 100px at var(--tilt-gx,50%) var(--tilt-gy,50%),rgba(255,255,255,.42),rgba(255,255,255,.05) 54%,rgba(255,255,255,0) 84%),radial-gradient(circle 240px at var(--tilt-gx,50%) var(--tilt-gy,50%),rgba(255,255,255,.16),rgba(255,255,255,.025) 60%,rgba(255,255,255,0) 82%);transition:opacity 260ms cubic-bezier(.22,1,.36,1)}
+  .field-card-wrap.is-hover .tilt-glare{opacity:var(--tilt-glare-opacity)}
   .card-front{border:2.4px solid #33302B;background:#FBF6EC;color:#33302B;box-shadow:0 2px 0 rgba(255,255,255,.65) inset}
   .card-back{border:2.4px solid #55483A;background:#16120F;color:#F3E9D8;box-shadow:0 2px 0 rgba(255,255,255,.045) inset}
   .card-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;font-size:11px;line-height:1.4;letter-spacing:.09em}
@@ -97,7 +101,7 @@
   .special-block .field-label{color:#EE8E72}
   .special-name{margin-top:6px;color:#F3E9D8;font-size:17px;line-height:1.45}
   .special-name .en-copy{color:#EE8E72;font-size:12px}
-  .flip-actions{margin-top:34px;text-align:center}
+  .flip-actions{margin:0 0 24px;text-align:center}
   .flip-control{min-width:150px;border:1.5px solid var(--ink);border-radius:999px;padding:10px 20px;background:var(--paper2);color:var(--ink);font-family:"IBM Plex Mono","Noto Sans SC",sans-serif;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:background .15s ease,color .15s ease,transform .15s ease}
   .flip-control:hover,.flip-control:focus-visible{background:var(--ink);color:var(--paper);transform:translateY(-1px);outline:none}
   .personal-statement{width:min(700px,92vw);margin-top:28px;padding-top:18px;border-top:1.5px solid var(--line);text-align:center}
@@ -158,8 +162,10 @@
   @media (max-width:350px){.field-card{height:900px}}
   @media (prefers-reduced-motion:reduce){
     .ar{animation:none!important;opacity:1!important}
-    .card-face,.field-card,.flip-control{transition:none!important}
-    .field-card{animation:none!important}
+    .card-face,.field-card,.flip-control,.tilt-glare{transition:none!important}
+    .field-card{transform:none!important}
+    .card-bump-layer{animation:none!important}
+    .tilt-glare{display:none!important}
     .card-bird{animation:none!important;transform:translateX(0) scaleX(-1);opacity:1}
     .card-bird-sprite{animation:none!important}
   }
@@ -188,10 +194,15 @@
     </header>
 
     <div class="card-stage ar" style="animation-delay:.14s">
-      <div class="field-card-wrap">
+      <div class="flip-actions">
+        <button type="button" class="flip-control" onClick="{{ toggleCard }}" aria-controls="fred-field-card" aria-label="{{ cardAriaLabel }}" aria-pressed="{{ cardFlipped }}">{{ flipLabel }}</button>
+      </div>
+
+      <div class="field-card-wrap" onPointerEnter="{{ onTiltEnter }}" onPointerMove="{{ onTiltMove }}" onPointerLeave="{{ onTiltLeave }}">
         <div class="card-bird" aria-hidden="true"><div class="card-bird-sprite"></div></div>
 
-        <div id="fred-field-card" class="field-card" role="button" tabindex="0" aria-label="{{ cardAriaLabel }}" aria-pressed="{{ pinnedExpanded }}" onMouseEnter="{{ onEnter }}" onMouseLeave="{{ onLeave }}" onClick="{{ toggleCard }}" onKeyDown="{{ onCardKeyDown }}">
+        <div id="fred-field-card" class="field-card">
+          <div class="card-bump-layer">
           <article class="card-face card-front" aria-hidden="{{ frontHidden }}" style="opacity:{{ frontOpacity }};pointer-events:{{ frontPointer }};transform:{{ frontRotate }}">
             <div class="card-meta util">
               <span>NO. 001-D</span>
@@ -222,11 +233,11 @@
                 </div>
                 <div class="field-row">
                   <dt class="field-label"><span lang="zh">输出</span> OUTPUT</dt>
-                  <dd class="field-copy"><span class="zh-copy" lang="zh">能在人类世界里运行的Agent</span><span class="en-copy" lang="en">AGENTS THAT WORK IN THE HUMAN WORLD</span></dd>
+                  <dd class="field-copy"><span class="zh-copy" lang="zh">AI和人类共存的世界</span><span class="en-copy" lang="en">AGENTS THAT WORK IN THE HUMAN WORLD</span></dd>
                 </div>
                 <div class="field-row">
                   <dt class="field-label"><span lang="zh">异常</span> EXCEPTION</dt>
-                  <dd class="field-copy"><span class="zh-copy" lang="zh">"差不多能用"</span><span class="en-copy" lang="en">"GOOD ENOUGH"</span><span class="field-note"><span lang="zh">不接受</span> · NOT ACCEPTED</span></dd>
+                  <dd class="field-copy"><span class="zh-copy" lang="zh">"凑合用吧。"</span><span class="en-copy" lang="en">"WE'LL HAVE TO MAKE DO."</span></dd>
                 </div>
                 <div class="field-row">
                   <dt class="field-label"><span lang="zh">唤醒词</span> WAKE WORD</dt>
@@ -248,8 +259,8 @@
               <div class="ability-stage">
                 <figure class="radar-panel">
                   <svg class="ability-radar" viewBox="0 0 520 500" role="img" aria-labelledby="radar-title radar-desc">
-                  <title id="radar-title">夜间六维能力雷达图</title>
-                  <desc id="radar-desc">A 等于百分之百，B 等于百分之八十，C 等于百分之六十，D 等于百分之四十，E 等于百分之二十。观察入微 A，双重思考 B，遗忘侦测 B，自审回路 A，咖啡耐性 E，社交电量 C。</desc>
+                  <title id="radar-title">Night-form ability radar · 夜间六维能力雷达图</title>
+                  <desc id="radar-desc">Six abilities rated from A to E: observation A, doublethinking B, omission detection B, self-audit A, coffee endurance E, and social battery C. 六项能力从 A 到 E：观察入微 A，双重思考 B，遗忘侦测 B，自审回路 A，咖啡耐性 E，社交电量 C。</desc>
                   <g class="radar-grid" aria-hidden="true">
                     <circle cx="260" cy="240" r="120"></circle>
                     <circle cx="260" cy="240" r="96"></circle>
@@ -301,12 +312,10 @@
               <div class="special-name"><span class="zh-copy" lang="zh">遗声回响 HEAR THE UNHEARD</span></div>
             </section>
           </article>
+          <div class="tilt-glare" aria-hidden="true"></div>
+          </div>
         </div>
         <div class="util figure-number" aria-hidden="true">fig.04</div>
-      </div>
-
-      <div class="flip-actions">
-        <button type="button" class="flip-control" onClick="{{ toggleCard }}" aria-controls="fred-field-card" aria-pressed="{{ pinnedExpanded }}">{{ flipLabel }}</button>
       </div>
 
       <blockquote class="personal-statement">
@@ -346,25 +355,38 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { hovered: false, pinned: false, qrOpen: false };
+  state = { flipped: false, qrOpen: false };
+  tiltEnabled = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches;
   renderVals() {
-    const revealed = this.state.pinned || this.state.hovered;
-    const pinned = this.state.pinned;
+    const revealed = this.state.flipped;
     const qrOpen = this.state.qrOpen;
-    const toggleCard = () => {
-      const nextPinned = !this.state.pinned;
-      this.setState({ pinned: nextPinned, hovered: false });
+    const toggleCard = () => this.setState({ flipped: !this.state.flipped });
+    const resetTilt = (hitArea) => {
+      hitArea.classList.remove('is-hover','is-tilting');
+      hitArea.style.setProperty('--tilt-rx','0deg');
+      hitArea.style.setProperty('--tilt-ry','0deg');
+      hitArea.style.setProperty('--tilt-gx','50%');
+      hitArea.style.setProperty('--tilt-gy','50%');
     };
     return {
-      onEnter: () => this.setState({ hovered: true }),
-      onLeave: () => this.setState({ hovered: false }),
       toggleCard,
-      onCardKeyDown: (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          toggleCard();
-        }
+      onTiltEnter: (event) => {
+        if (this.tiltEnabled) event.currentTarget.classList.add('is-hover');
       },
+      onTiltMove: (event) => {
+        if (!this.tiltEnabled) return;
+        const hitArea = event.currentTarget;
+        const rect = hitArea.getBoundingClientRect();
+        const x = Math.min(Math.max((event.clientX - rect.left) / rect.width,0),1);
+        const y = Math.min(Math.max((event.clientY - rect.top) / rect.height,0),1);
+        const maxTilt = 5.5;
+        hitArea.style.setProperty('--tilt-rx',`${(0.5-y)*maxTilt*2}deg`);
+        hitArea.style.setProperty('--tilt-ry',`${(x-0.5)*maxTilt*2}deg`);
+        hitArea.style.setProperty('--tilt-gx',`${x*100}%`);
+        hitArea.style.setProperty('--tilt-gy',`${y*100}%`);
+        hitArea.classList.add('is-hover','is-tilting');
+      },
+      onTiltLeave: (event) => resetTilt(event.currentTarget),
       toggleQr: () => this.setState({ qrOpen: !this.state.qrOpen }),
       qrExpanded: qrOpen ? 'true' : 'false',
       qrDisplay: qrOpen ? 'block' : 'none',
@@ -376,9 +398,9 @@ class Component extends DCLogic {
       backPointer: revealed ? 'auto' : 'none',
       frontHidden: revealed ? 'true' : 'false',
       backHidden: revealed ? 'false' : 'true',
-      pinnedExpanded: pinned ? 'true' : 'false',
-      cardAriaLabel: pinned ? '切换到日间形态。Show day form.' : '固定夜间形态。Pin night form.',
-      flipLabel: pinned ? '翻面 / FLIP' : '翻面 / FLIP'
+      cardFlipped: revealed ? 'true' : 'false',
+      cardAriaLabel: revealed ? '切换到日间形态。Show day form.' : '切换到夜间形态。Show night form.',
+      flipLabel: '翻面 / FLIP'
     };
   }
 }

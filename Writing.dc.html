@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>Writing · Fred Yang</title>
 <meta name="description" content="Fred Yang's bilingual essays and travel writing, 2015–2025.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
@@ -20,7 +21,7 @@
 <style>
   @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
+  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
   a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
@@ -43,10 +44,14 @@
   .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
   .book{transition:transform .18s cubic-bezier(.2,.7,.2,1)}
   .book:hover{transform:translateY(-20px)}
+  .preview-title-en{margin-top:3px;color:var(--soft);font-family:"Fraunces",serif;font-size:13px;line-height:1.25}
+  .mobile-pass-button{appearance:none;border:0;padding:0;background:transparent;color:inherit;font:inherit}
   .prev{position:absolute;inset:0;opacity:0;transition:opacity .15s ease;display:flex;flex-direction:column;z-index:1}
+  .shelf-panel>.prev:nth-child(2){opacity:1}
   .warm-cover{position:relative;overflow:hidden;background:var(--paper2);border:0!important;box-shadow:none!important}
   .warm-cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.18);transform-origin:center;filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
   .shelf-scroll:has(.book:nth-child(1):hover) ~ .shelf-panel .prev:nth-child(1){opacity:1}
+  .shelf-scroll:has(.book:nth-child(1):hover) ~ .shelf-panel .prev:nth-child(2){opacity:0}
   .shelf-scroll:has(.book:nth-child(2):hover) ~ .shelf-panel .prev:nth-child(2){opacity:1}
   .shelf-scroll:has(.book:nth-child(3):hover) ~ .shelf-panel .prev:nth-child(3){opacity:1}
   .shelf-scroll:has(.book:nth-child(4):hover) ~ .shelf-panel .prev:nth-child(4){opacity:1}
@@ -73,7 +78,7 @@
   .shelf-scroll:has(.book:nth-child(25):hover) ~ .shelf-panel .prev:nth-child(25){opacity:1}
   .ph{background:repeating-linear-gradient(45deg,#F3ECDD 0 7px,#EDE4D2 7px 14px)}
 
-  @media (prefers-reduced-motion:reduce){.wr{animation:none!important;opacity:1!important}}
+  @media (prefers-reduced-motion:reduce){.wr{animation:none!important;opacity:1!important}.book,.mobile-card{transition:none!important}.book:hover{transform:none}}
   @media (max-width:760px){.shelf-wrap{display:none!important}.mobile-list{display:flex!important}}
 </style>
 </helmet>
@@ -108,15 +113,15 @@
 
     <div class="wr" style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
       <sc-for list="{{ tags }}" as="t" hint-placeholder-count="4">
-        <button class="{{ t.cls }}" onClick="{{ t.onClick }}">{{ t.label }}</button>
+        <button type="button" class="{{ t.cls }}" onClick="{{ t.onClick }}" aria-pressed="{{ t.pressed }}">{{ t.label }}</button>
       </sc-for>
     </div>
     <div class="wr" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ years }}" as="y" hint-placeholder-count="11">
-        <button class="{{ y.cls }}" onClick="{{ y.onClick }}">{{ y.label }}</button>
+        <button type="button" class="{{ y.cls }}" onClick="{{ y.onClick }}" aria-pressed="{{ y.pressed }}">{{ y.label }}</button>
       </sc-for>
     </div>
-    <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">显示 {{ visibleN }} / {{ totalN }} 篇</div>
+    <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ totalN }} essays · 显示 {{ visibleN }} / {{ totalN }} 篇</div>
 
     <div class="shelf-wrap" style="margin-top:22px;display:flex;gap:20px;align-items:stretch">
       <div class="shelf-scroll" style="flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;display:flex;flex-direction:column">
@@ -125,7 +130,7 @@
             <span class="hand" style="font-size:13px;color:var(--mark);writing-mode:vertical-rl">つづく</span>
           </div>
           <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-            <a class="book" href="{{ p.href }}" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}" aria-label="阅读 {{ p.zh }}"><span style="{{ p.titleStyle }}">{{ p.zh }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></a>
+            <a class="book" href="{{ p.href }}" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}" aria-label="{{ p.readLabel }}"><span style="{{ p.titleStyle }}">{{ p.zh }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></a>
           </sc-for>
           <div ref="{{ birdRef }}" style="position:absolute;left:6%;bottom:-9.3px;width:56px;aspect-ratio:308/317;z-index:2" role="img" aria-label="a small bird hopping along the shelf">
             <div class="bframe" style="position:absolute;inset:0;background-image:url('./assets/bird-strip6-light.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat"></div>
@@ -147,14 +152,14 @@
       <div class="shelf-panel" style="flex:none;width:236px;position:relative;min-height:280px">
         <div class="prev" style="align-items:center;justify-content:center;background:var(--paper2);border:2px dashed var(--line);text-align:center;padding:20px">
           <div class="hand" style="font-size:20px;color:var(--mark)">つづく</div>
-          <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">还在写 · 下一话未完待续</div>
+          <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">Still writing · 还在写</div>
         </div>
         <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-          <a class="{{ p.prevClass }}" href="{{ p.href }}" aria-label="阅读 {{ p.zh }}">
+          <a class="{{ p.prevClass }}" href="{{ p.href }}" aria-label="{{ p.readLabel }}">
             <div class="warm-cover" style="height:118px"><img data-content-src="{{ p.cover }}" alt="" loading="lazy" decoding="async"></div>
             <div style="background:#fff;border:1px solid var(--line);border-top:none;padding:10px 13px;flex:1">
               <div class="display" style="font-size:18px">{{ p.zh }}</div>
-              <div class="hand" style="font-size:13.5px;color:var(--soft);margin-top:2px">{{ p.subOrEn }}</div>
+              <div class="preview-title-en" lang="en">{{ p.en }}</div>
               <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">{{ p.tagLine }}</div>
             </div>
           </a>
@@ -168,25 +173,25 @@
     <div class="mobile-list" style="display:none;flex-direction:column;align-items:center;margin-top:8px">
       <div style="position:relative;width:min(84vw,340px);height:430px">
         <sc-if value="{{ showPassed }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ goBack }}" style="position:absolute;left:-34px;bottom:0;width:64px;height:84px;cursor:pointer;z-index:5">
-            <div style="position:absolute;inset:8px 2px 0;background:#e4dac7;border:1.5px solid var(--line);border-radius:6px;transform:rotate(6deg)"></div>
-            <div style="position:absolute;inset:4px 0 4px 4px;background:#EDE4D2;border:1.5px solid var(--line);border-radius:6px;transform:rotate(-4deg)"></div>
-            <div style="position:absolute;inset:0 4px 8px;background:#fff;border:1.5px solid var(--ink);border-radius:6px;display:grid;place-items:center;transform:rotate(2deg)">
+          <button type="button" class="mobile-pass-button" onClick="{{ goBack }}" aria-label="Previous article · 上一篇" style="position:absolute;left:-34px;bottom:0;width:64px;height:84px;cursor:pointer;z-index:5">
+            <span style="position:absolute;display:block;inset:8px 2px 0;background:#e4dac7;border:1.5px solid var(--line);border-radius:6px;transform:rotate(6deg)"></span>
+            <span style="position:absolute;display:block;inset:4px 0 4px 4px;background:#EDE4D2;border:1.5px solid var(--line);border-radius:6px;transform:rotate(-4deg)"></span>
+            <span style="position:absolute;inset:0 4px 8px;background:#fff;border:1.5px solid var(--ink);border-radius:6px;display:grid;place-items:center;transform:rotate(2deg)">
               <span class="util" style="font-size:11px;color:var(--soft)">{{ passedCount }}</span>
-            </div>
-          </div>
+            </span>
+          </button>
         </sc-if>
         <sc-if value="{{ peek3 }}" hint-placeholder-val="{{ false }}">
           <div style="position:absolute;inset:22px 30px -4px 2px;background:#e4dac7;border:1.5px solid var(--line);border-radius:8px;transform:rotate(-7deg);box-shadow:0 6px 14px rgba(60,50,35,.09)"></div>
         </sc-if>
         <sc-if value="{{ peek2 }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;inset:16px -6px 0 20px;background:#EDE4D2;border:1.5px solid var(--line);border-radius:8px;transform:rotate(6deg);box-shadow:0 8px 18px rgba(60,50,35,.1)"></div>
+          <div style="position:absolute;inset:16px 0 0 20px;background:#EDE4D2;border:1.5px solid var(--line);border-radius:8px;transform:rotate(4deg);box-shadow:0 8px 18px rgba(60,50,35,.1)"></div>
         </sc-if>
         <sc-if value="{{ peek1 }}" hint-placeholder-val="{{ false }}">
           <div style="position:absolute;inset:6px 8px 0 -4px;background:var(--paper2);border:1.5px solid var(--line);border-radius:8px;transform:rotate(-4deg);box-shadow:0 10px 22px rgba(60,50,35,.12)"></div>
         </sc-if>
         <sc-if value="{{ top }}" hint-placeholder-val="{{ false }}">
-          <div style="{{ topStyle }};position:absolute;inset:0;background:#fff;border:{{ top.topBorder }};border-radius:8px;box-shadow:0 16px 34px rgba(60,50,35,.2);overflow:hidden;touch-action:pan-y;cursor:grab"
+          <div class="mobile-card" style="{{ topStyle }};position:absolute;inset:0;background:#fff;border:{{ top.topBorder }};border-radius:8px;box-shadow:0 16px 34px rgba(60,50,35,.2);overflow:hidden;touch-action:pan-y;cursor:grab"
                onPointerDown="{{ onDown }}" onPointerMove="{{ onMove }}" onPointerUp="{{ onUp }}" onPointerCancel="{{ onUp }}">
             <div class="warm-cover" style="height:46%">
               <img data-content-src="{{ top.cover }}" alt="" decoding="async">
@@ -196,7 +201,7 @@
             </div>
             <div style="padding:14px 20px">
               <div class="display" style="font-size:25px">{{ top.zh }}</div>
-              <div class="hand" style="font-size:17px;color:var(--soft);margin-top:4px">{{ top.subOrEn }}</div>
+              <div class="preview-title-en" lang="en">{{ top.en }}</div>
               <div class="util" style="font-size:11.5px;color:var(--pencil);margin-top:10px">{{ top.tagLine }}</div>
               <a href="{{ top.href }}" class="util" style="display:inline-block;margin-top:14px;color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">阅读全文 · read →</a>
             </div>
@@ -206,14 +211,14 @@
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--paper2);border:2px dashed var(--line);border-radius:8px;padding:20px;text-align:center">
             <img src="./assets/sticker-happy.png" alt="" style="width:52px;transform:rotate(-6deg)">
             <sc-if value="{{ filteredEmpty }}" hint-placeholder-val="{{ false }}">
-              <div class="hand" style="font-size:20px;color:var(--soft);margin-top:10px">没有符合条件的文章</div>
+              <div class="hand" style="font-size:20px;color:var(--soft);margin-top:10px">No matching essays · 没有符合条件的文章</div>
             </sc-if>
             <div class="hand" style="font-size:22px;color:var(--mark);margin-top:10px">つづく</div>
-            <div class="util" style="font-size:11px;color:var(--pencil);margin-top:6px">还在写 · 下一话未完待续</div>
+            <div class="util" style="font-size:11px;color:var(--pencil);margin-top:6px">Still writing · 还在写</div>
           </div>
         </sc-if>
       </div>
-      <div class="hand" style="margin-top:20px;font-size:16px;color:var(--pencil)">← 滑走看下一篇 · 滑回看上一篇 →</div>
+      <div class="hand" style="margin-top:20px;font-size:16px;color:var(--pencil)">← swipe for next · 左滑下一篇 / 右滑上一篇 →</div>
       <div class="util" style="margin-top:6px;font-size:11px;color:var(--pencil)">{{ cardPos }} / {{ mobileTotal }}</div>
     </div>
 
@@ -251,10 +256,11 @@ const POSTS = (window.FY_POSTS || []).slice().sort((a, b) => b.date.localeCompar
 class Component extends DCLogic {
   state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle' };
   birdRef = React.createRef();
+  reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   componentDidMount() {
     this._alive = true;
-    this.birdLoop();
+    if (!this.reduceMotion) this.birdLoop();
     this.hydrateImages();
   }
   componentDidUpdate() { this.hydrateImages(); }
@@ -309,9 +315,9 @@ class Component extends DCLogic {
     const tagCounts = {};
     tagBase.forEach(p => p.tagEns.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
     const tagOrder = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]);
-    const tags = [{ id:'all', label:'全部 ' + tagBase.length, cls: st.activeTag==='all' ? 'chip on' : 'chip',
+    const tags = [{ id:'all', label:'All · 全部 ' + tagBase.length, cls: st.activeTag==='all' ? 'chip on' : 'chip', pressed:st.activeTag==='all'?'true':'false',
       onClick: () => this.setState({ activeTag:'all', cardIndex:0, dragX:0, phase:'idle' }) }]
-      .concat(tagOrder.map(t => ({ id:t, label:(TAG_ZH[t]||t) + ' ' + tagCounts[t], cls: st.activeTag===t ? 'chip on' : 'chip',
+      .concat(tagOrder.map(t => ({ id:t, label:t + ' · ' + (TAG_ZH[t]||t) + ' ' + tagCounts[t], cls: st.activeTag===t ? 'chip on' : 'chip', pressed:st.activeTag===t?'true':'false',
         onClick: () => this.setState({ activeTag:t, cardIndex:0, dragX:0, phase:'idle' }) })));
 
     const yrBase = st.activeTag === 'all' ? POSTS : POSTS.filter(p => p.tagEns.includes(st.activeTag));
@@ -319,18 +325,18 @@ class Component extends DCLogic {
     yrBase.forEach(p => { const y = p.date.slice(0,4); yrCounts[y] = (yrCounts[y] || 0) + 1; });
     const yrOrder = Object.keys(yrCounts).filter(y => y >= '2020').sort((a,b) => b.localeCompare(a));
     const before2020Count = Object.keys(yrCounts).filter(y => y < '2020').reduce((sum, y) => sum + yrCounts[y], 0);
-    const years = [{ id:'all', label:'全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip',
+    const years = [{ id:'all', label:'All years · 全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip', pressed:st.activeYear==='all'?'true':'false',
       onClick: () => this.setState({ activeYear:'all', cardIndex:0, dragX:0, phase:'idle' }) }]
-      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip',
+      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip', pressed:st.activeYear===y?'true':'false',
         onClick: () => this.setState({ activeYear:y, cardIndex:0, dragX:0, phase:'idle' }) })))
-      .concat(before2020Count ? [{ id:'before-2020', label:'2020以前 · ' + before2020Count, cls: st.activeYear==='before-2020' ? 'chip on' : 'chip',
+      .concat(before2020Count ? [{ id:'before-2020', label:'Before 2020 · 2020以前 · ' + before2020Count, cls: st.activeYear==='before-2020' ? 'chip on' : 'chip', pressed:st.activeYear==='before-2020'?'true':'false',
         onClick: () => this.setState({ activeYear:'before-2020', cardIndex:0, dragX:0, phase:'idle' }) }] : []);
 
     const decorate = (p, i, arr) => {
       const heightPct = 58 + ((p.id * 29) % 38);
       const tone = TONES[p.id % 4];
       const dateLabel = p.date.slice(0,7).replace('-','·');
-      const tagLine = dateLabel + (p.tagEns.length ? (' · ' + p.tagEns.map(t => TAG_ZH[t]).join(' · ')) : '') + (p.readingMin ? (' · ~' + p.readingMin + ' min') : '');
+      const tagLine = dateLabel + (p.tagEns.length ? (' · ' + p.tagEns.join(' · ')) : '') + (p.readingMin ? (' · ~' + p.readingMin + ' min') : '');
       const w = p.series ? 30 : (22 + (p.id % 4) * 4);
       const year = p.date.slice(0,4);
       const prevYear = i > 0 ? arr[i - 1].date.slice(0,4) : null;
@@ -344,8 +350,8 @@ class Component extends DCLogic {
         numLabel: p.series ? ('0' + p.series) : '',
         titleStyle: 'position:absolute;top:8%;left:50%;transform:translateX(-50%);max-height:' + (p.series ? '68%' : '84%') + ';white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi","Fraunces",serif;font-size:11px;line-height:1.35;letter-spacing:.03em;color:' + (p.series ? '#efe5d3' : 'var(--ink)') + ';overflow:hidden;pointer-events:none',
         dateLabel, tagLine,
-        titleAttr: p.zh + ' · ' + dateLabel,
-        subOrEn: p.sub || p.en,
+        titleAttr: p.en + ' · ' + p.zh + ' · ' + dateLabel,
+        readLabel: 'Read ' + p.en + ' — 阅读 ' + p.zh,
         accentColor: p.series ? 'var(--mark)' : 'var(--line)',
         mobileCardStyle: 'background:#fff;border:' + (p.series?'2px solid var(--mark)':'1.5px solid var(--line)') + ';border-radius:4px;overflow:hidden;box-shadow:0 6px 16px rgba(60,50,35,.1);transform:rotate(' + (((p.id*37)%5)-2) + 'deg)',
         topBorder: p.series ? '2.5px solid var(--mark)' : '1.5px solid var(--line)',
@@ -363,7 +369,7 @@ class Component extends DCLogic {
     const peek3 = decorated[idx + 3] || null;
     const dx = st.dragX;
     const topStyle = 'transform:translateX(' + dx + 'px) rotate(' + (dx / 18) + 'deg);' +
-      (st.phase === 'resetting' ? 'transition:none' : 'transition:transform .3s cubic-bezier(.2,.8,.2,1)');
+      (this.reduceMotion || st.phase === 'resetting' ? 'transition:none' : 'transition:transform .3s cubic-bezier(.2,.8,.2,1)');
 
     const onDown = (e) => {
       this._downX = e.clientX;
@@ -384,13 +390,13 @@ class Component extends DCLogic {
         setTimeout(() => {
           this.setState(s => ({ phase: 'resetting', dragX: 0, cardIndex: Math.min(s.cardIndex + 1, total - 1) }));
           requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ phase: 'idle' })));
-        }, 260);
+        }, this.reduceMotion ? 0 : 260);
       } else if (cur > 70 && this.state.cardIndex > 0) {
         this.setState({ phase: 'flying', dragX: 520 });
         setTimeout(() => {
           this.setState(s => ({ phase: 'resetting', dragX: 0, cardIndex: Math.max(s.cardIndex - 1, 0) }));
           requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ phase: 'idle' })));
-        }, 260);
+        }, this.reduceMotion ? 0 : 260);
       } else {
         this.setState({ phase: 'idle', dragX: 0 });
       }
@@ -401,7 +407,7 @@ class Component extends DCLogic {
       this.setState(s => ({ phase: 'resetting', dragX: -520, cardIndex: Math.max(s.cardIndex - 1, 0) }));
       requestAnimationFrame(() => requestAnimationFrame(() => {
         this.setState({ phase: 'returning', dragX: 0 });
-        setTimeout(() => this.setState({ phase: 'idle' }), 320);
+        setTimeout(() => this.setState({ phase: 'idle' }), this.reduceMotion ? 0 : 320);
       }));
     };
 

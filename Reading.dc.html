@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>Reading · Fred Yang</title>
 <meta name="description" content="Bilingual essays by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
@@ -21,14 +22,14 @@
 <style>
   @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  :root{
+  :root{color-scheme:light;
     --paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;
     --wash-a:#B7D6D3;--wash-b:#F3C6A5;--wash-c:#E9A7A0;--wash-op:.8;
     --card-shadow:0 1px 2px rgba(60,50,35,.05),0 10px 26px rgba(60,50,35,.06);
     --disp-en:"Fraunces";--disp-cn:"DingTalk JinBuTi";--text-en:"Fraunces";--text-cn:"Noto Serif SC";
     --hand-en:"Caveat";--hand-cn:"MuyaoPleased";--util-en:"IBM Plex Mono";--util-cn:"Noto Sans SC"
   }
-  html.dark{--paper:#1E1913;--paper2:#282018;--ink:#EFE5D3;--soft:#b0a591;--pencil:#8f8471;--mark:#EE8E72;--line:#37301f;--wash-op:.34;--card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35)}
+  html.dark{color-scheme:dark;--paper:#1E1913;--paper2:#282018;--ink:#EFE5D3;--soft:#b0a591;--pencil:#8f8471;--mark:#EE8E72;--line:#37301f;--wash-op:.34;--card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35)}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;overflow-x:hidden;font-family:var(--text-en),Georgia,serif;transition:background .3s,color .3s}
   html.lang-zh body{font-family:var(--text-cn),serif}

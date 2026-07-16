@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>404 · 走错了。 · Wrong turn. · Fred Yang</title>
 <meta name="description" content="页面不存在。Page not found.">
 <meta name="robots" content="noindex">
@@ -11,31 +12,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
-<script>
-  (function(){
-    var root=document.documentElement;
-    var query=new URLSearchParams(location.search);
-    var savedTheme=query.get('theme')||localStorage.getItem('fy-theme');
-    var theme=savedTheme||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-    root.setAttribute('data-theme',theme==='dark'?'dark':'light');
-  })();
-</script>
 <style>
   @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--mark:#D9695A;--line:#E4DAC7}
-  html[data-theme="dark"]{--paper:#1E1913;--paper2:#282018;--ink:#EFE5D3;--soft:#b0a591;--mark:#EE8E72;--line:#37301f}
+  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box}
   html,body{min-height:100%;margin:0}
   body{background:var(--paper);color:var(--ink);font-family:"Fraunces",Georgia,serif;transition:background .3s,color .3s}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:10;opacity:.045;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  html[data-theme="dark"] body::before{mix-blend-mode:screen;opacity:.025}
   a{color:inherit;text-decoration:none}
   button{font:inherit}
   .util{font-family:"IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.03em}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-  .page-tools{position:fixed;top:22px;right:24px;z-index:20;color:var(--soft);font-size:12px}
-  .tool-button{min-width:38px;min-height:36px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--paper) 86%,transparent);color:inherit;padding:0 12px;display:grid;place-items:center;cursor:pointer;transition:border-color .15s,color .15s}
-  .tool-button:hover,.tool-button:focus-visible{color:var(--ink);border-color:var(--mark);outline:none}
   main{min-height:100vh;display:grid;place-items:center;padding:80px 24px 48px}
   .error-stage{--hop-duration:.8s;--motion-duration:2.4s;--landing-1:.8s;--landing-2:1.6s;--landing-3:2.4s;width:min(720px,100%);text-align:center;display:grid;justify-items:center}
   .error-code{font:500 28px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;color:var(--mark);margin-bottom:2px}
@@ -44,9 +31,6 @@
   .bird{position:absolute;left:50%;bottom:20px;width:88px;aspect-ratio:308/317;transform:translate(-50%,0) translateX(180px)}
     .bird-frame{position:absolute;inset:0;background-size:600% 100%;background-position:0 0;background-repeat:no-repeat;transform:scaleX(-1);transform-origin:center}
   .bird-light{background-image:url('./assets/bird-strip6-light.png')}
-  .bird-dark{display:none;background-image:url('./assets/bird-strip6-dark.png')}
-  html[data-theme="dark"] .bird-light{display:none}
-  html[data-theme="dark"] .bird-dark{display:block}
   .is-playing .bird{animation:bird-path var(--motion-duration) cubic-bezier(.22,.72,.22,1) both}
   .is-playing .bird-frame{animation:bird-frames var(--hop-duration) steps(5,end) 3 both}
   @keyframes bird-path{
@@ -69,7 +53,6 @@
   .home-link{display:inline-block;margin-top:38px;padding:8px 4px;border-bottom:1.5px solid var(--line);font-size:14px;color:var(--soft);transition:color .15s,border-color .15s}
   .home-link:hover,.home-link:focus-visible{color:var(--ink);border-color:var(--mark);outline:none}
   @media(max-width:640px){
-    .page-tools{top:14px;right:14px}
     main{padding-inline:12px}.bird-button{height:165px}.bird{width:74px}
     .message-zh{font-size:clamp(42px,11vw,48px)}.message-en{font-size:clamp(28px,8.2vw,34px)}
     @keyframes bird-path{
@@ -87,16 +70,12 @@
 </style>
 </head>
 <body>
-<nav class="page-tools util" aria-label="页面控件 / Page controls">
-  <button class="tool-button" id="themeToggle" type="button" aria-label="切换明暗主题 / Toggle color theme" aria-pressed="false">◐</button>
-</nav>
 <main data-screen-label="not-found">
   <section class="error-stage is-playing" id="errorStage" aria-labelledby="errorTitle">
     <div class="error-code" aria-hidden="true">404</div>
     <button class="bird-button" id="replay" type="button" aria-label="重播小鸟动画 / Replay the bird animation">
       <span class="bird" aria-hidden="true">
         <span class="bird-frame bird-light"></span>
-        <span class="bird-frame bird-dark"></span>
       </span>
     </button>
     <h1 id="errorTitle">
@@ -109,22 +88,10 @@
 </main>
 <script>
   (function(){
-    var root=document.documentElement;
     var stage=document.getElementById('errorStage');
     var replay=document.getElementById('replay');
-    var themeButton=document.getElementById('themeToggle');
     function restart(){stage.classList.remove('is-playing');void stage.offsetWidth;stage.classList.add('is-playing')}
-    function sync(){
-      var dark=root.getAttribute('data-theme')==='dark';
-      themeButton.setAttribute('aria-pressed',dark?'true':'false');
-      themeButton.setAttribute('aria-label',dark?'切换到浅色 / Use light theme':'切换到深色 / Use dark theme');
-    }
     replay.addEventListener('click',restart);
-    themeButton.addEventListener('click',function(){
-      var theme=root.getAttribute('data-theme')==='dark'?'light':'dark';
-      root.setAttribute('data-theme',theme);localStorage.setItem('fy-theme',theme);sync();
-    });
-    sync();
   })();
 </script>
 </body>

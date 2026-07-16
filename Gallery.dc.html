@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>Photography · Fred Yang</title>
 <meta name="description" content="Fred Yang's photography archive, 2015–2025.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
@@ -20,7 +21,7 @@
 <style>
   @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
+  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
   a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
@@ -37,6 +38,7 @@
   @keyframes gRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   @keyframes birdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   @keyframes frameTremble{0%,100%{transform:translate(0,0) rotate(0)}20%{transform:translate(-1px,.5px) rotate(-1deg)}40%{transform:translate(1px,-.5px) rotate(.85deg)}60%{transform:translate(-.8px,-.3px) rotate(-.7deg)}80%{transform:translate(.8px,.3px) rotate(.6deg)}}
+  @keyframes garlandSettle{from{opacity:0;transform:translateY(12px) rotate(-1.2deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
   .gr{animation:gRise .5s cubic-bezier(.2,.7,.2,1) both}
   .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
   .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
@@ -53,10 +55,15 @@
   .peg{width:15px;height:10px;background:var(--ink);margin:0 auto -2px;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
   .bird{animation:birdBob 2.6s ease-in-out infinite}
   .lightbox{position:fixed;inset:0;z-index:180;background:rgba(23,18,12,.9);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
-  .lightbox-card{max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3}
+  .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:default}
   .lightbox-card img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 24px 70px rgba(0,0,0,.48)}
+  .lightbox-close{position:absolute;right:8px;top:8px;z-index:2;width:42px;height:42px;border:1px solid rgba(239,229,211,.58);border-radius:50%;background:rgba(23,18,12,.72);color:#efe5d3;font:500 21px/1 "IBM Plex Mono",monospace;cursor:pointer}
+  .lightbox-close:hover,.lightbox-close:focus-visible{border-color:var(--mark);color:var(--mark);outline:none}
+  .load-more-sticker{position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)}
   @media (prefers-reduced-motion:reduce){.gr,.bird,.hanging-frame-motion{animation:none!important;opacity:1!important}}
-  @media (max-width:640px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
+  @media (max-width:860px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
+  @media (max-width:480px){.load-more-sticker{transform:translateX(72px) rotate(6deg)}}
+  @media (hover:none){.mobile-garland .hanging-frame-motion{animation:garlandSettle .48s cubic-bezier(.2,.7,.2,1) both}}
 </style>
 </helmet>
 
@@ -84,21 +91,21 @@
       </div>
       <div class="hand subpage-note writing-statement">
         <span class="writing-statement-line" lang="zh">人，岁月，生活。</span>
-        <span class="writing-statement-line" lang="en">people, year, lifes.</span>
+        <span class="writing-statement-line" lang="en">People, Years, Life.</span>
       </div>
     </header>
 
     <div class="gr" style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
       <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="8">
-        <button class="{{ cat.cls }}" onClick="{{ cat.onClick }}">{{ cat.label }}</button>
+        <button type="button" class="{{ cat.cls }}" onClick="{{ cat.onClick }}" aria-pressed="{{ cat.pressed }}">{{ cat.label }}</button>
       </sc-for>
     </div>
     <div class="gr" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ years }}" as="yr" hint-placeholder-count="10">
-        <button class="{{ yr.cls }}" onClick="{{ yr.onClick }}">{{ yr.label }}</button>
+        <button type="button" class="{{ yr.cls }}" onClick="{{ yr.onClick }}" aria-pressed="{{ yr.pressed }}">{{ yr.label }}</button>
       </sc-for>
     </div>
-    <div class="util gr" style="margin-top:12px;font-size:12px;color:var(--pencil)">显示 {{ visibleN }} / {{ filteredN }} 张 · 共 {{ totalN }} 张</div>
+    <div class="util gr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ filteredN }} · 显示 {{ visibleN }} / {{ filteredN }} 张 · {{ totalN }} frames total</div>
 
     <div class="gallery-wrap" style="position:relative;margin-top:28px">
       <sc-for list="{{ racks }}" as="rack" hint-placeholder-count="3">
@@ -112,7 +119,7 @@
                 <div class="hanging-frame-motion">
                   <div class="peg"></div>
                   <div class="card">
-                    <button class="photo-button" onClick="{{ p.openPhoto }}" aria-label="放大 {{ p.loc }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
+                    <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
                     <div class="hand" style="font-size:15px;color:var(--soft);padding:5px 2px 0">{{ p.loc }}</div>
                     <div class="util" style="font-size:10px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
                   </div>
@@ -131,7 +138,7 @@
           <div class="hanging-frame-motion">
             <div class="peg" style="margin:0 auto -2px"></div>
             <div class="card" style="width:100%">
-              <button class="photo-button" onClick="{{ p.openPhoto }}" aria-label="放大 {{ p.loc }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
+              <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
               <div class="hand" style="font-size:16px;color:var(--soft);padding:6px 3px 0">{{ p.loc }}</div>
               <div class="util" style="font-size:10.5px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
             </div>
@@ -142,8 +149,8 @@
 
     <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ true }}">
       <div style="text-align:center;margin-top:34px;position:relative">
-        <img src="./assets/sticker-happy.png" alt="" aria-hidden="true" style="position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)">
-        <button class="hand" onClick="{{ loadMore }}" style="border:1.5px solid var(--ink);background:var(--paper2);color:var(--ink);padding:10px 24px;border-radius:999px;font-size:19px;cursor:pointer">再晾一批 · load more（还有 {{ remaining }} 张）</button>
+        <img class="load-more-sticker" src="./assets/sticker-happy.png" alt="" aria-hidden="true">
+        <button type="button" class="hand" onClick="{{ loadMore }}" style="border:1.5px solid var(--ink);background:var(--paper2);color:var(--ink);padding:10px 24px;border-radius:999px;font-size:19px;cursor:pointer">Load more · 再晾一批（{{ remaining }} remaining）</button>
       </div>
     </sc-if>
 
@@ -153,7 +160,8 @@
 
 <sc-if value="{{ selectedPhoto }}" hint-placeholder-val="{{ false }}">
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick="{{ closeLightbox }}">
-    <div class="lightbox-card">
+    <div class="lightbox-card" onClick="{{ keepLightbox }}">
+      <button type="button" class="lightbox-close" onClick="{{ closeLightbox }}" aria-label="Close photo · 关闭照片">×</button>
       <img data-content-src="{{ selectedPhoto.src }}" alt="{{ selectedPhoto.loc }}">
       <div class="hand" style="font-size:19px">{{ selectedPhoto.loc }}</div>
       <div class="util" style="font-size:11px;color:#c9bda3">{{ selectedPhoto.date }} · {{ selectedPhoto.catLabel }}</div>
@@ -201,18 +209,18 @@ class Component extends DCLogic {
     const catCounts = {};
     catBase.forEach(p => { catCounts[p.cat] = (catCounts[p.cat] || 0) + 1; });
     const catOrder = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]);
-    const categories = [{ id:'all', label:'全部 ' + catBase.length, cls: st.activeCategory==='all' ? 'chip on' : 'chip',
+    const categories = [{ id:'all', label:'All · 全部 ' + catBase.length, cls: st.activeCategory==='all' ? 'chip on' : 'chip', pressed:st.activeCategory==='all'?'true':'false',
       onClick: () => this.setState({ activeCategory:'all', visibleCount:18 }) }]
-      .concat(catOrder.map(c => ({ id:c, label:(CAT_LABEL[c]||c) + ' ' + catCounts[c], cls: st.activeCategory===c ? 'chip on' : 'chip',
+      .concat(catOrder.map(c => ({ id:c, label:(CAT_LABEL[c]||c) + ' ' + catCounts[c], cls: st.activeCategory===c ? 'chip on' : 'chip', pressed:st.activeCategory===c?'true':'false',
         onClick: () => this.setState({ activeCategory:c, visibleCount:18 }) })));
 
     const yrBase = st.activeCategory === 'all' ? PHOTOS : PHOTOS.filter(p => p.cat === st.activeCategory);
     const yrCounts = {};
     yrBase.forEach(p => { const y = p.date.slice(0,4); yrCounts[y] = (yrCounts[y] || 0) + 1; });
     const yrOrder = Object.keys(yrCounts).sort((a,b) => b.localeCompare(a));
-    const years = [{ id:'all', label:'全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip',
+    const years = [{ id:'all', label:'All years · 全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip', pressed:st.activeYear==='all'?'true':'false',
       onClick: () => this.setState({ activeYear:'all', visibleCount:18 }) }]
-      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip',
+      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip', pressed:st.activeYear===y?'true':'false',
         onClick: () => this.setState({ activeYear:y, visibleCount:18 }) })));
 
     const decorate = p => {
@@ -223,6 +231,7 @@ class Component extends DCLogic {
         garlandWrap: 'position:relative;z-index:1;width:min(76vw,320px);margin:0 0 30px;transform:translateX(' + gx + 'px) rotate(' + rot + 'deg)',
         dateLabel: p.date.slice(0,7).replace('-','·'),
         catLabel: CAT_LABEL[p.cat] || p.cat,
+        viewLabel: 'View photo · 放大照片: ' + p.loc,
         openPhoto: () => this.setState({ selectedPhoto: { ...p, catLabel: CAT_LABEL[p.cat] || p.cat } }) };
     };
 
@@ -247,7 +256,8 @@ class Component extends DCLogic {
       remaining: filtered.length - visible.length,
       loadMore: () => this.setState(s => ({ visibleCount: Math.min(s.visibleCount + 6, filtered.length) })),
       selectedPhoto: st.selectedPhoto,
-      closeLightbox: () => this.setState({ selectedPhoto: null })
+      closeLightbox: () => this.setState({ selectedPhoto: null }),
+      keepLightbox: event => event.stopPropagation()
     };
   }
 }
