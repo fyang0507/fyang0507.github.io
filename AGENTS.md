@@ -9,6 +9,9 @@ This is a dependency-free static personal website exported as standalone `.dc.ht
 - Gallery image-slot runtime: `image-slot.js`
 - Local fonts: `fonts/`
 - Illustrations and decorative images: `assets/`
+- Imported essays and gallery metadata: `content/`
+- Imported photography, covers, and profile images: `images/`
+- Dependency-free content manifest generator: `scripts/generate-content.py`
 
 Serve the repository over HTTP; do not rely on `file://` URLs:
 
@@ -33,9 +36,11 @@ When changing a home destination, keep the desktop annotation, object hotspot, a
 ## Editing conventions
 
 - Edit page content and page-specific CSS/logic in the relevant `.dc.html` file.
+- Edit imported essay bodies in `content/posts/*.md` and gallery metadata in `content/photos-source.ts`, then run `python3 scripts/generate-content.py`; commit the generated `content/posts.js` and `content/photos.js` files.
 - Do not hand-edit `support.js`; it is generated runtime code. Treat `image-slot.js` as vendored runtime code unless the image-slot behavior itself is the task.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
 - Preserve bilingual markup: English and Chinese variants use `.en` and `.zh`. The default language is Chinese and is stored under `fy-lang` in `localStorage`.
+- Treat newlines in `content/posts/*.md` literally: one source newline becomes one rendered line break and repeated newlines remain repeated line breaks. Do not use Markdown trailing spaces as a separate hard-break convention.
 - Preserve paired light/dark artwork classes (`.im-l` and `.im-d`) when changing illustrated elements.
 - Keep interactive illustration hotspots as semantic anchors with an `href` and an accessible `aria-label`. Their position is controlled by inline percentage geometry.
 - Keep `index.html` as the root entry point. If that convention changes, update every inbound home link in the same change.

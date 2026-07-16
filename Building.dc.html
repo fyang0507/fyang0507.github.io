@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building · Fred Yang</title>
+<meta name="description" content="Projects and experiments by Fred Yang.">
+<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="./favicon.png">
+<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -32,21 +37,28 @@
 
 <div data-screen-label="building" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
 
-  <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
-    <div class="br" style="position:relative;transform:rotate(-1deg)">
-      <img src="./assets/sticker-peek.png" alt="" aria-hidden="true" style="position:absolute;left:-24px;bottom:-16px;width:50px;z-index:0">
-      <a href="index.html" class="display" style="position:relative;z-index:1;display:inline-block;white-space:nowrap;border:2.4px solid var(--ink);padding:8px 20px;font-size:26px;background:var(--paper)">Fred Yang · <b style="color:var(--mark);font-weight:600">杨</b></a>
-      <div class="hand br" style="margin-top:10px;font-size:21px;color:var(--soft);animation-delay:.08s"><a href="index.html">← 回到桌面 back to the desk</a></div>
+  <header class="site-shell-header">
+    <div class="site-header-row br">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status">on the board · 6 件</div>
     </div>
-    <div class="util br" style="font-size:12.5px;color:var(--pencil);padding-top:10px;animation-delay:.16s">on the board · 6 件</div>
+    <nav class="site-index br" aria-label="Primary navigation" style="animation-delay:.08s">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
   </header>
 
   <div style="width:min(1180px,100%);margin-top:40px">
-    <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
-      <h1 class="display br" style="font-size:clamp(44px,6vw,68px);line-height:1.35;white-space:nowrap;flex-shrink:0">在造<span style="color:var(--mark)">。</span></h1>
-      <div class="hand br" style="font-size:clamp(19px,2.2vw,24px);color:var(--soft);padding-bottom:8px;animation-delay:.1s">代码、视频、文章——钉法一样，长相各异 <span style="color:var(--mark)">✦</span></div>
-    </div>
-    <div class="util br" style="margin-top:8px;font-size:12px;color:var(--pencil);animation-delay:.14s">图钉色 = 类型 · <span style="color:#a5453a">●</span> repo &nbsp;<span style="color:#3d5c52">●</span> tool &nbsp;<span style="color:#33302B">●</span> talk &nbsp;<span style="color:#938979">◌</span> exp（未定稿）</div>
+    <header class="subpage-intro subpage-intro--solo br" aria-labelledby="building-title">
+      <div class="subpage-title-group">
+        <div class="subpage-title-kicker"><span class="subpage-title-number">02</span><span class="subpage-title-en" lang="en">building</span></div>
+        <h1 id="building-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">造</span>。</h1>
+      </div>
+    </header>
+    <div class="util br" style="margin-top:16px;font-size:12px;color:var(--pencil);animation-delay:.14s">图钉色 = 类型 · <span style="color:#a5453a">●</span> repo &nbsp;<span style="color:#3d5c52">●</span> tool &nbsp;<span style="color:#33302B">●</span> talk &nbsp;<span style="color:#938979">◌</span> exp（未定稿）</div>
 
     <div class="br board-scroll" style="margin-top:28px;animation-delay:.18s">
       <div style="width:1060px;position:relative;height:460px;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(60,50,35,.05),0 12px 30px rgba(60,50,35,.08);background:#EFE7D4;background-image:linear-gradient(#e4dac7 1px,transparent 1px),linear-gradient(90deg,#e4dac7 1px,transparent 1px);background-size:26px 26px">
@@ -197,7 +209,7 @@
       </div>
     </div>
 
-    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:24px">fig.05 — the board, as of today</div>
+    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:24px">fig.05</div>
   </div>
 </div>
 

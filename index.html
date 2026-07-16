@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fred Yang · AI, Writing &amp; Photography</title>
+<meta name="description" content="Fred Yang builds AI systems, writes bilingual essays, and photographs the everyday.">
+<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="./favicon.png">
+<link rel="stylesheet" href="./site-nav.css?v=20260715-6">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -114,12 +119,14 @@
 <div data-screen-label="home" ref="{{ rootRef }}" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px">
 
   <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;position:relative;z-index:6">
-    <div class="riser" style="--rot:-1deg;transform:rotate(-1deg);animation-delay:0s">
-      <div class="display" style="display:inline-block;white-space:nowrap;border:2.4px solid var(--ink);padding:8px 20px;font-size:30px;font-weight:600;letter-spacing:.02em;background:var(--paper)">Fred Yang · <b style="color:var(--mark);font-weight:600">杨</b></div>
-      <div class="hand rise" style="margin-top:10px;font-size:21px;color:var(--soft);animation-delay:.12s">
-        <span class="en">・essayist in 中文 &amp; EN　・builds AI end to end　・open to consulting · FDE</span>
-        <span class="zh">・写字的人 —— 中文 &amp; EN　・从头到尾造 AI　・开放咨询 · FDE</span>
-      </div>
+    <div class="riser" style="--rot:0deg;animation-delay:0s">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。首页">
+        <span class="site-identity-copy">
+          <span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span>
+          <span class="site-identity-tag" lang="zh">继续写，继续造</span>
+          <span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span>
+        </span>
+      </a>
     </div>
   </header>
 
@@ -218,7 +225,7 @@
     <a href="About.dc.html" style="border-bottom:2px solid var(--mark)"><span class="en">about 关于</span><span class="zh">关于 about</span></a>
   </nav>
 
-  <div class="util rise" style="width:min(1180px,100%);font-size:12.5px;color:var(--pencil);margin-top:14px;animation-delay:.5s">fig.01 — <span class="en">a life, annotated</span><span class="zh">被注释的生活</span></div>
+  <div class="util rise" style="width:min(1180px,100%);font-size:12.5px;color:var(--pencil);margin-top:14px;animation-delay:.5s">fig.01</div>
 
   <!-- iris-in opener overlay -->
   <div ref="{{ openRef }}" onClick="{{ skipOpener }}" style="position:fixed;inset:0;z-index:300;display:none;cursor:pointer">

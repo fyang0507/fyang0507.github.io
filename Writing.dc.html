@@ -3,7 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing · Fred Yang</title>
+<meta name="description" content="Fred Yang's bilingual essays and travel writing, 2015–2025.">
+<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="./favicon.png">
+<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
 <script src="./support.js"></script>
+<script src="./content/posts.js?v=20260713-4"></script>
 </head>
 <body>
 <x-dc>
@@ -21,6 +27,13 @@
   .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
   .hand{font-family:"MuyaoPleased","Caveat",cursive}
   .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  .writing-statement{font-size:clamp(19px,2.2vw,24px);line-height:1.35;color:var(--soft);padding-bottom:8px}
+  .writing-statement-line{display:block}
+  .writing-statement-line + .writing-statement-line{margin-top:2px}
+  .writing-statement-line[lang="zh"]{font-family:"MuyaoPleased",cursive;letter-spacing:.025em}
+  .writing-statement-line[lang="en"]{font-family:"Caveat",cursive;letter-spacing:.01em}
+  .statement-beat{display:inline-block;position:relative;color:var(--mark);font-size:1.06em;font-weight:600;transform:rotate(-1deg) translateY(-.02em)}
+  .statement-beat::after{content:"";position:absolute;left:-.06em;right:-.06em;bottom:-.02em;height:2px;border-radius:50%;background:var(--mark);opacity:.5;transform:rotate(1.4deg)}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   @keyframes wRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -31,6 +44,8 @@
   .book{transition:transform .18s cubic-bezier(.2,.7,.2,1)}
   .book:hover{transform:translateY(-20px)}
   .prev{position:absolute;inset:0;opacity:0;transition:opacity .15s ease;display:flex;flex-direction:column;z-index:1}
+  .warm-cover{position:relative;overflow:hidden;background:var(--paper2);border:0!important;box-shadow:none!important}
+  .warm-cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.18);transform-origin:center;filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
   .shelf-scroll:has(.book:nth-child(1):hover) ~ .shelf-panel .prev:nth-child(1){opacity:1}
   .shelf-scroll:has(.book:nth-child(2):hover) ~ .shelf-panel .prev:nth-child(2){opacity:1}
   .shelf-scroll:has(.book:nth-child(3):hover) ~ .shelf-panel .prev:nth-child(3){opacity:1}
@@ -65,24 +80,33 @@
 
 <div data-screen-label="writing" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
 
-  <header style="width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
-    <div class="wr" style="position:relative;transform:rotate(-1deg)">
-      <img src="./assets/sticker-peek.png" alt="" aria-hidden="true" style="position:absolute;left:-24px;bottom:-16px;width:50px;z-index:0">
-
-      <a href="index.html" class="display" style="position:relative;z-index:1;display:inline-block;white-space:nowrap;border:2.4px solid var(--ink);padding:8px 20px;font-size:26px;background:var(--paper)">Fred Yang · <b style="color:var(--mark);font-weight:600">杨</b></a>
-      <div class="hand wr" style="margin-top:10px;font-size:21px;color:var(--soft);animation-delay:.08s"><a href="index.html">← 回到桌面 back to the desk</a></div>
+  <header class="site-shell-header">
+    <div class="site-header-row wr">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status">{{ totalN }} essays · 2015–2025</div>
     </div>
-    <div class="util wr" style="font-size:12.5px;color:var(--pencil);padding-top:10px;animation-delay:.16s">24 册 · 2015–2025</div>
+    <nav class="site-index wr" aria-label="Primary navigation" style="animation-delay:.08s">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
   </header>
 
   <div style="width:min(1180px,100%);margin-top:40px">
-    <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
-      <h1 class="display wr" style="font-size:clamp(44px,6vw,68px);line-height:1.35;white-space:nowrap;flex-shrink:0">在写<span style="color:var(--mark)">。</span></h1>
-      <div class="hand wr" style="font-size:clamp(19px,2.2vw,24px);color:var(--soft);padding-bottom:8px;animation-delay:.1s">按时间排开的书架 <span style="color:var(--mark)">✦</span></div>
-      <div class="wr" role="img" aria-label="an open book" style="width:84px;height:65px;background-image:url('./assets/book-flip2-light.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat;transform:rotate(4deg);margin-left:auto;animation-delay:.2s"></div>
-    </div>
+    <header class="subpage-intro wr" aria-labelledby="writing-title">
+      <div class="subpage-title-group">
+        <div class="subpage-title-kicker"><span class="subpage-title-number">01</span><span class="subpage-title-en" lang="en">writing</span></div>
+        <h1 id="writing-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">写</span>。</h1>
+      </div>
+      <div class="hand subpage-note writing-statement">
+        <span class="writing-statement-line" lang="zh">不得中行而与之，必也<span class="statement-beat">狂狷</span>乎。</span>
+        <span class="writing-statement-line" lang="en"><span class="statement-beat">Action</span>, not understanding, changes the world.</span>
+      </div>
+    </header>
 
-    <div class="wr" style="margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
+    <div class="wr" style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
       <sc-for list="{{ tags }}" as="t" hint-placeholder-count="4">
         <button class="{{ t.cls }}" onClick="{{ t.onClick }}">{{ t.label }}</button>
       </sc-for>
@@ -92,22 +116,23 @@
         <button class="{{ y.cls }}" onClick="{{ y.onClick }}">{{ y.label }}</button>
       </sc-for>
     </div>
-    <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">显示 {{ visibleN }} / 24 篇</div>
+    <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">显示 {{ visibleN }} / {{ totalN }} 篇</div>
 
     <div class="shelf-wrap" style="margin-top:22px;display:flex;gap:20px;align-items:stretch">
       <div class="shelf-scroll" style="flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;display:flex;flex-direction:column">
         <div class="shelf-row" style="position:relative;flex:1 1 auto;min-height:0;display:flex;align-items:flex-end;gap:5px;padding:26px 6px 0;border-bottom:5px solid var(--ink);width:max-content">
-          <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-            <div class="book" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}"><span style="{{ p.titleStyle }}">{{ p.zh }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></div>
-          </sc-for>
           <div class="book" style="flex:none;width:40px;height:70%;background:var(--paper);border:2px dashed var(--mark);border-radius:3px 3px 0 0;display:grid;place-items:center" title="つづく">
             <span class="hand" style="font-size:13px;color:var(--mark);writing-mode:vertical-rl">つづく</span>
           </div>
+          <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
+            <a class="book" href="{{ p.href }}" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}" aria-label="阅读 {{ p.zh }}"><span style="{{ p.titleStyle }}">{{ p.zh }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></a>
+          </sc-for>
           <div ref="{{ birdRef }}" style="position:absolute;left:6%;bottom:-9.3px;width:56px;aspect-ratio:308/317;z-index:2" role="img" aria-label="a small bird hopping along the shelf">
             <div class="bframe" style="position:absolute;inset:0;background-image:url('./assets/bird-strip6-light.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat"></div>
           </div>
         </div>
         <div class="year-row" style="flex:none;display:flex;gap:5px;padding:6px 6px 4px;width:max-content">
+          <div style="flex:none;width:40px"></div>
           <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
             <div style="{{ p.yearSlotStyle }}">
               <sc-if value="{{ p.newYear }}" hint-placeholder-val="{{ false }}">
@@ -116,25 +141,24 @@
               </sc-if>
             </div>
           </sc-for>
-          <div style="flex:none;width:40px"></div>
         </div>
       </div>
 
       <div class="shelf-panel" style="flex:none;width:236px;position:relative;min-height:280px">
-        <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-          <div class="{{ p.prevClass }}">
-            <div class="ph" style="height:90px;border-radius:4px 4px 0 0"></div>
-            <div style="background:#fff;border:1px solid var(--line);border-top:none;padding:12px 14px;flex:1">
-              <div class="display" style="font-size:18px">{{ p.zh }}</div>
-              <div class="hand" style="font-size:13.5px;color:var(--soft);margin-top:2px">{{ p.subOrEn }}</div>
-              <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">{{ p.tagLine }}</div>
-            </div>
-          </div>
-        </sc-for>
         <div class="prev" style="align-items:center;justify-content:center;background:var(--paper2);border:2px dashed var(--line);text-align:center;padding:20px">
           <div class="hand" style="font-size:20px;color:var(--mark)">つづく</div>
           <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">还在写 · 下一话未完待续</div>
         </div>
+        <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
+          <a class="{{ p.prevClass }}" href="{{ p.href }}" aria-label="阅读 {{ p.zh }}">
+            <div class="warm-cover" style="height:118px"><img data-content-src="{{ p.cover }}" alt="" loading="lazy" decoding="async"></div>
+            <div style="background:#fff;border:1px solid var(--line);border-top:none;padding:10px 13px;flex:1">
+              <div class="display" style="font-size:18px">{{ p.zh }}</div>
+              <div class="hand" style="font-size:13.5px;color:var(--soft);margin-top:2px">{{ p.subOrEn }}</div>
+              <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">{{ p.tagLine }}</div>
+            </div>
+          </a>
+        </sc-for>
         <div class="motif-default" style="position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center">
           <img src="./assets/sticker-happy.png" alt="" aria-hidden="true" style="width:112px;transform:rotate(-5deg)">
         </div>
@@ -164,15 +188,17 @@
         <sc-if value="{{ top }}" hint-placeholder-val="{{ false }}">
           <div style="{{ topStyle }};position:absolute;inset:0;background:#fff;border:{{ top.topBorder }};border-radius:8px;box-shadow:0 16px 34px rgba(60,50,35,.2);overflow:hidden;touch-action:pan-y;cursor:grab"
                onPointerDown="{{ onDown }}" onPointerMove="{{ onMove }}" onPointerUp="{{ onUp }}" onPointerCancel="{{ onUp }}">
-            <div class="ph" style="height:46%;position:relative">
+            <div class="warm-cover" style="height:46%">
+              <img data-content-src="{{ top.cover }}" alt="" decoding="async">
               <sc-if value="{{ top.series }}" hint-placeholder-val="{{ false }}">
                 <span style="position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--mark);color:#fff;display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px">{{ top.numLabel }}</span>
               </sc-if>
             </div>
-            <div style="padding:18px 20px">
+            <div style="padding:14px 20px">
               <div class="display" style="font-size:25px">{{ top.zh }}</div>
               <div class="hand" style="font-size:17px;color:var(--soft);margin-top:4px">{{ top.subOrEn }}</div>
-              <div class="util" style="font-size:11.5px;color:var(--pencil);margin-top:14px">{{ top.tagLine }}</div>
+              <div class="util" style="font-size:11.5px;color:var(--pencil);margin-top:10px">{{ top.tagLine }}</div>
+              <a href="{{ top.href }}" class="util" style="display:inline-block;margin-top:14px;color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">阅读全文 · read →</a>
             </div>
           </div>
         </sc-if>
@@ -188,43 +214,39 @@
         </sc-if>
       </div>
       <div class="hand" style="margin-top:20px;font-size:16px;color:var(--pencil)">← 滑走看下一篇 · 滑回看上一篇 →</div>
-      <div class="util" style="margin-top:6px;font-size:11px;color:var(--pencil)">{{ cardPos }} / {{ visibleN }}</div>
+      <div class="util" style="margin-top:6px;font-size:11px;color:var(--pencil)">{{ cardPos }} / {{ mobileTotal }}</div>
     </div>
 
-    <div class="util wr" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03 — the shelf, in order</div>
+    <div class="util wr" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
   </div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const TAG_ZH = { 'our stories':'我们生活的故事', 'everyday chronicles':'日常记趣', 'travel log':'游记' };
+const TAG_ZH = { 'our stories':'我们生活的故事', 'everyday chronicles':'日常记趣', 'travel log':'游记', 'poem':'诗' };
 const TONES = ['#c9bda3','#d8cbb0','#b7ab8f','#e4dac7'];
 
-const POSTS = [
-{id:1,zh:'复活随笔',en:'Resurrection, an Essay',date:'2015-04-12'},
-{id:2,zh:'到南方去',en:'Going South',date:'2015-05-09'},
-{id:3,zh:'巴黎的呼吸',en:'The Breath of Paris',date:'2015-05-17'},
-{id:4,zh:'为什么是阿赫兰',en:'Why Arles',date:'2015-06-13'},
-{id:5,zh:'片道东瀛',en:'One-Way Passage to Japan',date:'2016-08-10',tagEn:'travel log',readingMin:28},
-{id:6,zh:'巡礼之年',en:'Years of Pilgrimage',date:'2017-05-01'},
-{id:7,zh:'社会人',en:'Shakaijin',date:'2017-12-02'},
-{id:8,zh:'流与逆流',en:'Flow, and Counter-flow',date:'2018-03-15'},
-{id:9,zh:'纽约层积',en:'New York, Stratified',date:'2018-10-20'},
-{id:10,zh:'加州打卡',en:'California, Checked In',date:'2018-12-28'},
-{id:11,zh:'他和他的猫',en:'He and His Cat',date:'2019-01-09',tagEn:'travel log',readingMin:4},
-{id:12,zh:'被许诺和被荒芜的',en:'The Promised and the Desolate',date:'2019-12-02'},
-{id:13,zh:'救赎山',en:'Salvation Mountain',date:'2019-12-29'},
-{id:14,zh:'我们生活的故事01',en:'Our Stories 01',date:'2021-11-28',tagEn:'our stories',series:1},
-{id:15,zh:'我们生活的故事02',en:'Our Stories 02',date:'2022-11-27',tagEn:'our stories',series:2},
-{id:16,zh:'三城记',en:'A Tale of Three Cities',date:'2023-05-27'},
-{id:17,zh:'我们生活的故事03',en:'Our Stories 03',date:'2023-12-28',tagEn:'our stories',series:3},
-{id:18,zh:'香港森林',en:'Hong Kong Forest',date:'2024-04-23'},
-{id:19,zh:'那些看似无辜的',en:'Those Who Seem Innocent',date:'2024-10-23',tagEn:'travel log',readingMin:7},
-{id:20,zh:'我们生活的故事04',en:'Our Stories 04',date:'2024-12-18',tagEn:'our stories',series:4},
-{id:21,zh:'夏威夷没有愤怒',en:'Hawaii Has No Anger',date:'2025-03-23'},
-{id:22,zh:'职场食腐鸟',en:'Corporate Carrion Birds',date:'2025-07-27',tagEn:'everyday chronicles',readingMin:5},
-{id:23,zh:'萨克拉门托的缺席者',en:'The Absent Ones of Sacramento',date:'2025-11-01',tagEn:'everyday chronicles',readingMin:11},
-{id:24,zh:'我们生活的故事05',en:'Our Stories 05',sub:'又：那些拒绝沉没的人',date:'2025-12-06',tagEn:'our stories',series:5,readingMin:27}
-];
+const PRIMARY_TAGS = Object.keys(TAG_ZH);
+const POSTS = (window.FY_POSTS || []).slice().sort((a, b) => b.date.localeCompare(a.date)).map((p, index) => {
+  const allTags = (p.tags || []).concat(p.tagsZh || []);
+  const tagEns = [];
+  allTags.forEach(tag => {
+    const normalized = PRIMARY_TAGS.find(t => tag === t || tag === TAG_ZH[t]);
+    if (normalized && !tagEns.includes(normalized)) tagEns.push(normalized);
+  });
+  const seriesMatch = p.title.match(/Our Stories\s+(\d+)/i) || p.titleZh.match(/故事\s*0?(\d+)/);
+  return {
+    id: index + 1,
+    zh: p.titleZh,
+    en: p.title,
+    sub: p.subtitleZh || p.subtitle,
+    date: p.date,
+    tagEns,
+    series: seriesMatch ? Number(seriesMatch[1]) : null,
+    readingMin: p.readingMin,
+    cover: p.cover,
+    href: 'Reading.dc.html?post=' + encodeURIComponent(p.id)
+  };
+});
 
 class Component extends DCLogic {
   state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle' };
@@ -233,9 +255,19 @@ class Component extends DCLogic {
   componentDidMount() {
     this._alive = true;
     this.birdLoop();
+    this.hydrateImages();
   }
+  componentDidUpdate() { this.hydrateImages(); }
   componentWillUnmount() {
     this._alive = false;
+  }
+  hydrateImages() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('img[data-content-src]').forEach(img => {
+        const src = img.getAttribute('data-content-src');
+        if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
+      });
+    });
   }
   birdLoop() {
     var bird = this.birdRef.current;
@@ -268,32 +300,37 @@ class Component extends DCLogic {
 
   renderVals() {
     const st = this.state;
-    const matches = p => (st.activeTag === 'all' || p.tagEn === st.activeTag) && (st.activeYear === 'all' || p.date.slice(0,4) === st.activeYear);
+    const matchesYear = p => st.activeYear === 'all' ||
+      (st.activeYear === 'before-2020' ? p.date.slice(0,4) < '2020' : p.date.slice(0,4) === st.activeYear);
+    const matches = p => (st.activeTag === 'all' || p.tagEns.includes(st.activeTag)) && matchesYear(p);
     const filtered = POSTS.filter(matches);
 
-    const tagBase = st.activeYear === 'all' ? POSTS : POSTS.filter(p => p.date.slice(0,4) === st.activeYear);
+    const tagBase = st.activeYear === 'all' ? POSTS : POSTS.filter(matchesYear);
     const tagCounts = {};
-    tagBase.forEach(p => { if (p.tagEn) tagCounts[p.tagEn] = (tagCounts[p.tagEn] || 0) + 1; });
+    tagBase.forEach(p => p.tagEns.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
     const tagOrder = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]);
     const tags = [{ id:'all', label:'全部 ' + tagBase.length, cls: st.activeTag==='all' ? 'chip on' : 'chip',
       onClick: () => this.setState({ activeTag:'all', cardIndex:0, dragX:0, phase:'idle' }) }]
       .concat(tagOrder.map(t => ({ id:t, label:(TAG_ZH[t]||t) + ' ' + tagCounts[t], cls: st.activeTag===t ? 'chip on' : 'chip',
         onClick: () => this.setState({ activeTag:t, cardIndex:0, dragX:0, phase:'idle' }) })));
 
-    const yrBase = st.activeTag === 'all' ? POSTS : POSTS.filter(p => p.tagEn === st.activeTag);
+    const yrBase = st.activeTag === 'all' ? POSTS : POSTS.filter(p => p.tagEns.includes(st.activeTag));
     const yrCounts = {};
     yrBase.forEach(p => { const y = p.date.slice(0,4); yrCounts[y] = (yrCounts[y] || 0) + 1; });
-    const yrOrder = Object.keys(yrCounts).sort((a,b) => b.localeCompare(a));
+    const yrOrder = Object.keys(yrCounts).filter(y => y >= '2020').sort((a,b) => b.localeCompare(a));
+    const before2020Count = Object.keys(yrCounts).filter(y => y < '2020').reduce((sum, y) => sum + yrCounts[y], 0);
     const years = [{ id:'all', label:'全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip',
       onClick: () => this.setState({ activeYear:'all', cardIndex:0, dragX:0, phase:'idle' }) }]
       .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip',
-        onClick: () => this.setState({ activeYear:y, cardIndex:0, dragX:0, phase:'idle' }) })));
+        onClick: () => this.setState({ activeYear:y, cardIndex:0, dragX:0, phase:'idle' }) })))
+      .concat(before2020Count ? [{ id:'before-2020', label:'2020以前 · ' + before2020Count, cls: st.activeYear==='before-2020' ? 'chip on' : 'chip',
+        onClick: () => this.setState({ activeYear:'before-2020', cardIndex:0, dragX:0, phase:'idle' }) }] : []);
 
     const decorate = (p, i, arr) => {
       const heightPct = 58 + ((p.id * 29) % 38);
       const tone = TONES[p.id % 4];
       const dateLabel = p.date.slice(0,7).replace('-','·');
-      const tagLine = (p.tagEn ? (dateLabel + ' · ' + TAG_ZH[p.tagEn]) : dateLabel) + (p.readingMin ? (' · ~' + p.readingMin + ' min') : '');
+      const tagLine = dateLabel + (p.tagEns.length ? (' · ' + p.tagEns.map(t => TAG_ZH[t]).join(' · ')) : '') + (p.readingMin ? (' · ~' + p.readingMin + ' min') : '');
       const w = p.series ? 30 : (22 + (p.id % 4) * 4);
       const year = p.date.slice(0,4);
       const prevYear = i > 0 ? arr[i - 1].date.slice(0,4) : null;
@@ -337,7 +374,7 @@ class Component extends DCLogic {
       if (this.state.phase !== 'dragging' || this._downX == null) return;
       this.setState({ dragX: e.clientX - this._downX });
     };
-    const total = decorated.length;
+    const total = decorated.length + 1;
     const onUp = () => {
       if (this.state.phase !== 'dragging') return;
       const cur = this.state.dragX;
@@ -361,21 +398,23 @@ class Component extends DCLogic {
 
     const goBack = () => {
       if (this.state.cardIndex <= 0) return;
-      this.setState({ phase: 'flying', dragX: 520 });
-      setTimeout(() => {
-        this.setState(s => ({ phase: 'resetting', dragX: 0, cardIndex: Math.max(s.cardIndex - 1, 0) }));
-        requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ phase: 'idle' })));
-      }, 200);
+      this.setState(s => ({ phase: 'resetting', dragX: -520, cardIndex: Math.max(s.cardIndex - 1, 0) }));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        this.setState({ phase: 'returning', dragX: 0 });
+        setTimeout(() => this.setState({ phase: 'idle' }), 320);
+      }));
     };
 
     return {
       tags, years,
       filtered: decorated,
       visibleN: filtered.length,
+      totalN: POSTS.length,
       top, peek1, peek2, peek3,
       noTop: !top,
       filteredEmpty: decorated.length === 0,
-      cardPos: decorated.length ? (idx + 1) : 0,
+      cardPos: idx + 1,
+      mobileTotal: total,
       topStyle, onDown, onMove, onUp,
       passedCount: idx,
       showPassed: idx > 0,
