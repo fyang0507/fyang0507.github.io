@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Website Content"
+  short_description: "Import and verify articles and gallery photos"
+  default_prompt: "Use $add-website-content to add an article or photo set to this website and verify the generated archive."
