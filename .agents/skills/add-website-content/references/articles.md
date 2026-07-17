@@ -41,7 +41,7 @@ Require `title`, `title_zh`, `coverImage`, `date`, `tags`, `tags_zh`, and `langu
 
 The archive is currently bilingual. Obtain both language versions before publishing unless the user explicitly chooses a single-language exception. Do not silently translate missing material. Keep `tags` and `tags_zh` aligned by position and use one recognized primary pair when applicable:
 
-- `our stories` / `我们生活的故事`
+- `stories we live` / `我们生活的故事`
 - `everyday chronicles` / `日常记趣`
 - `travel log` / `游记`
 - `poem` / `诗`
