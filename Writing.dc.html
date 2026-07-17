@@ -203,7 +203,10 @@
               <div class="display" style="font-size:25px">{{ top.zh }}</div>
               <div class="preview-title-en" lang="en">{{ top.en }}</div>
               <div class="util" style="font-size:11.5px;color:var(--pencil);margin-top:10px">{{ top.tagLine }}</div>
-              <a href="{{ top.href }}" class="util" style="display:inline-block;margin-top:14px;color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">阅读全文 · read →</a>
+              <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+                <a href="{{ top.hrefZh }}" class="util" aria-label="{{ top.readLabelZh }}" style="color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">阅读全文</a>
+                <a href="{{ top.hrefEn }}" class="util" aria-label="{{ top.readLabelEn }}" style="color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">read →</a>
+              </div>
             </div>
           </div>
         </sc-if>
@@ -249,7 +252,9 @@ const POSTS = (window.FY_POSTS || []).slice().sort((a, b) => b.date.localeCompar
     series: seriesMatch ? Number(seriesMatch[1]) : null,
     readingMin: p.readingMin,
     cover: p.cover,
-    href: 'Reading.dc.html?post=' + encodeURIComponent(p.id)
+    href: 'Reading.dc.html?post=' + encodeURIComponent(p.id),
+    hrefZh: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=zh',
+    hrefEn: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=en'
   };
 });
 
@@ -352,6 +357,8 @@ class Component extends DCLogic {
         dateLabel, tagLine,
         titleAttr: p.en + ' · ' + p.zh + ' · ' + dateLabel,
         readLabel: 'Read ' + p.en + ' — 阅读 ' + p.zh,
+        readLabelZh: '阅读全文 · ' + p.zh,
+        readLabelEn: 'Read in English · ' + p.en,
         accentColor: p.series ? 'var(--mark)' : 'var(--line)',
         mobileCardStyle: 'background:#fff;border:' + (p.series?'2px solid var(--mark)':'1.5px solid var(--line)') + ';border-radius:4px;overflow:hidden;box-shadow:0 6px 16px rgba(60,50,35,.1);transform:rotate(' + (((p.id*37)%5)-2) + 'deg)',
         topBorder: p.series ? '2.5px solid var(--mark)' : '1.5px solid var(--line)',
