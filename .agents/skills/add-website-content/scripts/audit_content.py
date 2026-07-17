@@ -25,6 +25,8 @@ POST_REQUIRED = {
     "languages",
 }
 PHOTO_FIELDS = ("id", "location", "imageUrl", "category", "date")
+MALFORMED_EMPHASIS_RE = re.compile(r"(?m)^_\*.+_\s*$")
+TRANSLATION_NOTE_RE = re.compile(r"(?m)^\*Originally written in Chinese\..*\*\s*$")
 
 
 def load_generator(root: Path) -> ModuleType:
@@ -129,6 +131,33 @@ def audit_posts(root: Path, generator: ModuleType, errors: list[str]) -> tuple[l
             errors.append(f"{label}: languages includes zh but the Chinese body is missing")
         if body.count("---zh---") > 1:
             errors.append(f"{label}: body contains more than one ---zh--- separator")
+
+        malformed = MALFORMED_EMPHASIS_RE.search(body)
+        if malformed:
+            errors.append(
+                f"{label}: malformed emphasis {malformed.group(0).strip()!r} mixes _ and * — "
+                "the renderer only supports *italic* and **bold**; use a single matching pair"
+            )
+        if "en" in languages and "zh" in languages and not TRANSLATION_NOTE_RE.search(english):
+            errors.append(
+                f"{label}: bilingual article is missing a properly formatted "
+                "'*Originally written in Chinese. This article is translated by GPT-5.6.*' note "
+                "at the end of the English body"
+            )
+
+        title_zh = str(data.get("title_zh") or "")
+        first_en = next((line.strip() for line in english.strip("\n").splitlines() if line.strip()), "")
+        first_zh = next((line.strip() for line in chinese.strip("\n").splitlines() if line.strip()), "")
+        if title.strip() and re.sub(r"^#+\s*", "", first_en).strip() == title.strip():
+            errors.append(
+                f"{label}: English body repeats the frontmatter title as its first line, "
+                "which double-renders the title on the Reading page — remove it"
+            )
+        if title_zh.strip() and re.sub(r"^#+\s*", "", first_zh).strip() == title_zh.strip():
+            errors.append(
+                f"{label}: Chinese body repeats the frontmatter title_zh as its first line, "
+                "which double-renders the title on the Reading page — remove it"
+            )
 
     duplicate_ids = sorted(value for value, count in Counter(post_ids).items() if count > 1)
     if duplicate_ids:
