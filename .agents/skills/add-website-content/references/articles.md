@@ -71,6 +71,22 @@ The dependency-free renderer supports:
 
 Use `---zh---` exactly once to separate English from Chinese. Newlines are literal content: one source newline becomes one rendered line break, and repeated blank lines remain repeated breaks. Do not add Markdown trailing spaces as a separate hard-break convention.
 
+Emphasis uses `*italic*` and `**bold**` only — the renderer does not support underscore emphasis (`_text_`), so never mix `_` and `*` around the same span (e.g. `_*text_`). A leading `_` renders as a literal underscore character, not italics.
+
+## Two recurring hygiene bugs to check on every add or edit
+
+1. **Translation note formatting.** Every bilingual article (`languages` includes both `en` and `zh`) must end its English body with a properly italicized translation note, exactly:
+
+   ```markdown
+   *Originally written in Chinese. This article is translated by GPT-5.6.*
+   ```
+
+   Do not write it as `_*Originally written in Chinese...._` — the leading `_*` and trailing `_` are a broken emphasis pairing that renders as literal `_*` characters instead of italics.
+
+2. **No duplicated title as the first body line.** `Writing.dc.html`/`Reading.dc.html` render `title`/`title_zh` from frontmatter separately from the body. Never repeat the title as the first line of the English or Chinese body (as a `#` heading or as plain text) — it double-renders on the Reading page. Start the body directly with the first sentence.
+
+`python3 .agents/skills/add-website-content/scripts/audit_content.py` checks both of these across the full archive; run it (not just for new entries) before finishing any article add or edit.
+
 ## Article verification
 
 After generation and the archive audit:
