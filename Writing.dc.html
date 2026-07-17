@@ -42,6 +42,12 @@
   .wr{animation:wRise .5s cubic-bezier(.2,.7,.2,1) both}
   .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
   .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
+  .t-tabs{--tabs-dur:250ms;--tabs-ease:cubic-bezier(0.22,1,0.36,1);position:relative;display:inline-flex;align-items:center;gap:3px;padding:3px;border-radius:999px;background:var(--paper2);border:1.3px solid var(--line)}
+  .t-tab{position:relative;appearance:none;border:0;background:transparent;height:26px;padding:4px 14px;color:var(--soft);cursor:pointer;border-radius:999px;z-index:1;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:400;transition:color var(--tabs-dur) var(--tabs-ease),font-weight var(--tabs-dur) var(--tabs-ease)}
+  .t-tab:not([aria-selected="true"]):hover{color:var(--ink)}
+  .t-tab[aria-selected="true"]{color:var(--mark);font-weight:500}
+  .t-tabs-pill{position:absolute;top:3px;left:0;height:26px;width:0;background:#fff;border-radius:999px;transform:translateX(0);transition:transform var(--tabs-dur) var(--tabs-ease),width var(--tabs-dur) var(--tabs-ease);will-change:transform,width;z-index:0;pointer-events:none;box-shadow:0 1px 2px rgba(60,50,35,.12)}
+  @media (prefers-reduced-motion:reduce){.t-tabs-pill,.t-tab{transition:none!important}}
   .book{transition:transform .18s cubic-bezier(.2,.7,.2,1)}
   .book:hover{transform:translateY(-20px)}
   .preview-title-en{margin-top:3px;color:var(--soft);font-family:"Fraunces",serif;font-size:13px;line-height:1.25}
@@ -79,7 +85,7 @@
   .ph{background:repeating-linear-gradient(45deg,#F3ECDD 0 7px,#EDE4D2 7px 14px)}
 
   @media (prefers-reduced-motion:reduce){.wr{animation:none!important;opacity:1!important}.book,.mobile-card{transition:none!important}.book:hover{transform:none}}
-  @media (max-width:760px){.shelf-wrap{display:none!important}.mobile-list{display:flex!important}}
+  @media (max-width:760px){.shelf-wrap{display:none!important}.mobile-list{display:flex!important}.shelf-lang-row{display:none!important}}
 </style>
 </helmet>
 
@@ -123,14 +129,21 @@
     </div>
     <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ totalN }} essays · 显示 {{ visibleN }} / {{ totalN }} 篇</div>
 
-    <div class="shelf-wrap" style="margin-top:22px;display:flex;gap:20px;align-items:stretch">
+    <div class="shelf-lang-row" style="margin-top:22px;display:flex;align-items:center;gap:10px">
+      <div class="t-tabs" role="tablist" ref="{{ langTabsRef }}">
+        <span class="t-tabs-pill" aria-hidden="true"></span>
+        <button type="button" class="t-tab" role="tab" onClick="{{ setShelfLangZh }}" aria-selected="{{ shelfLangZhPressed }}">中文</button>
+        <button type="button" class="t-tab" role="tab" onClick="{{ setShelfLangEn }}" aria-selected="{{ shelfLangEnPressed }}">EN</button>
+      </div>
+    </div>
+    <div class="shelf-wrap" style="margin-top:8px;display:flex;gap:20px;align-items:stretch">
       <div class="shelf-scroll" style="flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;display:flex;flex-direction:column">
         <div class="shelf-row" style="position:relative;flex:1 1 auto;min-height:0;display:flex;align-items:flex-end;gap:5px;padding:26px 6px 0;border-bottom:5px solid var(--ink);width:max-content">
           <div class="book" style="flex:none;width:40px;height:70%;background:var(--paper);border:2px dashed var(--mark);border-radius:3px 3px 0 0;display:grid;place-items:center" title="つづく">
             <span class="hand" style="font-size:13px;color:var(--mark);writing-mode:vertical-rl">つづく</span>
           </div>
           <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-            <a class="book" href="{{ p.href }}" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}" aria-label="{{ p.readLabel }}"><span style="{{ p.titleStyle }}">{{ p.zh }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></a>
+            <a class="book" href="{{ p.href }}" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}" aria-label="{{ p.readLabel }}"><span style="{{ p.titleStyle }}">{{ p.spineTitle }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></a>
           </sc-for>
           <div ref="{{ birdRef }}" style="position:absolute;left:6%;bottom:-9.3px;width:56px;aspect-ratio:308/317;z-index:2" role="img" aria-label="a small bird hopping along the shelf">
             <div class="bframe" style="position:absolute;inset:0;background-image:url('./assets/bird-strip6-light.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat"></div>
@@ -252,25 +265,43 @@ const POSTS = (window.FY_POSTS || []).slice().sort((a, b) => b.date.localeCompar
     series: seriesMatch ? Number(seriesMatch[1]) : null,
     readingMin: p.readingMin,
     cover: p.cover,
-    href: 'Reading.dc.html?post=' + encodeURIComponent(p.id),
+    baseHref: 'Reading.dc.html?post=' + encodeURIComponent(p.id),
     hrefZh: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=zh',
     hrefEn: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=en'
   };
 });
 
+function readStoredLang() {
+  try {
+    var v = localStorage.getItem('fy-lang');
+    return (v === 'en' || v === 'zh') ? v : 'zh';
+  } catch (e) { return 'zh'; }
+}
+function writeStoredLang(lang) {
+  try { localStorage.setItem('fy-lang', lang); } catch (e) {}
+}
+
 class Component extends DCLogic {
-  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle' };
+  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle', shelfLang: readStoredLang() };
   birdRef = React.createRef();
+  langTabsRef = React.createRef();
   reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   componentDidMount() {
     this._alive = true;
     if (!this.reduceMotion) this.birdLoop();
     this.hydrateImages();
+    this.positionLangPill(true);
+    this._onResize = () => this.positionLangPill(true);
+    window.addEventListener('resize', this._onResize);
   }
-  componentDidUpdate() { this.hydrateImages(); }
+  componentDidUpdate() {
+    this.hydrateImages();
+    this.positionLangPill(false);
+  }
   componentWillUnmount() {
     this._alive = false;
+    if (this._onResize) window.removeEventListener('resize', this._onResize);
   }
   hydrateImages() {
     requestAnimationFrame(() => {
@@ -279,6 +310,21 @@ class Component extends DCLogic {
         if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
       });
     });
+  }
+  positionLangPill(snap) {
+    const container = this.langTabsRef.current;
+    if (!container) return;
+    const pill = container.querySelector('.t-tabs-pill');
+    const tabs = container.querySelectorAll('.t-tab');
+    const activeTab = tabs[this.state.shelfLang === 'zh' ? 0 : 1];
+    if (!pill || !activeTab) return;
+    if (snap) pill.style.transition = 'none';
+    pill.style.transform = 'translateX(' + activeTab.offsetLeft + 'px)';
+    pill.style.width = activeTab.offsetWidth + 'px';
+    if (snap) {
+      void pill.offsetHeight;
+      pill.style.transition = '';
+    }
   }
   birdLoop() {
     var bird = this.birdRef.current;
@@ -345,6 +391,15 @@ class Component extends DCLogic {
       const w = p.series ? 30 : (22 + (p.id % 4) * 4);
       const year = p.date.slice(0,4);
       const prevYear = i > 0 ? arr[i - 1].date.slice(0,4) : null;
+      const isEn = st.shelfLang === 'en';
+      const spineTitle = isEn ? p.en : p.zh;
+      const effectiveLen = Math.max(p.zh.length, p.en.length);
+      const baseFontSize = 11;
+      const comfortLen = 11;
+      const minFontSize = 8.5;
+      const titleFontSize = effectiveLen > comfortLen
+        ? Math.max(minFontSize, +(baseFontSize - (effectiveLen - comfortLen) * 0.12).toFixed(2))
+        : baseFontSize;
       return { ...p,
         bookStyle: (() => {
           const h = p.series ? 96 : heightPct;
@@ -353,7 +408,9 @@ class Component extends DCLogic {
         })(),
         numStyle: p.series ? 'position:absolute;bottom:10%;left:50%;transform:translateX(-50%);background:var(--mark);color:#fff;font-family:\'IBM Plex Mono\',monospace;font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:.02em' : 'display:none',
         numLabel: p.series ? ('0' + p.series) : '',
-        titleStyle: 'position:absolute;top:8%;left:50%;transform:translateX(-50%);max-height:' + (p.series ? '68%' : '84%') + ';white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi","Fraunces",serif;font-size:11px;line-height:1.35;letter-spacing:.03em;color:' + (p.series ? '#efe5d3' : 'var(--ink)') + ';overflow:hidden;pointer-events:none',
+        spineTitle,
+        titleStyle: 'position:absolute;top:8%;left:50%;transform:translateX(-50%);max-height:' + (p.series ? '68%' : '84%') + ';white-space:nowrap;writing-mode:vertical-rl;text-orientation:' + (isEn ? 'sideways' : 'mixed') + ';font-family:' + (isEn ? '"Fraunces",serif' : '"DingTalk JinBuTi","Fraunces",serif') + ';font-size:' + titleFontSize + 'px;font-weight:' + (isEn ? '600' : '400') + ';line-height:1.3;letter-spacing:.02em;color:' + (p.series ? '#efe5d3' : 'var(--ink)') + ';overflow:hidden;text-overflow:ellipsis;pointer-events:none',
+        href: p.baseHref + '&lang=' + (isEn ? 'en' : 'zh'),
         dateLabel, tagLine,
         titleAttr: p.en + ' · ' + p.zh + ' · ' + dateLabel,
         readLabel: 'Read ' + p.en + ' — 阅读 ' + p.zh,
@@ -432,7 +489,12 @@ class Component extends DCLogic {
       passedCount: idx,
       showPassed: idx > 0,
       goBack,
-      birdRef: this.birdRef
+      birdRef: this.birdRef,
+      langTabsRef: this.langTabsRef,
+      shelfLangZhPressed: st.shelfLang === 'zh' ? 'true' : 'false',
+      shelfLangEnPressed: st.shelfLang === 'en' ? 'true' : 'false',
+      setShelfLangZh: () => { writeStoredLang('zh'); this.setState({ shelfLang: 'zh' }); },
+      setShelfLangEn: () => { writeStoredLang('en'); this.setState({ shelfLang: 'en' }); }
     };
   }
 }
