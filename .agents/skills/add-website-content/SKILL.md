@@ -1,6 +1,6 @@
 ---
 name: add-website-content
-description: Add durable article and photography content to the fred-website static archive. Use when needs to import, publish, batch-add, migrate, or repair essays in content/posts, cover images, gallery images, or photo metadata; regenerate content/posts.js and content/photos.js; assign stable identifiers; or verify new content in Writing.dc.html, Reading.dc.html, and Gallery.dc.html.
+description: Add durable article and photography content to fyang0507.github.io website static archive. Use when needs to import, publish, batch-add, migrate, or repair essays in content/posts, cover images, gallery images, or photo metadata; regenerate content/posts.js and content/photos.js; assign stable identifiers; or verify new content in Writing.dc.html, Reading.dc.html, and Gallery.dc.html.
 ---
 
 # Add Website Content

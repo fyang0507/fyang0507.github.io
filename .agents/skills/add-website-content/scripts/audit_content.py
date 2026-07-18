@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit canonical and generated article/photo content for fred-website."""
+"""Audit canonical and generated article/photo content for fyang0507.github.io website."""
 
 from __future__ import annotations
 
@@ -259,7 +259,7 @@ def audit_manifests(root: Path, posts: list[dict], photos: list[dict], errors: l
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path.cwd(), help="fred-website repository root")
+    parser.add_argument("--root", type=Path, default=Path.cwd(), help="fyang0507.github.io website repository root")
     args = parser.parse_args()
     root = args.root.expanduser().resolve()
     errors: list[str] = []
