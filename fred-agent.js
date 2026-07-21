@@ -10,6 +10,26 @@
   ]);
   var pageCache=new Map();
   var activeRequest=null;
+  var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var revealObserver=null;
+
+  function initReveals(){
+    if(reducedMotion.matches||!window.IntersectionObserver)return;
+    document.documentElement.classList.add('reveal-ready');
+    if(!revealObserver){
+      revealObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting)return;
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        });
+      },{rootMargin:'0px 0px -6% 0px',threshold:0.1});
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('#dc-root .fa-reveal:not([data-reveal-bound])'),function(el){
+      el.setAttribute('data-reveal-bound','');
+      revealObserver.observe(el);
+    });
+  }
 
   function chapterFile(url){
     var parts=url.pathname.split('/');
@@ -111,15 +131,25 @@
         var currentStage=document.querySelector('#dc-root #main-content.fa-stage');
         if(!nextStage||!currentStage)throw new Error('Chapter content was not found');
 
-        var importedStage=document.importNode(nextStage,true);
-        destroySystemMaps(currentStage);
-        currentStage.replaceWith(importedStage);
-        updateMetadata(doc);
-        updateShell(doc,url);
+        function performSwap(){
+          var importedStage=document.importNode(nextStage,true);
+          destroySystemMaps(currentStage);
+          currentStage.replaceWith(importedStage);
+          updateMetadata(doc);
+          updateShell(doc,url);
 
-        if(options.history!=='pop')history.pushState({fredAgentChapter:true},'',url.href);
-        scrollToStage(importedStage,url.hash);
-        initSystemMaps();
+          if(options.history!=='pop')history.pushState({fredAgentChapter:true},'',url.href);
+          scrollToStage(importedStage,url.hash);
+          initSystemMaps();
+          initReveals();
+        }
+
+        var canAnimate=!reducedMotion.matches&&typeof document.startViewTransition==='function';
+        if(canAnimate){
+          var transition=document.startViewTransition(performSwap);
+          transition.ready.catch(function(){});
+          transition.finished.catch(function(){});
+        }else performSwap();
       })
       .catch(function(error){
         if(error.name==='AbortError')return;
@@ -331,7 +361,8 @@
 
   function observeRenderedPage(){
     initSystemMaps();
-    new MutationObserver(initSystemMaps).observe(document.body,{childList:true,subtree:true});
+    initReveals();
+    new MutationObserver(function(){initSystemMaps();initReveals();}).observe(document.body,{childList:true,subtree:true});
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',observeRenderedPage);

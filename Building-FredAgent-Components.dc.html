@@ -8,9 +8,9 @@
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
 <link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<link rel="stylesheet" href="./fred-agent.css?v=20260720-1">
+<link rel="stylesheet" href="./fred-agent.css?v=20260721-2">
 <script src="./support.js"></script>
-<script src="./fred-agent.js?v=20260719-1" defer></script>
+<script src="./fred-agent.js?v=20260721-1" defer></script>
 </head>
 <body>
 <x-dc>
@@ -92,16 +92,25 @@
       <div>
         <p class="fa-component-summary">A command-agnostic scheduler that lets an agent create reliable work for its future self.</p>
         <div class="fa-contract-grid">
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Why the harness falls short</h3>
           <p>Most built-in schedulers are cron-like: useful for fixed clock times, but too rigid for real-life events such as sunrise, a changing condition, or a one-off moment with readiness gates.</p>
         </section>
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Interface contract</h3>
           <p>Sundial persists cron, solar, poll, and one-time triggers, runs any shell command, and keeps execution state portable across daemon restarts.</p>
         </section>
+        <section class="fa-card fa-card--label fa-reveal">
+          <h3>Design choices</h3>
+          <ul>
+            <li>Daemon wired to a macOS LaunchAgent plist, wrapped in <code>caffeinate -i</code> to hold a sleep assertion and keep firing through system sleep</li>
+            <li>A crash or reboot triggers launchd's <code>KeepAlive</code>; the daemon replays the same reconcile-then-catch-up sequence either way, so no fire is silently lost</li>
+            <li>Desired state lives in a git data repo — a push that fails from lost network still lands locally and retries at the next reconciliation point</li>
+            <li>A daemon-wide active-hours window defers any fire outside human waking hours to the next opening, rather than dropping it or calling at 3am</li>
+          </ul>
+        </section>
         </div>
-        <figure class="fa-cli-example"><figcaption>Poll until a real-life condition is ready</figcaption><pre><code><span>$</span> sundial add poll --name "wait for approval" \
+        <figure class="fa-cli-example fa-reveal"><figcaption>Poll until a real-life condition is ready</figcaption><pre><code><span>$</span> sundial add poll --name "wait for approval" \
   --trigger 'test -f ./approval.received' \
   --interval 2m --timeout 72h --once \
   --command "codex exec 'approval arrived — continue'"</code></pre></figure>
@@ -118,16 +127,26 @@
       <div>
         <p class="fa-component-summary">A utility interface for calls, messages, email, Discord, and per-channel history.</p>
         <div class="fa-contract-grid">
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Why the harness falls short</h3>
           <p>A model can draft words, but drafting is not authenticated delivery. Calls, messages, email, and channel history each need a real recipient, transport, and verifiable result.</p>
         </section>
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Interface contract</h3>
           <p>Outreach exposes channel-specific commands with explicit recipients and objectives. Workflow policy decides whether, when, and why to contact someone.</p>
         </section>
+        <section class="fa-card fa-card--label fa-reveal">
+          <h3>Design choices</h3>
+          <ul>
+            <li>Bridges Twilio Media Streams straight to Gemini Live instead of a scripted STT→LLM→TTS pipeline — cuts round-trip latency to ~0.5–1.0s per turn against 1.5–3s for the scripted approach</li>
+            <li>Gemini runs the live turn as an autonomous subagent from a system prompt, objective, and persona — not the calling agent itself</li>
+            <li><code>outreach call steer</code> lets the main agent inject a drift-tolerant <code>nudge</code> or a forced near-verbatim <code>say</code> line without taking the call over outright</li>
+            <li>Twilio's answering-machine detection reports whether a human or machine picked up</li>
+            <li>Gemini's own <code>send_dtmf</code>/<code>end_call</code> tool calls let it navigate an IVR menu and hang up cleanly on its own</li>
+          </ul>
+        </section>
         </div>
-        <figure class="fa-cli-example"><figcaption>A live call: init, place, listen, steer</figcaption><pre><code><span>$</span> outreach call init
+        <figure class="fa-cli-example fa-reveal"><figcaption>A live call: init, place, listen, steer</figcaption><pre><code><span>$</span> outreach call init
 <span>$</span> outreach call place --to "+1…" \
   --objective "Confirm the appointment time."
 <span>$</span> outreach call listen --id &lt;call-id&gt;
@@ -146,16 +165,25 @@
       <div>
         <p class="fa-component-summary">A schema-aware bridge between a human Notion workspace and agent-readable commands.</p>
         <div class="fa-contract-grid">
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Why the harness falls short</h3>
           <p>A context window is temporary, and Notion’s visual workspace is shaped for humans. Agents need stable IDs, live schemas, bounded writes, and compact receipts.</p>
         </section>
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Interface contract</h3>
           <p>Notion Gateway discovers approved databases, validates live schemas before writes, supports dry runs, and fails closed on unknown destinations or properties.</p>
         </section>
+        <section class="fa-card fa-card--label fa-reveal">
+          <h3>Design choices</h3>
+          <ul>
+            <li>Trusts exactly one registry — the Gateway page in Notion, read by <code>ntn-gateway show</code> as the sole source of approved databases, so an agent never rediscovers workspace structure or guesses scope</li>
+            <li>Every write validates against the live schema first; an unknown property, invalid status, or not-yet-live select value comes back with the valid options listed inline, so the next command can self-correct without a human in the loop</li>
+            <li>Responses stay token-efficient by default — compact JSON, normalized summaries instead of full API echoes</li>
+            <li><code>aggregate pages</code> fans out across every approved database in one command, grouping by live status and capping/sorting by recency instead of a query per database</li>
+          </ul>
+        </section>
         </div>
-        <figure class="fa-cli-example"><figcaption>Discover and aggregate the durable workspace</figcaption><pre><code><span>$</span> ntn-gateway show
+        <figure class="fa-cli-example fa-reveal"><figcaption>Discover and aggregate the durable workspace</figcaption><pre><code><span>$</span> ntn-gateway show
 <span>$</span> ntn-gateway aggregate pages \
   --status "Not started,In progress"</code></pre></figure>
         <a class="fa-component-source" href="https://github.com/fyang0507/ntn-gateway" target="_blank" rel="noopener noreferrer" aria-label="View Notion Gateway on GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"></path></svg><span class="sr-only">View Notion Gateway on GitHub</span></a>
@@ -171,16 +199,16 @@
       <div>
         <p class="fa-component-summary">A privacy-aware router that reveals only the category of personal context needed for the task.</p>
         <div class="fa-contract-grid">
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Why the harness falls short</h3>
           <p>Generic memory either withholds needed context or exposes an undifferentiated biography. Personal facts need purpose-aware routing before they enter a task.</p>
         </section>
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Interface contract</h3>
           <p>Whoami routes a request to the smallest relevant category—identity, contact, home, family, or life history. Knowing a fact never becomes permission to act on it.</p>
         </section>
         </div>
-        <figure class="fa-cli-example fa-cli-example--protocol"><figcaption>Agent route</figcaption><pre><code>$whoami &gt; contact.md</code></pre></figure>
+        <figure class="fa-cli-example fa-cli-example--protocol fa-reveal"><figcaption>Agent route</figcaption><pre><code>$whoami &gt; contact.md</code></pre></figure>
         <span class="fa-component-private">Private policy module</span>
       </div>
     </article>
@@ -194,16 +222,16 @@
       <div>
         <p class="fa-component-summary">A failure protocol that preserves retry state, attempts bounded repair, and makes any unresolved problem visible.</p>
         <div class="fa-contract-grid">
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Why the harness falls short</h3>
           <p>When no one is watching, an exception can disappear with the process. The next session may not know what failed, what changed, or whether retrying is safe.</p>
         </section>
-        <section class="fa-contract">
+        <section class="fa-card fa-card--label fa-reveal">
           <h3>Interface contract</h3>
           <p>The protocol preserves retry state, records sanitized evidence, posts a concise status, and dispatches one guarded investigation that can repair or escalate.</p>
         </section>
         </div>
-        <figure class="fa-cli-example fa-cli-example--protocol"><figcaption>Recovery path</figcaption><pre><code>execution fails
+        <figure class="fa-cli-example fa-cli-example--protocol fa-reveal"><figcaption>Recovery path</figcaption><pre><code>execution fails
   → preserve retry state
   → report concise status
   → investigate once

@@ -9,9 +9,9 @@
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
 <link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<link rel="stylesheet" href="./fred-agent.css?v=20260720-1">
+<link rel="stylesheet" href="./fred-agent.css?v=20260721-2">
 <script src="./support.js"></script>
-<script src="./fred-agent.js?v=20260719-1" defer></script>
+<script src="./fred-agent.js?v=20260721-1" defer></script>
 </head>
 <body>
 <x-dc>
@@ -93,22 +93,22 @@
         </div>
       </div>
       <div class="fa-card-grid fa-card-grid--changes">
-        <article class="fa-card fa-card--wash-wheat">
+        <article class="fa-card fa-card--signature fa-card--wash-wheat fa-reveal">
           <div class="fa-card-kicker">time</div>
           <h3>The agent can arrive without being summoned</h3>
           <p>It can wake by clock, sunlight, condition, or one future moment. I do not have to become the scheduler myself.</p>
         </article>
-        <article class="fa-card fa-card--wash-blue">
+        <article class="fa-card fa-card--signature fa-card--wash-blue fa-reveal">
           <div class="fa-card-kicker">reach</div>
           <h3>The agent can leave the chatbox</h3>
           <p>It can call, message, observe, update shared state, or ask for a decision when waiting would make the result worse.</p>
         </article>
-        <article class="fa-card">
+        <article class="fa-card fa-card--signature fa-reveal">
           <div class="fa-card-kicker">shared knowledge</div>
           <h3>The agent and I share one knowledge base</h3>
           <p>I read and edit it through a familiar workspace. The agent reaches it through its own interface. Neither side has to work like the other.</p>
         </article>
-        <article class="fa-card fa-card--wash-peach">
+        <article class="fa-card fa-card--signature fa-card--wash-peach fa-reveal">
           <div class="fa-card-kicker">recovery</div>
           <h3>Execution failure starts recovery</h3>
           <p>It preserves retry state, records evidence, and attempts a bounded repair before escalating what still needs a human.</p>
@@ -152,25 +152,25 @@
         </div>
       </div>
       <div class="fa-recipe-grid">
-        <article class="fa-card fa-card--wash-blue">
+        <article class="fa-card fa-card--signature fa-card--wash-blue fa-reveal">
           <div class="fa-card-kicker">How does it connect?</div>
           <h3>See the system</h3>
           <p>Trace how atomic handles become a workflow and then a real-life result.</p>
           <a class="fa-card-link" href="Building-FredAgent-System.dc.html">Open the system map</a>
         </article>
-        <article class="fa-card fa-card--wash-wheat">
+        <article class="fa-card fa-card--signature fa-card--wash-wheat fa-reveal">
           <div class="fa-card-kicker">Why these boundaries?</div>
           <h3>Read the principles</h3>
           <p>Read the operating choices behind portability, attention, shared state, privacy, and failure.</p>
           <a class="fa-card-link" href="Building-FredAgent-Principles.dc.html">Read A Life With Handles</a>
         </article>
-        <article class="fa-card fa-card--wash-peach">
+        <article class="fa-card fa-card--signature fa-card--wash-peach fa-reveal">
           <div class="fa-card-kicker">What does each part own?</div>
           <h3>Inspect the components</h3>
           <p>What each narrow component enables—and where its contract stops.</p>
           <a class="fa-card-link" href="Building-FredAgent-Components.dc.html">Open the component field guide</a>
         </article>
-        <article class="fa-card">
+        <article class="fa-card fa-card--signature fa-reveal">
           <div class="fa-card-kicker">Does it operate?</div>
           <h3>Watch it operate</h3>
           <p>Five outcome-first scenarios, with honest placeholders for evidence still being prepared.</p>
@@ -194,11 +194,11 @@
           <a class="fa-card-link" href="Building-FredAgent-Demos.dc.html#omni-presence">Watch the Omni-Presence walkthrough</a>
         </div>
         <div class="fa-handoff" aria-label="A call continues by message, media understanding, human approval, and preservation in Notion">
-          <div class="fa-handoff-row"><span class="fa-handoff-chip">Agent calls me</span><span class="fa-handoff-arrow">↓</span></div>
-          <div class="fa-handoff-row"><span class="fa-handoff-chip">I reply with a link</span><span class="fa-handoff-arrow">↓</span></div>
-          <div class="fa-handoff-row"><span class="fa-handoff-chip">The agent understands the video</span><span class="fa-handoff-arrow">↓</span></div>
-          <div class="fa-handoff-row"><span class="fa-handoff-chip">It asks for approval</span><span class="fa-handoff-arrow">↓</span></div>
-          <div class="fa-handoff-row"><span class="fa-handoff-chip">The result is preserved in Notion</span></div>
+          <div class="fa-handoff-row fa-reveal"><span class="fa-handoff-chip">Agent calls me</span><span class="fa-handoff-arrow">↓</span></div>
+          <div class="fa-handoff-row fa-reveal"><span class="fa-handoff-chip">I reply with a link</span><span class="fa-handoff-arrow">↓</span></div>
+          <div class="fa-handoff-row fa-reveal"><span class="fa-handoff-chip">The agent understands the video</span><span class="fa-handoff-arrow">↓</span></div>
+          <div class="fa-handoff-row fa-reveal"><span class="fa-handoff-chip">It asks for approval</span><span class="fa-handoff-arrow">↓</span></div>
+          <div class="fa-handoff-row fa-reveal"><span class="fa-handoff-chip">The result is preserved in Notion</span></div>
         </div>
       </div>
     </section>
