@@ -1,0 +1,61 @@
+# Fred Yang
+
+> Fred Yang builds AI systems, writes bilingual (Chinese/English) essays, and photographs the everyday. This is a personal site, not documentation or a product — there is no API.
+
+The site (https://fyang0507.github.io/) is built for human readers: the home page is an illustrated desk scene where hotspots on a laptop, book, portrait, and camera lead to the four sections below. This file is a plain-text index of the same content for agents and crawlers, since that visual navigation doesn't parse outside a browser.
+
+Pages are standalone `.dc.html` files with no server-side logic. Essays render at `Reading.dc.html?post=<id>&lang=en|zh` — omit `post` for the latest essay, omit `lang` for the reader's stored preference (Chinese by default). Swap `lang=en` for `lang=zh` on any Writing link below to get the Chinese original.
+
+## Writing
+
+Bilingual essays and travel writing, 2015–2025, newest first.
+
+- [The Stories We Live 05 (Or: Those Who Refuse to Sink)](https://fyang0507.github.io/Reading.dc.html?post=2025-12-06_the-stories-we-live-05&lang=en): Prologue — on the era of no longer bothering to pretend, and the people who refuse to sink anyway. 2025-12-06.
+- [Sacramento's Absent](https://fyang0507.github.io/Reading.dc.html?post=2025-11-01_sacramentos-absent&lang=en): On the alluvial plain where the Sacramento and American rivers meet, and who is missing from that landscape. 2025-11-01.
+- [Workplace Vultures](https://fyang0507.github.io/Reading.dc.html?post=2025-07-27_workplace-vultures&lang=en): On starting a first corporate job expecting a precision machine, and finding something else. 2025-07-27.
+- [Hawaiʻi Has No Anger](https://fyang0507.github.io/Reading.dc.html?post=2025-03-23_hawaii-has-no-anger&lang=en): Starting from the USS Missouri at Pearl Harbor, on memory, war, and the islands' refusal of anger. 2025-03-23.
+- [The Stories We Live 04 (Or: Look At That Gilded Sky)](https://fyang0507.github.io/Reading.dc.html?post=2024-12-18_the-stories-we-live-04&lang=en): Prologue — cherry trees blooming out of season, and what that says about the year. 2024-12-18.
+- [The Seemingly Innocent](https://fyang0507.github.io/Reading.dc.html?post=2024-10-23_the-seemingly-innocent&lang=en): Opens with Romain Rolland's Beethoven; on illustrious lives and the seemingly innocent. 2024-10-23.
+- [Hong Kong Forest](https://fyang0507.github.io/Reading.dc.html?post=2024-04-23_hong-kong-forest&lang=en): An immigration-line question at the Hong Kong border becomes a meditation on the city. 2024-04-23.
+- [The Stories We Live 03 (Or: Mediocrity and the Absence of Wonder)](https://fyang0507.github.io/Reading.dc.html?post=2023-12-28_the-stories-we-live-03&lang=en): Prologue — waiting out a scorching noon for an evening glow that may or may not be owed. 2023-12-28.
+- [A Tale of Three Cities](https://fyang0507.github.io/Reading.dc.html?post=2023-05-27_a-tale-of-three-cities&lang=en): Stepping off a plane into humid heat that jolts loose old memories, across three cities. 2023-05-27.
+- [The Stories We Live 02 (Or: We Are All the Same)](https://fyang0507.github.io/Reading.dc.html?post=2022-11-27_the-stories-we-live-02&lang=en): Prologue — the world still feeling for the bottom after a pandemic, and a first glimmer of light. 2022-11-27.
+- [The Stories We Live 01 (Or: History as a Form of Narrative)](https://fyang0507.github.io/Reading.dc.html?post=2021-11-28_the-stories-we-live-01&lang=en): Prologue — an annual return to a wound first faced twelve years ago, and history as narrative. 2021-11-28.
+- [Salvation Mountain](https://fyang0507.github.io/Reading.dc.html?post=2019-12-29_salvation-mountain&lang=en): Driving the unposted speed limits of State Route 111 along the Salton Sea toward Salvation Mountain. 2019-12-29.
+- [The Promised and the Forsaken](https://fyang0507.github.io/Reading.dc.html?post=2019-12-02_the-promised-and-the-forsaken&lang=en): Culebra and Vieques, and the narrow coastal roads between the promised and the forsaken. 2019-12-02.
+- [He and His Cat](https://fyang0507.github.io/Reading.dc.html?post=2019-01-09_he-and-his-cat&lang=en): A deep-sea fishing champion, Lost Generation soldier, and cubano sato — a portrait built from fragments. 2019-01-09.
+- [Checking In on California](https://fyang0507.github.io/Reading.dc.html?post=2018-12-28_checking-in-on-california&lang=en): On California as a modern colony rather than a modern place to live, lacking native ground. 2018-12-28.
+- [The Strata of New York](https://fyang0507.github.io/Reading.dc.html?post=2018-10-20_the-strata-of-new-york&lang=en): Coming off the Triborough Bridge into Manhattan feels, unaccountably, like arriving in Milan. 2018-10-20.
+- [Flow and Counterflow](https://fyang0507.github.io/Reading.dc.html?post=2018-03-15_flow-and-counterflow&lang=en): A poem on time taking on grain, stillness, and the pull of the open plain. 2018-03-15.
+- [A Member of Society](https://fyang0507.github.io/Reading.dc.html?post=2017-12-02_a-member-of-society&lang=en): A poem on silence, rising waterlines, and the slow slide toward the abyssal zone. 2017-12-02.
+- [Years of Pilgrimage: Switzerland](https://fyang0507.github.io/Reading.dc.html?post=2017-05-01_years-of-pilgrimage-switzerland&lang=en): Liszt's Années de pèlerinage on the descent into Switzerland, seen first from a plane window. 2017-05-01.
+- [One Way into Japan](https://fyang0507.github.io/Reading.dc.html?post=2016-08-10_one-way-into-japan&lang=en): Preface — a month in Japan so full it left no room for thought until well after the fact. 2016-08-10.
+- [Why Oran?](https://fyang0507.github.io/Reading.dc.html?post=2015-06-13_why-oran&lang=en): Traveling alone through the South of France, where the sun refuses to leave the sky before dark. 2015-06-13.
+- [The Breath of Paris](https://fyang0507.github.io/Reading.dc.html?post=2015-05-17_the-breath-of-paris&lang=en): Rounding a corner near the art museum into a sudden, ancient, immense Hôtel de Ville. 2015-05-17.
+- [Go South, Go South](https://fyang0507.github.io/Reading.dc.html?post=2015-05-09_go-south-go-south&lang=en): The Van Gogh Museum in Amsterdam revises what was assumed about Haizi's gaunt brother. 2015-05-09.
+- [Notes on Resurrection: Time and Life in Flow and Superposition](https://fyang0507.github.io/Reading.dc.html?post=2015-04-12_notes-on-resurrection-time-and-life-in-flow-and-superposition&lang=en): Rome and Vatican City — lives spent rendering the face of Jesus, and what that devotion means. 2015-04-12.
+
+## Building
+
+Projects, systems, and experiments.
+
+- [Building overview](https://fyang0507.github.io/Building.dc.html): Index of active and historical projects — Fred Agent, NJJoe, Instant Bookmark, Wavelength, Tsugi.
+- [Fred Agent — A Life With Handles](https://fyang0507.github.io/Building-FredAgent.dc.html): An operating environment giving swappable general-purpose agents durable handles into time, communication, shared state, personal context, and visible recovery. Active, 2025—now.
+- [Fred Agent: System](https://fyang0507.github.io/Building-FredAgent-System.dc.html): How Fred Agent turns existing agent capability into real-life outcomes.
+- [Fred Agent: Principles](https://fyang0507.github.io/Building-FredAgent-Principles.dc.html): Eleven design principles behind Fred Agent.
+- [Fred Agent: Components](https://fyang0507.github.io/Building-FredAgent-Components.dc.html): Technical field guide to the CLIs, policy module, and recovery protocol.
+- [Fred Agent: Demos](https://fyang0507.github.io/Building-FredAgent-Demos.dc.html): Outcome-first demonstrations across time, channels, physical-world state, and unattended failure.
+
+## Photography
+
+- [Gallery](https://fyang0507.github.io/Gallery.dc.html): 107 photographs, 2015–2025, across cityscape, landscape, people, architecture, street, and creature categories. Browsed in-page; no per-photo permalinks.
+
+## About
+
+- [About](https://fyang0507.github.io/About.dc.html): Fred Yang is an applied AI engineer, writer, and photographer in New York. The page itself is a bilingual illustrated "trading card," not prose — this is the plain-text version of it.
+
+## Optional
+
+- [Home](https://fyang0507.github.io/index.html): The illustrated desk-scene entry point described above.
+- Source repositories: [Fred Agent](https://github.com/fyang0507/fred-agent), [Instant Bookmark](https://github.com/fyang0507/instant-bookmark), [Wavelength](https://github.com/fyang0507/wavelength), [Tsugi](https://github.com/fyang0507/tsugi).
+- Fred Agent component repositories: [Sundial](https://github.com/fyang0507/sundial) (command-agnostic scheduler), [Outreach CLI](https://github.com/fyang0507/outreach-cli) (authenticated calls, messages, and channel delivery), [Notion Gateway](https://github.com/fyang0507/ntn-gateway) (schema-aware bridge to a Notion workspace).
