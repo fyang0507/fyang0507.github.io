@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fred Agent Demos · Fred Yang</title>
+<meta name="description" content="Outcome-first demonstrations of Fred Agent operating across time, channels, physical-world state, and unattended failure.">
+<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="./favicon.png">
+<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
+<link rel="stylesheet" href="./fred-agent.css?v=20260720-1">
+<script src="./support.js"></script>
+<script src="./fred-agent.js?v=20260719-1" defer></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+</helmet>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<div class="fa-page" data-screen-label="fred-agent-demos">
+  <header class="site-shell-header">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status">fred-agent · evidence</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+  </header>
+
+  <div class="fa-project-strip">
+    <div class="fa-project-strip-inner">
+      <a class="fa-back" href="Building.dc.html">← Building board</a>
+      <nav class="fa-project-nav" aria-label="Fred Agent chapters">
+        <ul class="fa-project-nav-list">
+          <li><a href="Building-FredAgent.dc.html">Overview</a></li>
+          <li><a href="Building-FredAgent-System.dc.html">System</a></li>
+          <li><a href="Building-FredAgent-Principles.dc.html">Principles</a></li>
+          <li><a href="Building-FredAgent-Components.dc.html">Components</a></li>
+          <li><a href="Building-FredAgent-Demos.dc.html" aria-current="page">Demos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <main id="main-content" class="fa-stage fa-rise">
+    <div class="fa-breadcrumb"><a href="Building-FredAgent.dc.html">Fred Agent</a><span>/</span> Demos</div>
+    <header class="fa-hero fa-hero--single" aria-labelledby="page-title">
+      <div>
+        <div class="fa-eyebrow">Fred Agent · Demos</div>
+        <h1 id="page-title" class="fa-title fa-title--compact">The System in Motion</h1>
+        <p class="fa-deck">Five ways existing agent capability becomes useful outside the chat window.</p>
+        <div class="fa-hero-meta"><span>outcome first</span><span>evidence before spectacle</span></div>
+      </div>
+    </header>
+
+    <section class="fa-section fa-section--tight" aria-labelledby="evidence-status-title">
+      <div class="fa-section-head">
+        <div class="fa-section-index">00<strong>Evidence status</strong></div>
+        <div>
+          <h2 id="evidence-status-title" class="fa-section-title">Evidence, without theatre.</h2>
+          <p class="fa-section-intro">The workflow is real; public-safe media is still being prepared.</p>
+        </div>
+      </div>
+      <div class="fa-evidence-legend" aria-label="Evidence labels used on this page">
+        <span class="fa-evidence-label fa-evidence-label--concept">Concept preview</span>
+      </div>
+      <p class="fa-footnote"><strong>Concept preview</strong> means the narrative is ready but no recorded run is being claimed yet.</p>
+    </section>
+
+    <section aria-label="Fred Agent demonstrations">
+      <article class="fa-demo fa-demo--featured" id="omni-presence">
+        <header class="fa-demo-head">
+          <div>
+            <div class="fa-section-index">01<strong>Featured demo · one task across several surfaces</strong></div>
+            <h2>Meet Me Wherever I Am</h2>
+          </div>
+          <span class="fa-evidence-label fa-evidence-label--concept">Concept preview</span>
+        </header>
+
+        <div class="fa-demo-grid">
+          <figure class="fa-media-slot">
+            <span class="fa-media-slot-number" aria-hidden="true">01</span>
+            <strong>Concept preview</strong>
+            <p>Call → message → approval → Notion. Public-safe walkthrough media is being prepared. No recorded run is presented here yet.</p>
+          </figure>
+          <div class="fa-demo-copy">
+        <section>
+          <h3>What happens</h3>
+          <p>The agent calls me. I send a YouTube link by message. It understands the video, asks for a tapback, and writes the approved artifact into my technical-reading system.</p>
+          <p>No single interface contains the interaction. The task survives anyway.</p>
+        </section>
+        <section>
+          <h3>Recipe</h3>
+          <div class="fa-recipe-flow" aria-label="Omni-Presence composition recipe">
+            <span class="fa-flow-chip">general-purpose agent</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">voice call</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">message handoff</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">video understanding</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">human approval</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">Notion record</span>
+          </div>
+        </section>
+          </div>
+        </div>
+        <div class="fa-demo-details">
+        <section class="fa-demo-detail">
+          <h3>What to notice</h3>
+          <ul>
+            <li>The live call stays fast and bounded.</li>
+            <li>The task can wait across channels without losing context.</li>
+            <li>Approval is lightweight, explicit, and followed by durable state.</li>
+          </ul>
+        </section>
+        <aside class="fa-demo-detail">
+          <h3>Current limitation</h3>
+          <p>A bounded composition, not a universal cross-channel engine.</p>
+        </aside>
+        <div class="fa-demo-detail">
+          <h3>Public evidence</h3>
+          <p>Walkthrough, caller-ID capture, and final Notion record still to add.</p>
+        </div>
+        </div>
+      </article>
+
+      <article class="fa-demo" id="trash-patrol">
+        <header class="fa-demo-head">
+          <div>
+            <div class="fa-section-index">02<strong>Demo · Trash Patrol</strong></div>
+            <h2>The House Has a Small, Boring Problem</h2>
+          </div>
+          <span class="fa-evidence-label fa-evidence-label--concept">Concept preview</span>
+        </header>
+
+        <div class="fa-demo-grid">
+          <figure class="fa-media-slot">
+            <span class="fa-media-slot-number" aria-hidden="true">02</span>
+            <strong>Concept preview</strong>
+            <p>Sunset → camera → verdict. A sanitized camera frame and scheduled-delivery evidence are being prepared.</p>
+          </figure>
+          <div class="fa-demo-copy">
+        <section>
+          <h3>What happens</h3>
+          <p>Sundial wakes the workflow near sunset. A doorbell frame, the local collection rule, and a bounded judgment answer one question: do the bins need attention now?</p>
+          <p>The system posts a short verdict and deletes the temporary capture.</p>
+        </section>
+        <section>
+          <h3>Recipe</h3>
+          <div class="fa-recipe-flow" aria-label="Trash Patrol composition recipe">
+            <span class="fa-flow-chip">solar trigger</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">doorbell capture</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">local rule and visual judgment</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">short Discord verdict</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">cleanup</span>
+          </div>
+        </section>
+          </div>
+        </div>
+        <div class="fa-demo-details">
+        <section class="fa-demo-detail">
+          <h3>What to notice</h3>
+          <ul>
+            <li>The trigger follows the obligation, not a generic schedule.</li>
+            <li>Unclear scenes produce uncertainty, not a guess.</li>
+            <li>The final message is smaller than the reasoning behind it.</li>
+          </ul>
+        </section>
+        <aside class="fa-demo-detail">
+          <h3>Current limitation</h3>
+          <p>A bounded household check, not general visual understanding of the home.</p>
+        </aside>
+        <div class="fa-demo-detail">
+          <h3>Public evidence</h3>
+          <p>Sanitized frame, schedule receipt, and verdict still to add.</p>
+        </div>
+        </div>
+      </article>
+
+      <article class="fa-demo" id="discord-intake">
+        <header class="fa-demo-head">
+          <div>
+            <div class="fa-section-index">03<strong>Demo · Discord Intake</strong></div>
+            <h2>Drop the Messy Input</h2>
+          </div>
+          <span class="fa-evidence-label fa-evidence-label--concept">Concept preview</span>
+        </header>
+
+        <div class="fa-demo-grid">
+          <figure class="fa-media-slot">
+            <span class="fa-media-slot-number" aria-hidden="true">03</span>
+            <strong>Concept preview</strong>
+            <p>Phone capture → durable result. A public-safe intake sample and resulting artifact are being prepared.</p>
+          </figure>
+          <div class="fa-demo-copy">
+        <section>
+          <h3>What happens</h3>
+          <p>I drop unfinished text or media into one Discord channel. The workflow stages attachments, understands what matters, performs the requested action, and advances its cursor only after the result is safe.</p>
+          <p>The human interface is deliberately undisciplined. The discipline lives behind it.</p>
+        </section>
+        <section>
+          <h3>Recipe</h3>
+          <div class="fa-recipe-flow" aria-label="Discord Intake composition recipe">
+            <span class="fa-flow-chip">phone capture</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">Discord staging</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">media understanding</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">requested action</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">local artifact or Notion</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">cursor advance</span>
+          </div>
+        </section>
+          </div>
+        </div>
+        <div class="fa-demo-details">
+        <section class="fa-demo-detail">
+          <h3>What to notice</h3>
+          <ul>
+            <li>Capture does not require choosing the final destination.</li>
+            <li>Temporary attachments are staged before they expire.</li>
+            <li>A failed write does not silently consume the message.</li>
+          </ul>
+        </section>
+        <aside class="fa-demo-detail">
+          <h3>Current limitation</h3>
+          <p>The workflow may organize ambiguity; it should not invent missing intent.</p>
+        </aside>
+        <div class="fa-demo-detail">
+          <h3>Public evidence</h3>
+          <p>Public intake, durable result, and retry example still to add.</p>
+        </div>
+        </div>
+      </article>
+
+      <article class="fa-demo" id="unattended-recovery">
+        <header class="fa-demo-head">
+          <div>
+            <div class="fa-section-index">04<strong>Demo · Unattended Recovery</strong></div>
+            <h2>Failure Should Leave a Forwarding Address</h2>
+          </div>
+          <span class="fa-evidence-label fa-evidence-label--concept">Concept preview</span>
+        </header>
+
+        <div class="fa-demo-grid">
+          <figure class="fa-media-slot">
+            <span class="fa-media-slot-number" aria-hidden="true">04</span>
+            <strong>Concept preview</strong>
+            <p>Failure → evidence → final status. A sanitized failure timeline and human-visible status loop are being prepared.</p>
+          </figure>
+          <div class="fa-demo-copy">
+        <section>
+          <h3>What happens</h3>
+          <p>The workflow preserves retry state, saves a local evidence note, and posts a concise digest. If diagnosis is needed, a separate investigator works under a recursion guard and returns with a final status.</p>
+          <p>The human learns what did not happen and what comes next—not merely that a log exists.</p>
+        </section>
+        <section>
+          <h3>Recipe</h3>
+          <div class="fa-recipe-flow" aria-label="Unattended Recovery composition recipe">
+            <span class="fa-flow-chip">failure</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">preserve retry state</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">save evidence</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">concise human digest</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">guarded investigation</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">final status</span>
+          </div>
+        </section>
+          </div>
+        </div>
+        <div class="fa-demo-details">
+        <section class="fa-demo-detail">
+          <h3>What to notice</h3>
+          <ul>
+            <li>Failed side effects do not advance completion state.</li>
+            <li>Routine no-ops and clear rate limits avoid needless investigation.</li>
+            <li>The final message closes the human-visible loop.</li>
+          </ul>
+        </section>
+        <aside class="fa-demo-detail">
+          <h3>Current limitation</h3>
+          <p>It makes failure legible; it cannot make every external surface reliable.</p>
+        </aside>
+        <div class="fa-demo-detail">
+          <h3>Public evidence</h3>
+          <p>Failure digest, preserved-state timeline, and final status still to add.</p>
+        </div>
+        </div>
+      </article>
+
+      <article class="fa-demo" id="co-authored-publishing">
+        <header class="fa-demo-head">
+          <div>
+            <div class="fa-section-index">05<strong>Supporting demo · Co-authored Publishing</strong></div>
+            <h2>Continuity Is More Than a Prompt</h2>
+          </div>
+          <span class="fa-evidence-label fa-evidence-label--concept">Concept preview</span>
+        </header>
+
+        <div class="fa-demo-grid">
+          <figure class="fa-media-slot">
+            <span class="fa-media-slot-number" aria-hidden="true">05</span>
+            <strong>Concept preview</strong>
+            <p>Source → judgment → verified publication. A public source-to-revision sequence is being prepared.</p>
+          </figure>
+          <div class="fa-demo-copy">
+        <section>
+          <h3>What happens</h3>
+          <p>The Article and Visual Design Guides preserve source, judgment, revision, and adaptable boundaries across sessions.</p>
+          <p>The point is not imitation on command. A future agent inherits the editorial world around the artifact.</p>
+        </section>
+        <section>
+          <h3>Recipe</h3>
+          <div class="fa-recipe-flow" aria-label="Co-authored Publishing composition recipe">
+            <span class="fa-flow-chip">source material</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">canonical base draft</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">article guide</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">human revision</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">visual direction</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">destination-specific build</span><span class="fa-flow-arrow" aria-hidden="true">→</span>
+            <span class="fa-flow-chip">verified publication</span>
+          </div>
+        </section>
+          </div>
+        </div>
+        <div class="fa-demo-details">
+        <section class="fa-demo-detail">
+          <h3>What to notice</h3>
+          <ul>
+            <li>Source remains distinct from platform adaptations.</li>
+            <li>Human decisions are preserved rather than averaged away.</li>
+            <li>Publication includes real rendering and verification.</li>
+          </ul>
+        </section>
+        <aside class="fa-demo-detail">
+          <h3>Current limitation</h3>
+          <p>Continuity reduces re-explanation; it does not replace authorship.</p>
+        </aside>
+        <div class="fa-demo-detail">
+          <h3>Public evidence</h3>
+          <p>Source-to-revision sequence and verified result still to add.</p>
+        </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="fa-section" aria-labelledby="demo-closing">
+      <div class="fa-section-head">
+        <div class="fa-section-index">06<strong>Still changing</strong></div>
+        <div><h2 id="demo-closing" class="fa-section-title">The task should survive the change</h2></div>
+      </div>
+      <div class="fa-copy">
+        <p>Fred Agent is not finished. Some workflows will disappear; others will become quieter.</p>
+        <p class="fa-lede">The evidence is that the task can survive the change.</p>
+      </div>
+    </section>
+
+    <nav class="fa-page-nav" aria-label="Fred Agent chapter navigation">
+      <a href="Building-FredAgent-Components.dc.html"><span>← Previous</span><strong>Component Field Guide</strong></a>
+      <a href="Building-FredAgent.dc.html"><strong>Back to the Overview</strong><span>Next →</span></a>
+    </nav>
+
+    <footer class="fa-footer">
+      <span>© 2026 Fred Yang · 杨</span>
+      <div class="fa-footer-links">
+        <a href="Building.dc.html">building board</a>
+        <a href="mailto:fredyang0507@gmail.com">email</a>
+        <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </footer>
+  </main>
+</div>
+</x-dc>
+</body>
+</html>

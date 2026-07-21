@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Life With Handles · Fred Agent · Fred Yang</title>
+<meta name="description" content="Eleven design principles for Fred Agent: an operating environment that gives replaceable agents durable handles into real life.">
+<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="./favicon.png">
+<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
+<link rel="stylesheet" href="./fred-agent.css?v=20260720-1">
+<script src="./support.js"></script>
+<script src="./fred-agent.js?v=20260719-1" defer></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+</helmet>
+
+<a class="skip-link" href="#main-content">Skip to the essay</a>
+
+<div class="fa-page" data-screen-label="fred-agent-principles">
+  <header class="site-shell-header">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status">fred-agent · principles</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+  </header>
+
+  <div class="fa-project-strip">
+    <div class="fa-project-strip-inner">
+      <a class="fa-back" href="Building.dc.html">← Building board</a>
+      <nav class="fa-project-nav" aria-label="Fred Agent chapters">
+        <ul class="fa-project-nav-list">
+          <li><a href="Building-FredAgent.dc.html">Overview</a></li>
+          <li><a href="Building-FredAgent-System.dc.html">System</a></li>
+          <li><a href="Building-FredAgent-Principles.dc.html" aria-current="page">Principles</a></li>
+          <li><a href="Building-FredAgent-Components.dc.html">Components</a></li>
+          <li><a href="Building-FredAgent-Demos.dc.html">Demos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <main id="main-content" class="fa-stage fa-rise">
+    <header class="fa-hero fa-hero--single">
+      <div>
+        <div class="fa-breadcrumb"><a href="Building-FredAgent.dc.html">Fred Agent</a><span>/</span> Design principles</div>
+        <div class="fa-eyebrow">Why it is designed this way</div>
+        <h1 class="fa-title fa-title--compact">A Life With <span class="fa-title-mark">Handles</span></h1>
+        <p class="fa-deck">Eleven principles for building an environment that a replaceable general-purpose agent can enter, use, and leave in a trustworthy state.</p>
+        <div class="fa-hero-meta"><span>11 principles</span><span>canonical argument</span><span>English · first edition</span></div>
+      </div>
+    </header>
+
+    <section class="fa-section fa-reading-layout" aria-label="Design principles">
+      <nav class="fa-toc" aria-label="On this page">
+        <h2>On this page</h2>
+        <ol>
+          <li><a href="#portable"><span>01</span> The agent should be portable</a></li>
+          <li><a href="#enablement-floor"><span>02</span> The enablement floor</a></li>
+          <li><a href="#capture"><span>03</span> Capture without homework</a></li>
+          <li><a href="#primitive"><span>04</span> The primitive is not the product</a></li>
+          <li><a href="#attention"><span>05</span> Human attention is a budget</a></li>
+          <li><a href="#shared-state"><span>06</span> Shared state, two interfaces</a></li>
+          <li><a href="#scheduling"><span>07</span> Scheduling is presence</a></li>
+          <li><a href="#personal-context"><span>08</span> Personal context needs a boundary</a></li>
+          <li><a href="#creative-continuity"><span>09</span> Creative continuity is infrastructure</a></li>
+          <li><a href="#failure"><span>10</span> Fail loud and recover</a></li>
+          <li><a href="#ordinary-life"><span>11</span> Real life is the benchmark</a></li>
+        </ol>
+      </nav>
+
+      <article class="fa-prose">
+        <div class="fa-prose-intro">
+          <p>I have become less interested in building agents and more interested in building things agents can use.</p>
+          <p>Agents already know how to reason, plan, inspect, and act. Yet most rarely leave a chatbox or operate without a specific human invocation. They have little continuity between sessions and no dependable way to return when unattended work needs another step.</p>
+          <p>Fred Agent is the enablement environment around that missing opportunity. The model can change. The life around it should remain operable.</p>
+        </div>
+
+        <section id="portable" class="fa-principle" aria-labelledby="portable-title">
+          <div class="fa-principle-number">01</div>
+          <h2 id="portable-title">The agent should be portable</h2>
+          <p>I do not want one company’s memory system or one chat surface to become the operating system for my life. Commands, schedules, artifacts, schemas, and operating rules live outside the runtime so another capable agent can inherit them. In practice, I deliberately swap agents when one subscription plan drains its weekly usage; portability is an operating requirement, not an abstraction.</p>
+          <p>A useful session can end. The environment should not end with it.</p>
+          <p class="fa-pullquote">The agent can change. The handles remain.</p>
+        </section>
+
+        <section id="enablement-floor" class="fa-principle" aria-labelledby="enablement-floor-title">
+          <div class="fa-principle-number">02</div>
+          <h2 id="enablement-floor-title">Raise the enablement floor before the intelligence ceiling</h2>
+          <p>Current agents are overqualified for many ordinary tasks. They understand the instruction and can plan the work; then they meet a phone number, a camera, a temporary attachment, a human workspace, or an obligation tied to sunset.</p>
+          <p>The capability already exists. The opportunity does not. The enablement floor is the set of stable handles into time, communication, state, media, permissions, and human attention.</p>
+          <p>Intelligence that cannot arrive, inherit, act, and stop is trapped potential.</p>
+        </section>
+
+        <section id="capture" class="fa-principle" aria-labelledby="capture-title">
+          <div class="fa-principle-number">03</div>
+          <h2 id="capture-title">Capture should not become homework</h2>
+          <p>Knowledge systems often ask the human to choose a database, tag, and final form at the moment the thought is least organized. By then, the thought has usually left the building.</p>
+          <p>I drop text or media into one channel. The system stages it, understands what matters, performs the requested work, and advances its cursor only after the result is safe.</p>
+          <p class="fa-pullquote">The human supplies messy context. The system earns the right to organize it.</p>
+        </section>
+
+        <section id="primitive" class="fa-principle" aria-labelledby="primitive-title">
+          <div class="fa-principle-number">04</div>
+          <h2 id="primitive-title">The primitive is not the product</h2>
+          <p>A phone call, a scheduled wake-up, or a Notion write is an atomic handle. The useful experience also needs purpose, state, policy, retries, and a place to leave the result.</p>
+          <p>Handles stay narrow enough to reuse. Protocols compose them around one class of human situation. The machinery should disappear into the result.</p>
+          <p class="fa-pullquote">Having the right tools does not automatically produce a workflow a human wants.</p>
+        </section>
+
+        <section id="attention" class="fa-principle" aria-labelledby="attention-title">
+          <div class="fa-principle-number">05</div>
+          <h2 id="attention-title">Human attention is a budget</h2>
+          <p>A system that constantly asks for approval has only moved the control panel into another notification stream.</p>
+          <p>Automatically resolve the obvious problem when safe. Leave a digest when it can wait. Call only when a blocking decision is genuinely time-sensitive. Autonomy matters less than spending human attention responsibly.</p>
+          <p class="fa-pullquote">Silence is part of the interface.</p>
+        </section>
+
+        <section id="shared-state" class="fa-principle" aria-labelledby="shared-state-title">
+          <div class="fa-principle-number">06</div>
+          <h2 id="shared-state-title">Shared state needs two interfaces</h2>
+          <p>I need a Notion workspace readable from any device. The agent needs stable identifiers, schemas, dry runs, and explicit failure modes. Notion gives me the human interface; Notion Gateway gives the agent a schema-aware interface to the same durable state.</p>
+          <p class="fa-pullquote">Give each participant the information form that suits it; keep the underlying state shared.</p>
+        </section>
+
+        <section id="scheduling" class="fa-principle" aria-labelledby="scheduling-title">
+          <div class="fa-principle-number">07</div>
+          <h2 id="scheduling-title">Scheduling is presence</h2>
+          <p>Human obligations happen by clock, sunlight, one future moment, or an external condition becoming true. Sundial turns those shapes into command-agnostic triggers.</p>
+          <p>Without that layer, I remain the scheduler: remembering the task, reopening the interface, and asking the system to continue.</p>
+          <p class="fa-pullquote">The agent should be able to schedule work for its future self.</p>
+        </section>
+
+        <section id="personal-context" class="fa-principle" aria-labelledby="personal-context-title">
+          <div class="fa-principle-number">08</div>
+          <h2 id="personal-context-title">Personal context needs a boundary</h2>
+          <p>Whoami is not one enormous biography poured into every session. It routes the task to the smallest relevant category of personal facts.</p>
+          <p>Context is granted by purpose, not accumulated because it might become useful later.</p>
+          <p class="fa-pullquote">The best memory is sometimes the refusal to look.</p>
+        </section>
+
+        <section id="creative-continuity" class="fa-principle" aria-labelledby="creative-continuity-title">
+          <div class="fa-principle-number">09</div>
+          <h2 id="creative-continuity-title">Creative continuity is infrastructure too</h2>
+          <p>Writing and visual work are often treated as prompt problems. That produces competent amnesia.</p>
+          <p>The guides preserve source, judgment, revision, and adaptable boundaries so a future session inherits the editorial world around the artifact—not only its surface style.</p>
+          <p class="fa-pullquote">Without that, every session rediscovers taste from its debris.</p>
+        </section>
+
+        <section id="failure" class="fa-principle" aria-labelledby="failure-title">
+          <div class="fa-principle-number">10</div>
+          <h2 id="failure-title">Fail loudly, preserve state, and recover automatically</h2>
+          <p>Authentication expires. Attachments disappear. A cursor advances before the destination write finishes. Unattended failure is usually boring, which is why it is easy to lose.</p>
+          <p>Preserve retry state first. Leave reconstructable evidence. Then attempt a bounded repair or dispatch a guarded investigation before asking for human attention.</p>
+          <p>An automation says something broke. A collaborative system preserves what did not happen, tries to recover, and reports what comes next.</p>
+        </section>
+
+        <section id="ordinary-life" class="fa-principle" aria-labelledby="ordinary-life-title">
+          <div class="fa-principle-number">11</div>
+          <h2 id="ordinary-life-title">Real life is the benchmark</h2>
+          <p>Fred Agent calls businesses, checks trash bins, turns dropped notes into durable work, updates a human-readable workspace, and reports unattended failure.</p>
+          <p>None of this needs a new theory of intelligence. It needs existing intelligence to arrive at the right time, touch the right part of the world, and stop before it spends attention badly.</p>
+          <p class="fa-pullquote">Not a better chatbot. A life with handles.</p>
+        </section>
+
+      </article>
+    </section>
+
+    <nav class="fa-page-nav" aria-label="Fred Agent chapter navigation">
+      <a href="Building-FredAgent-System.dc.html"><span>← Previous</span><strong>System</strong></a>
+      <a href="Building-FredAgent-Components.dc.html"><strong>Components</strong><span>Next →</span></a>
+    </nav>
+
+    <footer class="fa-footer">
+      <span>© 2026 Fred Yang · Fred Agent</span>
+      <span class="fa-footer-links"><a href="Building-FredAgent.dc.html">Overview</a><a href="Building.dc.html">All building</a><a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+    </footer>
+  </main>
+</div>
+
+</x-dc>
+</body>
+</html>

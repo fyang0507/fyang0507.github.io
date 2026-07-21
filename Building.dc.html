@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Building · Fred Yang</title>
-<meta name="description" content="Projects and experiments by Fred Yang.">
+<meta name="description" content="Projects, systems, and experiments by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
 <link rel="stylesheet" href="./site-nav.css?v=20260715-13">
 <script src="./support.js"></script>
+<script src="./content/building-projects.js"></script>
 </head>
 <body>
 <x-dc>
@@ -19,28 +20,180 @@
 <style>
   @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
+  :root{
+    --paper:#FBF6EC;
+    --paper-2:#F3ECDD;
+    --paper-3:#EDE4D2;
+    --ink:#33302B;
+    --soft:#6D6559;
+    --pencil:#7C7468;
+    --mark:#D9695A;
+    --mark-deep:#A5453A;
+    --line:#E4DAC7;
+    --line-strong:#CFC1A9;
+    --wash-blue:#DCE8E7;
+    --wash-peach:#F0D9CD;
+    --wash-wheat:#E9DFC5;
+    --board:#EEE4CE;
+    --shadow:0 1px 2px rgba(60,50,35,.05),0 18px 42px rgba(60,50,35,.09);
+    --ease-open:cubic-bezier(.2,.85,.28,1.18);
+    --ease-close:cubic-bezier(.3,0,.2,1);
+  }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
-  a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.045;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  a{color:inherit;text-decoration:none}
+  a:hover{color:var(--mark-deep)}
+  button{font:inherit}
   .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
   .hand{font-family:"MuyaoPleased","Caveat",cursive}
   .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+  .building-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 64px}
+  .building-stage{width:min(1180px,100%);margin-top:38px}
+  .building-intro{display:block}
+  .board-shell{position:relative;margin-top:26px;padding:clamp(16px,2.4vw,28px) 0 clamp(18px,2.6vw,30px);border:1px solid rgba(140,120,85,.22);border-radius:16px;background-color:var(--board);background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:28px 28px;box-shadow:var(--shadow)}
+  .board-shell::before{content:"";position:absolute;left:48%;top:-9px;width:112px;height:25px;background:rgba(222,196,143,.67);clip-path:polygon(3% 7%,96% 0,100% 84%,4% 100%);transform:translateX(-50%) rotate(-2deg);box-shadow:0 2px 4px rgba(60,50,35,.08)}
+  .timeline-toolbar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 clamp(18px,2.5vw,30px) 14px}
+  .timeline-order{color:#625B51;font-family:"IBM Plex Mono",monospace;font-size:9.5px;line-height:1.4;letter-spacing:.07em;text-transform:uppercase}
+  .timeline-actions{display:flex;gap:7px}
+  .timeline-scroll-button{width:38px;height:38px;border:1.5px solid var(--ink);border-radius:50%;background:var(--paper);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:14px;line-height:1;cursor:pointer;transition:background-color .16s ease,color .16s ease,opacity .16s ease}
+  .timeline-scroll-button:hover,.timeline-scroll-button:focus-visible{background:var(--ink);color:var(--paper);outline:3px solid var(--mark);outline-offset:2px}
+  .timeline-scroll-button:disabled{opacity:.3;cursor:default}
+  .board-viewport{width:100%;overflow-x:auto;overflow-y:hidden;padding:24px clamp(18px,2.5vw,30px) 32px;scroll-padding-inline:clamp(18px,2.5vw,30px);scrollbar-width:auto;scrollbar-color:var(--ink) rgba(126,108,78,.16);overscroll-behavior-inline:contain}
+  .board-viewport:focus-visible{outline:3px solid var(--mark);outline-offset:-3px}
+  .board-viewport::-webkit-scrollbar{height:11px}
+  .board-viewport::-webkit-scrollbar-track{border-radius:999px;background:rgba(126,108,78,.16)}
+  .board-viewport::-webkit-scrollbar-thumb{border:3px solid transparent;border-radius:999px;background:var(--ink);background-clip:padding-box}
+  .building-board-track{display:flex;align-items:flex-start;gap:44px;width:max-content;min-width:100%;min-height:560px;padding:0 18px 0 6px;isolation:isolate}
+  .project-card{--tilt:0deg;--drop:0px;position:relative;flex:none;display:flex;flex-direction:column;min-width:0;height:auto;border:1.5px solid var(--line-strong);border-radius:11px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);overflow:visible;transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:50% 10%}
+  .board-pin{position:absolute;z-index:8;left:var(--pin-left,50%);top:-24px;width:20px;height:42px;overflow:visible;pointer-events:none;transform:translateX(-50%) rotate(var(--pin-tilt,-8deg));transform-origin:50% 90%;filter:drop-shadow(0 2px 1px rgba(60,50,35,.24))}
+  .board-pin .pin-shadow{fill:rgba(60,50,35,.3)}
+  .board-pin .pin-stem{fill:none;stroke:#898989;stroke-width:2.6;stroke-linecap:round}
+  .board-pin .pin-stem-glint{fill:none;stroke:#e4e4e4;stroke-width:.9;stroke-linecap:round}
+  .board-pin .pin-head{fill:var(--pin-color,var(--ink))}
+  .board-pin .pin-glint{fill:rgba(255,255,255,.58)}
+  .highlighted-card{--tilt:-1.65deg;--drop:18px;--pin-left:50%;--pin-tilt:-9deg;--pin-color:var(--mark-deep);z-index:5;width:min(700px,72vw);min-height:470px;padding:clamp(30px,4vw,50px);border-color:var(--ink);border-radius:7px 14px 10px 8px;background:linear-gradient(145deg,rgba(251,246,236,.99),rgba(240,217,205,.82));box-shadow:-7px 14px 26px rgba(60,50,35,.14)}
+  .highlighted-card{cursor:pointer;transition:box-shadow .18s ease,transform .18s ease}
+  .highlighted-card:hover{color:var(--ink);box-shadow:-9px 18px 30px rgba(60,50,35,.17);transform:translateY(calc(var(--drop) - 2px)) rotate(var(--tilt))}
+  .highlighted-card:focus-visible{color:var(--ink);outline:2px solid var(--ink);outline-offset:4px;box-shadow:-9px 18px 30px rgba(60,50,35,.17)}
+  .highlighted-card::after{content:"";position:absolute;right:7%;top:-10px;width:80px;height:24px;background:rgba(225,196,138,.62);clip-path:polygon(3% 0,100% 8%,96% 100%,0 86%);transform:rotate(3deg)}
+  .featured-card{--tilt:2.75deg;--drop:112px;--pin-left:72%;--pin-tilt:11deg;--pin-color:#3D5C52;z-index:6;width:min(390px,48vw);min-height:360px;margin-left:0;padding:30px 28px;border-radius:14px 7px 11px 6px;background:linear-gradient(150deg,rgba(220,232,231,.78),rgba(251,246,236,.96) 70%);box-shadow:9px 14px 22px rgba(60,50,35,.12)}
+  .project-card[data-panel-card]{cursor:pointer}
+  .featured-card{transition:box-shadow .18s ease,transform .18s ease}
+  .featured-card:hover,.featured-card[data-open="true"]{box-shadow:11px 18px 26px rgba(60,50,35,.16);transform:translateY(calc(var(--drop) - 2px)) rotate(var(--tilt))}
+  .featured-card::after{content:"";position:absolute;left:-15px;top:24px;width:74px;height:22px;background:rgba(225,196,138,.58);clip-path:polygon(2% 10%,98% 0,100% 84%,0 100%);transform:rotate(-10deg)}
+  .standard-card{--torn-slip:polygon(0 0,100% 0,100% 91%,88% 100%,76% 92%,63% 100%,50% 91%,37% 100%,24% 92%,12% 100%,0 91%);width:min(178px,23vw);min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+  .standard-card-paper{display:flex;width:100%;min-height:146px;padding:1.5px;background:var(--line-strong);clip-path:var(--torn-slip);filter:drop-shadow(-5px 9px 9px rgba(60,50,35,.14))}
+  .standard-card:hover .standard-card-paper,.standard-card[data-open="true"] .standard-card-paper{filter:drop-shadow(-7px 12px 11px rgba(60,50,35,.18))}
+  .standard-card-paper-inner{display:flex;flex:1;flex-direction:column;min-width:0;padding:18px 16px 15px;background:rgba(251,246,236,.98);clip-path:var(--torn-slip)}
+  .standard-card[data-project-id="tsugi"]{--tilt:-3.15deg;--drop:62px;--pin-left:28%;--pin-tilt:-14deg;--pin-color:var(--mark-deep);z-index:7;margin-left:0}
+  .standard-card[data-project-id="instant-bookmark"]{--tilt:3.25deg;--drop:174px;--pin-left:42%;--pin-tilt:8deg;--pin-color:#A5822C;z-index:8;margin-left:0}
+  .standard-card[data-project-id="instant-bookmark"] .standard-card-paper-inner{background:linear-gradient(150deg,rgba(233,223,197,.58),rgba(251,246,236,.99) 68%)}
+  .standard-card[data-project-id="wavelength"]{--tilt:-2.45deg;--drop:94px;--pin-left:78%;--pin-tilt:14deg;--pin-color:#3D5C52;z-index:9;margin-left:0}
+  .standard-card[data-project-id="wavelength"] .standard-card-paper-inner{background:linear-gradient(145deg,rgba(240,217,205,.58),rgba(251,246,236,.99) 70%)}
+  .project-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px 11px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:9px;line-height:1.4;letter-spacing:.07em;text-transform:uppercase}
+  .project-label strong{color:var(--ink);font-weight:500}
+  .project-label-dot{width:6px;height:6px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
+  .highlighted-title{max-width:760px;margin-top:auto;color:var(--ink);font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:clamp(52px,7.6vw,96px);font-weight:500;line-height:.9;letter-spacing:-.045em}
+  @supports ((background-clip:text) or (-webkit-background-clip:text)){
+    .highlighted-title{background-image:linear-gradient(108deg,var(--mark) 0%,#7A5874 16.5%,#3D5C52 33%,var(--mark) 50%,#7A5874 66.5%,#3D5C52 83%,var(--mark) 100%);background-size:180% 100%;background-repeat:no-repeat;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:highlightGradientOrbit 7s ease-in-out infinite}
+  }
+  @keyframes highlightGradientOrbit{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .highlighted-note{max-width:750px;margin-top:21px;color:#504A42;font-size:clamp(16px,1.8vw,20px);line-height:1.55}
+  .project-meta{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:18px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:10px;line-height:1.5;letter-spacing:.035em}
+  .project-meta span+span::before{content:"/";margin-right:16px;color:var(--mark)}
+  .highlighted-footer{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-top:23px}
+  .project-cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:10px;line-height:1;letter-spacing:.035em;transition:background-color .16s ease,color .16s ease,transform .16s ease}
+  .highlighted-card:hover .project-cta,.highlighted-card:focus-visible .project-cta{background:var(--ink);color:var(--paper);transform:translateY(-1px)}
+  .project-cta::after{content:"→";color:var(--mark)}
+  .system-thread{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8.5px;line-height:1;text-transform:uppercase}
+  .system-thread span{padding:6px 7px;border:1px solid var(--line-strong);border-radius:4px;background:rgba(251,246,236,.7)}
+  .featured-card h2{margin-top:34px;font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:clamp(38px,4vw,52px);font-weight:500;line-height:.95;letter-spacing:-.025em}
+  .featured-card p{margin-top:19px;color:#575149;font-size:16px;line-height:1.62}
+  .featured-actions{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-top:auto;padding-top:22px}
+  .featured-actions .project-meta{margin-top:0}
+  .standard-card h2{font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:20px;font-weight:500;line-height:1.02;letter-spacing:-.018em}
+  .standard-period{margin-top:7px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8px;line-height:1.45;letter-spacing:.025em}
+  .project-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
+  .morph-toggle{position:relative;z-index:3;flex:none;width:34px;height:34px;border:1.5px solid var(--ink);border-radius:50%;background:var(--ink);color:var(--paper);box-shadow:0 4px 9px rgba(60,50,35,.15);cursor:pointer}
+  .morph-toggle:hover,.morph-toggle:focus-visible{outline:3px solid var(--mark);outline-offset:3px}
+  .morph-icon{position:absolute;left:50%;top:50%;width:13px;height:13px;opacity:1;transform:translate(-50%,-50%) rotate(0deg);transition:transform 330ms var(--ease-open),opacity 190ms ease;will-change:transform,opacity}
+  .morph-icon::before,.morph-icon::after{content:"";position:absolute;left:50%;top:50%;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
+  .morph-icon::before{width:13px;height:1.5px}
+  .morph-icon::after{width:1.5px;height:13px}
+  .standard-card[data-open="true"] .morph-icon{opacity:.78;transform:translate(-50%,-54%) rotate(45deg)}
+  .morph-panel{--torn-note:polygon(0 0,100% 0,100% 95%,94% 100%,84% 96%,74% 100%,64% 95%,54% 100%,44% 96%,34% 100%,24% 95%,14% 100%,5% 96%,0 100%);position:fixed;z-index:240;width:min(344px,calc(100vw - 28px));max-height:min(340px,calc(100vh - 28px));border:0;background:transparent;color:var(--ink);overflow:visible;opacity:0;visibility:hidden;filter:blur(5px);transform:translateY(8px) scale(.96) rotate(-.6deg);transform-origin:var(--panel-origin-x,90%) var(--panel-origin-y,100%);transition:opacity 150ms ease,transform 180ms var(--ease-close),filter 160ms ease,visibility 0s linear 180ms;will-change:transform,opacity,filter}
+  .morph-panel::before{content:"";position:absolute;z-index:-1;left:var(--panel-origin-x,85%);width:1px;height:12px;background:var(--mark);transform:translateX(-50%)}
+  .morph-panel::after{content:"";position:absolute;left:var(--panel-origin-x,85%);width:5px;height:5px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.14);transform:translateX(-50%)}
+  .morph-panel[data-placement="below"]::before{top:-9px}
+  .morph-panel[data-placement="below"]::after{top:-11px}
+  .morph-panel[data-placement="above"]::before{bottom:-9px}
+  .morph-panel[data-placement="above"]::after{bottom:-11px}
+  .morph-panel-paper{padding:1.5px;background:var(--ink);clip-path:var(--torn-note);filter:drop-shadow(0 18px 24px rgba(60,50,35,.2))}
+  .morph-panel-paper-inner{max-height:min(337px,calc(100vh - 31px));padding:23px 25px 24px;background:linear-gradient(145deg,#fbf6ec 0%,#f7efdf 100%);clip-path:var(--torn-note);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ink) var(--paper-2)}
+  .morph-panel[data-open="true"]{opacity:1;visibility:visible;filter:blur(0);transform:translateY(0) scale(1);transition:opacity 200ms ease 40ms,transform 300ms var(--ease-open),filter 220ms ease,visibility 0s}
+  .morph-panel-heading{display:flex;align-items:center;gap:18px;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--line-strong)}
+  .morph-panel-kicker{display:flex;align-items:center;gap:8px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8.5px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase}
+  .morph-panel-kicker::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
+  .morph-panel p{color:#504A42;font-size:15px;line-height:1.62}
+  .github-link{display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid var(--mark);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:10px;line-height:1.45;letter-spacing:.025em}
+  .github-link svg{width:15px;height:15px;flex:none}
+  .github-link:hover,.github-link:focus-visible{color:var(--mark-deep);outline:none;border-bottom-width:2px}
+  .github-link--panel{margin-top:18px}
+  .github-link--card{margin:0;padding:7px 0;font-size:8.5px}
+  .no-script-list{padding:24px;border:1px solid var(--line-strong);background:var(--paper)}
+  .no-script-list ul{padding-left:20px}
+  .no-script-list a{border-bottom:1px solid var(--mark)}
   @keyframes bRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   .br{animation:bRise .5s cubic-bezier(.2,.7,.2,1) both}
-  @media (prefers-reduced-motion:reduce){.br{animation:none!important;opacity:1!important}}
-  @media (max-width:1120px){.board-scroll{overflow-x:auto}}
+  @media(max-width:900px){.highlighted-card{width:min(680px,78vw)}.featured-card{width:min(380px,62vw)}.standard-card{width:min(184px,29vw)}}
+  @media(max-width:640px){
+    html{scroll-behavior:auto}
+    .building-page{padding:24px 4vw 44px}
+    .building-stage{margin-top:30px}
+    .board-shell{padding-top:14px;border-radius:12px;background-size:24px 24px}
+    .board-shell::before{width:86px;height:21px}
+    .timeline-toolbar{padding-inline:15px}
+    .board-viewport{padding-inline:15px;scroll-padding-inline:15px}
+    .building-board-track{gap:36px;min-height:640px;padding-right:12px}
+    .highlighted-card{--tilt:-1.2deg;--drop:12px;width:84vw;min-height:540px;padding:30px 22px 26px}
+    .highlighted-title{font-size:clamp(50px,18vw,74px)}
+    .highlighted-note{font-size:16px}
+    .highlighted-footer{display:block}
+    .system-thread{justify-content:flex-start;margin-top:18px}
+    .featured-card{--tilt:1.8deg;--drop:76px;width:82vw;min-height:390px;margin-left:0;padding:28px 23px}
+    .standard-card{width:min(190px,50vw)}
+    .standard-card[data-project-id="tsugi"]{--tilt:-2.2deg;--drop:42px;margin-left:0}
+    .standard-card[data-project-id="instant-bookmark"]{--tilt:2.35deg;--drop:126px;margin-left:0}
+    .standard-card[data-project-id="wavelength"]{--tilt:-1.8deg;--drop:64px;margin-left:0}
+    .standard-card h2{font-size:20px}
+    .morph-toggle{width:38px;height:38px}
+    .morph-panel{width:calc(100vw - 28px);max-height:calc(100vh - 28px)}
+    .morph-panel-paper-inner{padding:22px 23px 23px}
+    .morph-panel p{font-size:14px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+    .br,.highlighted-title{animation:none!important;opacity:1!important}
+  }
+  @media(forced-colors:active){
+    .highlighted-title{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}
+    .project-card,.morph-toggle,.project-cta{border-color:CanvasText}
+    .standard-card-paper,.morph-panel-paper{background:CanvasText;forced-color-adjust:none}
+    .standard-card-paper-inner,.morph-panel-paper-inner{background:Canvas;forced-color-adjust:none}
+    .project-label-dot{background:CanvasText}
+    .board-pin .pin-head{fill:CanvasText}
+  }
 </style>
 </helmet>
 
-<div data-screen-label="building" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
-
+<div class="building-page" data-screen-label="building">
   <header class="site-shell-header">
     <div class="site-header-row br">
       <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status">on the board · 6 件</div>
+      <div class="site-header-status" data-project-count>on the board</div>
     </div>
     <nav class="site-index br" aria-label="Primary navigation" style="animation-delay:.08s">
       <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
@@ -51,168 +204,307 @@
     </nav>
   </header>
 
-  <div style="width:min(1180px,100%);margin-top:40px">
-    <header class="subpage-intro subpage-intro--solo br" aria-labelledby="building-title">
-      <div class="subpage-title-group">
-        <div class="subpage-title-kicker"><span class="subpage-title-number">02</span><span class="subpage-title-en" lang="en">building</span></div>
-        <h1 id="building-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">造</span>。</h1>
-      </div>
-    </header>
-    <div class="util br" style="margin-top:16px;font-size:12px;color:var(--pencil);animation-delay:.14s">图钉色 = 类型 · <span style="color:#a5453a">●</span> repo &nbsp;<span style="color:#3d5c52">●</span> tool &nbsp;<span style="color:#33302B">●</span> talk &nbsp;<span style="color:#938979">◌</span> exp（未定稿）</div>
+  <main class="building-stage" id="main-content">
+    <section class="building-intro br" aria-labelledby="building-title">
+      <header class="subpage-intro subpage-intro--solo">
+        <div class="subpage-title-group">
+          <div class="subpage-title-kicker"><span class="subpage-title-number">02</span><span class="subpage-title-en" lang="en">building</span></div>
+          <h1 id="building-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">造</span>。</h1>
+        </div>
+      </header>
+    </section>
 
-    <div class="br board-scroll" style="margin-top:28px;animation-delay:.18s">
-      <div style="width:1060px;position:relative;height:460px;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(60,50,35,.05),0 12px 30px rgba(60,50,35,.08);background:#EFE7D4;background-image:linear-gradient(#e4dac7 1px,transparent 1px),linear-gradient(90deg,#e4dac7 1px,transparent 1px);background-size:26px 26px">
-
-        <div style="position:relative;height:350px;margin-top:36px">
-
-          <!-- empty pin A, leaning left -->
-          <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:150px;top:196px;transform:rotate(-28deg);transform-origin:9px 34px;opacity:.5">
-            <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.28)"></ellipse>
-            <path d="M9 33 L9 8" stroke="#8d8d8d" stroke-width="2.4" stroke-linecap="round"></path>
-            <circle cx="9" cy="7" r="7" fill="#a5822c"></circle>
-            <circle cx="6.7" cy="4.7" r="2.1" fill="rgba(255,255,255,.55)"></circle>
-          </svg>
-
-          <!-- item: writeup -->
-          <div style="position:absolute;left:190px;top:16px;width:150px;transform:rotate(-6deg)">
-            <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:60px;top:-20px;transform:rotate(-10deg);transform-origin:9px 34px">
-              <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.28)"></ellipse>
-              <path d="M9 33 L9 8" stroke="#8d8d8d" stroke-width="2.4" stroke-linecap="round"></path>
-              <path d="M8.3 33 L8.3 8" stroke="#e2e2e2" stroke-width=".8" stroke-linecap="round"></path>
-              <circle cx="9" cy="7" r="7" fill="#a5822c"></circle>
-              <circle cx="6.7" cy="4.7" r="2.1" fill="rgba(255,255,255,.55)"></circle>
-            </svg>
-            <div style="clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#E4DAC7;padding:1.5px;box-shadow:0 16px 28px rgba(60,50,35,.22),0 4px 7px rgba(60,50,35,.16)">
-            <div style="position:relative;clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#FBF6EC;padding:14px 14px 12px">
-              <div class="display" style="font-size:15px">RAG 是个谎言</div>
-              <div class="util" style="font-size:9.5px;color:#938979;margin-top:5px">[writeup] · [placeholder]</div>
-            </div>
-            </div>
-          </div>
-
-          <!-- item: repo -->
-          <div style="position:absolute;left:24px;top:92px;width:150px;transform:rotate(-3deg)">
-            <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:66px;top:-20px;transform:rotate(-20deg);transform-origin:9px 34px">
-              <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.28)"></ellipse>
-              <path d="M9 33 L9 8" stroke="#8d8d8d" stroke-width="2.4" stroke-linecap="round"></path>
-              <path d="M8.3 33 L8.3 8" stroke="#e2e2e2" stroke-width=".8" stroke-linecap="round"></path>
-              <circle cx="9" cy="7" r="7" fill="#a5453a"></circle>
-              <circle cx="6.7" cy="4.7" r="2.1" fill="rgba(255,255,255,.55)"></circle>
-            </svg>
-            <div style="clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#E4DAC7;padding:1.5px;box-shadow:0 16px 28px rgba(60,50,35,.22),0 4px 7px rgba(60,50,35,.16)">
-            <div style="position:relative;clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#FBF6EC;padding:14px 14px 11px">
-              <div class="display" style="font-size:15px">渡り鳥 Watari</div>
-              <div class="util" style="font-size:9.5px;color:#938979;margin-top:5px">[repo] · [placeholder]</div>
-            </div>
-            </div>
-          </div>
-
-          <!-- item: video -->
-          <div style="position:absolute;left:330px;top:150px;width:148px;transform:rotate(5deg);z-index:2">
-            <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:70px;top:-20px;transform:rotate(24deg);transform-origin:9px 34px">
-              <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.28)"></ellipse>
-              <path d="M9 33 L9 8" stroke="#8d8d8d" stroke-width="2.4" stroke-linecap="round"></path>
-              <path d="M8.3 33 L8.3 8" stroke="#e2e2e2" stroke-width=".8" stroke-linecap="round"></path>
-              <circle cx="9" cy="7" r="7" fill="#a5822c"></circle>
-              <circle cx="6.7" cy="4.7" r="2.1" fill="rgba(255,255,255,.55)"></circle>
-            </svg>
-            <div style="clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#E4DAC7;padding:1.5px;box-shadow:0 16px 28px rgba(60,50,35,.22),0 4px 7px rgba(60,50,35,.16)">
-            <div style="position:relative;clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#FBF6EC;padding:11px 13px 10px">
-              <div class="display" style="font-size:15px">教 agent 报税</div>
-              <div class="util" style="font-size:9.5px;color:#938979;margin-top:5px">[video] · [placeholder]</div>
-            </div>
-            </div>
-          </div>
-
-          <!-- empty pin B, leaning right -->
-          <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:656px;top:174px;transform:rotate(24deg);transform-origin:9px 34px;opacity:.5">
-            <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.28)"></ellipse>
-            <path d="M9 33 L9 8" stroke="#8d8d8d" stroke-width="2.4" stroke-linecap="round"></path>
-            <circle cx="9" cy="7" r="7" fill="#a5822c"></circle>
-            <circle cx="6.7" cy="4.7" r="2.1" fill="rgba(255,255,255,.55)"></circle>
-          </svg>
-
-          <!-- item: tool, flagship -->
-          <div style="position:absolute;left:508px;top:64px;width:176px;transform:rotate(3deg);z-index:3">
-            <svg width="20" height="42" viewBox="0 0 20 42" style="position:absolute;left:78px;top:-24px;transform:rotate(15deg);transform-origin:10px 38px">
-              <ellipse cx="10" cy="39" rx="5.5" ry="2.2" fill="rgba(0,0,0,.3)"></ellipse>
-              <path d="M10 37 L10 9" stroke="#8d8d8d" stroke-width="2.6" stroke-linecap="round"></path>
-              <path d="M9.2 37 L9.2 9" stroke="#e2e2e2" stroke-width=".9" stroke-linecap="round"></path>
-              <circle cx="10" cy="8" r="8" fill="#3d5c52"></circle>
-              <circle cx="7.3" cy="5.3" r="2.3" fill="rgba(255,255,255,.55)"></circle>
-            </svg>
-            <div style="clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#D9695A;padding:2px;box-shadow:0 22px 38px rgba(60,50,35,.28),0 6px 10px rgba(60,50,35,.2);transform:scale(1.06)">
-            <div style="position:relative;clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#FBF6EC;padding:15px 17px 13px;text-align:center">
-              <div class="display" style="font-size:17px">旧照片修复</div>
-              <div class="util" style="font-size:10px;color:#D9695A;margin-top:6px">[tool] · [placeholder]</div>
-            </div>
-            </div>
-          </div>
-
-          <!-- item: talk -->
-          <div style="position:absolute;left:734px;top:164px;width:150px;transform:rotate(-4deg)">
-            <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:56px;top:-20px;transform:rotate(-30deg);transform-origin:9px 34px">
-              <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.28)"></ellipse>
-              <path d="M9 33 L9 8" stroke="#8d8d8d" stroke-width="2.4" stroke-linecap="round"></path>
-              <path d="M8.3 33 L8.3 8" stroke="#e2e2e2" stroke-width=".8" stroke-linecap="round"></path>
-              <circle cx="9" cy="7" r="7" fill="#33302B"></circle>
-              <circle cx="6.7" cy="4.7" r="2.1" fill="rgba(255,255,255,.55)"></circle>
-            </svg>
-            <div style="clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#E4DAC7;padding:1.5px;box-shadow:0 16px 28px rgba(60,50,35,.22),0 4px 7px rgba(60,50,35,.16)">
-            <div style="position:relative;clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#FBF6EC;padding:11px 13px 10px">
-              <div class="display" style="font-size:14px">分享：部署 agent</div>
-              <div class="util" style="font-size:9.5px;color:#938979;margin-top:5px">[talk] · [placeholder]</div>
-            </div>
-            </div>
-          </div>
-
-          <!-- item: exp -->
-          <div style="position:absolute;left:876px;top:52px;width:140px;transform:rotate(6deg);opacity:.78">
-            <svg width="18" height="38" viewBox="0 0 18 38" style="position:absolute;left:50px;top:-20px;transform:rotate(30deg);transform-origin:9px 34px">
-              <ellipse cx="9" cy="35" rx="5" ry="2" fill="rgba(0,0,0,.2)"></ellipse>
-              <path d="M9 33 L9 8" stroke="#b3a88f" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 2"></path>
-              <circle cx="9" cy="7" r="7" fill="#F3ECDD" stroke="#b3a88f" stroke-width="1.5" stroke-dasharray="3 2"></circle>
-            </svg>
-            <div style="clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#cabb98;padding:1.5px;box-shadow:0 12px 22px rgba(60,50,35,.16);opacity:.85">
-            <div style="position:relative;clip-path:polygon(0% 10%,10% 0%,22% 8%,34% 0%,47% 9%,60% 0%,73% 8%,86% 0%,100% 9%,100% 90%,88% 100%,76% 91%,63% 100%,50% 91%,37% 100%,24% 91%,12% 100%,0% 91%);background:#FBF6EC;padding:14px 14px 12px">
-              <div class="display" style="font-size:14px;color:#938979">本地记忆层</div>
-              <div class="util" style="font-size:9.5px;color:#938979;margin-top:5px">[exp] · [placeholder]</div>
-            </div>
-            </div>
-          </div>
-
-          <!-- decorative prop: tape measure -->
-          <div style="position:absolute;left:936px;top:250px;transform:rotate(10deg);opacity:.55">
-            <svg width="30" height="26" viewBox="0 0 30 26"><circle cx="12" cy="12" r="9.5" fill="none" stroke="#938979" stroke-width="1.5"></circle><path d="M12 12 L22 17" stroke="#938979" stroke-width="1.3"></path></svg>
-          </div>
-
-          <!-- decorative prop: washi tape strip -->
-          <img src="./assets/prop-tape.png" alt="washi tape" style="position:absolute;left:452px;top:2px;width:80px;height:24px;transform:rotate(-9deg);z-index:5">
-
-          <!-- decorative prop: paperclip -->
-          <img src="./assets/prop-paperclip.png" alt="paperclip" style="position:absolute;left:636px;top:30px;width:22px;height:64px;transform:rotate(-13deg);z-index:5">
-
-          <!-- decorative prop: pencil -->
-          <img src="./assets/prop-pencil.png" alt="pencil" style="position:absolute;left:196px;top:118px;width:90px;height:14px;transform:rotate(-22deg);z-index:5">
-
-          <!-- decorative prop: ruler -->
-          <img src="./assets/prop-ruler.png" alt="ruler" style="position:absolute;left:356px;top:268px;width:92px;height:27px;transform:rotate(14deg);z-index:5">
-
-          <!-- decorative prop: scissors -->
-          <img src="./assets/prop-scissors.png" alt="scissors" style="position:absolute;left:756px;top:278px;width:52px;height:37px;transform:rotate(-16deg);z-index:5">
-
-          <!-- decorative prop: eraser -->
-          <img src="./assets/prop-eraser.png" alt="eraser" style="position:absolute;left:56px;top:224px;width:52px;height:25px;transform:rotate(28deg);z-index:5">
-
-          <div style="position:absolute;left:70px;top:16px;width:32px;height:31px;background-image:url('./assets/bird-strip-light.png');background-size:200% 100%;background-position:100% 0;background-repeat:no-repeat;z-index:4"></div>
+    <section class="board-shell br" style="animation-delay:.12s" aria-labelledby="project-timeline-title">
+      <h2 id="project-timeline-title" class="sr-only">Projects on the building board</h2>
+      <div class="timeline-toolbar">
+        <span class="timeline-order">projects · scroll →</span>
+        <div class="timeline-actions" aria-label="Timeline controls">
+          <button class="timeline-scroll-button" type="button" data-board-scroll="-1" aria-label="Scroll toward the start of the board">←</button>
+          <button class="timeline-scroll-button" type="button" data-board-scroll="1" aria-label="Scroll toward the end of the board">→</button>
         </div>
       </div>
-    </div>
-
-    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:24px">fig.05</div>
-  </div>
+      <div class="board-viewport" data-building-board-viewport tabindex="0" aria-label="Scrollable project board, Fred Agent first">
+        <div class="building-board-track" data-building-board></div>
+      </div>
+      <noscript>
+        <div class="no-script-list">
+          <ul>
+            <li><a href="./Building-FredAgent.dc.html">Fred Agent</a></li>
+            <li>NJJoe — field notebook in progress</li>
+            <li><a href="https://github.com/fyang0507/instant-bookmark">Instant Bookmark on GitHub</a></li>
+            <li><a href="https://github.com/fyang0507/wavelength">Wavelength on GitHub</a></li>
+            <li><a href="https://github.com/fyang0507/tsugi">Tsugi on GitHub</a></li>
+          </ul>
+        </div>
+      </noscript>
+    </section>
+  </main>
 </div>
-
 </x-dc>
+
+<script>
+(() => {
+  const initializeBoard = () => {
+    const projects = Array.isArray(window.BUILDING_PROJECTS)
+      ? [...window.BUILDING_PROJECTS].sort((a, b) => {
+          const leadDifference = Number(Boolean(b.boardLead)) - Number(Boolean(a.boardLead));
+          return leadDifference || String(b.sortDate).localeCompare(String(a.sortDate)) || a.order - b.order;
+        })
+      : [];
+    const board = document.querySelector("[data-building-board]");
+    const viewport = document.querySelector("[data-building-board-viewport]");
+    if (!projects.length) {
+      console.error("Building project index is missing or empty.");
+      return;
+    }
+    if (!board || !viewport || board.dataset.boardReady === "true") return;
+    board.dataset.boardReady = "true";
+    document.querySelectorAll(".morph-panel[data-building-panel]").forEach((panel) => panel.remove());
+
+    const escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      "\"": "&quot;"
+    })[character]);
+
+    const label = (project) => project.prominence ? `
+      <div class="project-label">
+        <span class="project-label-dot" aria-hidden="true"></span>
+        <strong>${escapeHTML(project.prominence)}</strong>
+        <span>${escapeHTML(project.kind)}</span>
+      </div>` : "";
+
+    const githubMark = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M12 .7a11.6 11.6 0 0 0-3.67 22.6c.58.1.8-.25.8-.56v-2.25c-3.24.71-3.92-1.38-3.92-1.38-.53-1.36-1.3-1.72-1.3-1.72-1.06-.73.08-.72.08-.72 1.17.09 1.79 1.21 1.79 1.21 1.04 1.8 2.73 1.28 3.4.98.1-.76.4-1.28.74-1.57-2.59-.3-5.31-1.3-5.31-5.78 0-1.28.45-2.32 1.2-3.14-.12-.3-.52-1.49.12-3.1 0 0 .98-.32 3.2 1.2a11 11 0 0 1 5.83 0c2.22-1.52 3.2-1.2 3.2-1.2.64 1.61.24 2.8.12 3.1.75.82 1.2 1.86 1.2 3.14 0 4.5-2.73 5.47-5.33 5.77.42.37.79 1.09.79 2.2v3.26c0 .31.21.67.8.56A11.6 11.6 0 0 0 12 .7Z"/>
+      </svg>`;
+
+    const boardPin = `
+      <svg class="board-pin" viewBox="0 0 20 42" aria-hidden="true" focusable="false">
+        <ellipse class="pin-shadow" cx="10" cy="39" rx="5.5" ry="2.2"></ellipse>
+        <path class="pin-stem" d="M10 37 L10 9"></path>
+        <path class="pin-stem-glint" d="M9.2 37 L9.2 9"></path>
+        <circle class="pin-head" cx="10" cy="8" r="8"></circle>
+        <circle class="pin-glint" cx="7.3" cy="5.3" r="2.3"></circle>
+      </svg>`;
+
+    const renderHighlighted = (project) => {
+      const article = document.createElement("a");
+      article.className = "project-card highlighted-card";
+      article.dataset.projectId = project.id;
+      article.href = project.href;
+      article.setAttribute("aria-label", `${project.title}: enter the field notes`);
+      article.innerHTML = `
+        ${boardPin}
+        ${label(project)}
+        <h2 class="highlighted-title">${escapeHTML(project.title)}</h2>
+        <p class="highlighted-note">${escapeHTML(project.note)}</p>
+        <div class="project-meta"><span>${escapeHTML(project.lifecycle)}</span><span>${escapeHTML(project.period)}</span><span>updated ${escapeHTML(project.updated)}</span></div>
+        <div class="highlighted-footer">
+          <span class="project-cta">Enter the field notes</span>
+          <div class="system-thread" aria-label="Fred Agent system concerns"><span>time</span><span>channels</span><span>state</span><span>recovery</span></div>
+        </div>`;
+      return article;
+    };
+
+    const renderFeatured = (project) => {
+      const article = document.createElement("article");
+      const titleId = `${project.id}-title`;
+      const panelId = `${project.id}-panel`;
+      article.className = "project-card featured-card";
+      article.dataset.projectId = project.id;
+      article.dataset.panelCard = "";
+      article.dataset.open = "false";
+      article.innerHTML = `
+        ${boardPin}
+        ${label(project)}
+        <h2 id="${titleId}">${escapeHTML(project.title)}</h2>
+        <p>${escapeHTML(project.note)}</p>
+        <div class="featured-actions">
+          <div class="project-meta"><span>${escapeHTML(project.lifecycle)}</span><span>${escapeHTML(project.period)}</span></div>
+          <button class="morph-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" aria-label="Open ${escapeHTML(project.title)} field note">
+            <span class="morph-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="morph-panel" id="${panelId}" data-building-panel data-project-id="${escapeHTML(project.id)}" role="region" aria-labelledby="${titleId}" aria-hidden="true" hidden>
+          <div class="morph-panel-paper">
+            <div class="morph-panel-paper-inner">
+              <div class="morph-panel-heading">
+                <span class="morph-panel-kicker">active field notebook</span>
+              </div>
+              <p>${escapeHTML(project.note)}</p>
+            </div>
+          </div>
+        </div>`;
+      return article;
+    };
+
+    const renderStandard = (project) => {
+      const article = document.createElement("article");
+      const titleId = `${project.id}-title`;
+      const panelId = `${project.id}-panel`;
+      article.className = "project-card standard-card";
+      article.dataset.projectId = project.id;
+      article.dataset.panelCard = "";
+      article.dataset.open = "false";
+      article.innerHTML = `
+        ${boardPin}
+        <div class="standard-card-paper">
+          <div class="standard-card-paper-inner">
+            <h2 id="${titleId}">${escapeHTML(project.title)}</h2>
+            <p class="standard-period util">${escapeHTML(project.period)} · ${escapeHTML(project.lifecycle)}</p>
+            <div class="project-actions">
+              <a class="github-link github-link--card" href="${escapeHTML(project.repo)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${escapeHTML(project.title)} on GitHub">${githubMark}<span>repo ↗</span></a>
+              <button class="morph-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" aria-label="Open ${escapeHTML(project.title)} details">
+                <span class="morph-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="morph-panel" id="${panelId}" data-building-panel data-project-id="${escapeHTML(project.id)}" role="region" aria-labelledby="${titleId}" aria-hidden="true" hidden>
+          <div class="morph-panel-paper">
+            <div class="morph-panel-paper-inner">
+              <div class="morph-panel-heading">
+                <span class="morph-panel-kicker">field note · ${String(project.order).padStart(2, "0")}</span>
+              </div>
+              <p>${escapeHTML(project.note)}</p>
+              <a class="github-link github-link--panel" href="${escapeHTML(project.repo)}" target="_blank" rel="noopener noreferrer">${githubMark}<span>Open repository ↗</span></a>
+            </div>
+          </div>
+        </div>`;
+      return article;
+    };
+
+    projects.forEach((project) => {
+      if (project.prominence === "highlighted") board.append(renderHighlighted(project));
+      else if (project.prominence === "featured") board.append(renderFeatured(project));
+      else board.append(renderStandard(project));
+    });
+
+    board.querySelectorAll(".morph-panel[data-building-panel]").forEach((panel) => document.body.append(panel));
+    document.querySelectorAll("[data-project-count]").forEach((node) => {
+      node.textContent = `on the board · ${projects.length} 件`;
+    });
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const closeTimers = new WeakMap();
+    const panelFor = (card) => document.getElementById(card.querySelector(".morph-toggle").getAttribute("aria-controls"));
+    const positionPanel = (card) => {
+      const button = card.querySelector(".morph-toggle");
+      const panel = panelFor(card);
+      if (!button || !panel || panel.hidden) return;
+      const margin = 14;
+      const gap = 10;
+      const buttonRect = button.getBoundingClientRect();
+      const panelWidth = panel.offsetWidth;
+      const panelHeight = panel.offsetHeight;
+      const left = Math.min(Math.max(buttonRect.right - panelWidth, margin), window.innerWidth - panelWidth - margin);
+      const below = buttonRect.bottom + gap;
+      const above = buttonRect.top - panelHeight - gap;
+      const opensBelow = below + panelHeight <= window.innerHeight - margin;
+      const top = opensBelow
+        ? below
+        : Math.max(margin, Math.min(above, window.innerHeight - panelHeight - margin));
+      panel.style.left = `${Math.round(left)}px`;
+      panel.style.top = `${Math.round(top)}px`;
+      panel.style.setProperty("--panel-origin-x", `${Math.round(buttonRect.left + buttonRect.width / 2 - left)}px`);
+      panel.style.setProperty("--panel-origin-y", opensBelow ? "0px" : `${panelHeight}px`);
+      panel.dataset.placement = opensBelow ? "below" : "above";
+    };
+
+    const setOpen = (card, shouldOpen, returnFocus = false) => {
+      const button = card.querySelector(".morph-toggle");
+      const panel = panelFor(card);
+      if (!button || !panel) return;
+      clearTimeout(closeTimers.get(panel));
+
+      if (shouldOpen) {
+        document.querySelectorAll('.project-card[data-panel-card][data-open="true"]').forEach((openCard) => {
+          if (openCard !== card) setOpen(openCard, false);
+        });
+        panel.hidden = false;
+        panel.dataset.open = "false";
+        panel.setAttribute("aria-hidden", "false");
+        button.setAttribute("aria-expanded", "true");
+        button.setAttribute("aria-label", `Close ${card.querySelector("h2").textContent} details`);
+        card.dataset.open = "true";
+        positionPanel(card);
+        void panel.offsetWidth;
+        requestAnimationFrame(() => { panel.dataset.open = "true"; });
+        return;
+      }
+
+      card.dataset.open = "false";
+      panel.dataset.open = "false";
+      panel.setAttribute("aria-hidden", "true");
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-label", `Open ${card.querySelector("h2").textContent} details`);
+      const finishClose = () => { panel.hidden = true; };
+      if (reducedMotion.matches) finishClose();
+      else closeTimers.set(panel, setTimeout(finishClose, 190));
+      if (returnFocus) button.focus();
+    };
+
+    const openCard = () => document.querySelector('.project-card[data-panel-card][data-open="true"]');
+    board.addEventListener("click", (event) => {
+      if (event.target.closest("a")) return;
+      const card = event.target.closest(".project-card[data-panel-card]");
+      if (!card) return;
+      const button = card.querySelector(".morph-toggle");
+      setOpen(card, button.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("click", (event) => {
+      const card = openCard();
+      if (!card) return;
+      const panel = panelFor(card);
+      if (!card.contains(event.target) && !panel.contains(event.target)) setOpen(card, false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      const card = openCard();
+      if (card) setOpen(card, false, true);
+    });
+
+    const scrollButtons = Array.from(document.querySelectorAll("[data-board-scroll]"));
+    const updateScrollButtons = () => {
+      const max = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      scrollButtons.forEach((button) => {
+        button.disabled = Number(button.dataset.boardScroll) < 0 ? viewport.scrollLeft <= 2 : viewport.scrollLeft >= max - 2;
+      });
+    };
+    scrollButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        viewport.scrollBy({
+          left: Number(button.dataset.boardScroll) * Math.max(280, viewport.clientWidth * .78),
+          behavior: reducedMotion.matches ? "auto" : "smooth"
+        });
+      });
+    });
+    viewport.addEventListener("scroll", () => {
+      updateScrollButtons();
+      const card = openCard();
+      if (card) positionPanel(card);
+    }, { passive: true });
+    window.addEventListener("resize", () => {
+      updateScrollButtons();
+      const card = openCard();
+      if (card) positionPanel(card);
+    });
+    updateScrollButtons();
+  };
+
+  const observeRenderedPage = () => {
+    initializeBoard();
+    new MutationObserver(initializeBoard).observe(document.body, { childList: true, subtree: true });
+  };
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", observeRenderedPage, { once: true });
+  else observeRenderedPage();
+})();
+</script>
 </body>
 </html>

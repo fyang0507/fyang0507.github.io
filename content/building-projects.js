@@ -1,0 +1,73 @@
+window.BUILDING_PROJECTS = Object.freeze([
+  {
+    id: "fred-agent",
+    title: "Fred Agent",
+    kind: "system",
+    prominence: "highlighted",
+    boardLead: true,
+    lifecycle: "active",
+    period: "2025—now",
+    note: "An operating environment that gives swappable general-purpose agents durable handles into time, communication, shared state, personal context, and visible recovery.",
+    href: "./Building-FredAgent.dc.html",
+    repo: "https://github.com/fyang0507/fred-agent",
+    sortDate: "2026-04-07",
+    order: 2,
+    updated: "2026-07-18"
+  },
+  {
+    id: "njjoe",
+    title: "NJJoe",
+    kind: "field notebook",
+    prominence: "featured",
+    lifecycle: "active",
+    period: "2026—now",
+    note: "A field notebook tracing a real-estate website redesign and the 346 Roosevelt listing-microsite pilot toward a repeatable workflow.",
+    href: null,
+    repo: null,
+    sortDate: "2026-05-12",
+    order: 1,
+    updated: "2026-07-18"
+  },
+  {
+    id: "instant-bookmark",
+    title: "Instant Bookmark",
+    kind: "project",
+    prominence: null,
+    lifecycle: "historical",
+    period: "2025",
+    note: "A service for saving URLs and screenshots to Notion instantly from the web, iOS Shortcuts, or Raycast.",
+    href: null,
+    repo: "https://github.com/fyang0507/instant-bookmark",
+    sortDate: "2025-05-17",
+    order: 4,
+    updated: "2026-07-18"
+  },
+  {
+    id: "wavelength",
+    title: "Wavelength",
+    kind: "project",
+    prominence: null,
+    lifecycle: "historical",
+    period: "2024—2025",
+    note: "A daily workflow that gathers subscribed creators, uses AI to sort new work by relevance, and delivers a focused Notion digest.",
+    href: null,
+    repo: "https://github.com/fyang0507/wavelength",
+    sortDate: "2024-12-29",
+    order: 5,
+    updated: "2026-07-18"
+  },
+  {
+    id: "tsugi",
+    title: "Tsugi",
+    kind: "project",
+    prominence: null,
+    lifecycle: "historical",
+    period: "2026",
+    note: "An agentic harness that turns trial-and-error execution into reusable skills, so later runs can skip the research and repeat what worked.",
+    href: null,
+    repo: "https://github.com/fyang0507/tsugi",
+    sortDate: "2026-01-03",
+    order: 3,
+    updated: "2026-07-18"
+  }
+].map(Object.freeze));
