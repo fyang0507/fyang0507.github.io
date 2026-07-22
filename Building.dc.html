@@ -67,37 +67,52 @@
   .board-viewport::-webkit-scrollbar-track{border-radius:999px;background:rgba(126,108,78,.16)}
   .board-viewport::-webkit-scrollbar-thumb{border:3px solid transparent;border-radius:999px;background:var(--ink);background-clip:padding-box}
   .building-board-track{display:flex;align-items:flex-start;gap:44px;width:max-content;min-width:100%;min-height:560px;padding:0 18px 0 6px;isolation:isolate}
-  .project-card{--tilt:0deg;--drop:0px;position:relative;flex:none;display:flex;flex-direction:column;min-width:0;height:auto;border:1.5px solid var(--line-strong);border-radius:11px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);overflow:visible;transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:50% 10%}
+  /* transform-origin below is not decorative: it's the pin's real anchor point, not a generic
+     50%/10%. Each card is "stuck" to the board by --pin-left horizontally and, vertically, by
+     wherever .board-pin's own SVG puts its tip (top:-24px + 90% of its 42px height ≈ 14px into
+     the card -- see .board-pin's transform-origin below). Rotating a pinned card around any
+     other point makes the pin visibly slide across the board when --tilt changes (e.g. on
+     hover). If you touch --pin-left, --tilt, or the pin SVG's own geometry, re-derive this
+     14px rather than assume it still lines up. .card-slot below repeats the same origin for
+     the same reason -- keep both in sync. */
+  .project-card{--tilt:0deg;--drop:0px;--torn-wide:polygon(0 0,100% 0,100% 97%,97.5% 100%,95% 97%,92.5% 100%,90% 97.5%,87.5% 100%,85% 97%,82.5% 100%,80% 97.5%,77.5% 100%,75% 97%,72.5% 100%,70% 97.5%,67.5% 100%,65% 97%,62.5% 100%,60% 97.5%,57.5% 100%,55% 97%,52.5% 100%,50% 97.5%,47.5% 100%,45% 97%,42.5% 100%,40% 97.5%,37.5% 100%,35% 97%,32.5% 100%,30% 97.5%,27.5% 100%,25% 97%,22.5% 100%,20% 97.5%,17.5% 100%,15% 97%,12.5% 100%,10% 97.5%,7.5% 100%,5% 97%,2.5% 100%,0 97.5%);position:relative;flex:none;display:flex;flex-direction:column;min-width:0;height:auto;border:1.5px solid var(--line-strong);border-radius:11px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);overflow:visible;transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:var(--pin-left,50%) 14px}
   .board-pin{position:absolute;z-index:8;left:var(--pin-left,50%);top:-24px;width:20px;height:42px;overflow:visible;pointer-events:none;transform:translateX(-50%) rotate(var(--pin-tilt,-8deg));transform-origin:50% 90%;filter:drop-shadow(0 2px 1px rgba(60,50,35,.24))}
   .board-pin .pin-shadow{fill:rgba(60,50,35,.3)}
   .board-pin .pin-stem{fill:none;stroke:#898989;stroke-width:2.6;stroke-linecap:round}
   .board-pin .pin-stem-glint{fill:none;stroke:#e4e4e4;stroke-width:.9;stroke-linecap:round}
   .board-pin .pin-head{fill:var(--pin-color,var(--ink))}
   .board-pin .pin-glint{fill:rgba(255,255,255,.58)}
-  .highlighted-card{--tilt:-1.65deg;--drop:18px;--pin-left:50%;--pin-tilt:-9deg;--pin-color:var(--mark-deep);z-index:5;width:min(700px,72vw);min-height:470px;padding:clamp(30px,4vw,50px);border-color:var(--ink);border-radius:7px 14px 10px 8px;background:linear-gradient(145deg,rgba(251,246,236,.99),rgba(240,217,205,.82));box-shadow:-7px 14px 26px rgba(60,50,35,.14)}
-  .highlighted-card{cursor:pointer;transition:box-shadow .22s var(--ease-open),transform .22s var(--ease-open)}
-  .highlighted-card:hover{color:var(--ink);box-shadow:-9px 18px 30px rgba(60,50,35,.17);transform:translateY(calc(var(--drop) - 2px)) rotate(var(--tilt))}
-  .highlighted-card:focus-visible{color:var(--ink);outline:2px solid var(--ink);outline-offset:4px;box-shadow:-9px 18px 30px rgba(60,50,35,.17)}
-  .highlighted-card::after,.featured-card::after{content:"";position:absolute;width:var(--tape-w);height:var(--tape-h);background:var(--tape-color,rgba(225,196,138,.6));clip-path:var(--tape-clip);transform:rotate(var(--tape-rotate))}
-  .highlighted-card::after{right:7%;top:-10px;--tape-w:80px;--tape-h:24px;--tape-clip:polygon(3% 0,100% 8%,96% 100%,0 86%);--tape-rotate:3deg}
-  .featured-card{--tilt:2.75deg;--drop:112px;--pin-left:72%;--pin-tilt:11deg;--pin-color:#3D5C52;z-index:6;width:min(390px,48vw);min-height:360px;margin-left:0;padding:30px 28px;border-radius:14px 7px 11px 6px;background:linear-gradient(150deg,rgba(220,232,231,.78),rgba(251,246,236,.96) 70%);box-shadow:9px 14px 22px rgba(60,50,35,.12)}
+  /* Same pin-anchor origin as .project-card above (see that comment) -- highlighted/featured
+     cards rotate via this wrapper instead of the card element, since the pin SVG lives here too. */
+  .card-slot{position:relative;overflow:visible;transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:var(--pin-left,50%) 14px;transition:transform .3s var(--ease-open)}
+  .card-slot--highlighted{--tilt:-1.65deg;--drop:18px;--pin-left:50%;--pin-tilt:-9deg;--pin-color:var(--mark-deep);z-index:5;width:min(700px,72vw)}
+  .card-slot--highlighted:hover,.card-slot--highlighted:focus-within{transform:translateY(calc(var(--drop) - 4px)) rotate(0deg)}
+  .card-slot--featured{--tilt:2.75deg;--drop:112px;--pin-left:72%;--pin-tilt:11deg;--pin-color:#3D5C52;z-index:6;width:min(390px,48vw);margin-left:0}
+  .card-slot--featured:hover,.card-slot--featured:has(.featured-card[data-open="true"]){transform:translateY(calc(var(--drop) - 4px)) rotate(0deg)}
+  .card-slot--highlighted::after,.card-slot--featured::after{content:"";position:absolute;width:var(--tape-w);height:var(--tape-h);background:var(--tape-color,rgba(225,196,138,.6));clip-path:var(--tape-clip);transform:rotate(var(--tape-rotate))}
+  .card-slot--highlighted::after{right:7%;top:-10px;--tape-w:80px;--tape-h:24px;--tape-clip:polygon(3% 0,100% 8%,96% 100%,0 86%);--tape-rotate:3deg}
+  .card-slot--featured::after{left:-15px;top:24px;--tape-w:74px;--tape-h:22px;--tape-clip:polygon(2% 10%,98% 0,100% 84%,0 100%);--tape-rotate:-10deg}
+  .highlighted-card{transform:none;width:100%;min-height:470px;padding:clamp(30px,4vw,50px);border:0;border-radius:0;background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper));clip-path:var(--torn-wide);box-shadow:none;cursor:pointer;transition:filter .3s var(--ease-open);filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-7px 14px 22px rgba(60,50,35,.16))}
+  .highlighted-card:hover{color:var(--ink)}
+  .highlighted-card:focus-visible{color:var(--ink);outline:2px solid var(--ink);outline-offset:4px}
+  .card-slot--highlighted:hover .highlighted-card,.card-slot--highlighted:focus-within .highlighted-card{filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-11px 20px 30px rgba(60,50,35,.21))}
   .project-card[data-panel-card]{cursor:pointer}
-  .featured-card{transition:box-shadow .22s var(--ease-open),transform .22s var(--ease-open)}
-  .featured-card:hover,.featured-card[data-open="true"]{box-shadow:11px 18px 26px rgba(60,50,35,.16);transform:translateY(calc(var(--drop) - 2px)) rotate(var(--tilt))}
-  .featured-card::after{left:-15px;top:24px;--tape-w:74px;--tape-h:22px;--tape-clip:polygon(2% 10%,98% 0,100% 84%,0 100%);--tape-rotate:-10deg}
-  .standard-card{--torn-slip:polygon(0 0,100% 0,100% 91%,88% 100%,76% 92%,63% 100%,50% 91%,37% 100%,24% 92%,12% 100%,0 91%);width:min(178px,23vw);min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none}
-  .standard-card-paper{display:flex;width:100%;min-height:146px;padding:1.5px;background:var(--line-strong);clip-path:var(--torn-slip);filter:drop-shadow(-5px 9px 9px rgba(60,50,35,.14));transition:filter .22s var(--ease-open)}
-  .standard-card:hover .standard-card-paper,.standard-card[data-open="true"] .standard-card-paper{filter:drop-shadow(-7px 12px 11px rgba(60,50,35,.18))}
+  .featured-card{transform:none;width:100%;min-height:360px;padding:30px 28px;border:0;border-radius:0;background:color-mix(in srgb,var(--wash-blue) 55%,var(--paper));clip-path:var(--torn-wide);box-shadow:none;transition:filter .3s var(--ease-open);filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(8px 12px 18px rgba(60,50,35,.14))}
+  .card-slot--featured:hover .featured-card,.featured-card[data-open="true"]{filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(12px 18px 26px rgba(60,50,35,.19))}
+  .standard-card{--torn-slip:polygon(0 0,100% 0,100% 96%,95% 100%,90% 97%,85% 100%,80% 96%,75% 100%,70% 97%,65% 100%,60% 96%,55% 100%,50% 97%,45% 100%,40% 96%,35% 100%,30% 97%,25% 100%,20% 96%,15% 100%,10% 97%,5% 100%,0 96%);width:min(178px,23vw);min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none;transition:transform .3s var(--ease-open)}
+  .standard-card:hover,.standard-card:focus-within,.standard-card[data-open="true"]{transform:translateY(calc(var(--drop) - 4px)) rotate(0deg)}
+  .standard-card-paper{display:flex;width:100%;min-height:146px;padding:1.5px;background:var(--line-strong);clip-path:var(--torn-slip);filter:drop-shadow(-5px 9px 9px rgba(60,50,35,.14));transition:filter .3s var(--ease-open)}
+  .standard-card:hover .standard-card-paper,.standard-card[data-open="true"] .standard-card-paper{filter:drop-shadow(-8px 14px 14px rgba(60,50,35,.2))}
   .standard-card-paper-inner{display:flex;flex:1;flex-direction:column;min-width:0;padding:18px 16px 15px;background:rgba(251,246,236,.98);clip-path:var(--torn-slip)}
   .standard-card[data-project-id="tsugi"]{--tilt:-3.15deg;--drop:62px;--pin-left:28%;--pin-tilt:-14deg;--pin-color:var(--mark-deep);z-index:7;margin-left:0}
   .standard-card[data-project-id="instant-bookmark"]{--tilt:3.25deg;--drop:174px;--pin-left:42%;--pin-tilt:8deg;--pin-color:#A5822C;z-index:8;margin-left:0}
-  .standard-card[data-project-id="instant-bookmark"] .standard-card-paper-inner{background:linear-gradient(150deg,rgba(233,223,197,.58),rgba(251,246,236,.99) 68%)}
+  .standard-card[data-project-id="instant-bookmark"] .standard-card-paper-inner{background:color-mix(in srgb,var(--wash-wheat) 40%,var(--paper))}
   .standard-card[data-project-id="wavelength"]{--tilt:-2.45deg;--drop:94px;--pin-left:78%;--pin-tilt:14deg;--pin-color:#3D5C52;z-index:9;margin-left:0}
-  .standard-card[data-project-id="wavelength"] .standard-card-paper-inner{background:linear-gradient(145deg,rgba(240,217,205,.58),rgba(251,246,236,.99) 70%)}
+  .standard-card[data-project-id="wavelength"] .standard-card-paper-inner{background:color-mix(in srgb,var(--wash-peach) 40%,var(--paper))}
   .project-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px 11px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:9px;line-height:1.4;letter-spacing:.07em;text-transform:uppercase}
   .project-label strong{color:var(--ink);font-weight:500}
   .project-label-dot{width:6px;height:6px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
-  .highlighted-title{max-width:760px;margin-top:auto;color:var(--ink);font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:clamp(52px,7.6vw,96px);font-weight:500;line-height:.9;letter-spacing:-.045em}
+  .highlighted-title{max-width:760px;margin-top:auto;color:var(--ink);font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:clamp(52px,7.6vw,96px);font-weight:500;line-height:1.3;letter-spacing:-.045em}
   @supports ((background-clip:text) or (-webkit-background-clip:text)){
     .highlighted-title{background-image:linear-gradient(108deg,var(--mark) 0%,#7A5874 16.5%,#3D5C52 33%,var(--mark) 50%,#7A5874 66.5%,#3D5C52 83%,var(--mark) 100%);background-size:180% 100%;background-repeat:no-repeat;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:highlightGradientOrbit 7s ease-in-out infinite}
   }
@@ -109,32 +124,33 @@
   .project-cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:10px;line-height:1;letter-spacing:.035em;transition:background-color .16s ease,color .16s ease,transform .16s ease}
   .highlighted-card:hover .project-cta,.highlighted-card:focus-visible .project-cta{background:var(--ink);color:var(--paper);transform:translateY(-1px)}
   .project-cta::after{content:"→";color:var(--mark)}
-  .system-thread{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8.5px;line-height:1;text-transform:uppercase}
-  .system-thread span{padding:6px 7px;border:1px solid var(--line-strong);border-radius:4px;background:rgba(251,246,236,.7)}
   .featured-card h2{margin-top:34px;font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:clamp(38px,4vw,52px);font-weight:500;line-height:.95;letter-spacing:-.025em}
   .featured-card p{margin-top:19px;color:#575149;font-size:16px;line-height:1.62}
   .featured-actions{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-top:auto;padding-top:22px}
   .featured-actions .project-meta{margin-top:0}
+  .featured-actions .morph-toggle{width:22px;height:22px}
+  .featured-actions .morph-icon{width:8px;height:8px}
+  .featured-actions .morph-icon::before{width:8px;height:1.1px}
+  .featured-actions .morph-icon::after{width:1.1px;height:8px}
   .standard-card h2{font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:20px;font-weight:500;line-height:1.02;letter-spacing:-.018em}
   .standard-period{margin-top:7px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8px;line-height:1.45;letter-spacing:.025em}
   .project-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
-  .morph-toggle{position:relative;z-index:3;flex:none;width:34px;height:34px;border:1.5px solid var(--ink);border-radius:50%;background:var(--ink);color:var(--paper);box-shadow:0 4px 9px rgba(60,50,35,.15);cursor:pointer}
+  .morph-toggle{position:relative;z-index:3;flex:none;width:26px;height:26px;border:1.5px solid var(--ink);border-radius:50%;background:var(--ink);color:var(--paper);box-shadow:0 3px 7px rgba(60,50,35,.15);cursor:pointer}
   .morph-toggle:hover,.morph-toggle:focus-visible{outline:3px solid var(--mark);outline-offset:3px}
-  .morph-icon{position:absolute;left:50%;top:50%;width:13px;height:13px;opacity:1;transform:translate(-50%,-50%) rotate(0deg);transition:transform 330ms var(--ease-open),opacity 190ms ease;will-change:transform,opacity}
+  .morph-icon{position:absolute;left:50%;top:50%;width:10px;height:10px;opacity:1;transform:translate(-50%,-50%) rotate(0deg);transition:transform 330ms var(--ease-open),opacity 190ms ease;will-change:transform,opacity}
   .morph-icon::before,.morph-icon::after{content:"";position:absolute;left:50%;top:50%;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
-  .morph-icon::before{width:13px;height:1.5px}
-  .morph-icon::after{width:1.5px;height:13px}
+  .morph-icon::before{width:10px;height:1.3px}
+  .morph-icon::after{width:1.3px;height:10px}
   .standard-card[data-open="true"] .morph-icon{opacity:.78;transform:translate(-50%,-54%) rotate(45deg)}
-  .morph-panel{--torn-note:polygon(0 0,100% 0,100% 95%,94% 100%,84% 96%,74% 100%,64% 95%,54% 100%,44% 96%,34% 100%,24% 95%,14% 100%,5% 96%,0 100%);position:fixed;z-index:240;width:min(344px,calc(100vw - 28px));max-height:min(340px,calc(100vh - 28px));border:0;background:transparent;color:var(--ink);overflow:visible;opacity:0;visibility:hidden;filter:blur(5px);transform:translateY(8px) scale(.96) rotate(-.6deg);transform-origin:var(--panel-origin-x,90%) var(--panel-origin-y,100%);transition:opacity 150ms ease,transform 180ms var(--ease-close),filter 160ms ease,visibility 0s linear 180ms;will-change:transform,opacity,filter}
+  .morph-panel{--torn-note:polygon(0 0,100% 0,100% 95%,94% 100%,84% 96%,74% 100%,64% 95%,54% 100%,44% 96%,34% 100%,24% 95%,14% 100%,5% 96%,0 100%);position:fixed;z-index:240;width:min(344px,calc(100vw - 28px));max-height:min(340px,calc(100vh - 28px));border:0;background:transparent;color:var(--ink);overflow:visible;opacity:0;visibility:hidden;filter:blur(11px);transform:translateY(-6px) scale(1.08) rotate(.5deg);transform-origin:var(--panel-origin-x,90%) var(--panel-origin-y,100%);transition:opacity 300ms ease,transform 340ms var(--ease-close),filter 300ms ease,visibility 0s linear 340ms;will-change:transform,opacity,filter}
   .morph-panel::before{content:"";position:absolute;z-index:-1;left:var(--panel-origin-x,85%);width:1px;height:12px;background:var(--mark);transform:translateX(-50%)}
   .morph-panel::after{content:"";position:absolute;left:var(--panel-origin-x,85%);width:5px;height:5px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.14);transform:translateX(-50%)}
   .morph-panel[data-placement="below"]::before{top:-9px}
   .morph-panel[data-placement="below"]::after{top:-11px}
   .morph-panel[data-placement="above"]::before{bottom:-9px}
   .morph-panel[data-placement="above"]::after{bottom:-11px}
-  .morph-panel-paper{padding:1.5px;background:var(--ink);clip-path:var(--torn-note);filter:drop-shadow(0 18px 24px rgba(60,50,35,.2))}
-  .morph-panel-paper-inner{max-height:min(337px,calc(100vh - 31px));padding:23px 25px 24px;background:linear-gradient(145deg,#fbf6ec 0%,#f7efdf 100%);clip-path:var(--torn-note);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ink) var(--paper-2)}
-  .morph-panel[data-open="true"]{opacity:1;visibility:visible;filter:blur(0);transform:translateY(0) scale(1);transition:opacity 200ms ease 40ms,transform 300ms var(--ease-open),filter 220ms ease,visibility 0s}
+  .morph-panel-paper{max-height:min(337px,calc(100vh - 31px));padding:23px 25px 24px;background:linear-gradient(145deg,#fbf6ec 0%,#f7efdf 100%);clip-path:var(--torn-note);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ink) var(--paper-2);filter:drop-shadow(.6px 0 0 var(--ink)) drop-shadow(-.6px 0 0 var(--ink)) drop-shadow(0 .6px 0 var(--ink)) drop-shadow(0 -.6px 0 var(--ink)) drop-shadow(0 18px 24px rgba(60,50,35,.2))}
+  .morph-panel[data-open="true"]{opacity:1;visibility:visible;filter:blur(0);transform:translateY(0) scale(1) rotate(0deg);transition:opacity 220ms ease 30ms,transform 320ms var(--ease-open),filter 240ms ease,visibility 0s}
   .morph-panel-heading{display:flex;align-items:center;gap:18px;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--line-strong)}
   .morph-panel-kicker{display:flex;align-items:center;gap:8px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8.5px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase}
   .morph-panel-kicker::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
@@ -149,7 +165,7 @@
   .no-script-list a{border-bottom:1px solid var(--mark)}
   @keyframes bRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   .br{animation:bRise .5s cubic-bezier(.2,.7,.2,1) both}
-  @media(max-width:900px){.highlighted-card{width:min(680px,78vw)}.featured-card{width:min(380px,62vw)}.standard-card{width:min(184px,29vw)}}
+  @media(max-width:900px){.card-slot--highlighted{width:min(680px,78vw)}.card-slot--featured{width:min(380px,62vw)}.standard-card{width:min(184px,29vw)}}
   @media(max-width:640px){
     html{scroll-behavior:auto}
     .building-page{padding:24px 4vw 44px}
@@ -159,20 +175,21 @@
     .timeline-toolbar{padding-inline:15px}
     .board-viewport{padding-inline:15px;scroll-padding-inline:15px}
     .building-board-track{gap:36px;min-height:640px;padding-right:12px}
-    .highlighted-card{--tilt:-1.2deg;--drop:12px;width:84vw;min-height:540px;padding:30px 22px 26px}
+    .card-slot--highlighted{--tilt:-1.2deg;--drop:12px;width:84vw}
+    .highlighted-card{min-height:540px;padding:30px 22px 26px}
     .highlighted-title{font-size:clamp(50px,18vw,74px)}
     .highlighted-note{font-size:16px}
     .highlighted-footer{display:block}
-    .system-thread{justify-content:flex-start;margin-top:18px}
-    .featured-card{--tilt:1.8deg;--drop:76px;width:82vw;min-height:390px;margin-left:0;padding:28px 23px}
+    .card-slot--featured{--tilt:1.8deg;--drop:76px;width:82vw;margin-left:0}
+    .featured-card{min-height:390px;padding:28px 23px}
     .standard-card{width:min(190px,50vw)}
     .standard-card[data-project-id="tsugi"]{--tilt:-2.2deg;--drop:42px;margin-left:0}
     .standard-card[data-project-id="instant-bookmark"]{--tilt:2.35deg;--drop:126px;margin-left:0}
     .standard-card[data-project-id="wavelength"]{--tilt:-1.8deg;--drop:64px;margin-left:0}
     .standard-card h2{font-size:20px}
-    .morph-toggle{width:38px;height:38px}
+    .morph-toggle{width:30px;height:30px}
     .morph-panel{width:calc(100vw - 28px);max-height:calc(100vh - 28px)}
-    .morph-panel-paper-inner{padding:22px 23px 23px}
+    .morph-panel-paper{padding:22px 23px 23px}
     .morph-panel p{font-size:14px}
   }
   @media(prefers-reduced-motion:reduce){
@@ -182,8 +199,8 @@
   @media(forced-colors:active){
     .highlighted-title{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}
     .project-card,.morph-toggle,.project-cta{border-color:CanvasText}
-    .standard-card-paper,.morph-panel-paper{background:CanvasText;forced-color-adjust:none}
-    .standard-card-paper-inner,.morph-panel-paper-inner{background:Canvas;forced-color-adjust:none}
+    .standard-card-paper{background:CanvasText;forced-color-adjust:none}
+    .standard-card-paper-inner{background:Canvas;forced-color-adjust:none}
     .project-label-dot{background:CanvasText}
     .board-pin .pin-head{fill:CanvasText}
   }
@@ -292,34 +309,37 @@
       </svg>`;
 
     const renderHighlighted = (project) => {
-      const article = document.createElement("a");
-      article.className = "project-card highlighted-card";
-      article.dataset.projectId = project.id;
-      article.href = project.href;
-      article.setAttribute("aria-label", `${project.title}: enter the field notes`);
-      article.innerHTML = `
-        ${boardPin}
+      const slot = document.createElement("div");
+      slot.className = "card-slot card-slot--highlighted";
+      const card = document.createElement("a");
+      card.className = "project-card highlighted-card";
+      card.dataset.projectId = project.id;
+      card.href = project.href;
+      card.setAttribute("aria-label", `${project.title}: enter the field notes`);
+      card.innerHTML = `
         ${label(project)}
         <h2 class="highlighted-title">${escapeHTML(project.title)}</h2>
         <p class="highlighted-note">${escapeHTML(project.note)}</p>
         <div class="project-meta"><span>${escapeHTML(project.lifecycle)}</span><span>${escapeHTML(project.period)}</span><span>updated ${escapeHTML(project.updated)}</span></div>
         <div class="highlighted-footer">
           <span class="project-cta">Enter the field notes</span>
-          <div class="system-thread" aria-label="Fred Agent system concerns"><span>time</span><span>channels</span><span>state</span><span>recovery</span></div>
         </div>`;
-      return article;
+      slot.innerHTML = boardPin;
+      slot.append(card);
+      return slot;
     };
 
     const renderFeatured = (project) => {
-      const article = document.createElement("article");
       const titleId = `${project.id}-title`;
       const panelId = `${project.id}-panel`;
-      article.className = "project-card featured-card";
-      article.dataset.projectId = project.id;
-      article.dataset.panelCard = "";
-      article.dataset.open = "false";
-      article.innerHTML = `
-        ${boardPin}
+      const slot = document.createElement("div");
+      slot.className = "card-slot card-slot--featured";
+      const card = document.createElement("article");
+      card.className = "project-card featured-card";
+      card.dataset.projectId = project.id;
+      card.dataset.panelCard = "";
+      card.dataset.open = "false";
+      card.innerHTML = `
         ${label(project)}
         <h2 id="${titleId}">${escapeHTML(project.title)}</h2>
         <p>${escapeHTML(project.note)}</p>
@@ -331,15 +351,15 @@
         </div>
         <div class="morph-panel" id="${panelId}" data-building-panel data-project-id="${escapeHTML(project.id)}" role="region" aria-labelledby="${titleId}" aria-hidden="true" hidden>
           <div class="morph-panel-paper">
-            <div class="morph-panel-paper-inner">
-              <div class="morph-panel-heading">
-                <span class="morph-panel-kicker">active field notebook</span>
-              </div>
-              <p>${escapeHTML(project.note)}</p>
+            <div class="morph-panel-heading">
+              <span class="morph-panel-kicker">active field notebook</span>
             </div>
+            <p>${escapeHTML(project.note)}</p>
           </div>
         </div>`;
-      return article;
+      slot.innerHTML = boardPin;
+      slot.append(card);
+      return slot;
     };
 
     const renderStandard = (project) => {
@@ -366,13 +386,11 @@
         </div>
         <div class="morph-panel" id="${panelId}" data-building-panel data-project-id="${escapeHTML(project.id)}" role="region" aria-labelledby="${titleId}" aria-hidden="true" hidden>
           <div class="morph-panel-paper">
-            <div class="morph-panel-paper-inner">
-              <div class="morph-panel-heading">
-                <span class="morph-panel-kicker">field note · ${String(project.order).padStart(2, "0")}</span>
-              </div>
-              <p>${escapeHTML(project.note)}</p>
-              <a class="github-link github-link--panel" href="${escapeHTML(project.repo)}" target="_blank" rel="noopener noreferrer">${githubMark}<span>Open repository ↗</span></a>
+            <div class="morph-panel-heading">
+              <span class="morph-panel-kicker">field note · ${String(project.order).padStart(2, "0")}</span>
             </div>
+            <p>${escapeHTML(project.note)}</p>
+            <a class="github-link github-link--panel" href="${escapeHTML(project.repo)}" target="_blank" rel="noopener noreferrer">${githubMark}<span>Open repository ↗</span></a>
           </div>
         </div>`;
       return article;
@@ -444,7 +462,7 @@
       button.setAttribute("aria-label", `Open ${card.querySelector("h2").textContent} details`);
       const finishClose = () => { panel.hidden = true; };
       if (reducedMotion.matches) finishClose();
-      else closeTimers.set(panel, setTimeout(finishClose, 190));
+      else closeTimers.set(panel, setTimeout(finishClose, 350));
       if (returnFocus) button.focus();
     };
 
