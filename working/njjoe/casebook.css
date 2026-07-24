@@ -336,8 +336,15 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .wip-sticker-engine{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;cursor:grab;touch-action:none;transform:scale(1.08);transform-origin:center;transition:opacity .18s ease}
 .wip-sticker-engine:active{cursor:grabbing}
 .wip-sticker-shell.is-live .wip-sticker-engine{opacity:1}
-.wip-sticker-fallback{position:absolute;top:50%;right:42px;left:42px;display:flex;height:140px;align-items:center;justify-content:center;gap:clamp(14px,3vw,30px);padding:18px 44px;border:9px solid #fffdf6;border-radius:28px 48px 24px 42px;background:var(--mark);color:var(--paper);box-shadow:11px 15px 25px rgba(46,40,34,.2),2px 4px 7px rgba(46,40,34,.15),inset 0 2px 0 rgba(255,255,255,.22);transform:translateY(-50%) rotate(-4deg);transition:opacity .18s ease}
-.wip-sticker-shell.is-live .wip-sticker-fallback{opacity:0;pointer-events:none}
+/* The fallback is the no-JS / engine-failure sticker, NOT a loading state, so it
+   starts hidden. The engine module is ~836KB: painting the fallback while it
+   loads showed a visibly different sticker on every load (a second pusher inside
+   the sticker, off-centre WIP, a peeled corner, larger box) that then swapped for
+   the live canvas. It is shown again only by .is-failed, or by the <noscript>
+   override each host page carries. Keep it pointer-events:none in every state -
+   it is aria-hidden decoration sitting on top of the engine's peel surface. */
+.wip-sticker-fallback{position:absolute;top:50%;right:42px;left:42px;display:flex;height:140px;align-items:center;justify-content:center;gap:clamp(14px,3vw,30px);padding:18px 44px;border:9px solid #fffdf6;border-radius:28px 48px 24px 42px;background:var(--mark);color:var(--paper);box-shadow:11px 15px 25px rgba(46,40,34,.2),2px 4px 7px rgba(46,40,34,.15),inset 0 2px 0 rgba(255,255,255,.22);opacity:0;transform:translateY(-50%) rotate(-4deg);transition:opacity .18s ease;pointer-events:none}
+.wip-sticker-shell.is-failed .wip-sticker-fallback{opacity:1}
 .wip-sticker-fallback::before{position:absolute;inset:8px;border:1px dashed rgba(255,253,246,.42);border-radius:18px 34px 15px 29px;content:"";pointer-events:none}
 .wip-sticker-fallback::after{position:absolute;top:-13px;right:-13px;width:76px;height:76px;border-radius:0 20px 0 72%;background:linear-gradient(145deg,#fffdf7 0 53%,#ddd6ca 72%,#f7f5f2 100%);clip-path:polygon(100% 0,100% 100%,0 0);content:"";filter:drop-shadow(-7px 9px 5px rgba(46,40,34,.2));pointer-events:none}
 .wip-pusher{position:relative;z-index:1;width:68px;aspect-ratio:1;flex:none;background:var(--paper);-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;transform:rotate(-3deg)}
@@ -348,8 +355,12 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
    that 13% mark is where the sticker itself (live canvas or fallback) actually
    starts rendering, measured empirically; the shell is an oversized hit/peel
    area, not the sticker's visible bounds, so a plain flex gap against the
-   shell's own edge leaves a visible gap before the sticker really begins. */
-.wip-nudge{position:absolute;right:87%;top:50%;margin-top:-50px;z-index:6;width:100px;aspect-ratio:1;background:var(--ink);filter:drop-shadow(0 2px 4px rgba(46,40,34,.35));-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;transform-origin:70% 70%;animation:wipNudge 3.4s cubic-bezier(.2,.76,.2,1) infinite;pointer-events:none}
+   shell's own edge leaves a visible gap before the sticker really begins.
+   The nudge starts hidden for the same reason the fallback does: it points at
+   the sticker's left edge, so on its own it reads as a character bumping empty
+   space. It fades in with whichever sticker actually wins (live or failed). */
+.wip-nudge{position:absolute;right:87%;top:50%;margin-top:-50px;z-index:6;width:100px;aspect-ratio:1;background:var(--ink);filter:drop-shadow(0 2px 4px rgba(46,40,34,.35));-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;opacity:0;transform-origin:70% 70%;animation:wipNudge 3.4s cubic-bezier(.2,.76,.2,1) infinite;transition:opacity .18s ease;pointer-events:none}
+.wip-sticker-shell.is-live .wip-nudge,.wip-sticker-shell.is-failed .wip-nudge{opacity:1}
 @keyframes wipNudge{
   0%,64%{transform:rotate(-3deg) translate(0,0)}
   74%{transform:rotate(-11deg) translate(-4px,2px)}
