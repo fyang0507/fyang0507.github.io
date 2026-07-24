@@ -128,10 +128,9 @@
   .featured-card p{margin-top:19px;color:#575149;font-size:16px;line-height:1.62}
   .featured-actions{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-top:auto;padding-top:22px}
   .featured-actions .project-meta{margin-top:0}
-  .featured-actions .morph-toggle{width:22px;height:22px}
-  .featured-actions .morph-icon{width:8px;height:8px}
-  .featured-actions .morph-icon::before{width:8px;height:1.1px}
-  .featured-actions .morph-icon::after{width:1.1px;height:8px}
+  .featured-cta{display:inline-flex;align-items:center;gap:7px;border-bottom:1px solid var(--mark);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:9px;line-height:1.45;letter-spacing:.035em}
+  .featured-card:hover .featured-cta,.featured-card:focus-visible .featured-cta{border-bottom-width:2px;color:var(--mark-deep)}
+  .featured-card:focus-visible{color:var(--ink);outline:2px solid var(--ink);outline-offset:4px}
   .standard-card h2{font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:20px;font-weight:500;line-height:1.02;letter-spacing:-.018em}
   .standard-period{margin-top:7px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8px;line-height:1.45;letter-spacing:.025em}
   .project-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
@@ -248,7 +247,7 @@
         <div class="no-script-list">
           <ul>
             <li><a href="./Building-FredAgent.dc.html">Fred Agent</a></li>
-            <li>NJJoe — field notebook in progress</li>
+            <li><a href="./working/njjoe/Building-NJJoe.mockup.html">NJJoe field studies</a></li>
             <li><a href="https://github.com/fyang0507/instant-bookmark">Instant Bookmark on GitHub</a></li>
             <li><a href="https://github.com/fyang0507/wavelength">Wavelength on GitHub</a></li>
             <li><a href="https://github.com/fyang0507/tsugi">Tsugi on GitHub</a></li>
@@ -330,32 +329,20 @@
     };
 
     const renderFeatured = (project) => {
-      const titleId = `${project.id}-title`;
-      const panelId = `${project.id}-panel`;
       const slot = document.createElement("div");
       slot.className = "card-slot card-slot--featured";
-      const card = document.createElement("article");
+      const card = document.createElement("a");
       card.className = "project-card featured-card";
       card.dataset.projectId = project.id;
-      card.dataset.panelCard = "";
-      card.dataset.open = "false";
+      card.href = project.href;
+      card.setAttribute("aria-label", `${project.title}: open the field studies`);
       card.innerHTML = `
         ${label(project)}
-        <h2 id="${titleId}">${escapeHTML(project.title)}</h2>
+        <h2>${escapeHTML(project.title)}</h2>
         <p>${escapeHTML(project.note)}</p>
         <div class="featured-actions">
           <div class="project-meta"><span>${escapeHTML(project.lifecycle)}</span><span>${escapeHTML(project.period)}</span></div>
-          <button class="morph-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" aria-label="Open ${escapeHTML(project.title)} field note">
-            <span class="morph-icon" aria-hidden="true"></span>
-          </button>
-        </div>
-        <div class="morph-panel" id="${panelId}" data-building-panel data-project-id="${escapeHTML(project.id)}" role="region" aria-labelledby="${titleId}" aria-hidden="true" hidden>
-          <div class="morph-panel-paper">
-            <div class="morph-panel-heading">
-              <span class="morph-panel-kicker">active field notebook</span>
-            </div>
-            <p>${escapeHTML(project.note)}</p>
-          </div>
+          <span class="featured-cta">Open field studies →</span>
         </div>`;
       slot.innerHTML = boardPin;
       slot.append(card);

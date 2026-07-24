@@ -21,12 +21,12 @@ window.BUILDING_PROJECTS = Object.freeze([
     prominence: "featured",
     lifecycle: "active",
     period: "2026—now",
-    note: "A field notebook tracing a real-estate website redesign and the 346 Roosevelt listing-microsite pilot toward a repeatable workflow.",
-    href: null,
+    note: "Two field studies: a unified property-listing microsite and a personalized Annual Property Analysis email pilot.",
+    href: "./working/njjoe/Building-NJJoe.mockup.html",
     repo: null,
     sortDate: "2026-05-12",
     order: 1,
-    updated: "2026-07-18"
+    updated: "2026-07-23"
   },
   {
     id: "instant-bookmark",

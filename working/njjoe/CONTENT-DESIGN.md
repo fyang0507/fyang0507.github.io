@@ -23,20 +23,50 @@ The first version started at the implementation layer:
 
 That pattern is true, but it omits the consulting story that makes the work meaningful:
 
-- What did the customer believe the problem was?
+- What did Joe believe the problem was?
 - What did field discovery show instead?
-- How did the old customer experience actually feel?
+- How did the old buyer or homeowner experience actually feel?
 - Which use case was impossible or impractical before?
 - Why was this intervention chosen over a generic redesign or campaign product?
-- What changed for the customer, the operator, and the business?
+- What changed for the audience, the operator, and the business?
 
 The revised casebook starts with those questions.
+
+## Naming contract
+
+“Customer” is too ambiguous for this casebook because it can refer to Joe, a home buyer, or someone in Joe's relationship database. Public copy uses the specific role instead:
+
+- **Joe**, **the broker**, or **the collaborator** for the person commissioning and operating the work;
+- **buyer** for someone evaluating a listed property;
+- **homeowner** or **recipient** for someone eligible for APA outreach;
+- **client base**, **client records**, or **relationship data** only when describing Joe's existing business data.
+
+The only exception is Joe's attributed review, which preserves his original wording.
+
+## Motion contract
+
+- Keep the shared site header and NJJoe casebook strip visually static.
+- Let the changing `<main>` content rise once when a casebook page opens.
+- Reveal evidence units—cards, workflow steps, the static property capture, and Joe's review—as they enter the viewport.
+- Stagger related units just enough to clarify their reading order; do not animate headings and prose for decoration.
+- Use hover motion only on card-like surfaces where the response helps the surface feel inspectable.
+- Under reduced-motion preferences, show every unit immediately and remove page-entry and hover motion.
+
+## Component contract
+
+Use the same component hierarchy as the deeper Building pages:
+
+- **Signature cards** for the two case-study routes, fragmented listing surfaces, and outcome statements: tactile paper, a quiet wash-tape accent, slight resting rotation, and a soft alpha-following shadow.
+- **Label cards** for dense supporting evidence such as facts, implementation details, and claim asides: a rounded paper shell with one colored left rule and an in-place hover response.
+- **Connected flows** for the shared operating pattern, listing workflow, and APA funnel: one rounded outer shell, internal dividers, and explicit directional handoffs.
+- **Framed artifacts** for the scrollable property capture and APA email draft: the same rounded ink edge and restrained paper shadow used by Building's system maps and feature surfaces.
+- Keep the existing About-style review card as the testimonial exception; its role is collaborator evidence rather than a project-system card.
 
 ## Engagement-level narrative
 
 ### Driving question
 
-What useful customer experience was hiding between tools that each worked correctly on their own?
+What useful buyer or homeowner experience was hiding between tools that each worked correctly on its own?
 
 ### Overview title
 
@@ -44,11 +74,11 @@ What useful customer experience was hiding between tools that each worked correc
 
 ### Overview deck
 
-Joe already had photographers, tours, customer data, email software, and years of client relationships. What he did not have was the connective tissue that could turn those pieces into one customer experience.
+Joe already had photographers, virtual tours, client records, email software, and years of relationships. What he did not have was the connective tissue that could turn those pieces into coherent experiences for buyers and homeowners.
 
 ### Shared pattern
 
-Fragmented systems → agent assembly and verification → human judgment → one customer experience
+Fragmented systems → agent assembly and verification → human judgment → one buyer- or homeowner-facing experience
 
 The shared human point remains:
 
@@ -58,7 +88,7 @@ The shared human point remains:
 
 ### Page job
 
-Route visitors directly into the two customer-delivery case studies. The relationship origin and the initial public-site hook are private context for shaping the work, not public-page content.
+Route visitors directly into the two delivery case studies. The relationship origin and the initial public-site hook are private context for shaping the work, not public-page content.
 
 ### Sections
 
@@ -66,7 +96,7 @@ Route visitors directly into the two customer-delivery case studies. The relatio
 
 - NJJoe casebook and engagement metadata
 - “The problem lived between the tools.”
-- Margin note: “Every vendor had finished its part. The customer still had to assemble the product.”
+- Margin note: “Every tool did its part. Joe still had to assemble the delivery.”
 
 #### 00 — Two field studies
 
@@ -76,16 +106,16 @@ Two substantial route panels:
    - Before: buyers and agents carried unrelated links.
    - Unlocked: one shareable property page assembled by a reusable agent skill.
 2. **The campaign Joe could not run by calling harder.**
-   - Before: one offer depended on one personal call per customer.
+   - Before: one offer depended on one personal call per homeowner.
    - Unlocked: validated client profiles can become reviewed, personalized drafts.
 
 #### 01 — Common pattern
 
 Show the shared operating model and the human approval boundary.
 
-#### 02 — Customer voice
+#### 02 — Joe's perspective
 
-Publish Joe's review as an attributed customer quotation:
+Publish Joe's review as an attributed collaborator quotation:
 
 > Fred was an incredible help when we were struggling to create a property listing website for a home we were selling. He also helped us find a way to automate our emails to promote our new Annual Property Analysis (APA) program.
 >
@@ -95,13 +125,13 @@ Publish Joe's review as an attributed customer quotation:
 
 Preserve Joe's wording. In particular, keep “our APA program is successfully launching” inside the attributed quotation rather than converting it into a measured project-outcome claim.
 
-Render the review with the field-card construction established on `About.dc.html`: solid rounded edge, inset paper highlight, drop-shadow, and a utility metadata row. Use a calm sans-serif for the quotation body and a deterministic SVG quotation mark in the metadata row; the review should read as evidence, not a second display headline.
+Render the review with the field-card construction established on `About.dc.html`: solid rounded edge, inset paper highlight, drop-shadow, and a utility metadata row. Use the site's Fraunces editorial face for the quotation body and a deterministic SVG quotation mark in the metadata row; the review should read as evidence, not a second display headline.
 
 ## Page 2 — Listing microsite case study
 
 ### Driving question
 
-Why did a listing with good photography, a working 3D tour, correct facts, and detailed floorplans still produce a bad customer experience?
+Why did a listing with good photography, a working 3D tour, correct facts, and detailed floorplans still produce a bad buyer experience?
 
 ### Title
 
@@ -109,16 +139,16 @@ Why did a listing with good photography, a working 3D tour, correct facts, and d
 
 ### Hero deck
 
-The photos were good. The 3D tour worked. The floorplans existed. The listing details were known. The customer experience was still broken, because seeing one property meant visiting several products.
+The photos were good. The 3D tour worked. The floorplans existed. The listing details were known. The buyer experience was still broken, because seeing one property meant visiting several products.
 
 ### 00 — Discovery
 
-**Heading:** The customer was not missing content. The customer was missing the whole.
+**Heading:** The buyer was not missing content. The buyer was missing the whole.
 
 Show the old surfaces as four separate artifacts:
 
 1. Photographer gallery — static images on the vendor's site
-2. Matterport — separate 3D-tour product and URL
+2. 3D virtual tour — separate Matterport-hosted walkthrough and URL
 3. Internal communication — facts, changes, schedules, and notes
 4. Broker surface — contact, branding, disclaimers, and next step
 
@@ -171,7 +201,7 @@ Verified evidence:
 
 ### 04 — Outcome
 
-#### Customer outcome
+#### Buyer outcome
 
 One coherent property experience instead of a set of vendor products.
 
@@ -208,7 +238,7 @@ Do not yet claim:
 
 ### Driving question
 
-How can a realtor reach an existing customer base personally when the offer previously depended on one uncomfortable, inefficient call at a time?
+How can a realtor reach an existing client base personally when the offer previously depended on one uncomfortable, inefficient call at a time?
 
 ### Title
 
@@ -216,11 +246,11 @@ How can a realtor reach an existing customer base personally when the offer prev
 
 ### Hero deck
 
-The offer had already produced interest. The customer base already existed. The missing piece was a way to reach many people personally without requiring Joe to make one cold business-development call after another.
+The offer had already produced interest. The client base already existed. The missing piece was a way to reach homeowners personally without requiring Joe to make one cold business-development call after another.
 
 ### 00 — Discovery
 
-**Heading:** The marketing problem was not a lack of customer interest.
+**Heading:** The marketing problem was not a lack of homeowner interest.
 
 Discovery evidence:
 
@@ -228,13 +258,13 @@ Discovery evidence:
 - Joe described that as roughly three years of coverage and about 80 percent of the relevant base;
 - weekly HomeBot email opens exceeded 80 percent;
 - roughly 30 percent of recipients took deeper link actions;
-- the prior APA campaign completed 37 customer visits in about six weeks;
-- customers often remained interested in follow-up or later visits.
+- the prior APA campaign completed 37 visits in about six weeks;
+- homeowners often remained interested in follow-up or later visits.
 
 Diagnosis:
 
 - seller opportunities inside existing relationships were strategically important;
-- customer interest was present;
+- homeowner interest was present;
 - Joe disliked personally making cold business-development calls;
 - the call-bound outreach motion was the bottleneck.
 
@@ -246,7 +276,7 @@ The production export later yielded 240 unique profiles. Keep the discovery snap
 
 The old workflow:
 
-- choose likely customers;
+- choose likely homeowners;
 - call one person;
 - explain the offer;
 - manage a response;
@@ -254,17 +284,17 @@ The old workflow:
 
 Generic email software could not safely replace this because the message depended on:
 
-- customer identity;
+- recipient identity;
 - associated property;
 - Homebot state;
-- a private customer-specific report URL;
+- a private recipient-specific report URL;
 - relationship context;
 - suppression and delivery state;
 - Joe's judgment about whether the message should leave.
 
 ### 02 — Opportunity
 
-**Heading:** Create a customer-outreach channel that had not been practical before.
+**Heading:** Create a personalized outreach channel that had not been practical before.
 
 The new use case is mass-personalized outreach:
 
@@ -272,7 +302,7 @@ The new use case is mass-personalized outreach:
 - not one manually composed email per person;
 - not unattended automated sending.
 
-It prepares a relationship-specific decision for every eligible customer at low marginal assembly effort, while preserving Joe as the sender and decision maker.
+It prepares a relationship-specific decision for every eligible recipient at low marginal assembly effort, while preserving Joe as the sender and decision maker.
 
 This is the strongest place to explain “agent-era economics.” The point is not that language generation became cheap. The point is that private data validation, conditional personalization, legacy-mailbox integration, and per-message review can now be composed into one operating workflow.
 
@@ -283,22 +313,26 @@ This is the strongest place to explain “agent-era economics.” The point is n
 Workflow:
 
 1. Validate the export and preserve suppression, invalid-email, no-home, and multi-home cases.
-2. Join approved customer/property context and the private Homebot report URL.
+2. Join approved client/property context and the private Homebot report URL.
 3. Render the personalized HTML message and conditional copy.
 4. Create the message in SherWeb Exchange with `MessageDisposition=SaveOnly`.
 5. Verify the expected draft through a separate read-only lookup.
 6. Let Joe review, edit, send, or delete.
 
-### 04 — Outcome so far
+### 04 — Verified boundary
 
-**Heading:** The new capability is proven. The campaign result is not.
+**Heading:** What the workflow can already prove.
+
+Keep the ordinary verified-evidence grid in place but dampen it visually. One oversized diagonal WIP sticker crosses the grid, making the unfinished state a single visual layer rather than a stack of explanatory caveats. Its short status copy reads “collecting campaign results.”
+
+The sticker uses a pinned, locally vendored build of [CatsJuice/sticker-forge](https://github.com/CatsJuice/sticker-forge) so visitors can grab the die-cut edge and peel it to reveal the satin back and depth-aware shadow. It resets when released and keeps sound disabled. A matching CSS sticker remains underneath as the loading, reduced-capability, and no-JavaScript fallback.
 
 Verified evidence:
 
 - 240 unique client profiles;
 - 237 client/property relationships;
 - 200 active, 27 suppressed, six invalid-email, and seven no-home records preserved;
-- four multi-home customers retained for review;
+- four multi-home client records retained for review;
 - a live synthetic HTML draft accepted through EWS with HTTP 200 and `Success/NoError`;
 - exactly one expected subject found through an independent read-only lookup;
 - Joe visually confirmed the message in Drafts;
@@ -306,7 +340,7 @@ Verified evidence:
 
 Business implication:
 
-Before this work, safe personalized APA outreach across the customer base was operationally impractical. The bridge from private relationship data to Joe's real Drafts folder now exists.
+Before this work, safe personalized APA outreach across the client base was operationally impractical. The bridge from private relationship data to Joe's real Drafts folder now exists.
 
 ### Claim boundary
 
@@ -351,12 +385,12 @@ Page-specific evidence:
 
 - Overview: before/after route panels and the shared workflow line
 - Microsite: four deliberately separated vendor artifacts, then responsive desktop/mobile full-page captures of the Roosevelt property page inside a scrollable static frame
-- APA: discovery funnel, conceptual draft in Exchange, and verified technical counts
+- APA: discovery funnel, conceptual draft in Exchange, and a faded verified-evidence grid crossed by one tactile WIP sticker
 
 The visual structure should behave like a casebook:
 
 - discovery and pain occupy real space;
-- implementation does not arrive before the customer problem is understood;
+- implementation does not arrive before the audience and operator problems are understood;
 - outcomes distinguish verified change, directional value, and pending evidence;
 - placeholders remain visibly provisional rather than resembling finished endorsements.
 
