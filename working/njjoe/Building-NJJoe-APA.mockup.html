@@ -10,6 +10,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./casebook.css">
+<!-- Start the ~836KB peel engine during parse rather than at DOMContentLoaded;
+     it shortens the gap before the WIP sticker can render. -->
+<link rel="modulepreload" href="./vendor/sticker-forge/sticker-forge.es.js">
+<!-- The WIP sticker's CSS fallback is hidden by default so it never flashes
+     while the engine loads. With scripting off, nothing can reveal it, so it has
+     to be un-hidden here. See the .wip-sticker-fallback block in casebook.css. -->
+<noscript><style>.wip-sticker-fallback,.wip-nudge{opacity:1!important}</style></noscript>
 <script src="./casebook.js" defer></script>
 </head>
 <body>
