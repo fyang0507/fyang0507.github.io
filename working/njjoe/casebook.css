@@ -43,8 +43,7 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .eyebrow,.meta,.section-index,.kicker,.label,.status,.fact strong,.route-tag,.figure-caption,.aside-label{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.075em}
 .eyebrow{color:var(--mark-deep);font-size:10px}
 .hero h1{max-width:830px;margin:15px 0 0;font-size:clamp(62px,8.7vw,118px);font-weight:500;letter-spacing:-.058em;line-height:.88}
-.hero h1 .mark,.closing .mark{position:relative;z-index:0;display:inline}
-.hero h1 .mark::after,.closing .mark::after{content:"";position:absolute;z-index:-1;left:-.02em;right:-.02em;bottom:.03em;height:.21em;background:rgba(217,105,90,.34);clip-path:polygon(0 22%,100% 3%,98% 84%,2% 100%);transform:rotate(-1deg)}
+.hero h1 .mark,.closing .mark{background-image:linear-gradient(rgba(217,105,90,.34),rgba(217,105,90,.34));background-repeat:no-repeat;background-size:100% .34em;background-position:0 86%;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .deck{max-width:780px;margin:30px 0 0;font-size:clamp(20px,2.45vw,29px);line-height:1.48}
 .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:27px;color:var(--soft);font-size:9px}
 .hero-note{position:relative;margin:0 0 6px;padding:22px 0 6px 28px;color:var(--soft);font-family:"Caveat","MuyaoPleased",cursive;font-size:28px;line-height:1.18;transform:rotate(-1deg)}
@@ -94,7 +93,6 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .shape-step--human{background:rgba(240,217,205,.74);box-shadow:inset 0 4px 0 var(--mark)}
 .shape-step--human .annotation{position:absolute;top:calc(100% + 22px);left:-50%;width:200%;margin:0;padding-top:15px;color:var(--mark-deep);font-family:"Caveat","MuyaoPleased",cursive;font-size:clamp(18px,2.1vw,25px);line-height:1.05;text-align:center;transform:rotate(-.8deg)}
 .shape-step--human .annotation::before{content:"";position:absolute;top:-5px;left:50%;width:1.5px;height:18px;background:var(--mark-deep);transform:translateX(-50%) rotate(8deg);transform-origin:bottom}
-.shape-step--human .annotation>span{position:absolute;top:-19px;left:50%;font-family:"IBM Plex Mono",monospace;font-size:15px;transform:translateX(-50%)}
 .placeholder{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:clamp(34px,7vw,90px);align-items:center;margin-top:42px;padding:41px;border:1.5px dashed var(--ink);background:linear-gradient(110deg,var(--paper-2),rgba(240,217,205,.48));clip-path:polygon(0 1%,99.5% 0,100% 98%,1% 100%)}
 .placeholder h3{margin:14px 0 0;font-size:clamp(31px,4vw,50px);font-weight:500;line-height:1.03}
 .placeholder p{max-width:670px;margin:18px 0 0;color:var(--soft)}
@@ -132,7 +130,7 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .browser-bar span{margin-left:7px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8px}
 .browser img{width:100%;aspect-ratio:1.54/1;object-fit:cover;object-position:top}
 .browser--archive{transform:none}
-.archive-scroll{height:min(72vh,760px);min-height:560px;overflow:auto;overscroll-behavior:contain;background:#f7f0e5;scrollbar-gutter:stable}
+.archive-scroll{height:min(50vh,520px);min-height:400px;overflow:auto;overscroll-behavior:contain;background:#f7f0e5;scrollbar-gutter:stable}
 .archive-scroll picture{display:block}
 .archive-scroll img{width:100%;height:auto;max-width:none;aspect-ratio:auto;object-fit:initial;object-position:initial}
 .archive-scroll:focus-visible{outline:3px solid var(--mark-deep);outline-offset:-3px}
@@ -332,7 +330,9 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .wip-evidence>.facts{opacity:.34;filter:saturate(.45) contrast(.82)}
 .section--wip .wip-evidence .fact{border-color:color-mix(in srgb,var(--line-strong) 58%,transparent);background:rgba(251,246,236,.58);box-shadow:none;pointer-events:none}
 .section--wip .wip-evidence .fact strong,.section--wip .wip-evidence .fact span{color:color-mix(in srgb,var(--ink) 58%,var(--paper))}
-.wip-sticker-shell{position:absolute;z-index:5;top:50%;left:50%;width:min(920px,92%);height:420px;transform:translate(-50%,-50%)}
+/* Reusable pattern: peelable WIP sticker + nudge motif. See working/njjoe/wip-sticker.snippet.html
+   for a portable, standalone copy of this block with usage notes. */
+.wip-sticker-shell{position:absolute;z-index:5;top:50%;left:50%;width:min(920px,92%);height:420px;transform:translate(-50%,-50%);-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
 .wip-sticker-engine{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;cursor:grab;touch-action:none;transform:scale(1.08);transform-origin:center;transition:opacity .18s ease}
 .wip-sticker-engine:active{cursor:grabbing}
 .wip-sticker-shell.is-live .wip-sticker-engine{opacity:1}
@@ -344,7 +344,18 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .wip-sticker-copy{position:relative;z-index:1;display:grid;gap:8px}
 .wip-sticker-copy strong{font-family:"IBM Plex Mono",monospace;font-size:clamp(50px,6vw,74px);font-weight:600;line-height:.7;letter-spacing:-.09em}
 .wip-sticker-copy small{font-family:"IBM Plex Mono",monospace;font-size:clamp(8px,1.15vw,12px);font-weight:500;line-height:1;letter-spacing:.08em;text-transform:uppercase}
-.wip-peel-hint{position:absolute;right:9%;bottom:5px;color:var(--mark-deep);font-family:"Caveat","MuyaoPleased",cursive;font-size:18px;line-height:1;transform:rotate(-2deg)}
+/* right:87% anchors the icon's right edge to ~13% into the shell from its left -
+   that 13% mark is where the sticker itself (live canvas or fallback) actually
+   starts rendering, measured empirically; the shell is an oversized hit/peel
+   area, not the sticker's visible bounds, so a plain flex gap against the
+   shell's own edge leaves a visible gap before the sticker really begins. */
+.wip-nudge{position:absolute;right:87%;top:50%;margin-top:-50px;z-index:6;width:100px;aspect-ratio:1;background:var(--ink);filter:drop-shadow(0 2px 4px rgba(46,40,34,.35));-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;transform-origin:70% 70%;animation:wipNudge 3.4s cubic-bezier(.2,.76,.2,1) infinite;pointer-events:none}
+@keyframes wipNudge{
+  0%,64%{transform:rotate(-3deg) translate(0,0)}
+  74%{transform:rotate(-11deg) translate(-4px,2px)}
+  82%{transform:rotate(4deg) translate(3px,-2px)}
+  90%,100%{transform:rotate(-3deg) translate(0,0)}
+}
 @media(max-width:860px){
   .hero,.prose-grid,.proof-layout,.mail-flow,.placeholder{grid-template-columns:1fr}
   .hero-note{max-width:380px}
@@ -352,6 +363,8 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
   .section-index{max-width:168px}
   .journey,.seams{grid-template-columns:repeat(2,minmax(0,1fr))}
   .implementation,.outcomes{grid-template-columns:1fr}
+  .journey-card:nth-child(2)::after{content:none}
+  .journey-card:nth-child(3),.journey-card:nth-child(4){border-top:1px solid var(--line-strong)}
 }
 @media(max-width:680px){
   body{font-size:16px}
@@ -378,7 +391,6 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
   .shape{margin-bottom:0}
   .shape-step--human .annotation{position:relative;top:auto;left:auto;width:auto;margin:17px 0 0;padding-top:22px;text-align:left;transform:none}
   .shape-step--human .annotation::before{top:0;left:7px;height:16px;transform:rotate(8deg);transform-origin:bottom}
-  .shape-step--human .annotation>span{top:-14px;left:7px;transform:translateX(-50%)}
   .before-after{grid-template-columns:1fr}
   .state-arrow{transform:rotate(90deg)}
   .placeholder{padding:30px 24px}
@@ -391,7 +403,7 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
   .seam{min-height:190px;transform:none}
   .browser{transform:none}
   .browser img{aspect-ratio:1.05/1}
-  .archive-scroll{height:70vh;min-height:500px}
+  .archive-scroll{height:50vh;min-height:380px}
   .archive-scroll img{height:auto;aspect-ratio:auto;object-fit:initial}
   .figure-caption{display:block}
   .figure-caption span{display:block;margin-top:5px}
@@ -407,7 +419,7 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
   .wip-sticker-copy{gap:6px}
   .wip-sticker-copy strong{font-size:clamp(44px,15vw,60px)}
   .wip-sticker-copy small{font-size:7px}
-  .wip-peel-hint{right:8%;bottom:0;font-size:16px}
+  .wip-nudge{width:52px;margin-top:-26px}
   .page-nav{grid-template-columns:1fr}
   .page-nav a:last-child{text-align:left}
   .footer{display:block}

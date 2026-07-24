@@ -33,16 +33,29 @@
     });
   }
 
-  function wipStickerSvg(){
+  // "WIP" is the fixed label. statusText is per-page custom content (e.g. "collecting campaign
+  // results") - omit it for a plain WIP sticker with no subtitle.
+  function wipStickerSvg(statusText){
     var mark=getComputedStyle(document.documentElement).getPropertyValue('--mark').trim()||'#d9695a';
-    return [
-      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 310">',
-      '<rect x="18" y="18" width="1164" height="274" rx="42" fill="'+mark+'"/>',
-      '<text x="82" y="198" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="142" font-weight="700" letter-spacing="-10">WIP</text>',
-      '<line x1="405" y1="82" x2="405" y2="228" stroke="#fffaf0" stroke-width="3" stroke-dasharray="7 10" opacity=".55"/>',
-      '<text x="458" y="174" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="37" font-weight="700" letter-spacing="3">COLLECTING CAMPAIGN RESULTS</text>',
-      '</svg>'
-    ].join('');
+    var parts=[
+      // Explicit width/height (2x the viewBox) forces a high-res rasterization -
+      // a viewBox-only <svg> with no width/height decodes at the CSS default
+      // replaced-element size (300x150) regardless of its coordinate space,
+      // which is why the sticker texture read as soft/low-res without this.
+      '<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="620" viewBox="0 0 1200 310">',
+      '<rect x="18" y="18" width="1164" height="274" rx="42" fill="'+mark+'"/>'
+    ];
+    if(statusText){
+      parts.push(
+        '<text x="82" y="198" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="142" font-weight="700" letter-spacing="-10">WIP</text>',
+        '<line x1="405" y1="82" x2="405" y2="228" stroke="#fffaf0" stroke-width="3" stroke-dasharray="7 10" opacity=".55"/>',
+        '<text x="458" y="174" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="37" font-weight="700" letter-spacing="3">'+statusText.toUpperCase()+'</text>'
+      );
+    }else{
+      parts.push('<text x="600" y="198" text-anchor="middle" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="152" font-weight="700" letter-spacing="-8">WIP</text>');
+    }
+    parts.push('</svg>');
+    return parts.join('');
   }
 
   async function initWipSticker(){
@@ -66,10 +79,23 @@
         wind:0,
         quality:'medium'
       });
-      await sticker.setSource({type:'svg',svg:wipStickerSvg()});
+      await sticker.setSource({type:'svg',svg:wipStickerSvg(shell.dataset.wipStatus)});
       var canvas=sticker.shadowRoot&&sticker.shadowRoot.querySelector('canvas');
       if(canvas){
-        canvas.setAttribute('aria-label','Work in progress. Collecting campaign results. Drag an edge to peel; use arrow keys to adjust and Space to reset.');
+        var baseLabel=shell.getAttribute('aria-label')||'Work in progress. Drag an edge to peel the sticker; it resets when released.';
+        canvas.setAttribute('aria-label',baseLabel+' Use arrow keys to adjust and Space to reset.');
+        var ink=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#33302b';
+        canvas.style.outline='none';
+        canvas.addEventListener('focus',function(){
+          if(canvas.matches(':focus-visible')){
+            canvas.style.outline='2px solid '+ink;
+            canvas.style.outlineOffset='6px';
+            canvas.style.borderRadius='8px';
+          }
+        });
+        canvas.addEventListener('blur',function(){
+          canvas.style.outline='none';
+        });
       }
       shell.classList.add('is-live');
     }catch(error){

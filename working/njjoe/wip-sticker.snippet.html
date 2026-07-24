@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIP sticker — reusable pattern</title>
+<style>
+  /*
+    Reusable pattern: a peelable "WIP" sticker with a nudge motif beside it.
+
+    WHAT'S FIXED (keep as-is when reusing):
+      - "WIP" is the sticker's permanent label.
+      - The peel/drag mechanics (sticker-forge) and the pusher-motif nudge icon.
+      - The no-JS / reduced-motion fallback (a flat CSS sticker, no animation).
+      - The focus-visible handling (see the JS section) - without it, the
+        keyboard-focusable peel canvas shows the browser's default outline,
+        which usually clashes with the surrounding page.
+
+    WHAT'S CUSTOM PER PAGE (change these):
+      - The status subtitle (e.g. "collecting campaign results") - this is
+        entirely optional. Omit data-wip-status for a plain "WIP" sticker
+        with no subtitle at all.
+      - The two aria-label strings (shell + generated canvas label).
+      - The five CSS variables below - swap for your site's own palette.
+      - Icon/sticker size, if your layout needs a different scale.
+
+    REQUIRED FILES (bring these along):
+      - vendor/sticker-forge/sticker-forge.es.js  (the vendored <sticker-forge> engine)
+      - assets/wip-pusher-mask.png                (the pusher-motif mask image)
+      - Adjust the two path references below (scriptBase URL, mask url()) to
+        wherever those files live relative to the page you're pasting into.
+  */
+  :root{
+    --ink:#33302b;
+    --mark:#d9695a;
+    --paper:#fbf6ec;
+    --paper-2:#f3ecdd;
+    --line-strong:#cfc1a9;
+  }
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,serif}
+  .demo-page{max-width:760px;margin:0 auto;padding:48px 24px 96px}
+  .demo-page h1{font-size:28px;font-weight:500}
+  .demo-page p{color:#6d6559;line-height:1.6}
+  .demo-stage{position:relative;margin-top:40px;padding:60px 20px;border:1px dashed var(--line-strong);border-radius:14px}
+
+  /* ---- reusable pattern starts here ---- */
+  .wip-sticker-shell{position:relative;width:min(920px,92%);height:420px;margin:0 auto;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+  .wip-sticker-engine{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;cursor:grab;touch-action:none;transform:scale(1.08);transform-origin:center;transition:opacity .18s ease}
+  .wip-sticker-engine:active{cursor:grabbing}
+  .wip-sticker-shell.is-live .wip-sticker-engine{opacity:1}
+  .wip-sticker-fallback{position:absolute;top:50%;right:42px;left:42px;display:flex;height:140px;align-items:center;justify-content:center;gap:clamp(14px,3vw,30px);padding:18px 44px;border:9px solid #fffdf6;border-radius:28px 48px 24px 42px;background:var(--mark);color:var(--paper);box-shadow:11px 15px 25px rgba(46,40,34,.2),2px 4px 7px rgba(46,40,34,.15),inset 0 2px 0 rgba(255,255,255,.22);transform:translateY(-50%) rotate(-4deg);transition:opacity .18s ease}
+  .wip-sticker-shell.is-live .wip-sticker-fallback{opacity:0;pointer-events:none}
+  .wip-sticker-fallback::before{position:absolute;inset:8px;border:1px dashed rgba(255,253,246,.42);border-radius:18px 34px 15px 29px;content:"";pointer-events:none}
+  .wip-sticker-fallback::after{position:absolute;top:-13px;right:-13px;width:76px;height:76px;border-radius:0 20px 0 72%;background:linear-gradient(145deg,#fffdf7 0 53%,#ddd6ca 72%,#f7f5f2 100%);clip-path:polygon(100% 0,100% 100%,0 0);content:"";filter:drop-shadow(-7px 9px 5px rgba(46,40,34,.2));pointer-events:none}
+  .wip-pusher{position:relative;z-index:1;width:68px;aspect-ratio:1;flex:none;background:var(--paper);-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;transform:rotate(-3deg)}
+  .wip-sticker-copy{position:relative;z-index:1;display:grid;gap:8px}
+  .wip-sticker-copy strong{font-family:"IBM Plex Mono",monospace;font-size:clamp(50px,6vw,74px);font-weight:600;line-height:.7;letter-spacing:-.09em}
+  .wip-sticker-copy small{font-family:"IBM Plex Mono",monospace;font-size:clamp(8px,1.15vw,12px);font-weight:500;line-height:1;letter-spacing:.08em;text-transform:uppercase}
+  /* The "nudge": a small motif that periodically bumps, inviting the visitor to
+     grab the sticker's edge - replaces a written "drag me" hint with motion.
+     right:87% anchors its right edge to ~13% into the shell from the left -
+     that 13% mark is empirically where the sticker itself (live canvas or
+     fallback) actually starts rendering. The shell is an oversized hit/peel
+     area, not the sticker's visible bounds, so positioning this against the
+     shell's own edge (e.g. a flex gap) leaves a visible gap before the
+     sticker really begins. Re-measure this constant if you resize the shell's
+     aspect ratio significantly. */
+  .wip-nudge{position:absolute;right:87%;top:50%;margin-top:-50px;z-index:6;width:100px;aspect-ratio:1;background:var(--ink);filter:drop-shadow(0 2px 4px rgba(46,40,34,.35));-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;transform-origin:70% 70%;animation:wipNudge 3.4s cubic-bezier(.2,.76,.2,1) infinite;pointer-events:none}
+  @keyframes wipNudge{
+    0%,64%{transform:rotate(-3deg) translate(0,0)}
+    74%{transform:rotate(-11deg) translate(-4px,2px)}
+    82%{transform:rotate(4deg) translate(3px,-2px)}
+    90%,100%{transform:rotate(-3deg) translate(0,0)}
+  }
+  @media(max-width:680px){
+    .wip-sticker-shell{width:calc(100% + 16px);height:300px}
+    .wip-sticker-engine{transform:none}
+    .wip-sticker-fallback{right:12px;left:12px;height:108px;padding:14px 20px;border-width:7px;border-radius:23px 38px 20px 34px}
+    .wip-sticker-fallback::after{top:-10px;right:-10px;width:58px;height:58px}
+    .wip-pusher{width:48px}
+    .wip-sticker-copy{gap:6px}
+    .wip-sticker-copy strong{font-size:clamp(44px,15vw,60px)}
+    .wip-sticker-copy small{font-size:7px}
+    .wip-nudge{width:52px;margin-top:-26px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .wip-nudge{animation-duration:.001ms!important;animation-iteration-count:1!important}
+  }
+  /* ---- reusable pattern ends here ---- */
+</style>
+</head>
+<body>
+<div class="demo-page">
+  <h1>WIP sticker — reusable pattern</h1>
+  <p>A peelable "WIP" sticker with a pusher-motif nudge icon beside it. Drag the
+  sticker's edge to peel it back; it resets when released. This page is a
+  standalone, working copy of the pattern used on the NJJoe casebook's
+  verified-boundary sections — see the comment block in the source for what to
+  keep as-is versus customize.</p>
+
+  <div class="demo-stage">
+    <div class="wip-sticker-shell" role="group" aria-label="Work in progress. Drag an edge to peel the sticker; it resets when released." data-wip-sticker-shell data-wip-status="">
+      <sticker-forge id="wip-sticker" class="wip-sticker-engine"></sticker-forge>
+      <div class="wip-sticker-fallback" aria-hidden="true">
+        <span class="wip-pusher"></span>
+        <span class="wip-sticker-copy"><strong>WIP</strong></span>
+      </div>
+      <span class="wip-nudge" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var scriptBase=new URL('./',window.location.href);
+
+  // "WIP" is the fixed label. statusText is per-page custom content (e.g. "collecting
+  // campaign results") - omit it (or pass '') for a plain WIP sticker with no subtitle.
+  function wipStickerSvg(statusText){
+    var mark=getComputedStyle(document.documentElement).getPropertyValue('--mark').trim()||'#d9695a';
+    var parts=[
+      // Explicit width/height (2x the viewBox) forces a high-res rasterization -
+      // a viewBox-only <svg> with no width/height decodes at the CSS default
+      // replaced-element size (300x150) regardless of its coordinate space,
+      // which reads as a soft/low-res sticker texture without this.
+      '<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="620" viewBox="0 0 1200 310">',
+      '<rect x="18" y="18" width="1164" height="274" rx="42" fill="'+mark+'"/>'
+    ];
+    if(statusText){
+      parts.push(
+        '<text x="82" y="198" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="142" font-weight="700" letter-spacing="-10">WIP</text>',
+        '<line x1="405" y1="82" x2="405" y2="228" stroke="#fffaf0" stroke-width="3" stroke-dasharray="7 10" opacity=".55"/>',
+        '<text x="458" y="174" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="37" font-weight="700" letter-spacing="3">'+statusText.toUpperCase()+'</text>'
+      );
+    }else{
+      parts.push('<text x="600" y="198" text-anchor="middle" fill="#fffaf0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="152" font-weight="700" letter-spacing="-8">WIP</text>');
+    }
+    parts.push('</svg>');
+    return parts.join('');
+  }
+
+  async function initWipSticker(){
+    var shell=document.querySelector('[data-wip-sticker-shell]');
+    var sticker=document.querySelector('#wip-sticker');
+    if(!shell||!sticker)return;
+
+    try{
+      // Adjust this path to wherever vendor/sticker-forge/ lives relative to your page.
+      await import(new URL('./vendor/sticker-forge/sticker-forge.es.js',scriptBase).href);
+      await customElements.whenDefined('sticker-forge');
+      sticker.addEventListener('error',function(event){
+        console.warn('WIP sticker:',event.detail&&event.detail.message?event.detail.message:'rendering error');
+      });
+      sticker.setOptions({
+        outline:{width:18,color:'#fffdf6'},
+        shadow:{color:'#2e2822',opacity:.22,blur:22,distance:16,angle:42},
+        peel:{radius:.12,stiffness:.72,grabWidth:26,maxAngle:3.1,release:'reset'},
+        sound:{enabled:false,volume:0},
+        back:{color:'#f7f5f2',gloss:.7,roughness:.3},
+        tilt:-3,
+        wind:0,
+        quality:'medium'
+      });
+      await sticker.setSource({type:'svg',svg:wipStickerSvg(shell.dataset.wipStatus)});
+
+      var canvas=sticker.shadowRoot&&sticker.shadowRoot.querySelector('canvas');
+      if(canvas){
+        var baseLabel=shell.getAttribute('aria-label')||'Work in progress. Drag an edge to peel the sticker; it resets when released.';
+        canvas.setAttribute('aria-label',baseLabel+' Use arrow keys to adjust and Space to reset.');
+
+        // The canvas lives inside sticker-forge's shadow DOM and is natively
+        // keyboard-focusable (arrow keys peel it). Page-level CSS can't reach into
+        // that shadow root, so style its focus ring here instead of in CSS - and use
+        // :focus-visible so dragging with a mouse/touch never shows a ring, only
+        // real keyboard Tab navigation does.
+        var ink=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#33302b';
+        canvas.style.outline='none';
+        canvas.addEventListener('focus',function(){
+          if(canvas.matches(':focus-visible')){
+            canvas.style.outline='2px solid '+ink;
+            canvas.style.outlineOffset='6px';
+            canvas.style.borderRadius='8px';
+          }
+        });
+        canvas.addEventListener('blur',function(){
+          canvas.style.outline='none';
+        });
+      }
+      shell.classList.add('is-live');
+    }catch(error){
+      console.warn('Interactive WIP sticker unavailable; using the static fallback.',error);
+    }
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initWipSticker,{once:true});
+  }else{
+    initWipSticker();
+  }
+})();
+</script>
+</body>
+</html>
