@@ -358,6 +358,8 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
    The nudge starts hidden for the same reason the fallback does: it points at
    the sticker's left edge, so on its own it reads as a character bumping empty
    space. It fades in with whichever sticker actually wins (live or failed). */
+/* Motion study inspired by Transition.dev; this is an original CSS implementation.
+   See NOTICE.md for attribution and licensing scope. */
 .wip-nudge{position:absolute;right:87%;top:50%;margin-top:-50px;z-index:6;width:100px;aspect-ratio:1;background:var(--ink);filter:drop-shadow(0 2px 4px rgba(46,40,34,.35));-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;opacity:0;transform-origin:70% 70%;animation:wipNudge 3.4s cubic-bezier(.2,.76,.2,1) infinite;transition:opacity .18s ease;pointer-events:none}
 .wip-sticker-shell.is-live .wip-nudge,.wip-sticker-shell.is-failed .wip-nudge{opacity:1}
 @keyframes wipNudge{
