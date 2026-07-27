@@ -2,11 +2,11 @@
   'use strict';
 
   var chapterFiles=new Set([
-    'Building-FredAgent.dc.html',
-    'Building-FredAgent-System.dc.html',
-    'Building-FredAgent-Principles.dc.html',
-    'Building-FredAgent-Components.dc.html',
-    'Building-FredAgent-Demos.dc.html'
+    'index.html',
+    'system.html',
+    'principles.html',
+    'components.html',
+    'demos.html'
   ]);
   var pageCache=new Map();
   var activeRequest=null;
@@ -114,7 +114,7 @@
   }
 
   function isChapterUrl(url){
-    return url.origin===window.location.origin&&chapterFiles.has(chapterFile(url));
+    return url.origin===window.location.origin&&url.pathname.includes('/building/fred-agent/')&&chapterFiles.has(chapterFile(url));
   }
 
   function renderedPage(){

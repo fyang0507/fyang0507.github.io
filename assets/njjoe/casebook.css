@@ -330,8 +330,7 @@ code{font-family:"IBM Plex Mono",monospace;font-size:.82em}
 .wip-evidence>.facts{opacity:.34;filter:saturate(.45) contrast(.82)}
 .section--wip .wip-evidence .fact{border-color:color-mix(in srgb,var(--line-strong) 58%,transparent);background:rgba(251,246,236,.58);box-shadow:none;pointer-events:none}
 .section--wip .wip-evidence .fact strong,.section--wip .wip-evidence .fact span{color:color-mix(in srgb,var(--ink) 58%,var(--paper))}
-/* Reusable pattern: peelable WIP sticker + nudge motif. See working/njjoe/wip-sticker.snippet.html
-   for a portable, standalone copy of this block with usage notes. */
+/* Reusable pattern: peelable WIP sticker + nudge motif. */
 .wip-sticker-shell{position:absolute;z-index:5;top:50%;left:50%;width:min(920px,92%);height:420px;transform:translate(-50%,-50%);-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
 .wip-sticker-engine{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;cursor:grab;touch-action:none;transform:scale(1.08);transform-origin:center;transition:opacity .18s ease}
 .wip-sticker-engine:active{cursor:grabbing}

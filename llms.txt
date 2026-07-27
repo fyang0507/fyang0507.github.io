@@ -40,11 +40,14 @@ Bilingual essays and travel writing, 2015–2025, newest first.
 Projects, systems, and experiments.
 
 - [Building overview](https://fyang0507.github.io/Building.dc.html): Index of active and historical projects — Fred Agent, NJJoe, Instant Bookmark, Wavelength, Tsugi.
-- [Fred Agent — A Life With Handles](https://fyang0507.github.io/Building-FredAgent.dc.html): An operating environment giving swappable general-purpose agents durable handles into time, communication, shared state, personal context, and visible recovery. Active, 2025—now.
-- [Fred Agent: System](https://fyang0507.github.io/Building-FredAgent-System.dc.html): How Fred Agent turns existing agent capability into real-life outcomes.
-- [Fred Agent: Principles](https://fyang0507.github.io/Building-FredAgent-Principles.dc.html): Eleven design principles behind Fred Agent.
-- [Fred Agent: Components](https://fyang0507.github.io/Building-FredAgent-Components.dc.html): Technical field guide to the CLIs, policy module, and recovery protocol.
-- [Fred Agent: Demos](https://fyang0507.github.io/Building-FredAgent-Demos.dc.html): Outcome-first demonstrations across time, channels, physical-world state, and unattended failure.
+- [NJJoe casebook](https://fyang0507.github.io/building/njjoe/): Two field studies in client-facing workflows: a unified property-listing microsite and a human-approved Annual Property Analysis campaign.
+- [NJJoe: Listing microsite](https://fyang0507.github.io/building/njjoe/microsite.html): How a fragmented listing experience became one shareable property page and reusable agent workflow.
+- [NJJoe: APA campaign](https://fyang0507.github.io/building/njjoe/apa.html): How privacy-aware, human-approved personalized outreach moved from calls to reviewed email drafts.
+- [Fred Agent — A Life With Handles](https://fyang0507.github.io/building/fred-agent/): An operating environment giving swappable general-purpose agents durable handles into time, communication, shared state, personal context, and visible recovery. Active, 2025—now.
+- [Fred Agent: System](https://fyang0507.github.io/building/fred-agent/system.html): How Fred Agent turns existing agent capability into real-life outcomes.
+- [Fred Agent: Principles](https://fyang0507.github.io/building/fred-agent/principles.html): Eleven design principles behind Fred Agent.
+- [Fred Agent: Components](https://fyang0507.github.io/building/fred-agent/components.html): Technical field guide to the CLIs, policy module, and recovery protocol.
+- [Fred Agent: Demos](https://fyang0507.github.io/building/fred-agent/demos.html): Outcome-first demonstrations across time, channels, physical-world state, and unattended failure.
 
 ## Photography
 

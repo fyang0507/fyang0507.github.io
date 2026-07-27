@@ -360,9 +360,11 @@ img{max-width:100%}
 .fa-taste-prompt{display:grid;grid-template-columns:128px minmax(0,1fr);gap:18px;align-items:start;padding:18px 20px;border:1px solid var(--line-strong);border-bottom:0;border-radius:var(--radius) var(--radius) 0 0;background:var(--paper-2)}
 .fa-taste-prompt span{padding-top:3px;color:var(--mark-deep);font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:500;line-height:1.35;letter-spacing:.08em;text-transform:uppercase}
 .fa-taste-prompt p{max-width:900px;margin:0;font-size:clamp(15px,1.65vw,19px);line-height:1.48}
-.fa-taste-comparison-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;padding:1px;background:var(--line-strong)}
-.fa-taste-panel{min-width:0;padding:14px;background:var(--paper)}
-.fa-taste-panel--guided{box-shadow:inset 0 3px 0 var(--mark)}
+.fa-taste-comparison-grid{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:clamp(18px,2.5vw,32px);align-items:center;padding:clamp(18px,2.5vw,28px);border:1px solid var(--line-strong);background:var(--paper-2)}
+.fa-taste-panel{min-width:0;padding:0;background:transparent}
+.fa-taste-panel--guided{padding-left:clamp(18px,2.5vw,32px);border-left:1px solid var(--line-strong)}
+@keyframes faTasteLeadSettle{from{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}to{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}}
+.reveal-ready .fa-taste-comparison.is-visible .fa-taste-comparison-grid{animation:faTasteLeadSettle .58s var(--ease-out) .08s both}
 .fa-taste-panel-head{display:flex;align-items:center;gap:11px;min-height:42px;margin-bottom:12px}
 .fa-taste-panel-head>span{display:grid;flex:none;width:31px;height:31px;place-items:center;border:1px solid var(--line-strong);border-radius:50%;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:500}
 .fa-taste-panel--guided .fa-taste-panel-head>span{border-color:var(--mark-deep);background:var(--mark);color:#fff}
@@ -546,7 +548,10 @@ details.fa-prep div{padding:0 15px 15px;color:var(--soft);font-size:14px}
   .fa-demo-head{flex-direction:column}
   .fa-demo-copy--split{grid-template-columns:1fr}
   .fa-taste-prompt{grid-template-columns:1fr;gap:8px}
-  .fa-taste-comparison-grid{grid-template-columns:1fr}
+  .fa-taste-comparison-grid{grid-template-columns:1fr;gap:1px;padding:1px;border:0;background:var(--line-strong)}
+  .fa-taste-panel{padding:14px;background:var(--paper)}
+  .fa-taste-panel--guided{padding-left:14px;border-left:0}
+  .reveal-ready .fa-taste-comparison.is-visible .fa-taste-comparison-grid{animation:none}
   .fa-settei-head{align-items:flex-start;flex-direction:column;gap:9px}
   .fa-settei-grid{grid-template-columns:1fr}
   .fa-demo-details{grid-template-columns:1fr}
