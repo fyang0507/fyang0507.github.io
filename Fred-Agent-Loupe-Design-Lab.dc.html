@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A standalone comparison lab for Fred Agent evidence loupe designs.">
+<title>Fred Agent — Loupe Design Lab</title>
+<style>
+@font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+:root{
+  color-scheme:light;
+  --paper:#fbf6ec;
+  --paper-2:#f3ecdd;
+  --paper-3:#e9dfcb;
+  --ink:#33302b;
+  --soft:#6d6559;
+  --pencil:#81786b;
+  --line:#cfc1a9;
+  --coral:#d9695a;
+  --coral-deep:#a5453a;
+  --blue:#dce8e7;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{background:var(--paper);scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:var(--paper);font-family:Georgia,"Times New Roman",serif;line-height:1.55}
+button{font:inherit}
+a{color:inherit}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.lab-shell{width:min(1240px,92vw);margin:0 auto;padding:34px 0 70px}
+.lab-topline{display:flex;justify-content:space-between;gap:20px;align-items:center;padding-bottom:16px;border-bottom:1px solid var(--ink);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase}
+.lab-topline a{text-decoration:none}
+.lab-topline a:hover,.lab-topline a:focus-visible{color:var(--coral-deep)}
+.lab-topline span{color:var(--soft)}
+.lab-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,390px);gap:clamp(36px,8vw,110px);align-items:end;padding:62px 0 54px}
+.eyebrow{display:flex;align-items:center;gap:12px;margin:0;color:var(--soft);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--coral)}
+h1{max-width:760px;margin:16px 0 0;font-size:clamp(50px,7.5vw,96px);font-weight:400;line-height:.91;letter-spacing:-.05em}
+.lab-intro{margin:0 0 4px;padding-left:22px;border-left:2px solid var(--coral);color:var(--soft);font-size:19px;line-height:1.45}
+.lab-intro strong{display:block;margin-bottom:9px;color:var(--ink);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase}
+.design-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:18px;border:1px solid var(--line);background:var(--paper-2)}
+.design-choice{position:relative;min-height:110px;padding:16px 15px 14px;border:1px solid var(--line);border-radius:0;background:var(--paper);color:var(--ink);text-align:left;cursor:pointer;transition:transform .2s var(--ease),border-color .2s ease,background .2s ease}
+.design-choice:hover{border-color:var(--ink);transform:translateY(-2px)}
+.design-choice:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.design-choice[aria-selected="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.choice-glyph{display:block;position:relative;width:40px;height:27px;margin-bottom:12px}
+.choice-glyph::before,.choice-glyph::after{content:"";position:absolute}
+.design-choice strong{display:block;font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:10px;font-weight:600;line-height:1.2;letter-spacing:.055em;text-transform:uppercase}
+.design-choice small{display:block;margin-top:6px;color:var(--soft);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;line-height:1.35}
+.design-choice[aria-selected="true"] small{color:#d9d0c1}
+.design-choice[data-design="pencil"] .choice-glyph::before{inset:2px 4px;border:2px solid currentColor;border-radius:50%;transform:rotate(-5deg)}
+.design-choice[data-design="pencil"] .choice-glyph::after{right:0;top:1px;width:8px;height:8px;border-radius:50%;background:var(--coral)}
+.design-choice[data-design="bracket"] .choice-glyph::before{inset:1px;border:2px solid currentColor;clip-path:polygon(0 0,32% 0,32% 7%,7% 7%,7% 32%,0 32%,0 0,100% 0,100% 32%,93% 32%,93% 7%,68% 7%,68% 0,100% 0,100% 100%,68% 100%,68% 93%,93% 93%,93% 68%,100% 68%,100% 100%,0 100%,0 68%,7% 68%,7% 93%,32% 93%,32% 100%,0 100%)}
+.design-choice[data-design="bracket"] .choice-glyph::after{left:18px;top:12px;width:5px;height:5px;background:var(--coral)}
+.design-choice[data-design="darkroom"] .choice-glyph::before{inset:0;border:5px solid currentColor;border-radius:3px}
+.design-choice[data-design="darkroom"] .choice-glyph::after{left:5px;right:5px;bottom:5px;height:4px;background:var(--coral)}
+.design-choice[data-design="veil"] .choice-glyph::before{inset:0;background:currentColor;opacity:.2}
+.design-choice[data-design="veil"] .choice-glyph::after{left:11px;top:4px;width:19px;height:19px;border:1.5px solid var(--coral);border-radius:50%;background:var(--paper)}
+.design-choice[data-design="caption"] .choice-glyph::before{inset:1px 3px;border:1.5px solid currentColor;border-radius:10px}
+.design-choice[data-design="caption"] .choice-glyph::after{left:4px;right:4px;bottom:2px;height:8px;background:var(--coral)}
+.design-choice[data-design="instrument"] .choice-glyph::before{left:7px;top:0;width:27px;height:27px;border:4px double currentColor;border-radius:50%}
+.design-choice[data-design="instrument"] .choice-glyph::after{left:18px;top:0;width:5px;height:5px;background:var(--coral);transform:rotate(45deg)}
+.specimen{margin-top:18px;border:1px solid var(--ink);background:var(--paper)}
+.specimen-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,430px);gap:24px;align-items:end;padding:22px 24px 19px;border-bottom:1px solid var(--line)}
+.specimen-title{margin:0;font-size:clamp(26px,4vw,46px);font-weight:400;line-height:1}
+.specimen-copy{margin:0;color:var(--soft);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:10px;line-height:1.5}
+.specimen-copy strong{color:var(--coral-deep);font-weight:600;text-transform:uppercase}
+.scroll-hint{display:none;justify-content:space-between;gap:20px;padding:11px 16px;border-bottom:1px solid var(--line);color:var(--soft);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;letter-spacing:.07em;text-transform:uppercase}
+.canvas-scroll{overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;scrollbar-color:var(--pencil) var(--paper-3);scrollbar-width:thin}
+.canvas{position:relative;isolation:isolate;width:1000px;height:800px;margin:0 auto;padding:20px;background:var(--paper-2)}
+.canvas::before{content:"";position:absolute;inset:0;z-index:-2;background-image:radial-gradient(circle,var(--line) .8px,transparent .9px);background-size:18px 18px;opacity:.55}
+.evidence-img{position:relative;z-index:0;display:block;width:960px;height:760px;border:1px solid rgba(51,48,43,.44);object-fit:contain;background:white;box-shadow:0 16px 34px rgba(51,48,43,.12)}
+.veil-layer{position:absolute;inset:20px;z-index:1;background:rgba(31,30,27,.62);opacity:0;pointer-events:none;transition:opacity .28s ease}
+.scope-layer{position:absolute;inset:20px;z-index:2;pointer-events:none}
+.scope{--x:50%;--y:50%;--w:160px;--h:160px;--radius:50%;--zoom:2;position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);transform:translate(-50%,-50%);pointer-events:auto}
+.scope--capture{--x:6.9%;--y:54.2%;--w:160px;--h:160px;--radius:50%;--zoom:2.35}
+.scope--delivery{--x:75.5%;--y:31%;--w:388px;--h:155px;--radius:24px;--zoom:1.45}
+.scope--schedule{--x:74.5%;--y:74.5%;--w:180px;--h:245px;--radius:88px;--zoom:2.1}
+.lens{position:relative;isolation:isolate;width:100%;height:100%;padding:0;border:0;border-radius:var(--radius);background-color:white;background-image:url("./assets/fred-agent/demo/trash-patrol-h760.png");background-repeat:no-repeat;cursor:pointer;transition:transform .28s var(--ease),box-shadow .28s var(--ease),filter .28s ease}
+.lens:focus-visible{outline:3px solid var(--coral);outline-offset:5px}
+.lens:hover{transform:scale(1.025)}
+.scope.is-open{z-index:8}
+.scope.is-open .lens{transform:scale(1.025)}
+.scope-label{position:absolute;z-index:4;white-space:nowrap;pointer-events:none}
+.scope-label b,.scope-label em{font-style:normal}
+.scope-label em{display:none}
+.scope.is-open .scope-label span{display:none}
+.scope.is-open .scope-label em{display:inline}
+.focus-dot{position:absolute;z-index:5;width:9px;height:9px;border-radius:50%;background:var(--coral);pointer-events:none}
+.lens-detail{position:absolute;inset:0;z-index:3;border-radius:inherit;pointer-events:none}
+.note{position:absolute;z-index:10;width:270px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,transform .3s var(--ease),visibility 0s linear .3s}
+.scope.is-open .note{opacity:1;visibility:visible;pointer-events:auto;transition-delay:0s}
+.scope--capture .note{left:calc(50% + 70px);top:calc(100% + 14px);transform:translate(-50%,9px)}
+.scope--capture.is-open .note{transform:translate(-50%,0)}
+.scope--delivery .note{left:50%;top:calc(100% + 14px);transform:translate(-50%,9px)}
+.scope--delivery.is-open .note{transform:translate(-50%,0)}
+.scope--schedule .note{right:calc(100% + 14px);top:50%;transform:translateY(calc(-50% + 9px))}
+.scope--schedule.is-open .note{transform:translateY(-50%)}
+.note-inner{padding:15px 16px;background:var(--paper);border:1px solid var(--ink);box-shadow:0 10px 24px rgba(51,48,43,.16)}
+.note-kicker{display:block;color:var(--coral-deep);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+.note strong{display:block;margin-top:7px;font-size:20px;line-height:1.08}
+.note p{margin:8px 0 0;color:var(--soft);font-size:13px;line-height:1.42}
+
+/* 01 — loose pencil: the frame is a human mark, the label lives in the margin. */
+.specimen[data-design="pencil"] .lens{border:2px solid var(--ink);box-shadow:0 0 0 5px rgba(251,246,236,.82),0 7px 18px rgba(51,48,43,.16)}
+.specimen[data-design="pencil"] .lens-detail{inset:5px;border:1px solid rgba(51,48,43,.56);transform:rotate(.8deg)}
+.specimen[data-design="pencil"] .scope-label{left:16px;top:-28px;padding:2px 2px 3px;color:var(--ink);font-family:"MuyaoPleased","Bradley Hand",cursive;font-size:17px;line-height:1;transform:rotate(-3deg)}
+.specimen[data-design="pencil"] .scope-label::after{content:"";position:absolute;left:0;right:-7px;bottom:-2px;height:2px;background:var(--coral);transform:rotate(1deg)}
+.specimen[data-design="pencil"] .focus-dot{right:-2px;top:10px;box-shadow:0 0 0 3px var(--paper)}
+.specimen[data-design="pencil"] .note-inner{border:0;border-left:2px solid var(--coral);box-shadow:none;background:rgba(251,246,236,.96);transform:rotate(-.7deg)}
+.specimen[data-design="pencil"] .note strong{font-family:"MuyaoPleased","Bradley Hand",cursive;font-size:24px;font-weight:500}
+
+/* 02 — crop brackets: nearly no container, just an exact technical selection. */
+.specimen[data-design="bracket"] .lens{overflow:hidden;border:0;box-shadow:none}
+.specimen[data-design="bracket"] .lens-detail{inset:-1px;border-radius:inherit;background:
+  linear-gradient(var(--coral),var(--coral)) left top/28px 3px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) left top/3px 28px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) right top/28px 3px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) right top/3px 28px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) left bottom/28px 3px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) left bottom/3px 28px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) right bottom/28px 3px no-repeat,
+  linear-gradient(var(--coral),var(--coral)) right bottom/3px 28px no-repeat}
+.specimen[data-design="bracket"] .scope-label{left:17px;top:12px;padding:5px 7px;background:rgba(251,246,236,.9);color:var(--ink);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.specimen[data-design="bracket"] .focus-dot{right:7px;top:7px;border-radius:0;transform:rotate(45deg)}
+.specimen[data-design="bracket"] .note-inner{border:0;border-top:2px solid var(--coral);background:rgba(251,246,236,.96);box-shadow:0 10px 22px rgba(51,48,43,.12)}
+.specimen[data-design="bracket"] .note strong{font-weight:400}
+
+/* 03 — darkroom: an evidence contact-print, compact and unapologetically photographic. */
+.specimen[data-design="darkroom"] .lens{overflow:hidden;border:7px solid #242321;box-shadow:0 0 0 1px var(--paper),0 10px 24px rgba(20,19,17,.3)}
+.specimen[data-design="darkroom"] .lens-detail{inset:auto 0 0;height:25px;border-radius:0;background:#242321}
+.specimen[data-design="darkroom"] .scope-label{left:12px;bottom:7px;color:#f8f2e7;font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+.specimen[data-design="darkroom"] .scope-label::before{content:"●";margin-right:7px;color:var(--coral)}
+.specimen[data-design="darkroom"] .focus-dot{display:none}
+.specimen[data-design="darkroom"] .note-inner{border:0;background:#242321;color:#f8f2e7;box-shadow:0 10px 24px rgba(20,19,17,.3)}
+.specimen[data-design="darkroom"] .note-kicker{color:#f09a8e}
+.specimen[data-design="darkroom"] .note p{color:#d7cfc1}
+.specimen[data-design="darkroom"] .note strong{font-weight:400}
+
+/* 04 — focus veil: the canvas recedes; only the evidence windows remain fully present. */
+.specimen[data-design="veil"] .veil-layer{opacity:1}
+.specimen[data-design="veil"] .lens{border:2px solid var(--paper);box-shadow:0 0 0 2px var(--coral),0 12px 26px rgba(20,19,17,.36)}
+.specimen[data-design="veil"] .lens-detail{inset:7px;border:1px solid rgba(251,246,236,.72)}
+.specimen[data-design="veil"] .scope-label{left:50%;top:50%;padding:6px 9px;border:1px solid rgba(251,246,236,.7);border-radius:999px;background:rgba(36,35,33,.82);color:var(--paper);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;transform:translate(-50%,-50%)}
+.specimen[data-design="veil"] .focus-dot{left:50%;top:-5px;transform:translateX(-50%);box-shadow:0 0 0 3px var(--paper)}
+.specimen[data-design="veil"] .note-inner{border:1px solid var(--coral-deep);background:rgba(251,246,236,.97);box-shadow:0 12px 28px rgba(20,19,17,.28)}
+.specimen[data-design="veil"] .note strong{font-weight:400}
+
+/* 05 — embedded caption: the control and its name are one compact object. */
+.specimen[data-design="caption"] .lens{overflow:hidden;border:2px solid var(--ink);box-shadow:0 8px 18px rgba(51,48,43,.22)}
+.specimen[data-design="caption"] .lens-detail{inset:auto 0 0;height:34px;border-radius:0;background:rgba(251,246,236,.94);border-top:1px solid var(--ink)}
+.specimen[data-design="caption"] .scope-label{left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 11px;color:var(--ink);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+.specimen[data-design="caption"] .scope-label::after{content:"↗";color:var(--coral-deep);font-size:13px}
+.specimen[data-design="caption"] .scope.is-open .scope-label::after{content:"×"}
+.specimen[data-design="caption"] .focus-dot{display:none}
+.specimen[data-design="caption"] .note-inner{border:1px solid var(--ink);border-radius:0;background:var(--paper);box-shadow:7px 7px 0 var(--coral)}
+.specimen[data-design="caption"] .note strong{font-weight:400}
+
+/* 06 — instrument glass: calibrated, explicit about zoom, and visually precise. */
+.specimen[data-design="instrument"] .lens{border:4px double var(--paper);box-shadow:0 0 0 2px var(--ink),0 0 0 6px rgba(251,246,236,.86),0 0 0 7px var(--ink),0 12px 24px rgba(51,48,43,.24)}
+.specimen[data-design="instrument"] .lens-detail{inset:-12px;border-radius:inherit;background:repeating-conic-gradient(from -2deg,transparent 0 7deg,var(--ink) 7deg 8deg,transparent 8deg 15deg);-webkit-mask:radial-gradient(closest-side,transparent calc(100% - 8px),#000 calc(100% - 7px));mask:radial-gradient(closest-side,transparent calc(100% - 8px),#000 calc(100% - 7px))}
+.specimen[data-design="instrument"] .scope-label{left:50%;top:-26px;padding:5px 9px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transform:translateX(-50%)}
+.specimen[data-design="instrument"] .scope-label::after{content:" / ×" attr(data-zoom);color:var(--coral-deep)}
+.specimen[data-design="instrument"] .focus-dot{left:50%;top:-12px;border-radius:0;transform:translateX(-50%) rotate(45deg)}
+.specimen[data-design="instrument"] .note-inner{border:1px solid var(--ink);background:var(--paper);box-shadow:0 0 0 4px rgba(251,246,236,.86),0 0 0 5px var(--ink)}
+.specimen[data-design="instrument"] .note-kicker::before{content:"OBS / ";color:var(--soft)}
+.specimen[data-design="instrument"] .note strong{font-weight:400}
+
+.comparison-notes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.comparison-notes div{padding:17px 20px;border-right:1px solid var(--line)}
+.comparison-notes div:last-child{border-right:0}
+.comparison-notes span{display:block;color:var(--soft);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.comparison-notes strong{display:block;margin-top:6px;font-size:15px;font-weight:400}
+.prototype-foot{display:flex;justify-content:space-between;gap:24px;margin-top:18px;color:var(--soft);font-family:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;font-size:9px;line-height:1.5}
+.prototype-foot p{max-width:620px;margin:0}
+@media(max-width:850px){
+  .lab-head{grid-template-columns:1fr}
+  .design-picker{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .specimen-head{grid-template-columns:1fr}
+  .scroll-hint{display:flex}
+  .canvas{margin:0}
+  .comparison-notes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .comparison-notes div:nth-child(2){border-right:0}
+  .comparison-notes div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media(max-width:520px){
+  .lab-shell{width:92vw;padding-top:22px}
+  .lab-topline{align-items:flex-start}
+  .lab-head{padding:42px 0 38px}
+  h1{font-size:clamp(47px,15vw,66px)}
+  .design-picker{padding:10px;gap:7px}
+  .design-choice{min-height:104px;padding:13px 11px}
+  .specimen-head{padding:19px 16px}
+  .comparison-notes{grid-template-columns:1fr}
+  .comparison-notes div{border-right:0;border-bottom:1px solid var(--line)}
+  .prototype-foot{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<div class="lab-shell">
+  <header class="lab-topline">
+    <a href="Building-FredAgent-Demos.dc.html">← Demo 02</a>
+    <span>Standalone prototype · no production styles shared</span>
+  </header>
+
+  <section class="lab-head">
+    <div>
+      <p class="eyebrow">Fred Agent · evidence interface study</p>
+      <h1>Choose the visual logic, not the decoration.</h1>
+    </div>
+    <p class="lab-intro"><strong>Comparison rule</strong>The screenshot, target coordinates, loupe dimensions, and zoom factors stay fixed. Only the framing, affordance, and note language change.</p>
+  </section>
+
+  <nav class="design-picker" role="tablist" aria-label="Loupe design directions">
+    <button class="design-choice" type="button" role="tab" aria-selected="true" data-design="pencil" data-title="Loose pencil" data-description="A human mark in the margin: imperfect ink, a brief underline, and almost no interface chrome." data-frame="Hand-drawn contour" data-label="Margin note" data-note="Open paper aside" data-tone="Human / editorial">
+      <span class="choice-glyph" aria-hidden="true"></span><strong>Loose pencil</strong><small>Hand-marked, quiet, editorial.</small>
+    </button>
+    <button class="design-choice" type="button" role="tab" aria-selected="false" data-design="bracket" data-title="Crop brackets" data-description="The lightest technical treatment: only four coral corners, a coordinate-like label, and a ruled note." data-frame="Four crop marks" data-label="Inside coordinate" data-note="Coral top rule" data-tone="Precise / minimal">
+      <span class="choice-glyph" aria-hidden="true"></span><strong>Crop brackets</strong><small>Exact selection, minimal container.</small>
+    </button>
+    <button class="design-choice" type="button" role="tab" aria-selected="false" data-design="darkroom" data-title="Darkroom frame" data-description="Treats every highlight as a contact-print detail with an integrated black metadata rail." data-frame="Black photo edge" data-label="Contact-print rail" data-note="Dark evidence card" data-tone="Photographic / archival">
+      <span class="choice-glyph" aria-hidden="true"></span><strong>Darkroom</strong><small>Photographic and evidence-heavy.</small>
+    </button>
+    <button class="design-choice" type="button" role="tab" aria-selected="false" data-design="veil" data-title="Focus veil" data-description="The screenshot recedes behind a dark field while the selected evidence remains bright and legible." data-frame="Clean light window" data-label="Centered capsule" data-note="Raised light card" data-tone="Cinematic / direct">
+      <span class="choice-glyph" aria-hidden="true"></span><strong>Focus veil</strong><small>Attention first, context second.</small>
+    </button>
+    <button class="design-choice" type="button" role="tab" aria-selected="false" data-design="caption" data-title="Embedded caption" data-description="The label and action live inside the lower edge of each loupe, producing the most compact self-contained object." data-frame="Rounded ink frame" data-label="Integrated footer" data-note="Offset card" data-tone="Compact / interface">
+      <span class="choice-glyph" aria-hidden="true"></span><strong>Embedded caption</strong><small>Self-contained, compact, explicit.</small>
+    </button>
+    <button class="design-choice" type="button" role="tab" aria-selected="false" data-design="instrument" data-title="Instrument glass" data-description="A calibrated optical readout: tick marks, explicit zoom, and a technical observation panel." data-frame="Calibrated rim" data-label="Zoom readout" data-note="Observation panel" data-tone="Analytical / distinctive">
+      <span class="choice-glyph" aria-hidden="true"></span><strong>Instrument glass</strong><small>Optical, measured, deliberate.</small>
+    </button>
+  </nav>
+
+  <main>
+    <section class="specimen" data-design="pencil" aria-live="polite">
+      <header class="specimen-head">
+        <h2 class="specimen-title">Loose pencil</h2>
+        <p class="specimen-copy"><strong>Try it:</strong> select any evidence window to open its full note. Select it again to close.</p>
+      </header>
+      <div class="scroll-hint"><span>← scroll</span><span>Full evidence canvas stays intact</span><span>scroll →</span></div>
+      <div class="canvas-scroll" tabindex="0" aria-label="Horizontally scrollable loupe design specimen">
+        <div class="canvas">
+          <img class="evidence-img" src="assets/fred-agent/demo/trash-patrol-h760.png" width="960" height="760" alt="The complete side-by-side Trash Patrol run in Codex and Discord.">
+          <div class="veil-layer" aria-hidden="true"></div>
+          <div class="scope-layer">
+            <article class="scope scope--schedule">
+              <button class="lens" type="button" data-target-x="74.5" data-target-y="74.5" aria-expanded="false" aria-controls="lab-note-schedule">
+                <span class="lens-detail" aria-hidden="true"></span>
+                <span class="scope-label" data-zoom="2.1" aria-hidden="true"><b>Timing drift</b> · <span>inspect</span><em>close</em></span>
+                <span class="focus-dot" aria-hidden="true"></span>
+                <span class="sr-only">Inspect timing drift evidence</span>
+              </button>
+              <aside class="note" id="lab-note-schedule">
+                <div class="note-inner">
+                  <span class="note-kicker">Sundial trigger</span>
+                  <strong>Sunset moves. So does the run.</strong>
+                  <p>7:26 PM becomes 7:23 and then 7:22 instead of occupying a fixed clock slot.</p>
+                </div>
+              </aside>
+            </article>
+
+            <article class="scope scope--delivery">
+              <button class="lens" type="button" data-target-x="75.5" data-target-y="31" aria-expanded="false" aria-controls="lab-note-delivery">
+                <span class="lens-detail" aria-hidden="true"></span>
+                <span class="scope-label" data-zoom="1.45" aria-hidden="true"><b>Delivery mode</b> · <span>inspect</span><em>close</em></span>
+                <span class="focus-dot" aria-hidden="true"></span>
+                <span class="sr-only">Inspect silent and non-silent delivery evidence</span>
+              </button>
+              <aside class="note" id="lab-note-delivery">
+                <div class="note-inner">
+                  <span class="note-kicker">Delivery mode</span>
+                  <strong>Quiet when nothing is owed.</strong>
+                  <p>The action request has no snooze mark. The no-action verdict carries one, identifying a silent delivery.</p>
+                </div>
+              </aside>
+            </article>
+
+            <article class="scope scope--capture is-open">
+              <button class="lens" type="button" data-target-x="6.9" data-target-y="54.2" aria-expanded="true" aria-controls="lab-note-capture">
+                <span class="lens-detail" aria-hidden="true"></span>
+                <span class="scope-label" data-zoom="2.35" aria-hidden="true"><b>Live frame</b> · <span>inspect</span><em>close</em></span>
+                <span class="focus-dot" aria-hidden="true"></span>
+                <span class="sr-only">Inspect live image capture evidence</span>
+              </button>
+              <aside class="note" id="lab-note-capture">
+                <div class="note-inner">
+                  <span class="note-kicker">Live capture</span>
+                  <strong>A fresh look, not a remembered state.</strong>
+                  <p>Codex captures through WebRTC and visibly inspects the frame before returning a verdict.</p>
+                </div>
+              </aside>
+            </article>
+          </div>
+        </div>
+      </div>
+      <div class="comparison-notes" aria-label="Current design characteristics">
+        <div><span>Frame</span><strong data-spec="frame">Hand-drawn contour</strong></div>
+        <div><span>Label</span><strong data-spec="label">Margin note</strong></div>
+        <div><span>Full note</span><strong data-spec="note">Open paper aside</strong></div>
+        <div><span>Temperament</span><strong data-spec="tone">Human / editorial</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="prototype-foot">
+    <p>This lab is intentionally independent from the production annotation CSS. Choosing a direction does not commit us to these exact dimensions or note placements.</p>
+    <p>Same image · same three targets · six systems</p>
+  </footer>
+</div>
+<script>
+(function(){
+  "use strict";
+  var specimen=document.querySelector(".specimen");
+  var image=document.querySelector(".evidence-img");
+  var choices=Array.prototype.slice.call(document.querySelectorAll(".design-choice"));
+  var scopes=Array.prototype.slice.call(document.querySelectorAll(".scope"));
+
+  function layoutLenses(){
+    if(!image.clientWidth||!image.clientHeight)return;
+    scopes.forEach(function(scope){
+      var lens=scope.querySelector(".lens");
+      var zoom=parseFloat(getComputedStyle(scope).getPropertyValue("--zoom"))||1;
+      var targetX=parseFloat(lens.getAttribute("data-target-x"))/100;
+      var targetY=parseFloat(lens.getAttribute("data-target-y"))/100;
+      var backgroundWidth=image.clientWidth*zoom;
+      var backgroundHeight=image.clientHeight*zoom;
+      lens.style.backgroundSize=backgroundWidth+"px "+backgroundHeight+"px";
+      lens.style.backgroundPosition=(lens.offsetWidth/2-targetX*backgroundWidth)+"px "+(lens.offsetHeight/2-targetY*backgroundHeight)+"px";
+    });
+  }
+
+  function setOpen(scope,open){
+    scope.classList.toggle("is-open",open);
+    scope.querySelector(".lens").setAttribute("aria-expanded",open?"true":"false");
+  }
+
+  function selectDesign(choice){
+    choices.forEach(function(item){
+      item.setAttribute("aria-selected",item===choice?"true":"false");
+    });
+    specimen.setAttribute("data-design",choice.getAttribute("data-design"));
+    specimen.querySelector(".specimen-title").textContent=choice.getAttribute("data-title");
+    specimen.querySelector('[data-spec="frame"]').textContent=choice.getAttribute("data-frame");
+    specimen.querySelector('[data-spec="label"]').textContent=choice.getAttribute("data-label");
+    specimen.querySelector('[data-spec="note"]').textContent=choice.getAttribute("data-note");
+    specimen.querySelector('[data-spec="tone"]').textContent=choice.getAttribute("data-tone");
+    var description=choice.getAttribute("data-description");
+    specimen.querySelector(".specimen-copy").innerHTML="<strong>Design logic:</strong> "+description;
+  }
+
+  choices.forEach(function(choice){
+    choice.addEventListener("click",function(){selectDesign(choice)});
+  });
+
+  scopes.forEach(function(scope){
+    var lens=scope.querySelector(".lens");
+    lens.addEventListener("click",function(){
+      var willOpen=!scope.classList.contains("is-open");
+      scopes.forEach(function(other){setOpen(other,false)});
+      setOpen(scope,willOpen);
+    });
+    lens.addEventListener("keydown",function(event){
+      if(event.key==="Escape"){setOpen(scope,false);lens.focus()}
+    });
+  });
+
+  image.addEventListener("load",layoutLenses);
+  window.addEventListener("resize",layoutLenses);
+  if(window.ResizeObserver)new ResizeObserver(layoutLenses).observe(image);
+  if(image.complete)layoutLenses();
+})();
+</script>
+</body>
+</html>
