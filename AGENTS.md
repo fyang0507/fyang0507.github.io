@@ -44,6 +44,7 @@ When changing a home destination, keep the desktop annotation, object hotspot, a
 - Gateway pages are light-only. `Reading.dc.html` is the only page with dark mode and may use paired light/dark navigation artwork; do not add theme switching or dark artwork to other pages.
 - Keep interactive illustration hotspots as semantic anchors with an `href` and an accessible `aria-label`. Their position is controlled by inline percentage geometry.
 - Keep `index.html` as the root entry point. If that convention changes, update every inbound home link in the same change.
+- When a request says to “set section X to WIP,” “mark section X as WIP,” or otherwise apply the site's WIP treatment, use `.agents/skills/set-section-wip/SKILL.md`. “WIP” means the complete reusable treatment—peelable sticker, pusher nudge motif, faded and disabled evidence surface, static fallback, accessibility, and responsive behavior—not merely a label or badge.
 - `Building.dc.html`'s project cards are pinned to the corkboard; their `--tilt` rotation must pivot on the pin's real anchor point (`transform-origin: var(--pin-left) 14px` on `.project-card` and `.card-slot`), not a generic origin like `50% 10%` — otherwise the pin visibly slides across the board whenever `--tilt` changes (e.g. on hover). See the comments above those two rules before changing pin geometry or tilt values.
 
 ## Verification

@@ -11,13 +11,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./assets/njjoe/casebook.css">
-<!-- Start the ~836KB peel engine during parse rather than at DOMContentLoaded;
-     it shortens the gap before the WIP sticker can render. -->
-<link rel="modulepreload" href="./assets/njjoe/vendor/sticker-forge/sticker-forge.es.js">
-<!-- The WIP sticker's CSS fallback is hidden by default so it never flashes
-     while the engine loads. With scripting off, nothing can reveal it, so it has
-     to be un-hidden here. See the .wip-sticker-fallback block in casebook.css. -->
-<noscript><style>.wip-sticker-fallback,.wip-nudge{opacity:1!important}</style></noscript>
 <script src="./assets/njjoe/casebook.js" defer></script>
 </head>
 <body>
@@ -97,24 +90,7 @@
     </div>
   </section>
 
-  <section class="section section--wip" aria-labelledby="status-title">
-    <div class="section-head"><div class="section-index"><span>04</span> verified boundary</div><div><h2 id="status-title">What the workflow can already prove.</h2></div></div>
-    <div class="wip-evidence">
-      <div class="facts">
-        <div class="fact case-reveal"><strong>XXX</strong><span>unique client profiles validated</span></div>
-        <div class="fact case-reveal"><strong>XXX</strong><span>client/property relationships preserved</span></div>
-        <div class="fact case-reveal"><strong>XXX <small>HTTP</small></strong><span>live synthetic HTML draft accepted by EWS</span></div>
-        <div class="fact case-reveal"><strong>XX <small>MATCH</small></strong><span>expected draft verified by read-only lookup</span></div>
-      </div>
-      <div class="wip-sticker-shell" role="group" aria-label="Work in progress. Collecting campaign results. Drag an edge to peel the sticker; it resets when released." data-wip-sticker-shell data-wip-status="collecting campaign results">
-        <sticker-forge id="wip-sticker" class="wip-sticker-engine"></sticker-forge>
-        <div class="wip-sticker-fallback" aria-hidden="true">
-          <span class="wip-pusher"></span>
-          <span class="wip-sticker-copy"><strong>WIP</strong><small>collecting campaign results</small></span>
-        </div>
-        <span class="wip-nudge" aria-hidden="true"></span>
-      </div>
-    </div>
+  <section class="section" aria-label="Conclusion">
     <div class="prose-grid">
       <div class="prose"><p class="lead">Before this work, personalized APA outreach across the client base was operationally out of reach: too many private fields, too much manual assembly, and no safe bridge into Joe's mailbox.</p></div>
     </div>

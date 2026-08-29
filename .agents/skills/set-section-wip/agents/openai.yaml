@@ -1,0 +1,4 @@
+interface:
+  display_name: "Set Section to WIP"
+  short_description: "Apply the reusable WIP section treatment"
+  default_prompt: "Use $set-section-wip to set a section on this website to WIP."
