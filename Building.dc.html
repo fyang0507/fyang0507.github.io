@@ -75,7 +75,7 @@
      hover). If you touch --pin-left, --tilt, or the pin SVG's own geometry, re-derive this
      14px rather than assume it still lines up. .card-slot below repeats the same origin for
      the same reason -- keep both in sync. */
-  .project-card{--tilt:0deg;--drop:0px;--torn-wide:polygon(0 0,100% 0,100% 97%,97.5% 100%,95% 97%,92.5% 100%,90% 97.5%,87.5% 100%,85% 97%,82.5% 100%,80% 97.5%,77.5% 100%,75% 97%,72.5% 100%,70% 97.5%,67.5% 100%,65% 97%,62.5% 100%,60% 97.5%,57.5% 100%,55% 97%,52.5% 100%,50% 97.5%,47.5% 100%,45% 97%,42.5% 100%,40% 97.5%,37.5% 100%,35% 97%,32.5% 100%,30% 97.5%,27.5% 100%,25% 97%,22.5% 100%,20% 97.5%,17.5% 100%,15% 97%,12.5% 100%,10% 97.5%,7.5% 100%,5% 97%,2.5% 100%,0 97.5%);position:relative;flex:none;display:flex;flex-direction:column;min-width:0;height:auto;border:1.5px solid var(--line-strong);border-radius:11px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);overflow:visible;transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:var(--pin-left,50%) 14px}
+  .project-card{--tilt:0deg;--drop:0px;--torn-slip:polygon(0 0,100% 0,100% 96%,95% 100%,90% 97%,85% 100%,80% 96%,75% 100%,70% 97%,65% 100%,60% 96%,55% 100%,50% 97%,45% 100%,40% 96%,35% 100%,30% 97%,25% 100%,20% 96%,15% 100%,10% 97%,5% 100%,0 96%);--torn-wide:polygon(0 0,100% 0,100% 97%,97.5% 100%,95% 97%,92.5% 100%,90% 97.5%,87.5% 100%,85% 97%,82.5% 100%,80% 97.5%,77.5% 100%,75% 97%,72.5% 100%,70% 97.5%,67.5% 100%,65% 97%,62.5% 100%,60% 97.5%,57.5% 100%,55% 97%,52.5% 100%,50% 97.5%,47.5% 100%,45% 97%,42.5% 100%,40% 97.5%,37.5% 100%,35% 97%,32.5% 100%,30% 97.5%,27.5% 100%,25% 97%,22.5% 100%,20% 97.5%,17.5% 100%,15% 97%,12.5% 100%,10% 97.5%,7.5% 100%,5% 97%,2.5% 100%,0 97.5%);position:relative;flex:none;display:flex;flex-direction:column;min-width:0;height:auto;border:1.5px solid var(--line-strong);border-radius:11px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);overflow:visible;transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:var(--pin-left,50%) 14px}
   .board-pin{position:absolute;z-index:8;left:var(--pin-left,50%);top:-24px;width:20px;height:42px;overflow:visible;pointer-events:none;transform:translateX(-50%) rotate(var(--pin-tilt,-8deg));transform-origin:50% 90%;filter:drop-shadow(0 2px 1px rgba(60,50,35,.24))}
   .board-pin .pin-shadow{fill:rgba(60,50,35,.3)}
   .board-pin .pin-stem{fill:none;stroke:#898989;stroke-width:2.6;stroke-linecap:round}
@@ -99,7 +99,7 @@
   .project-card[data-panel-card]{cursor:pointer}
   .featured-card{transform:none;width:100%;min-height:360px;padding:30px 28px;border:0;border-radius:0;background:color-mix(in srgb,var(--wash-blue) 55%,var(--paper));clip-path:var(--torn-wide);box-shadow:none;transition:filter .3s var(--ease-open);filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(8px 12px 18px rgba(60,50,35,.14))}
   .card-slot--featured:hover .featured-card,.featured-card[data-open="true"]{filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(12px 18px 26px rgba(60,50,35,.19))}
-  .standard-card{--torn-slip:polygon(0 0,100% 0,100% 96%,95% 100%,90% 97%,85% 100%,80% 96%,75% 100%,70% 97%,65% 100%,60% 96%,55% 100%,50% 97%,45% 100%,40% 96%,35% 100%,30% 97%,25% 100%,20% 96%,15% 100%,10% 97%,5% 100%,0 96%);width:min(178px,23vw);min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none;transition:transform .3s var(--ease-open)}
+  .standard-card{width:min(178px,23vw);min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none;transition:transform .3s var(--ease-open)}
   .standard-card:hover,.standard-card:focus-within,.standard-card[data-open="true"]{transform:translateY(calc(var(--drop) - 4px)) rotate(0deg)}
   .standard-card-paper{display:flex;width:100%;min-height:146px;padding:1.5px;background:var(--line-strong);clip-path:var(--torn-slip);filter:drop-shadow(-5px 9px 9px rgba(60,50,35,.14));transition:filter .3s var(--ease-open)}
   .standard-card:hover .standard-card-paper,.standard-card[data-open="true"] .standard-card-paper{filter:drop-shadow(-8px 14px 14px rgba(60,50,35,.2))}
@@ -109,6 +109,28 @@
   .standard-card[data-project-id="instant-bookmark"] .standard-card-paper-inner{background:color-mix(in srgb,var(--wash-wheat) 40%,var(--paper))}
   .standard-card[data-project-id="wavelength"]{--tilt:-2.45deg;--drop:94px;--pin-left:78%;--pin-tilt:14deg;--pin-color:#3D5C52;z-index:9;margin-left:0}
   .standard-card[data-project-id="wavelength"] .standard-card-paper-inner{background:color-mix(in srgb,var(--wash-peach) 40%,var(--paper))}
+  /* Instrument tier: the agent-native CLIs. Deliberately quieter than the featured/highlighted
+     cards, which earn their size by having a subpage behind them, but louder than the standard
+     track-record slips. Its register break is the graph-paper inner plus one saturated hue per
+     card, carried by the accent band, the pin head and the applied motif together -- keep those
+     three the same colour or the card stops reading as one object. */
+  .instrument-card{width:min(292px,33vw);min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none;transition:transform .3s var(--ease-open)}
+  .instrument-card:hover,.instrument-card:focus-within,.instrument-card[data-open="true"]{transform:translateY(calc(var(--drop) - 5px)) rotate(0deg)}
+  .instrument-card-paper{display:flex;width:100%;padding:1.5px;background:var(--line-strong);clip-path:var(--torn-slip);filter:drop-shadow(-6px 11px 12px rgba(60,50,35,.15));transition:filter .3s var(--ease-open)}
+  .instrument-card:hover .instrument-card-paper,.instrument-card[data-open="true"] .instrument-card-paper{filter:drop-shadow(-9px 16px 17px rgba(60,50,35,.21))}
+  .instrument-card-paper-inner{position:relative;display:flex;flex:1;flex-direction:column;min-width:0;padding:17px 17px 14px;clip-path:var(--torn-slip);background-color:var(--paper);background-image:repeating-linear-gradient(rgba(207,193,169,.30) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(207,193,169,.30) 0 1px,transparent 1px 9px)}
+  .instrument-card-paper-inner::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--instrument-hue,var(--ink))}
+  .instrument-motif{position:absolute;right:13px;top:13px;width:34px;height:34px;color:var(--instrument-hue,var(--ink));opacity:.9;transform:rotate(var(--motif-tilt,-5deg));pointer-events:none}
+  .instrument-motif path,.instrument-motif polyline,.instrument-motif line,.instrument-motif rect{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .instrument-card .project-label{margin-right:40px}
+  .instrument-card h2{margin-top:9px;color:var(--ink);font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:21px;font-weight:500;line-height:1.24;letter-spacing:-.02em}
+  .instrument-capabilities{margin:11px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+  .instrument-capabilities li{position:relative;padding-left:13px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:9.5px;line-height:1.55;letter-spacing:.005em}
+  .instrument-capabilities li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1.2px;border-radius:1px;background:var(--instrument-hue,var(--line-strong))}
+  .instrument-card .standard-period{margin-top:12px}
+  .instrument-card .project-actions{margin-top:11px}
+  .instrument-card[data-project-id="audio-processing-cli"]{--tilt:2.1deg;--drop:136px;--pin-left:34%;--pin-tilt:12deg;--pin-color:#3E6274;--instrument-hue:#3E6274;--motif-tilt:6deg;z-index:10;margin-left:0}
+  .instrument-card[data-project-id="publish-cli"]{--tilt:-2.8deg;--drop:46px;--pin-left:66%;--pin-tilt:-11deg;--pin-color:#7A4A63;--instrument-hue:#7A4A63;--motif-tilt:-7deg;z-index:11;margin-left:0}
   .project-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px 11px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:9px;line-height:1.4;letter-spacing:.07em;text-transform:uppercase}
   .project-label strong{color:var(--ink);font-weight:500}
   .project-label-dot{width:6px;height:6px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
@@ -164,7 +186,7 @@
   .no-script-list a{border-bottom:1px solid var(--mark)}
   @keyframes bRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   .br{animation:bRise .5s cubic-bezier(.2,.7,.2,1) both}
-  @media(max-width:900px){.card-slot--highlighted{width:min(680px,78vw)}.card-slot--featured{width:min(380px,62vw)}.standard-card{width:min(184px,29vw)}}
+  @media(max-width:900px){.card-slot--highlighted{width:min(680px,78vw)}.card-slot--featured{width:min(380px,62vw)}.instrument-card{width:min(276px,42vw)}.standard-card{width:min(184px,29vw)}}
   @media(max-width:640px){
     html{scroll-behavior:auto}
     .building-page{padding:24px 4vw 44px}
@@ -181,6 +203,9 @@
     .highlighted-footer{display:block}
     .card-slot--featured{--tilt:1.8deg;--drop:76px;width:82vw;margin-left:0}
     .featured-card{min-height:390px;padding:28px 23px}
+    .instrument-card{width:min(286px,78vw)}
+    .instrument-card[data-project-id="audio-processing-cli"]{--tilt:1.6deg;--drop:96px;margin-left:0}
+    .instrument-card[data-project-id="publish-cli"]{--tilt:-2deg;--drop:30px;margin-left:0}
     .standard-card{width:min(190px,50vw)}
     .standard-card[data-project-id="tsugi"]{--tilt:-2.2deg;--drop:42px;margin-left:0}
     .standard-card[data-project-id="instant-bookmark"]{--tilt:2.35deg;--drop:126px;margin-left:0}
@@ -198,6 +223,8 @@
   @media(forced-colors:active){
     .highlighted-title{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}
     .project-card,.morph-toggle,.project-cta{border-color:CanvasText}
+    .instrument-card-paper{background:CanvasText;forced-color-adjust:none}
+    .instrument-card-paper-inner{background:Canvas;forced-color-adjust:none}
     .standard-card-paper{background:CanvasText;forced-color-adjust:none}
     .standard-card-paper-inner{background:Canvas;forced-color-adjust:none}
     .project-label-dot{background:CanvasText}
@@ -248,6 +275,8 @@
           <ul>
             <li><a href="./building/fred-agent/">Fred Agent</a></li>
             <li><a href="./building/njjoe/">NJJoe field studies</a></li>
+            <li><a href="https://github.com/fyang0507/audio-processing-cli">Audio Processing CLI on GitHub</a></li>
+            <li><a href="https://github.com/fyang0507/publish-cli">Publish CLI on GitHub</a></li>
             <li><a href="https://github.com/fyang0507/instant-bookmark">Instant Bookmark on GitHub</a></li>
             <li><a href="https://github.com/fyang0507/wavelength">Wavelength on GitHub</a></li>
             <li><a href="https://github.com/fyang0507/tsugi">Tsugi on GitHub</a></li>
@@ -349,6 +378,58 @@
       return slot;
     };
 
+    /* One motif per instrument, never the same one twice -- a repeated mark would read as
+       branding rather than as something a person stuck on that particular card. */
+    const instrumentMotifs = {
+      "audio-processing-cli": `
+        <svg class="instrument-motif" viewBox="0 0 34 34" aria-hidden="true" focusable="false">
+          <polyline points="3 17 7 17 10 8 14 25 17.5 12 21 20 24 17 31 17"></polyline>
+        </svg>`,
+      "publish-cli": `
+        <svg class="instrument-motif" viewBox="0 0 34 34" aria-hidden="true" focusable="false">
+          <path d="M12 5.5 L28.5 7 L27 24.5"></path>
+          <path d="M4.5 11 L21 12.5 L19.5 30 L3 28.5 Z"></path>
+        </svg>`
+    };
+
+    const renderInstrument = (project) => {
+      const article = document.createElement("article");
+      const titleId = `${project.id}-title`;
+      const panelId = `${project.id}-panel`;
+      const capabilities = Array.isArray(project.capabilities) ? project.capabilities : [];
+      article.className = "project-card instrument-card";
+      article.dataset.projectId = project.id;
+      article.dataset.panelCard = "";
+      article.dataset.open = "false";
+      article.innerHTML = `
+        ${boardPin}
+        <div class="instrument-card-paper">
+          <div class="instrument-card-paper-inner">
+            ${instrumentMotifs[project.id] || ""}
+            ${label(project)}
+            <h2 id="${titleId}">${escapeHTML(project.title)}</h2>
+            <ul class="instrument-capabilities">${capabilities.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+            <p class="standard-period util">${escapeHTML(project.period)} · ${escapeHTML(project.lifecycle)}</p>
+            <div class="project-actions">
+              <a class="github-link github-link--card" href="${escapeHTML(project.repo)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${escapeHTML(project.title)} on GitHub">${githubMark}<span>repo ↗</span></a>
+              <button class="morph-toggle" type="button" aria-expanded="false" aria-controls="${panelId}" aria-label="Open ${escapeHTML(project.title)} details">
+                <span class="morph-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="morph-panel" id="${panelId}" data-building-panel data-project-id="${escapeHTML(project.id)}" role="region" aria-labelledby="${titleId}" aria-hidden="true" hidden>
+          <div class="morph-panel-paper">
+            <div class="morph-panel-heading">
+              <span class="morph-panel-kicker">field note · ${String(project.order).padStart(2, "0")}</span>
+            </div>
+            <p>${escapeHTML(project.note)}</p>
+            <a class="github-link github-link--panel" href="${escapeHTML(project.repo)}" target="_blank" rel="noopener noreferrer">${githubMark}<span>Open repository ↗</span></a>
+          </div>
+        </div>`;
+      return article;
+    };
+
     const renderStandard = (project) => {
       const article = document.createElement("article");
       const titleId = `${project.id}-title`;
@@ -386,6 +467,7 @@
     projects.forEach((project) => {
       if (project.prominence === "highlighted") board.append(renderHighlighted(project));
       else if (project.prominence === "featured") board.append(renderFeatured(project));
+      else if (project.prominence === "agent-native") board.append(renderInstrument(project));
       else board.append(renderStandard(project));
     });
 
