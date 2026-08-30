@@ -57,10 +57,9 @@
   .peg{width:15px;height:10px;background:var(--ink);margin:0 auto -2px;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
   .bird{animation:birdBob 2.6s ease-in-out infinite}
   .lightbox{position:fixed;inset:0;z-index:180;background:rgba(23,18,12,.9);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
-  .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:default}
+  /* cursor stays zoom-out over the card too: the whole overlay is the dismiss target */
+  .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:zoom-out}
   .lightbox-card img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 24px 70px rgba(0,0,0,.48)}
-  .lightbox-close{position:absolute;right:8px;top:8px;z-index:2;width:42px;height:42px;border:1px solid rgba(239,229,211,.58);border-radius:50%;background:rgba(23,18,12,.72);color:#efe5d3;font:500 21px/1 "IBM Plex Mono",monospace;cursor:pointer}
-  .lightbox-close:hover,.lightbox-close:focus-visible{border-color:var(--mark);color:var(--mark);outline:none}
   .load-more-sticker{position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)}
   @media (prefers-reduced-motion:reduce){.gr,.bird,.hanging-frame-motion{animation:none!important;opacity:1!important}}
   @media (max-width:860px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
@@ -168,9 +167,10 @@
 </div>
 
 <sc-if value="{{ selectedPhoto }}" hint-placeholder-val="{{ false }}">
+  <!-- The whole overlay dismisses, image and caption included; don't reintroduce
+       a close button. Escape also closes it. -->
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick="{{ closeLightbox }}">
-    <div class="lightbox-card" onClick="{{ keepLightbox }}">
-      <button type="button" class="lightbox-close" onClick="{{ closeLightbox }}" aria-label="Close photo · 关闭照片">×</button>
+    <div class="lightbox-card">
       <img data-content-src="{{ selectedPhoto.display }}" width="{{ selectedPhoto.dw }}" height="{{ selectedPhoto.dh }}" alt="{{ selectedPhoto.loc }}" decoding="async" fetchpriority="high">
       <div class="hand" style="font-size:19px">{{ selectedPhoto.loc }}</div>
       <div class="util" style="font-size:11px;color:#c9bda3">{{ selectedPhoto.date }} · {{ selectedPhoto.catLabel }}</div>
@@ -285,8 +285,7 @@ class Component extends DCLogic {
       remaining: filtered.length - visible.length,
       loadMore: () => this.setState(s => ({ visibleCount: Math.min(s.visibleCount + 6, filtered.length) })),
       selectedPhoto: st.selectedPhoto,
-      closeLightbox: () => this.setState({ selectedPhoto: null }),
-      keepLightbox: event => event.stopPropagation()
+      closeLightbox: () => this.setState({ selectedPhoto: null })
     };
   }
 }
