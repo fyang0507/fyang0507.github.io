@@ -21,12 +21,17 @@ Treat the checked-in article Markdown, photo metadata, and media files as an app
 3. Add media under `images/blog/covers/` or `images/gallery/`, then edit only the matching canonical source:
    - Articles: `content/posts/*.md`
    - Photos: `content/photos-source.ts`
+
+   Add the **full-resolution original** and nothing else. Never hand-resize, and never add a pre-shrunk copy; step 5 derives every web-sized version.
 4. Preserve stable public identifiers. Never renumber photo IDs, reuse a retired ID, or casually change an existing article's date or English title; those fields feed gallery geometry or article URLs.
-5. Regenerate both browser manifests from the repository root:
+5. Regenerate the derived images and both browser manifests, from the repository root and in this order:
 
    ```sh
+   python3 scripts/generate-derivatives.py
    python3 scripts/generate-content.py
    ```
+
+   The pages serve only `images/derived/`, never the originals, so new media is invisible until the first command runs. It is idempotent and incremental, so a one-photo import only processes that photo. The manifests embed the derivative paths, which is why generation must run second.
 
 6. Audit the complete archive, not only the new entries:
 
@@ -35,7 +40,7 @@ Treat the checked-in article Markdown, photo metadata, and media files as an app
    git diff --check
    ```
 
-7. Review `git diff` and `git status --short`. Confirm that canonical inputs, copied media, and the generated `content/posts.js` or `content/photos.js` are included. Do not hand-edit either generated manifest.
+7. Review `git diff` and `git status --short`. Confirm that canonical inputs, copied media, the new files under `images/derived/`, `content/image-dimensions.json`, and the generated `content/posts.js` or `content/photos.js` are all included. `.github/workflows/deploy-pages.yml` deletes `scripts/` before deploying, so derivatives cannot be rebuilt in CI — an uncommitted derivative is a broken image in production. Do not hand-edit any generated file.
 8. Serve the repository with `python3 -m http.server 4173 --bind 127.0.0.1` and verify in a real browser. Check for console errors and failed requests.
    - Article: inspect `Writing.dc.html`, open the direct `Reading.dc.html?post=<generated-id>` URL, switch CN/EN, and check desktop and mobile widths.
    - Photos: inspect `Gallery.dc.html`, filter by the new year and category, open each new lightbox image, and check desktop and mobile widths.
@@ -46,6 +51,6 @@ Treat the checked-in article Markdown, photo metadata, and media files as an app
 - Add batches deterministically: resolve all names and IDs first, then make one coherent metadata edit.
 - Prefer additive diffs. Do not reorder old records or rename old media during an unrelated import.
 - Keep source filenames descriptive and collision-resistant. Check exact filename case because static hosting is case-sensitive.
-- Keep the user's original media unless a web-incompatible format requires a clearly disclosed conversion.
+- Keep the user's original media unless a web-incompatible format requires a clearly disclosed conversion. Originals are the archive; `images/derived/` is generated output and may be deleted and rebuilt at will.
 - Treat `temp/` and other staging locations as inputs, not publish destinations.
 - If generation changes the manifest for an untouched content type, inspect why before proceeding.

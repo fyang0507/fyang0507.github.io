@@ -6,6 +6,7 @@
 - Store its cover at `images/blog/covers/YYYY-MM-DD_<stable-readable-label>.<ext>`.
 - Use the publication date in the Markdown filename. The generator derives the public post ID from frontmatter, not the filename, but matching dates keep the archive auditable.
 - Use JPEG, PNG, or WebP cover art and preserve the exact filename case referenced by `coverImage`.
+- Store the full-resolution cover; do not resize it. `Writing.dc.html` and `Reading.dc.html` load generated copies from `images/derived/covers/` (320/560/900/1600px wide), not the original, so `python3 scripts/generate-derivatives.py` must run before `generate-content.py`. A cover with an alpha channel is rejected rather than flattened to black — flatten it first. See [photos.md](photos.md#derived-images) for the full contract.
 
 ## Frontmatter and body
 

@@ -12,6 +12,9 @@ This is a dependency-free static personal website exported as standalone `.dc.ht
 - Imported essays and gallery metadata: `content/`
 - Imported photography, covers, and profile images: `images/`
 - Dependency-free content manifest generator: `scripts/generate-content.py`
+- Web-sized image generator: `scripts/generate-derivatives.py`
+- Full-resolution originals (archive, never served): `images/gallery/`, `images/blog/covers/`
+- Generated images that pages actually load: `images/derived/`
 
 Serve the repository over HTTP; do not rely on `file://` URLs:
 
@@ -36,7 +39,8 @@ When changing a home destination, keep the desktop annotation, object hotspot, a
 ## Editing conventions
 
 - Edit page content and page-specific CSS/logic in the relevant `.dc.html` file.
-- Edit imported essay bodies in `content/posts/*.md` and gallery metadata in `content/photos-source.ts`, then run `python3 scripts/generate-content.py`; commit the generated `content/posts.js` and `content/photos.js` files.
+- Edit imported essay bodies in `content/posts/*.md` and gallery metadata in `content/photos-source.ts`. When media changed, run `python3 scripts/generate-derivatives.py` first, then `python3 scripts/generate-content.py`; commit the generated `content/posts.js`, `content/photos.js`, `content/image-dimensions.json`, and `images/derived/` files.
+- Add photos and covers at full resolution and never hand-resize them. Pages load only `images/derived/`; serving the originals cost 51 MB and a 54-second load on the gallery before this split existed. Size ladders live in `scripts/generate-content.py`; changing one requires `generate-derivatives.py --force --prune`. Because `.github/workflows/deploy-pages.yml` deletes `scripts/` before deploying, derivatives are built locally and committed, never in CI.
 - Do not hand-edit `support.js`; it is generated runtime code. Treat `image-slot.js` as vendored runtime code unless the image-slot behavior itself is the task.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
 - Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not. `Reading.dc.html` is the only page with a CN/EN switch, using `.en` / `.zh` variants and the `fy-lang` preference in `localStorage`.

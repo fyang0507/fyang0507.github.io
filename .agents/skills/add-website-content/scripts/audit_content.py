@@ -242,6 +242,56 @@ def audit_photos(root: Path, generator: ModuleType, errors: list[str]) -> tuple[
     return photos, ids
 
 
+def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> int:
+    """Verify every canonical original has its full set of web-sized copies.
+
+    Pages serve only `images/derived/`, never the originals, so a forgotten
+    `generate-derivatives.py` run would ship broken images. This is the gate
+    that catches that before it reaches GitHub Pages.
+    """
+    expected: list[tuple[str, str]] = []
+
+    source = (root / "content" / "photos-source.ts").read_text(encoding="utf-8")
+    for line, block in photo_blocks(source):
+        field = re.search(r"\bimageUrl:\s*'([^']*)'\s*,", block)
+        if not field:
+            continue
+        image_url = field.group(1)
+        label = f"content/photos-source.ts:{line}"
+        for width in (*generator.GALLERY_THUMB_WIDTHS, generator.GALLERY_DISPLAY_WIDTH):
+            expected.append((label, generator.derivative_url(image_url, "gallery", width)))
+
+    for path in sorted((root / "content" / "posts").glob("*.md")):
+        try:
+            data, _ = generator.parse_frontmatter(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue  # audit_posts already reports malformed frontmatter
+        cover = str(data.get("coverImage") or "").lstrip("/")
+        if not cover:
+            continue
+        label = f"content/posts/{path.name}"
+        for width in generator.COVER_WIDTHS:
+            expected.append((label, generator.derivative_url(cover, "covers", width)))
+
+    missing = [
+        (label, url) for label, url in expected if not exact_case_exists(root, url.lstrip("./"))
+    ]
+    for label, url in missing[:10]:
+        errors.append(f"{label}: missing derivative {url}")
+    if len(missing) > 10:
+        errors.append(f"...and {len(missing) - 10} more missing derivative(s)")
+    if missing:
+        errors.append("run python3 scripts/generate-derivatives.py, then generate-content.py")
+
+    dimensions_path = root / "content" / "image-dimensions.json"
+    if not dimensions_path.is_file():
+        errors.append(
+            "content/image-dimensions.json is missing; run "
+            "python3 scripts/generate-derivatives.py"
+        )
+    return len(expected)
+
+
 def audit_manifests(root: Path, posts: list[dict], photos: list[dict], errors: list[str]) -> None:
     manifests = (
         (root / "content" / "posts.js", "FY_POSTS", posts),
@@ -272,6 +322,7 @@ def main() -> int:
 
     posts, post_ids = audit_posts(root, generator, errors)
     photos, photo_ids = audit_photos(root, generator, errors)
+    derivative_count = audit_derivatives(root, generator, errors)
     audit_manifests(root, posts, photos, errors)
 
     if errors:
@@ -284,7 +335,8 @@ def main() -> int:
     gap_count = max_photo_id - len(set(photo_ids)) if photo_ids else 0
     print(
         f"Content audit passed: {len(post_ids)} articles, {len(photo_ids)} photos, "
-        f"max photo ID {max_photo_id}, {gap_count} retained ID gap(s)."
+        f"{derivative_count} derivatives, max photo ID {max_photo_id}, "
+        f"{gap_count} retained ID gap(s)."
     )
     return 0
 
