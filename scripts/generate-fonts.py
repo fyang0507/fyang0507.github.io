@@ -3,15 +3,31 @@
 # requires-python = ">=3.10"
 # dependencies = ["fonttools>=4.50", "brotli>=1.1"]
 # ///
-"""Subset the local CJK display fonts to the glyphs this site actually renders.
+"""Subset every CJK face this site uses to the glyphs it actually renders.
 
-`fonts/*.woff2` are the untouched masters: complete typefaces of ~6,900 glyphs
-each, 2,596 KB together. The site renders roughly 300 CJK characters in them.
-Shipping the masters made the font, not the images, the slowest thing on the
-site: the gallery's LCP element is its `<h1 class="display">`, and because
+Two groups, for two different reasons.
+
+**Local display faces** (`fonts/*.woff2`, committed masters). Complete
+typefaces of ~6,900 glyphs each, 2,596 KB together, to render a few hundred
+characters. Shipping them made the font the slowest thing on the site: the
+gallery's LCP element is its `<h1 class="display">`, and because
 `font-display: swap` repaints that heading when the real face arrives, the
 985 KB download *became* the LCP at ~2.9 s on Fast 4G. Subsetting moves it to
 ~0.83 s.
+
+**Noto Serif SC / Noto Sans SC** (masters fetched and cached, see NOTO_SOURCES).
+Previously loaded from Google Fonts, whose `unicode-range` delivery is superb
+for sparse CJK and poor for a full essay: one Chinese article's 1,188 unique
+characters scatter across 61 of Google's 101 buckets, so a cold reader pulled
+73 files / 4,592 KB and the body text did not settle until ~6.1 s. It never
+touched LCP - the hero image is larger - so this is a data and
+time-to-final-render fix, not an LCP fix.
+
+Serif is tiered because the two audiences differ by 8x: a gateway page renders
+~230 CJK characters of interface text, an essay renders ~2,900. Splitting means
+gateway pages get 147 KB instead of the full 1,085 KB, and stays a static
+`@font-face` the preload scanner can see - a per-post subset would have to be
+injected by JS after posts.js parses, which costs more than it saves.
 
 Pages load only `fonts/derived/`. Like `images/derived/`, that directory is a
 generated artifact - commit it. `.github/workflows/deploy-pages.yml` deletes
@@ -35,13 +51,24 @@ import html as html_mod
 import json
 import re
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FONTS_DIR = ROOT / "fonts"
 DERIVED_DIR = FONTS_DIR / "derived"
+CACHE_DIR = FONTS_DIR / "upstream-cache"
 MANIFEST = ROOT / "content" / "font-subsets.json"
+
+# Noto masters are 41 MB of variable TTF that is never served, and unlike Fred's
+# photographs they are permanently and publicly available under the OFL. So they
+# are fetched into a gitignored cache rather than vendored. The digest of what
+# was used is recorded in the manifest so a regeneration is traceable.
+NOTO_SOURCES = {
+    "NotoSerifSC": "https://github.com/google/fonts/raw/main/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf",
+    "NotoSansSC": "https://github.com/google/fonts/raw/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+}
 
 # Pages whose entire text is folded into every subset. They are small and almost
 # all ASCII, so taking all of them costs a handful of glyphs and removes any need
@@ -61,15 +88,43 @@ PAGES = [
 FACES = {
     "DingTalkJinBuTi.woff2": {
         "family": "DingTalk JinBuTi",
+        "master": "local",
         "post_fields": ["title", "titleZh"],
         "html_elements": ["h2", "h3"],
         "html_classes": [],
     },
     "MuyaoSuixin.woff2": {
         "family": "MuyaoPleased",
+        "master": "local",
         "post_fields": ["subtitle", "subtitleZh", "excerpt", "excerptZh"],
         "html_elements": ["figcaption"],
         "html_classes": ["mn"],
+    },
+    # Body face. The UI tier covers interface Chinese on every page; the text
+    # tier adds full essay bodies and is loaded only by Reading.dc.html.
+    "NotoSerifSC-ui.woff2": {
+        "family": "Noto Serif SC",
+        "master": "NotoSerifSC",
+        "post_fields": [],
+        "html_elements": [],
+        "html_classes": [],
+    },
+    "NotoSerifSC-text.woff2": {
+        "family": "Noto Serif SC",
+        "master": "NotoSerifSC",
+        "whole_post_body": True,
+        "post_fields": ["title", "titleZh", "subtitle", "subtitleZh", "excerpt", "excerptZh"],
+        "html_elements": [],
+        "html_classes": [],
+    },
+    # Utility face: dates, kickers, meta lines, Chinese h4 and appendix titles
+    # (Reading.dc.html:42,53,59,65,81,107). Interface text only, never bodies.
+    "NotoSansSC-ui.woff2": {
+        "family": "Noto Sans SC",
+        "master": "NotoSansSC",
+        "post_fields": [],
+        "html_elements": ["h4"],
+        "html_classes": ["appendix-title"],
     },
 }
 
@@ -141,11 +196,42 @@ def face_text(spec: dict, posts: list[dict]) -> str:
             html = post.get(key) or ""
             if not html:
                 continue
+            if spec.get("whole_post_body"):
+                # The body face renders the whole article, so take all of it.
+                parts.append(strip_tags(html))
+                continue
             for tag in spec["html_elements"]:
                 parts.append(element_text(html, tag))
             for cls in spec["html_classes"]:
                 parts.append(class_text(html, cls))
     return "".join(parts)
+
+
+def digest(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def resolve_master(spec: dict) -> Path:
+    """Return the master for a face, fetching and caching Noto if needed."""
+    if spec["master"] == "local":
+        return FONTS_DIR / spec["_name"]
+
+    name = spec["master"]
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cached = CACHE_DIR / f"{name}.ttf"
+    if not cached.is_file():
+        print(f"fetching upstream master {name} ...")
+        staging = cached.with_suffix(".partial")
+        try:
+            subprocess.run(["curl", "-sSL", NOTO_SOURCES[name], "-o", str(staging)], check=True)
+            staging.replace(cached)
+        finally:
+            staging.unlink(missing_ok=True)
+    return cached
 
 
 def charset_for(spec: dict, posts: list[dict], shared: str) -> set[str]:
@@ -213,36 +299,40 @@ def main() -> int:
         previous = json.loads(MANIFEST.read_text(encoding="utf-8")).get("faces", {})
 
     entries = {}
+    upstream = {}
     rebuilt = 0
-    for master_name, spec in FACES.items():
-        master = FONTS_DIR / master_name
+    for name, spec in FACES.items():
+        spec = {**spec, "_name": name}
+        master = resolve_master(spec)
         if not master.is_file():
-            print(f"error: missing master {master.relative_to(ROOT)}", file=sys.stderr)
+            print(f"error: missing master {master}", file=sys.stderr)
             return 1
+        if spec["master"] != "local":
+            upstream[spec["master"]] = digest(master)
         chars = charset_for(spec, posts, shared)
         fp = fingerprint(chars)
-        target = DERIVED_DIR / master_name
+        target = DERIVED_DIR / name
         cjk = sum(1 for c in chars if ord(c) > 0x2E80)
 
         if args.report:
             size = target.stat().st_size / 1024 if target.is_file() else 0
-            print(f"{spec['family']:<18} {len(chars):>5} chars ({cjk:>4} CJK)  "
-                  f"master {master.stat().st_size/1024:>6.0f} KB  subset {size:>6.1f} KB")
+            print(f"{name:<26} {len(chars):>5} chars ({cjk:>4} CJK)  "
+                  f"master {master.stat().st_size/1048576:>5.1f} MB  subset {size:>7.1f} KB")
             continue
 
         stale = (
             args.force
             or not target.is_file()
-            or previous.get(master_name, {}).get("fingerprint") != fp
+            or previous.get(name, {}).get("fingerprint") != fp
             or target.stat().st_mtime < master.stat().st_mtime
         )
         if stale:
             subset(master, target, chars)
             rebuilt += 1
 
-        entries[master_name] = {
+        entries[name] = {
             "family": spec["family"],
-            "url": f"./fonts/derived/{master_name}",
+            "url": f"./fonts/derived/{name}",
             "chars": len(chars),
             "cjk": cjk,
             "fingerprint": fp,
@@ -261,6 +351,7 @@ def main() -> int:
             {
                 "note": "Generated by scripts/generate-fonts.py; do not hand-edit.",
                 "faces": entries,
+                "upstreamMasters": upstream,
             },
             ensure_ascii=False,
             indent=1,

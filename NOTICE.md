@@ -22,7 +22,15 @@ The pusher/nudge motion beside the WIP sticker was inspired by a motion study fr
 
 `support.js` loads React 18.3.1, ReactDOM 18.3.1, and Babel Standalone 7.29.0 from unpkg at runtime. They are not bundled in this repository. React and Babel are MIT-licensed; their terms remain with their upstream projects.
 
-The pages also request Fraunces, Caveat, IBM Plex Mono, Noto Serif SC, and Noto Sans SC from Google Fonts. Those remote font resources are not included in this repository and remain subject to their upstream licenses.
+The pages also request Fraunces, Caveat, and IBM Plex Mono from Google Fonts. Those remote font resources are not included in this repository and remain subject to their upstream licenses.
+
+### Noto Serif SC and Noto Sans SC
+
+Both are © the Noto Project Authors under the **SIL Open Font License 1.1**, which permits the modification and redistribution that subsetting relies on. They are no longer requested from Google Fonts: `scripts/generate-fonts.py` fetches the upstream variable masters, subsets them to the glyphs this site renders, and the results are committed to `fonts/derived/`. Google's `unicode-range` delivery is excellent for sparse CJK but poor for a full essay — one Chinese article's characters scatter across 61 of its 101 buckets, so a cold reader pulled 73 files and 4,592 KB.
+
+The masters are fetched into `fonts/upstream-cache/` (gitignored) rather than vendored: they are 41 MB of variable TTF that is never served, and unlike the essays and photographs they are permanently and publicly available. The digest of the bytes used is recorded in `content/font-subsets.json`.
+
+- Upstream: https://github.com/google/fonts/tree/main/ofl/notoserifsc and .../notosanssc
 
 ## Local fonts and original content
 

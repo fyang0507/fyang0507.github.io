@@ -336,22 +336,24 @@ def audit_fonts(root: Path, posts: list[dict], errors: list[str]) -> int:
         return len(faces)
 
     shared = generator.base_text()
-    for master_name, spec in generator.FACES.items():
-        entry = faces.get(master_name)
+    for name, spec in generator.FACES.items():
+        entry = faces.get(name)
         if entry is None:
-            errors.append(f"font-subsets.json has no entry for {master_name}")
+            errors.append(f"font-subsets.json has no entry for {name}")
             continue
-        if not exact_case_exists(root, f"fonts/derived/{master_name}"):
-            errors.append(f"missing font subset fonts/derived/{master_name}")
-        if not exact_case_exists(root, f"fonts/{master_name}"):
-            errors.append(f"missing font master fonts/{master_name}")
-        expected = generator.charset_for(spec, posts, shared)
+        if not exact_case_exists(root, f"fonts/derived/{name}"):
+            errors.append(f"missing font subset fonts/derived/{name}")
+        # Only the local display faces are vendored; Noto masters are fetched
+        # into a gitignored cache, so their absence is not an error here.
+        if spec.get("master") == "local" and not exact_case_exists(root, f"fonts/{name}"):
+            errors.append(f"missing font master fonts/{name}")
+        expected = generator.charset_for({**spec, "_name": name}, posts, shared)
         if generator.fingerprint(expected) != entry.get("fingerprint"):
             recorded = set(entry.get("charset", ""))
             added = sorted(expected - recorded)
             sample = "".join(added[:20])
             errors.append(
-                f"{spec['family']} subset is stale: {len(added)} character(s) now "
+                f"{name} subset is stale: {len(added)} character(s) now "
                 f"render in it but are not in the subset"
                 + (f" (e.g. {sample})" if sample else "")
                 + "; run uv run scripts/generate-fonts.py"
