@@ -29,6 +29,44 @@ window.BUILDING_PROJECTS = Object.freeze([
     updated: "2026-07-23"
   },
   {
+    id: "audio-processing-cli",
+    title: "Audio Processing CLI",
+    kind: "instrument",
+    prominence: "agent-native",
+    lifecycle: "wip",
+    period: "2026—now",
+    note: "A local-first utility layer for agents that need to inspect and improve audio without turning an editing agent into a DAW operator. It reports what it measured, which versioned rule matched, and the exact DSP parameters it resolved.",
+    capabilities: [
+      "measure → resolve → render → verify",
+      "reports every DSP parameter it resolved",
+      "abstains on tracks it can't change safely"
+    ],
+    href: null,
+    repo: "https://github.com/fyang0507/audio-processing-cli",
+    sortDate: "2026-08-10",
+    order: 6,
+    updated: "2026-08-29"
+  },
+  {
+    id: "publish-cli",
+    title: "Publish CLI",
+    kind: "instrument",
+    prominence: "agent-native",
+    lifecycle: "wip",
+    period: "2026—now",
+    note: "A per-channel distribution layer that turns one canonical markdown draft into a native draft on each platform. The never-publishes boundary is structural rather than a guard rail: only the draft endpoints are ever called.",
+    capabilities: [
+      "one draft → X, LinkedIn, Reddit, WeChat",
+      "reads each platform's contract first",
+      "never posts: structural, not a guard rail"
+    ],
+    href: null,
+    repo: "https://github.com/fyang0507/publish-cli",
+    sortDate: "2026-06-30",
+    order: 7,
+    updated: "2026-08-29"
+  },
+  {
     id: "instant-bookmark",
     title: "Instant Bookmark",
     kind: "project",
