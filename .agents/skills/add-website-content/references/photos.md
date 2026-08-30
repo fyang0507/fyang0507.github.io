@@ -31,7 +31,14 @@ To rebuild everything from scratch, or after changing a size ladder in `scripts/
 ```sh
 python3 scripts/generate-derivatives.py --force --prune
 python3 scripts/generate-content.py
+uv run scripts/generate-fonts.py --force
 ```
+
+## Derived fonts
+
+The same split applies to the two local CJK faces. `fonts/*.woff2` are complete ~6,900-glyph masters; pages load subsets from `fonts/derived/`, built by `scripts/generate-fonts.py` from the glyphs the site actually renders.
+
+A photo import touches this only through `location` values, which render in `.hand` (MuyaoPleased). A Chinese location name introduces new glyphs, so rerun `uv run scripts/generate-fonts.py`. See [articles.md](articles.md#chinese-text-and-the-font-subsets) for the article side, which is where most of the glyph demand comes from.
 
 ## Stable IDs
 
