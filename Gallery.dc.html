@@ -107,6 +107,10 @@
     </div>
     <div class="util gr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ filteredN }} · 显示 {{ visibleN }} / {{ filteredN }} 张 · {{ totalN }} frames total</div>
 
+    <!-- The rack and garland layouts render the same photos. Only one is ever
+         mounted: rendering both doubled every <img> in the DOM, so the browser
+         fetched and decoded each photo twice even though CSS hid one set. -->
+    <sc-if value="{{ wideLayout }}" hint-placeholder-val="{{ true }}">
     <div class="gallery-wrap" style="position:relative;margin-top:28px">
       <sc-for list="{{ racks }}" as="rack" hint-placeholder-count="3">
         <section class="photo-rack" aria-label="{{ rack.label }}">
@@ -119,7 +123,7 @@
                 <div class="hanging-frame-motion">
                   <div class="peg"></div>
                   <div class="card">
-                    <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
+                    <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" data-content-srcset="{{ p.srcset }}" sizes="148px" width="400" height="300" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
                     <div class="hand" style="font-size:15px;color:var(--soft);padding:5px 2px 0">{{ p.loc }}</div>
                     <div class="util" style="font-size:10px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
                   </div>
@@ -130,7 +134,9 @@
         </section>
       </sc-for>
     </div>
+    </sc-if>
 
+    <sc-if value="{{ narrowLayout }}" hint-placeholder-val="{{ false }}">
     <div class="mobile-garland" style="display:none;flex-direction:column;align-items:center;position:relative;margin-top:14px;padding-top:16px">
       <div style="position:absolute;left:50%;top:0;bottom:26px;width:2px;background:var(--line);transform:translateX(-50%)" aria-hidden="true"></div>
       <sc-for list="{{ visibleAll }}" as="p" hint-placeholder-count="18">
@@ -138,7 +144,7 @@
           <div class="hanging-frame-motion">
             <div class="peg" style="margin:0 auto -2px"></div>
             <div class="card" style="width:100%">
-              <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
+              <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" data-content-srcset="{{ p.srcset }}" sizes="min(76vw,320px)" width="400" height="300" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
               <div class="hand" style="font-size:16px;color:var(--soft);padding:6px 3px 0">{{ p.loc }}</div>
               <div class="util" style="font-size:10.5px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
             </div>
@@ -146,6 +152,7 @@
         </div>
       </sc-for>
     </div>
+    </sc-if>
 
     <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ true }}">
       <div style="text-align:center;margin-top:34px;position:relative">
@@ -162,7 +169,7 @@
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick="{{ closeLightbox }}">
     <div class="lightbox-card" onClick="{{ keepLightbox }}">
       <button type="button" class="lightbox-close" onClick="{{ closeLightbox }}" aria-label="Close photo · 关闭照片">×</button>
-      <img data-content-src="{{ selectedPhoto.src }}" alt="{{ selectedPhoto.loc }}">
+      <img data-content-src="{{ selectedPhoto.display }}" width="{{ selectedPhoto.dw }}" height="{{ selectedPhoto.dh }}" alt="{{ selectedPhoto.loc }}" decoding="async" fetchpriority="high">
       <div class="hand" style="font-size:19px">{{ selectedPhoto.loc }}</div>
       <div class="util" style="font-size:11px;color:#c9bda3">{{ selectedPhoto.date }} · {{ selectedPhoto.catLabel }}</div>
     </div>
@@ -178,21 +185,36 @@ for (let i = PHOTOS.length - 1; i > 0; i--) {
   [PHOTOS[i], PHOTOS[j]] = [PHOTOS[j], PHOTOS[i]];
 }
 
+// Matches the 860px breakpoint in the stylesheet below. Kept in sync manually:
+// the rack/garland CSS and this query must agree or a layout renders unstyled.
+const NARROW_QUERY = '(max-width:860px)';
+
 class Component extends DCLogic {
-  state = { activeCategory: 'all', activeYear: 'all', visibleCount: 18, selectedPhoto: null };
+  state = {
+    activeCategory: 'all', activeYear: 'all', visibleCount: 18, selectedPhoto: null,
+    narrow: window.matchMedia(NARROW_QUERY).matches
+  };
 
   componentDidMount() {
     this._onKey = e => { if (e.key === 'Escape') this.setState({ selectedPhoto: null }); };
     window.addEventListener('keydown', this._onKey);
+    this._mq = window.matchMedia(NARROW_QUERY);
+    this._onMq = e => this.setState({ narrow: e.matches });
+    this._mq.addEventListener('change', this._onMq);
     this.hydrateImages();
   }
   componentDidUpdate() { this.hydrateImages(); }
   componentWillUnmount() {
     window.removeEventListener('keydown', this._onKey);
+    if (this._mq) this._mq.removeEventListener('change', this._onMq);
   }
   hydrateImages() {
     requestAnimationFrame(() => {
       document.querySelectorAll('img[data-content-src]').forEach(img => {
+        // Set srcset before src so the browser picks a candidate once rather
+        // than fetching the src and then re-selecting from the srcset.
+        const srcset = img.getAttribute('data-content-srcset');
+        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
         const src = img.getAttribute('data-content-src');
         if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
       });
@@ -236,19 +258,24 @@ class Component extends DCLogic {
     };
 
     const decorated = visible.map(decorate);
+    const narrow = st.narrow;
     const racks = [];
-    for (let i = 0; i < decorated.length; i += 6) {
-      racks.push({
-        label: 'Photo rack ' + (racks.length + 1),
-        photos: decorated.slice(i, i + 6),
-        showBird: i === 12
-      });
+    if (!narrow) {
+      for (let i = 0; i < decorated.length; i += 6) {
+        racks.push({
+          label: 'Photo rack ' + (racks.length + 1),
+          photos: decorated.slice(i, i + 6),
+          showBird: i === 12
+        });
+      }
     }
 
     return {
       categories, years,
       racks,
-      visibleAll: decorated,
+      wideLayout: !narrow,
+      narrowLayout: narrow,
+      visibleAll: narrow ? decorated : [],
       filteredN: filtered.length,
       visibleN: visible.length,
       totalN: PHOTOS.length,
