@@ -136,6 +136,11 @@
         <button type="button" class="t-tab" role="tab" onClick="{{ setShelfLangEn }}" aria-selected="{{ shelfLangEnPressed }}">EN</button>
       </div>
     </div>
+    <!-- The shelf and the mobile card deck render the same posts. Only one is
+         ever mounted: the shelf's 24 hover-preview cards use opacity, not
+         display, so `loading="lazy"` cannot defer them and all 24 covers were
+         fetched even on a phone that can never show the shelf. -->
+    <sc-if value="{{ wideLayout }}" hint-placeholder-val="{{ true }}">
     <div class="shelf-wrap" style="margin-top:8px;display:flex;gap:20px;align-items:stretch">
       <div class="shelf-scroll" style="flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;display:flex;flex-direction:column">
         <div class="shelf-row" style="position:relative;flex:1 1 auto;min-height:0;display:flex;align-items:flex-end;gap:5px;padding:26px 6px 0;border-bottom:5px solid var(--ink);width:max-content">
@@ -182,7 +187,9 @@
         </div>
       </div>
     </div>
+    </sc-if>
 
+    <sc-if value="{{ narrowLayout }}" hint-placeholder-val="{{ false }}">
     <div class="mobile-list" style="display:none;flex-direction:column;align-items:center;margin-top:8px">
       <div style="position:relative;width:min(84vw,340px);height:430px">
         <sc-if value="{{ showPassed }}" hint-placeholder-val="{{ false }}">
@@ -237,6 +244,7 @@
       <div class="hand" style="margin-top:20px;font-size:16px;color:var(--pencil)">← swipe for next · 左滑下一篇 / 右滑上一篇 →</div>
       <div class="util" style="margin-top:6px;font-size:11px;color:var(--pencil)">{{ cardPos }} / {{ mobileTotal }}</div>
     </div>
+    </sc-if>
 
     <div class="util wr" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
   </div>
@@ -282,8 +290,13 @@ function writeStoredLang(lang) {
   try { localStorage.setItem('fy-lang', lang); } catch (e) {}
 }
 
+// Matches the 760px breakpoint in the stylesheet above. Kept in sync manually:
+// the shelf/mobile-list CSS and this query must agree or a layout renders unstyled.
+const NARROW_QUERY = '(max-width:760px)';
+
 class Component extends DCLogic {
-  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle', shelfLang: readStoredLang() };
+  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle', shelfLang: readStoredLang(),
+    narrow: window.matchMedia(NARROW_QUERY).matches };
   birdRef = React.createRef();
   langTabsRef = React.createRef();
   reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -295,6 +308,9 @@ class Component extends DCLogic {
     this.positionLangPill(true);
     this._onResize = () => this.positionLangPill(true);
     window.addEventListener('resize', this._onResize);
+    this._mq = window.matchMedia(NARROW_QUERY);
+    this._onMq = e => this.setState({ narrow: e.matches });
+    this._mq.addEventListener('change', this._onMq);
   }
   componentDidUpdate() {
     this.hydrateImages();
@@ -303,6 +319,7 @@ class Component extends DCLogic {
   componentWillUnmount() {
     this._alive = false;
     if (this._onResize) window.removeEventListener('resize', this._onResize);
+    if (this._mq) this._mq.removeEventListener('change', this._onMq);
   }
   hydrateImages() {
     requestAnimationFrame(() => {
@@ -482,7 +499,10 @@ class Component extends DCLogic {
 
     return {
       tags, years,
-      filtered: decorated,
+      // Only the mounted layout's list is populated; see the sc-if pair above.
+      filtered: st.narrow ? [] : decorated,
+      wideLayout: !st.narrow,
+      narrowLayout: st.narrow,
       visibleN: filtered.length,
       totalN: POSTS.length,
       top, peek1, peek2, peek3,
