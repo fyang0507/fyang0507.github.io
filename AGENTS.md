@@ -37,6 +37,7 @@ When changing a home destination, keep the desktop annotation, object hotspot, a
 
 - Edit page content and page-specific CSS/logic in the relevant `.dc.html` file.
 - Edit imported essay bodies in `content/posts/*.md` and gallery metadata in `content/photos-source.ts`, then run `python3 scripts/generate-content.py`; commit the generated `content/posts.js` and `content/photos.js` files.
+- Load generated manifests unversioned (`./content/posts.js`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
 - Do not hand-edit `support.js`; it is generated runtime code. Treat `image-slot.js` as vendored runtime code unless the image-slot behavior itself is the task.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
 - Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not. `Reading.dc.html` is the only page with a CN/EN switch, using `.en` / `.zh` variants and the `fy-lang` preference in `localStorage`.

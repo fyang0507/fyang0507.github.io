@@ -29,6 +29,34 @@ window.BUILDING_PROJECTS = Object.freeze([
     updated: "2026-07-23"
   },
   {
+    id: "audio-processing-cli",
+    title: "Audio Processing CLI",
+    kind: "project",
+    prominence: null,
+    lifecycle: "wip",
+    period: "2026—now",
+    note: "A local-first CLI that measures a track, applies bounded profile-driven fixes, and remeasures to verify the result, abstaining when audio cannot be changed safely.",
+    href: null,
+    repo: "https://github.com/fyang0507/audio-processing-cli",
+    sortDate: "2026-08-10",
+    order: 6,
+    updated: "2026-08-29"
+  },
+  {
+    id: "publish-cli",
+    title: "Publish CLI",
+    kind: "project",
+    prominence: null,
+    lifecycle: "wip",
+    period: "2026—now",
+    note: "A per-channel toolkit that turns one canonical draft into native platform drafts on X, LinkedIn, Reddit, and WeChat, stopping short of publishing anything.",
+    href: null,
+    repo: "https://github.com/fyang0507/publish-cli",
+    sortDate: "2026-06-30",
+    order: 7,
+    updated: "2026-08-29"
+  },
+  {
     id: "instant-bookmark",
     title: "Instant Bookmark",
     kind: "project",

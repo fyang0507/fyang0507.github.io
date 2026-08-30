@@ -44,6 +44,7 @@ The archive is currently bilingual. Obtain both language versions before publish
 - `stories we live` / `我们生活的故事`
 - `everyday chronicles` / `日常记趣`
 - `travel log` / `游记`
+- `commentary` / `杂文`
 - `poem` / `诗`
 
 Additional topical or geographic tags are allowed. Primary tags drive the Writing page's filter chips.
@@ -86,6 +87,21 @@ Emphasis uses `*italic*` and `**bold**` only — the renderer does not support u
 2. **No duplicated title as the first body line.** `Writing.dc.html`/`Reading.dc.html` render `title`/`title_zh` from frontmatter separately from the body. Never repeat the title as the first line of the English or Chinese body (as a `#` heading or as plain text) — it double-renders on the Reading page. Start the body directly with the first sentence.
 
 `python3 .agents/skills/add-website-content/scripts/audit_content.py` checks both of these across the full archive; run it (not just for new entries) before finishing any article add or edit.
+
+## Manifest caching
+
+Load the manifests unversioned (`./content/posts.js`), the way `Gallery.dc.html`
+and `Building.dc.html` already do. Do not reintroduce a `?v=<stamp>`
+cache-buster: GitHub Pages serves every file, including the HTML that would
+carry the stamp, with `cache-control: max-age=600` and an ETag, so a regenerated
+manifest reaches returning visitors within ten minutes on its own. A manual
+stamp buys nothing there, silently does nothing when someone forgets to bump it,
+and can serve a stale manifest to a browser still holding the previous HTML.
+
+A local `python3 -m http.server` sends no cache headers at all, so browsers fall
+back to heuristic caching and may hold an old manifest while verifying. Hard
+reload or disable the cache when a change does not appear; do not "fix" it by
+versioning the URL.
 
 ## Article verification
 
