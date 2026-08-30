@@ -8,6 +8,19 @@
 - Use JPEG, PNG, or WebP cover art and preserve the exact filename case referenced by `coverImage`.
 - Store the full-resolution cover; do not resize it. `Writing.dc.html` and `Reading.dc.html` load generated copies from `images/derived/covers/` (320/560/900/1600px wide), not the original, so `python3 scripts/generate-derivatives.py` must run before `generate-content.py`. A cover with an alpha channel is rejected rather than flattened to black — flatten it first. See [photos.md](photos.md#derived-images) for the full contract.
 
+## Chinese text and the font subsets
+
+Pages load subset fonts from `fonts/derived/`, not the complete masters in `fonts/`. An article can introduce Chinese characters into three places that render in those subset faces, and each one changes the required glyph set:
+
+| Article element | Rendered in | Source |
+| --- | --- | --- |
+| `title_zh`, `## `/`### ` headings | DingTalk JinBuTi | `Reading.dc.html:63,78` |
+| `subtitle_zh`, `excerpt_zh`, `[^note]:` footnotes, reference entries, image captions | MuyaoPleased | `Reading.dc.html:61,96,101` |
+
+So after adding or editing any Chinese article, run `uv run scripts/generate-fonts.py` and commit `fonts/derived/` and `content/font-subsets.json`. Note that footnote and reference text is real prose, which is why the handwriting face needs ~1,000 glyphs rather than a handful.
+
+If you skip it, the audit fails with `... subset is stale: N character(s) now render in it but are not in the subset` and names them. Left unfixed, those characters silently fall back to a system font in production.
+
 ## Frontmatter and body
 
 Use this shape:
