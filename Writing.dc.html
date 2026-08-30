@@ -17,10 +17,12 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
   :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
@@ -136,6 +138,11 @@
         <button type="button" class="t-tab" role="tab" onClick="{{ setShelfLangEn }}" aria-selected="{{ shelfLangEnPressed }}">EN</button>
       </div>
     </div>
+    <!-- The shelf and the mobile card deck render the same posts. Only one is
+         ever mounted: the shelf's 24 hover-preview cards use opacity, not
+         display, so `loading="lazy"` cannot defer them and all 24 covers were
+         fetched even on a phone that can never show the shelf. -->
+    <sc-if value="{{ wideLayout }}" hint-placeholder-val="{{ true }}">
     <div class="shelf-wrap" style="margin-top:8px;display:flex;gap:20px;align-items:stretch">
       <div class="shelf-scroll" style="flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;display:flex;flex-direction:column">
         <div class="shelf-row" style="position:relative;flex:1 1 auto;min-height:0;display:flex;align-items:flex-end;gap:5px;padding:26px 6px 0;border-bottom:5px solid var(--ink);width:max-content">
@@ -169,7 +176,7 @@
         </div>
         <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
           <a class="{{ p.prevClass }}" href="{{ p.href }}" aria-label="{{ p.readLabel }}">
-            <div class="warm-cover" style="height:118px"><img data-content-src="{{ p.cover }}" alt="" loading="lazy" decoding="async"></div>
+            <div class="warm-cover" style="height:118px"><img data-content-src="{{ p.cover }}" data-content-srcset="{{ p.coverSrcset }}" sizes="236px" alt="" loading="lazy" decoding="async"></div>
             <div style="background:#fff;border:1px solid var(--line);border-top:none;padding:10px 13px;flex:1">
               <div class="display" style="font-size:18px">{{ p.zh }}</div>
               <div class="preview-title-en" lang="en">{{ p.en }}</div>
@@ -182,7 +189,9 @@
         </div>
       </div>
     </div>
+    </sc-if>
 
+    <sc-if value="{{ narrowLayout }}" hint-placeholder-val="{{ false }}">
     <div class="mobile-list" style="display:none;flex-direction:column;align-items:center;margin-top:8px">
       <div style="position:relative;width:min(84vw,340px);height:430px">
         <sc-if value="{{ showPassed }}" hint-placeholder-val="{{ false }}">
@@ -207,7 +216,7 @@
           <div class="mobile-card" style="{{ topStyle }};position:absolute;inset:0;background:#fff;border:{{ top.topBorder }};border-radius:8px;box-shadow:0 16px 34px rgba(60,50,35,.2);overflow:hidden;touch-action:pan-y;cursor:grab"
                onPointerDown="{{ onDown }}" onPointerMove="{{ onMove }}" onPointerUp="{{ onUp }}" onPointerCancel="{{ onUp }}">
             <div class="warm-cover" style="height:46%">
-              <img data-content-src="{{ top.cover }}" alt="" decoding="async">
+              <img data-content-src="{{ top.cover }}" data-content-srcset="{{ top.coverSrcset }}" sizes="min(84vw,340px)" alt="" decoding="async">
               <sc-if value="{{ top.series }}" hint-placeholder-val="{{ false }}">
                 <span style="position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--mark);color:#fff;display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px">{{ top.numLabel }}</span>
               </sc-if>
@@ -237,6 +246,7 @@
       <div class="hand" style="margin-top:20px;font-size:16px;color:var(--pencil)">← swipe for next · 左滑下一篇 / 右滑上一篇 →</div>
       <div class="util" style="margin-top:6px;font-size:11px;color:var(--pencil)">{{ cardPos }} / {{ mobileTotal }}</div>
     </div>
+    </sc-if>
 
     <div class="util wr" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
   </div>
@@ -265,6 +275,7 @@ const POSTS = (window.FY_POSTS || []).slice().sort((a, b) => b.date.localeCompar
     series: seriesMatch ? Number(seriesMatch[1]) : null,
     readingMin: p.readingMin,
     cover: p.cover,
+    coverSrcset: p.coverSrcset,
     baseHref: 'Reading.dc.html?post=' + encodeURIComponent(p.id),
     hrefZh: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=zh',
     hrefEn: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=en'
@@ -281,8 +292,13 @@ function writeStoredLang(lang) {
   try { localStorage.setItem('fy-lang', lang); } catch (e) {}
 }
 
+// Matches the 760px breakpoint in the stylesheet above. Kept in sync manually:
+// the shelf/mobile-list CSS and this query must agree or a layout renders unstyled.
+const NARROW_QUERY = '(max-width:760px)';
+
 class Component extends DCLogic {
-  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle', shelfLang: readStoredLang() };
+  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle', shelfLang: readStoredLang(),
+    narrow: window.matchMedia(NARROW_QUERY).matches };
   birdRef = React.createRef();
   langTabsRef = React.createRef();
   reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -294,6 +310,9 @@ class Component extends DCLogic {
     this.positionLangPill(true);
     this._onResize = () => this.positionLangPill(true);
     window.addEventListener('resize', this._onResize);
+    this._mq = window.matchMedia(NARROW_QUERY);
+    this._onMq = e => this.setState({ narrow: e.matches });
+    this._mq.addEventListener('change', this._onMq);
   }
   componentDidUpdate() {
     this.hydrateImages();
@@ -302,10 +321,15 @@ class Component extends DCLogic {
   componentWillUnmount() {
     this._alive = false;
     if (this._onResize) window.removeEventListener('resize', this._onResize);
+    if (this._mq) this._mq.removeEventListener('change', this._onMq);
   }
   hydrateImages() {
     requestAnimationFrame(() => {
       document.querySelectorAll('img[data-content-src]').forEach(img => {
+        // Set srcset before src so the browser picks a candidate once rather
+        // than fetching the src and then re-selecting from the srcset.
+        const srcset = img.getAttribute('data-content-srcset');
+        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
         const src = img.getAttribute('data-content-src');
         if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
       });
@@ -477,7 +501,10 @@ class Component extends DCLogic {
 
     return {
       tags, years,
-      filtered: decorated,
+      // Only the mounted layout's list is populated; see the sc-if pair above.
+      filtered: st.narrow ? [] : decorated,
+      wideLayout: !st.narrow,
+      narrowLayout: st.narrow,
       visibleN: filtered.length,
       totalN: POSTS.length,
       top, peek1, peek2, peek3,

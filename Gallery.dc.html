@@ -17,10 +17,12 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
   :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
@@ -55,10 +57,9 @@
   .peg{width:15px;height:10px;background:var(--ink);margin:0 auto -2px;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
   .bird{animation:birdBob 2.6s ease-in-out infinite}
   .lightbox{position:fixed;inset:0;z-index:180;background:rgba(23,18,12,.9);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
-  .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:default}
+  /* cursor stays zoom-out over the card too: the whole overlay is the dismiss target */
+  .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:zoom-out}
   .lightbox-card img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 24px 70px rgba(0,0,0,.48)}
-  .lightbox-close{position:absolute;right:8px;top:8px;z-index:2;width:42px;height:42px;border:1px solid rgba(239,229,211,.58);border-radius:50%;background:rgba(23,18,12,.72);color:#efe5d3;font:500 21px/1 "IBM Plex Mono",monospace;cursor:pointer}
-  .lightbox-close:hover,.lightbox-close:focus-visible{border-color:var(--mark);color:var(--mark);outline:none}
   .load-more-sticker{position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)}
   @media (prefers-reduced-motion:reduce){.gr,.bird,.hanging-frame-motion{animation:none!important;opacity:1!important}}
   @media (max-width:860px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
@@ -107,6 +108,10 @@
     </div>
     <div class="util gr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ filteredN }} · 显示 {{ visibleN }} / {{ filteredN }} 张 · {{ totalN }} frames total</div>
 
+    <!-- The rack and garland layouts render the same photos. Only one is ever
+         mounted: rendering both doubled every <img> in the DOM, so the browser
+         fetched and decoded each photo twice even though CSS hid one set. -->
+    <sc-if value="{{ wideLayout }}" hint-placeholder-val="{{ true }}">
     <div class="gallery-wrap" style="position:relative;margin-top:28px">
       <sc-for list="{{ racks }}" as="rack" hint-placeholder-count="3">
         <section class="photo-rack" aria-label="{{ rack.label }}">
@@ -119,7 +124,7 @@
                 <div class="hanging-frame-motion">
                   <div class="peg"></div>
                   <div class="card">
-                    <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
+                    <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" data-content-srcset="{{ p.srcset }}" sizes="148px" width="400" height="300" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
                     <div class="hand" style="font-size:15px;color:var(--soft);padding:5px 2px 0">{{ p.loc }}</div>
                     <div class="util" style="font-size:10px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
                   </div>
@@ -130,7 +135,9 @@
         </section>
       </sc-for>
     </div>
+    </sc-if>
 
+    <sc-if value="{{ narrowLayout }}" hint-placeholder-val="{{ false }}">
     <div class="mobile-garland" style="display:none;flex-direction:column;align-items:center;position:relative;margin-top:14px;padding-top:16px">
       <div style="position:absolute;left:50%;top:0;bottom:26px;width:2px;background:var(--line);transform:translateX(-50%)" aria-hidden="true"></div>
       <sc-for list="{{ visibleAll }}" as="p" hint-placeholder-count="18">
@@ -138,7 +145,7 @@
           <div class="hanging-frame-motion">
             <div class="peg" style="margin:0 auto -2px"></div>
             <div class="card" style="width:100%">
-              <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
+              <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" data-content-srcset="{{ p.srcset }}" sizes="min(76vw,320px)" width="400" height="300" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
               <div class="hand" style="font-size:16px;color:var(--soft);padding:6px 3px 0">{{ p.loc }}</div>
               <div class="util" style="font-size:10.5px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
             </div>
@@ -146,6 +153,7 @@
         </div>
       </sc-for>
     </div>
+    </sc-if>
 
     <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ true }}">
       <div style="text-align:center;margin-top:34px;position:relative">
@@ -159,10 +167,11 @@
 </div>
 
 <sc-if value="{{ selectedPhoto }}" hint-placeholder-val="{{ false }}">
+  <!-- The whole overlay dismisses, image and caption included; don't reintroduce
+       a close button. Escape also closes it. -->
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick="{{ closeLightbox }}">
-    <div class="lightbox-card" onClick="{{ keepLightbox }}">
-      <button type="button" class="lightbox-close" onClick="{{ closeLightbox }}" aria-label="Close photo · 关闭照片">×</button>
-      <img data-content-src="{{ selectedPhoto.src }}" alt="{{ selectedPhoto.loc }}">
+    <div class="lightbox-card">
+      <img data-content-src="{{ selectedPhoto.display }}" width="{{ selectedPhoto.dw }}" height="{{ selectedPhoto.dh }}" alt="{{ selectedPhoto.loc }}" decoding="async" fetchpriority="high">
       <div class="hand" style="font-size:19px">{{ selectedPhoto.loc }}</div>
       <div class="util" style="font-size:11px;color:#c9bda3">{{ selectedPhoto.date }} · {{ selectedPhoto.catLabel }}</div>
     </div>
@@ -178,21 +187,36 @@ for (let i = PHOTOS.length - 1; i > 0; i--) {
   [PHOTOS[i], PHOTOS[j]] = [PHOTOS[j], PHOTOS[i]];
 }
 
+// Matches the 860px breakpoint in the stylesheet below. Kept in sync manually:
+// the rack/garland CSS and this query must agree or a layout renders unstyled.
+const NARROW_QUERY = '(max-width:860px)';
+
 class Component extends DCLogic {
-  state = { activeCategory: 'all', activeYear: 'all', visibleCount: 18, selectedPhoto: null };
+  state = {
+    activeCategory: 'all', activeYear: 'all', visibleCount: 18, selectedPhoto: null,
+    narrow: window.matchMedia(NARROW_QUERY).matches
+  };
 
   componentDidMount() {
     this._onKey = e => { if (e.key === 'Escape') this.setState({ selectedPhoto: null }); };
     window.addEventListener('keydown', this._onKey);
+    this._mq = window.matchMedia(NARROW_QUERY);
+    this._onMq = e => this.setState({ narrow: e.matches });
+    this._mq.addEventListener('change', this._onMq);
     this.hydrateImages();
   }
   componentDidUpdate() { this.hydrateImages(); }
   componentWillUnmount() {
     window.removeEventListener('keydown', this._onKey);
+    if (this._mq) this._mq.removeEventListener('change', this._onMq);
   }
   hydrateImages() {
     requestAnimationFrame(() => {
       document.querySelectorAll('img[data-content-src]').forEach(img => {
+        // Set srcset before src so the browser picks a candidate once rather
+        // than fetching the src and then re-selecting from the srcset.
+        const srcset = img.getAttribute('data-content-srcset');
+        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
         const src = img.getAttribute('data-content-src');
         if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
       });
@@ -236,19 +260,24 @@ class Component extends DCLogic {
     };
 
     const decorated = visible.map(decorate);
+    const narrow = st.narrow;
     const racks = [];
-    for (let i = 0; i < decorated.length; i += 6) {
-      racks.push({
-        label: 'Photo rack ' + (racks.length + 1),
-        photos: decorated.slice(i, i + 6),
-        showBird: i === 12
-      });
+    if (!narrow) {
+      for (let i = 0; i < decorated.length; i += 6) {
+        racks.push({
+          label: 'Photo rack ' + (racks.length + 1),
+          photos: decorated.slice(i, i + 6),
+          showBird: i === 12
+        });
+      }
     }
 
     return {
       categories, years,
       racks,
-      visibleAll: decorated,
+      wideLayout: !narrow,
+      narrowLayout: narrow,
+      visibleAll: narrow ? decorated : [],
       filteredN: filtered.length,
       visibleN: visible.length,
       totalN: PHOTOS.length,
@@ -256,8 +285,7 @@ class Component extends DCLogic {
       remaining: filtered.length - visible.length,
       loadMore: () => this.setState(s => ({ visibleCount: Math.min(s.visibleCount + 6, filtered.length) })),
       selectedPhoto: st.selectedPhoto,
-      closeLightbox: () => this.setState({ selectedPhoto: null }),
-      keepLightbox: event => event.stopPropagation()
+      closeLightbox: () => this.setState({ selectedPhoto: null })
     };
   }
 }

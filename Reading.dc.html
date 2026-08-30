@@ -18,10 +18,12 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+  @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-text.woff2") format("woff2");font-weight:200 900;font-display:swap}
+  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
   :root{color-scheme:light;
     --paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;
     --wash-a:#B7D6D3;--wash-b:#F3C6A5;--wash-c:#E9A7A0;--wash-op:.8;
@@ -162,7 +164,7 @@
       </div>
       <sc-if value="{{ hasCover }}" hint-placeholder-val="{{ false }}">
         <figure class="post-wash">
-          <img data-content-src="{{ cover }}" alt="{{ coverAlt }}" decoding="async">
+          <img data-content-src="{{ cover }}" data-content-srcset="{{ coverSrcset }}" sizes="100vw" alt="{{ coverAlt }}" decoding="async">
         </figure>
       </sc-if>
     </header>
@@ -247,6 +249,10 @@ class Component extends DCLogic {
   hydrateImages() {
     requestAnimationFrame(() => {
       document.querySelectorAll('img[data-content-src]').forEach(img => {
+        // Set srcset before src so the browser picks a candidate once rather
+        // than fetching the src and then re-selecting from the srcset.
+        const srcset = img.getAttribute('data-content-srcset');
+        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
         const src = img.getAttribute('data-content-src');
         if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
       });
@@ -279,6 +285,7 @@ class Component extends DCLogic {
       subtitle: post.subtitle || '', subtitleZh: post.subtitleZh || post.subtitle || '',
       hasSubtitle: Boolean(post.subtitle || post.subtitleZh),
       cover: post.cover || '',
+      coverSrcset: post.coverSrcset || '',
       hasCover: Boolean(post.cover),
       coverAlt: isZh ? ((post.titleZh || post.title || '') + '题图') : ('Opening image for ' + (post.title || post.titleZh || 'this essay')),
       excerpt: post.excerpt || '', excerptZh: post.excerptZh || post.excerpt || '',

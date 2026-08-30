@@ -242,6 +242,125 @@ def audit_photos(root: Path, generator: ModuleType, errors: list[str]) -> tuple[
     return photos, ids
 
 
+def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> int:
+    """Verify every canonical original has its full set of web-sized copies.
+
+    Pages serve only `images/derived/`, never the originals, so a forgotten
+    `generate-derivatives.py` run would ship broken images. This is the gate
+    that catches that before it reaches GitHub Pages.
+    """
+    expected: list[tuple[str, str]] = []
+
+    source = (root / "content" / "photos-source.ts").read_text(encoding="utf-8")
+    for line, block in photo_blocks(source):
+        field = re.search(r"\bimageUrl:\s*'([^']*)'\s*,", block)
+        if not field:
+            continue
+        image_url = field.group(1)
+        label = f"content/photos-source.ts:{line}"
+        for width in (*generator.GALLERY_THUMB_WIDTHS, generator.GALLERY_DISPLAY_WIDTH):
+            expected.append((label, generator.derivative_url(image_url, "gallery", width)))
+
+    for path in sorted((root / "content" / "posts").glob("*.md")):
+        try:
+            data, _ = generator.parse_frontmatter(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue  # audit_posts already reports malformed frontmatter
+        cover = str(data.get("coverImage") or "").lstrip("/")
+        if not cover:
+            continue
+        label = f"content/posts/{path.name}"
+        for width in generator.COVER_WIDTHS:
+            expected.append((label, generator.derivative_url(cover, "covers", width)))
+
+    missing = [
+        (label, url) for label, url in expected if not exact_case_exists(root, url.lstrip("./"))
+    ]
+    for label, url in missing[:10]:
+        errors.append(f"{label}: missing derivative {url}")
+    if len(missing) > 10:
+        errors.append(f"...and {len(missing) - 10} more missing derivative(s)")
+    if missing:
+        errors.append("run python3 scripts/generate-derivatives.py, then generate-content.py")
+
+    dimensions_path = root / "content" / "image-dimensions.json"
+    if not dimensions_path.is_file():
+        errors.append(
+            "content/image-dimensions.json is missing; run "
+            "python3 scripts/generate-derivatives.py"
+        )
+    return len(expected)
+
+
+def load_font_generator(root: Path) -> ModuleType | None:
+    """Import scripts/generate-fonts.py for its glyph-set extraction.
+
+    That module imports fonttools lazily, so this works without fonttools
+    installed - the audit only needs the pure-Python text extraction.
+    """
+    path = root / "scripts" / "generate-fonts.py"
+    if not path.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("fred_website_generate_fonts", path)
+    if spec is None or spec.loader is None:
+        return None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def audit_fonts(root: Path, posts: list[dict], errors: list[str]) -> int:
+    """Verify the committed font subsets still cover every glyph the site renders.
+
+    Pages load only `fonts/derived/`, so a post that introduces a new character
+    in a heading, footnote or caption silently loses that glyph to a fallback
+    until the subsets are regenerated. Comparing the recomputed glyph
+    fingerprint against the recorded one catches exactly that.
+    """
+    manifest_path = root / "content" / "font-subsets.json"
+    if not manifest_path.is_file():
+        errors.append(
+            "content/font-subsets.json is missing; run uv run scripts/generate-fonts.py"
+        )
+        return 0
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        faces = manifest["faces"]
+    except Exception as exc:  # noqa: BLE001 - report malformed generated output
+        errors.append(f"content/font-subsets.json is unreadable: {exc}")
+        return 0
+
+    generator = load_font_generator(root)
+    if generator is None:
+        errors.append("scripts/generate-fonts.py is missing; cannot verify font subsets")
+        return len(faces)
+
+    shared = generator.base_text()
+    for name, spec in generator.FACES.items():
+        entry = faces.get(name)
+        if entry is None:
+            errors.append(f"font-subsets.json has no entry for {name}")
+            continue
+        if not exact_case_exists(root, f"fonts/derived/{name}"):
+            errors.append(f"missing font subset fonts/derived/{name}")
+        # Only the local display faces are vendored; Noto masters are fetched
+        # into a gitignored cache, so their absence is not an error here.
+        if spec.get("master") == "local" and not exact_case_exists(root, f"fonts/{name}"):
+            errors.append(f"missing font master fonts/{name}")
+        expected = generator.charset_for({**spec, "_name": name}, posts, shared)
+        if generator.fingerprint(expected) != entry.get("fingerprint"):
+            recorded = set(entry.get("charset", ""))
+            added = sorted(expected - recorded)
+            sample = "".join(added[:20])
+            errors.append(
+                f"{name} subset is stale: {len(added)} character(s) now "
+                f"render in it but are not in the subset"
+                + (f" (e.g. {sample})" if sample else "")
+                + "; run uv run scripts/generate-fonts.py"
+            )
+    return len(faces)
+
+
 def audit_manifests(root: Path, posts: list[dict], photos: list[dict], errors: list[str]) -> None:
     manifests = (
         (root / "content" / "posts.js", "FY_POSTS", posts),
@@ -272,6 +391,8 @@ def main() -> int:
 
     posts, post_ids = audit_posts(root, generator, errors)
     photos, photo_ids = audit_photos(root, generator, errors)
+    derivative_count = audit_derivatives(root, generator, errors)
+    font_count = audit_fonts(root, posts, errors)
     audit_manifests(root, posts, photos, errors)
 
     if errors:
@@ -284,6 +405,7 @@ def main() -> int:
     gap_count = max_photo_id - len(set(photo_ids)) if photo_ids else 0
     print(
         f"Content audit passed: {len(post_ids)} articles, {len(photo_ids)} photos, "
+        f"{derivative_count} derivatives, {font_count} font subsets, "
         f"max photo ID {max_photo_id}, {gap_count} retained ID gap(s)."
     )
     return 0
