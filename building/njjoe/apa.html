@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="./assets/njjoe/casebook.css">
 <link rel="stylesheet" href="./assets/njjoe/apa-demo.css">
 <script src="./assets/njjoe/casebook.js" defer></script>
-<script src="./assets/njjoe/apa-demo.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -80,15 +79,12 @@
         <article class="implementation-step case-reveal"><span>02</span><h3>Render the right message</h3><p>Choose buyer, seller, buyer-seller, or prospect copy. Include only a known current address; all three APA links share the client's opaque tracking URL.</p></article>
         <article class="implementation-step case-reveal"><span>03</span><h3>Save, then verify</h3><p>Create the message through SherWeb EWS with <code>MessageDisposition=SaveOnly</code>, then confirm it through a separate read-only lookup.</p></article>
       </div>
-    <p class="section-lede">Joe designed the September 5 email templates; I connected the personalization, recipient rules, draft workflow, and tracking. Explore the four versions below using fictional customer details.</p>
-    <nav class="apa-demo-switcher" aria-label="Email demo variations">
-      <a href="./building/njjoe/email-demo/buyer.html" target="apa-email-preview" data-demo-label="Buyer" aria-current="true">Buyer</a>
-      <a href="./building/njjoe/email-demo/seller.html" target="apa-email-preview" data-demo-label="Seller">Seller</a>
-      <a href="./building/njjoe/email-demo/buyer-seller.html" target="apa-email-preview" data-demo-label="Buyer-seller">Buyer-seller</a>
-      <a href="./building/njjoe/email-demo/prospect.html" target="apa-email-preview" data-demo-label="Prospect">Prospect</a>
-    </nav>
-    <div class="apa-demo-frame"><div class="mail-toolbar"><span id="apa-preview-label" aria-live="polite">Buyer · fictional customer</span><a id="apa-demo-open" href="./building/njjoe/email-demo/buyer.html" target="_blank" rel="noopener">Open full preview ↗</a></div><iframe name="apa-email-preview" id="apa-email-preview" title="Buyer email template with fictional customer data" src="./building/njjoe/email-demo/buyer.html" loading="lazy" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
-    <p class="apa-evidence-note">Demo names and addresses are fictional. Buttons and linked images open the public APA landing page without a recipient tracking token. Production messages use a separate, unique URL for each client.</p>
+    <p class="section-lede">Joe designed the email templates; I connected the personalization, recipient rules, draft workflow, and tracking. This static buyer-version excerpt uses fictional customer details. Seller and prospect versions omit the property address; buyer-seller copy uses the purchased-home record.</p>
+    <figure class="apa-static-demo">
+      <div class="browser browser--archive"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>static email excerpt · scroll inside</span></div><div class="archive-scroll" tabindex="0" aria-label="Scrollable static image of the buyer email, using fictional customer details"><img src="./assets/njjoe/apa-email-static.png" width="640" height="1363" alt="Buyer email addressed to fictional Alex Morgan: Preferred Client enrollment, Annual Property Analysis for an example home, and a $2,000 gift card benefit. All pictured buttons are non-interactive." loading="lazy" decoding="async"></div></div>
+      <figcaption class="figure-caption"><span>fig.01 · static buyer email excerpt</span><span>fictional customer · no active links</span></figcaption>
+    </figure>
+    <p class="apa-evidence-note">In production, each client receives a unique opaque APA URL. The cookie-free Netlify tracker records link requests against that identifier before redirecting to the landing page; it does not independently prove that the page was viewed. After the campaign, the tracker CSV is joined to the frozen customer sheet through the private mapping to compare engagement by relationship segment and reconcile it with confirmed sends. Repeated requests and scanner flags remain visible; a tracked link identifies the intended recipient, not necessarily the person who opened it. This closes the preparation → outreach → analysis loop without claiming engagement results before they arrive.</p>
   </section>
 
   <section class="section section--strong" aria-labelledby="batch-title">
