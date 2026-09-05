@@ -11,7 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./assets/njjoe/casebook.css">
+<link rel="stylesheet" href="./assets/njjoe/apa-demo.css">
 <script src="./assets/njjoe/casebook.js" defer></script>
+<script src="./assets/njjoe/apa-demo.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -37,10 +39,10 @@
 <main id="main-content" class="case-stage case-rise">
   <header class="hero">
     <div>
-      <div class="eyebrow">Case 02 · Annual Property Analysis · active pilot</div>
+      <div class="eyebrow">Case 02 · Annual Property Analysis · draft batch complete</div>
       <h1>The campaign Joe could not run by <span class="mark">calling harder.</span></h1>
       <p class="deck">The offer had already produced interest. The client base already existed. The missing piece was a way to reach homeowners personally without requiring Joe to make one cold business-development call after another.</p>
-      <div class="meta"><span>discovery · June 2026</span><span>profiles · 240 validated</span><span>delivery · personalized drafts + human send</span></div>
+      <div class="meta"><span>discovery · June 2026</span><span>248 drafts verified · September 5, 2026</span><span>delivery · personalized drafts + human send</span></div>
     </div>
     <blockquote class="hero-note">The bottleneck was not demand. It was the channel.<small>the conclusion from the strategy session</small></blockquote>
   </header>
@@ -65,7 +67,7 @@
   <section class="section section--strong" aria-labelledby="opportunity-title">
     <div class="section-head"><div class="section-index"><span>02</span> opportunity</div><div><h2 id="opportunity-title">Create a personalized outreach channel that had not been practical before.</h2><p class="section-lede">Agent-era economics change the useful unit of work. Instead of writing a generic blast or conducting one call at a time, the system can prepare a recipient-specific message for every eligible relationship, preserve the private links and conditions that make it useful, and leave the final decision in the broker's mailbox.</p></div></div>
     <div class="outcomes">
-      <article class="outcome case-reveal"><h3>Personal at campaign scale</h3><p>Each eligible draft can carry the correct recipient, property, Homebot state, report link, and approved context.</p></article>
+      <article class="outcome case-reveal"><h3>Personal at campaign scale</h3><p>Each eligible draft carries the recipient's name, relationship-specific copy, a known current property where applicable, and a unique APA link.</p></article>
       <article class="outcome case-reveal"><h3>Low marginal assembly</h3><p>Validation and message preparation are encoded once, rather than manually repeated across the client base.</p></article>
       <article class="outcome case-reveal"><h3>Joe remains the sender</h3><p>The system prepares the decision surface. Joe decides whether the relationship is ready for the message.</p></article>
     </div>
@@ -78,16 +80,49 @@
         <div class="mail-window">
           <div class="mail-toolbar"><span>Joe's Exchange mailbox</span><span class="draft-badge">DRAFT · SAVE ONLY</span></div>
           <div class="mail-fields"><div><span>TO</span>homeowner</div><div><span>SUBJECT</span>Your Annual Property Analysis</div></div>
-          <div class="mail-body"><div class="mail-brand">NJJoe Group · Homeowner update</div><h3>A useful reason to revisit your home's value.</h3><p>Your private property report and Annual Property Analysis invitation are assembled here for Joe's review.</p><span class="mail-cta">Review the analysis</span></div>
+          <div class="mail-body"><div class="mail-brand">NJJoe Group · Homeowner update</div><h3>A useful reason to revisit your home's value.</h3><p>Your personalized Annual Property Analysis invitation is assembled here for Joe's review.</p><span class="mail-cta">Explore the benefits</span></div>
         </div>
         <div class="mail-stop">NO AUTOMATIC SEND →</div>
       </div>
       <div class="implementation">
-        <article class="implementation-step case-reveal"><span>01</span><h3>Validate the recipient</h3><p>Preserve suppression, invalid-email, missing-home, and multi-home cases instead of forcing every row through.</p></article>
-        <article class="implementation-step case-reveal"><span>02</span><h3>Render the right message</h3><p>Use the approved client data and private Homebot URL; omit copy when its required source is absent.</p></article>
+        <article class="implementation-step case-reveal"><span>01</span><h3>Validate the recipient</h3><p>Hold invalid emails, unresolved segments, ambiguous identities, and incomplete required addresses for review instead of forcing every row through.</p></article>
+        <article class="implementation-step case-reveal"><span>02</span><h3>Render the right message</h3><p>Choose buyer, seller, buyer-seller, or prospect copy. Include only a known current address; all three APA links share the client's opaque tracking URL.</p></article>
         <article class="implementation-step case-reveal"><span>03</span><h3>Save, then verify</h3><p>Create the message through SherWeb EWS with <code>MessageDisposition=SaveOnly</code>, then confirm it through a separate read-only lookup.</p></article>
       </div>
     </div>
+  </section>
+
+  <section class="section section--strong" aria-labelledby="batch-title">
+    <div class="section-head"><div class="section-index"><span>04</span> verified batch</div><div><h2 id="batch-title">248 relationships. Four versions. One draft per client.</h2><p class="section-lede">The September 5, 2026 CRM snapshot contained 272 rows and 256 unique email identities. After resolving tagged buyer-seller companion rows and holding eight identities for review, 248 personalized messages were staged in Joe's mailbox.</p></div></div>
+    <div class="funnel" aria-label="September 5 campaign preparation counts">
+      <div class="funnel-step"><strong>272</strong><span>source rows</span><p>The refreshed CRM export, frozen for a reproducible run.</p></div>
+      <div class="funnel-step"><strong>256</strong><span>email identities</span><p>Duplicate rows reconciled before message preparation.</p></div>
+      <div class="funnel-step"><strong>248</strong><span>verified drafts</span><p>Each read back from Exchange with its recipient, text, and links checked.</p></div>
+    </div>
+    <table class="apa-breakdown"><caption>Composition of the 248-draft batch</caption><thead><tr><th scope="col">Relationship</th><th scope="col">Drafts</th><th scope="col">Address treatment</th></tr></thead><tbody>
+      <tr><th scope="row">Buyer</th><td>156</td><td>Purchased home, expressed as street and town.</td></tr>
+      <tr><th scope="row">Seller</th><td>25</td><td>Address omitted: the sold home is not a forwarding address.</td></tr>
+      <tr><th scope="row">Buyer-seller</th><td>14</td><td>The tagged buyer-seller record identifies the purchased home.</td></tr>
+      <tr><th scope="row">Prospect</th><td>53</td><td>Address omitted: an earlier target property is not a current home.</td></tr>
+    </tbody></table>
+    <p class="apa-evidence-note">Eight held for review: three missing or unknown segments, two ambiguous shared-email records, one invalid email, and two incomplete street/town addresses. Source: frozen September 5 CRM snapshot and independent Exchange readback. Only aggregate counts are published here.</p>
+  </section>
+
+  <section class="section" aria-labelledby="email-demo-title">
+    <div class="section-head"><div class="section-index"><span>05</span> email demo</div><div><h2 id="email-demo-title">The message changes with the relationship.</h2><p class="section-lede">Joe designed the September 5 email templates; I connected the personalization, recipient rules, draft workflow, and tracking. Explore the four versions below using fictional customer details.</p></div></div>
+    <nav class="apa-demo-switcher" aria-label="Email demo variations">
+      <a href="./building/njjoe/email-demo/buyer.html" target="apa-email-preview" data-demo-label="Buyer" aria-current="true">Buyer</a>
+      <a href="./building/njjoe/email-demo/seller.html" target="apa-email-preview" data-demo-label="Seller">Seller</a>
+      <a href="./building/njjoe/email-demo/buyer-seller.html" target="apa-email-preview" data-demo-label="Buyer-seller">Buyer-seller</a>
+      <a href="./building/njjoe/email-demo/prospect.html" target="apa-email-preview" data-demo-label="Prospect">Prospect</a>
+    </nav>
+    <div class="apa-demo-frame"><div class="mail-toolbar"><span id="apa-preview-label" aria-live="polite">Buyer · fictional customer</span><a id="apa-demo-open" href="./building/njjoe/email-demo/buyer.html" target="_blank" rel="noopener">Open full preview ↗</a></div><iframe name="apa-email-preview" id="apa-email-preview" title="Buyer email template with fictional customer data" src="./building/njjoe/email-demo/buyer.html" loading="lazy" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+    <p class="apa-evidence-note">Demo names and addresses are fictional. Buttons and linked images open the public APA landing page without a recipient tracking token. Production messages use a separate, unique URL for each client.</p>
+  </section>
+
+  <section class="section section--strong" aria-labelledby="monitor-title">
+    <div class="section-head"><div class="section-index"><span>06</span> follow-through</div><div><h2 id="monitor-title">Drafts are an output. Engagement is the next question.</h2><p class="section-lede">All 248 messages were verified as drafts, not sends. Joe retains the final review and sending decision. A September 19 follow-up will reconcile confirmed sends with the cookie-free tracker, then examine unique clicked deliveries, repeated requests, scanner flags, and segment differences.</p></div></div>
+    <p class="apa-evidence-note">A link request is not proof of a human click: previews, security scanners, and forwarded emails complicate attribution. No campaign conversion or click-through result is claimed at this stage.</p>
   </section>
 
   <section class="section" aria-label="Conclusion">
@@ -96,7 +131,7 @@
     </div>
     <p class="closing">That bridge <span class="mark">now exists.</span></p>
     <nav class="page-nav" aria-label="Casebook page navigation"><a href="./building/njjoe/microsite.html"><span>← Previous</span><strong>Listing microsite</strong></a><a href="./building/njjoe/index.html"><span>Return →</span><strong>Casebook overview</strong></a></nav>
-    <footer class="footer"><span>Fred Yang · NJJoe casebook</span><span>APA campaign · July 2026</span></footer>
+    <footer class="footer"><span>Fred Yang · NJJoe casebook</span><span>APA campaign · updated September 2026</span></footer>
   </section>
 </main>
 </body>
