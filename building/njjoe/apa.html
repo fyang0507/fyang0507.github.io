@@ -75,21 +75,20 @@
 
   <section class="section" aria-labelledby="implementation-title">
     <div class="section-head"><div class="section-index"><span>03</span> implementation</div><div><h2 id="implementation-title">A mass-personalized campaign with no automatic Send path.</h2></div></div>
-    <div class="mail-flow">
-      <div class="mail-stage case-reveal" aria-label="Conceptual rendering of a personalized Annual Property Analysis email saved in Drafts">
-        <div class="mail-window">
-          <div class="mail-toolbar"><span>Joe's Exchange mailbox</span><span class="draft-badge">DRAFT · SAVE ONLY</span></div>
-          <div class="mail-fields"><div><span>TO</span>homeowner</div><div><span>SUBJECT</span>Your Annual Property Analysis</div></div>
-          <div class="mail-body"><div class="mail-brand">NJJoe Group · Homeowner update</div><h3>A useful reason to revisit your home's value.</h3><p>Your personalized Annual Property Analysis invitation is assembled here for Joe's review.</p><span class="mail-cta">Explore the benefits</span></div>
-        </div>
-        <div class="mail-stop">NO AUTOMATIC SEND →</div>
-      </div>
       <div class="implementation">
         <article class="implementation-step case-reveal"><span>01</span><h3>Validate the recipient</h3><p>Hold invalid emails, unresolved segments, ambiguous identities, and incomplete required addresses for review instead of forcing every row through.</p></article>
         <article class="implementation-step case-reveal"><span>02</span><h3>Render the right message</h3><p>Choose buyer, seller, buyer-seller, or prospect copy. Include only a known current address; all three APA links share the client's opaque tracking URL.</p></article>
         <article class="implementation-step case-reveal"><span>03</span><h3>Save, then verify</h3><p>Create the message through SherWeb EWS with <code>MessageDisposition=SaveOnly</code>, then confirm it through a separate read-only lookup.</p></article>
       </div>
-    </div>
+    <p class="section-lede">Joe designed the September 5 email templates; I connected the personalization, recipient rules, draft workflow, and tracking. Explore the four versions below using fictional customer details.</p>
+    <nav class="apa-demo-switcher" aria-label="Email demo variations">
+      <a href="./building/njjoe/email-demo/buyer.html" target="apa-email-preview" data-demo-label="Buyer" aria-current="true">Buyer</a>
+      <a href="./building/njjoe/email-demo/seller.html" target="apa-email-preview" data-demo-label="Seller">Seller</a>
+      <a href="./building/njjoe/email-demo/buyer-seller.html" target="apa-email-preview" data-demo-label="Buyer-seller">Buyer-seller</a>
+      <a href="./building/njjoe/email-demo/prospect.html" target="apa-email-preview" data-demo-label="Prospect">Prospect</a>
+    </nav>
+    <div class="apa-demo-frame"><div class="mail-toolbar"><span id="apa-preview-label" aria-live="polite">Buyer · fictional customer</span><a id="apa-demo-open" href="./building/njjoe/email-demo/buyer.html" target="_blank" rel="noopener">Open full preview ↗</a></div><iframe name="apa-email-preview" id="apa-email-preview" title="Buyer email template with fictional customer data" src="./building/njjoe/email-demo/buyer.html" loading="lazy" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+    <p class="apa-evidence-note">Demo names and addresses are fictional. Buttons and linked images open the public APA landing page without a recipient tracking token. Production messages use a separate, unique URL for each client.</p>
   </section>
 
   <section class="section section--strong" aria-labelledby="batch-title">
@@ -106,23 +105,6 @@
       <tr><th scope="row">Prospect</th><td>53</td><td>Address omitted: an earlier target property is not a current home.</td></tr>
     </tbody></table>
     <p class="apa-evidence-note">Eight held for review: three missing or unknown segments, two ambiguous shared-email records, one invalid email, and two incomplete street/town addresses. Source: frozen September 5 CRM snapshot and independent Exchange readback. Only aggregate counts are published here.</p>
-  </section>
-
-  <section class="section" aria-labelledby="email-demo-title">
-    <div class="section-head"><div class="section-index"><span>05</span> email demo</div><div><h2 id="email-demo-title">The message changes with the relationship.</h2><p class="section-lede">Joe designed the September 5 email templates; I connected the personalization, recipient rules, draft workflow, and tracking. Explore the four versions below using fictional customer details.</p></div></div>
-    <nav class="apa-demo-switcher" aria-label="Email demo variations">
-      <a href="./building/njjoe/email-demo/buyer.html" target="apa-email-preview" data-demo-label="Buyer" aria-current="true">Buyer</a>
-      <a href="./building/njjoe/email-demo/seller.html" target="apa-email-preview" data-demo-label="Seller">Seller</a>
-      <a href="./building/njjoe/email-demo/buyer-seller.html" target="apa-email-preview" data-demo-label="Buyer-seller">Buyer-seller</a>
-      <a href="./building/njjoe/email-demo/prospect.html" target="apa-email-preview" data-demo-label="Prospect">Prospect</a>
-    </nav>
-    <div class="apa-demo-frame"><div class="mail-toolbar"><span id="apa-preview-label" aria-live="polite">Buyer · fictional customer</span><a id="apa-demo-open" href="./building/njjoe/email-demo/buyer.html" target="_blank" rel="noopener">Open full preview ↗</a></div><iframe name="apa-email-preview" id="apa-email-preview" title="Buyer email template with fictional customer data" src="./building/njjoe/email-demo/buyer.html" loading="lazy" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
-    <p class="apa-evidence-note">Demo names and addresses are fictional. Buttons and linked images open the public APA landing page without a recipient tracking token. Production messages use a separate, unique URL for each client.</p>
-  </section>
-
-  <section class="section section--strong" aria-labelledby="monitor-title">
-    <div class="section-head"><div class="section-index"><span>06</span> follow-through</div><div><h2 id="monitor-title">Drafts are an output. Engagement is the next question.</h2><p class="section-lede">All 248 messages were verified as drafts, not sends. Joe retains the final review and sending decision. A September 19 follow-up will reconcile confirmed sends with the cookie-free tracker, then examine unique clicked deliveries, repeated requests, scanner flags, and segment differences.</p></div></div>
-    <p class="apa-evidence-note">A link request is not proof of a human click: previews, security scanners, and forwarded emails complicate attribution. No campaign conversion or click-through result is claimed at this stage.</p>
   </section>
 
   <section class="section" aria-label="Conclusion">
