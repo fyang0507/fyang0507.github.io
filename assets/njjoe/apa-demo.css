@@ -5,5 +5,6 @@
 .apa-breakdown thead{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--soft)}
 .apa-breakdown td:nth-child(2){font-variant-numeric:tabular-nums;font-weight:600}
 .apa-evidence-note{font-size:14px;line-height:1.65;color:var(--soft);margin-top:20px;max-width:850px}
-.apa-static-demo{max-width:640px;margin:28px auto 0}
+.apa-email-demo{max-width:640px;margin:28px auto 0}
+.apa-email-demo iframe{display:block;width:100%;height:min(65vh,640px);min-height:400px;border:0;background:#f3f0e8}
 @media(max-width:680px){.apa-breakdown{font-size:13px}.apa-breakdown th,.apa-breakdown td{padding:12px 6px}}
