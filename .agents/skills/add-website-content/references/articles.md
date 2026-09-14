@@ -92,11 +92,13 @@ Emphasis uses `*italic*` and `**bold**` only — the renderer does not support u
 
 ## Two recurring hygiene bugs to check on every add or edit
 
-1. **Translation note formatting.** Every bilingual article (`languages` includes both `en` and `zh`) must end its English body with a properly italicized translation note, exactly:
+1. **Translation note formatting.** Every bilingual article (`languages` includes both `en` and `zh`) must end its English body with a properly italicized translation note using this format:
 
    ```markdown
-   *Originally written in Chinese. This article is translated by GPT-5.6.*
+   *Originally written in Chinese. This article is translated by <translator or model>.*
    ```
+
+   Replace `<translator or model>` with the actual translator or model name; the audit accepts any name. Preserve existing article credits unless correcting a verified attribution error.
 
    Do not write it as `_*Originally written in Chinese...._` — the leading `_*` and trailing `_` are a broken emphasis pairing that renders as literal `_*` characters instead of italics.
 

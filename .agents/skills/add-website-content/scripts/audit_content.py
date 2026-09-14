@@ -141,7 +141,7 @@ def audit_posts(root: Path, generator: ModuleType, errors: list[str]) -> tuple[l
         if "en" in languages and "zh" in languages and not TRANSLATION_NOTE_RE.search(english):
             errors.append(
                 f"{label}: bilingual article is missing a properly formatted "
-                "'*Originally written in Chinese. This article is translated by GPT-5.6.*' note "
+                "'*Originally written in Chinese. This article is translated by <translator or model>.*' note "
                 "at the end of the English body"
             )
 
