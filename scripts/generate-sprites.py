@@ -26,6 +26,7 @@ canonical and untouched.
   portrait strip is masked to the frame's silhouette. Every rung is lossy (with
   exact alpha) and each weighs less than the rung above it.
 - op/*.webp: the opener OP's hero cut-outs.
+- about/<name>-<height>.webp: the two figures on About's card, at 1x and 2x.
 - desk-geo.js: window.FY_DESK, the geometry in desk pixels.
 
 Consolidates design/2026-09-motion/tools/10d-cut.py (the partition),
@@ -52,7 +53,7 @@ from scipy import ndimage as nd
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "derived"
-OWNED_DIRS = ("desk", "strip", "op")                         # plus desk-geo.js, rewritten in place
+OWNED_DIRS = ("desk", "strip", "op", "about")                # plus desk-geo.js, rewritten in place
 PAPER = (251, 247, 238)
 
 BACK_EDGE = (468, 476)   # rows of the table's back-edge pen line (471-472 plus halo)
@@ -67,6 +68,8 @@ PLACED = {"book": (36.04, 61.50, 21.34), "frame": (55.23, 33.03, 15.54), "bird":
 STRIPS = {"frame": ("frame-exp3-light.png", 4), "book": ("book-flip2-light.png", 6),
           "bird6": ("bird-strip6-light.png", 6), "bird2": ("bird-strip-light.png", 2)}
 STRIP_OBJ = {"frame": "frame", "book": "book", "bird": "bird6"}
+# About's card figures, by height: 1x and 2x of the tallest the card draws them (152 and 186 card units).
+ABOUT = {"taku-sit-light": ("taku-sit-light.png", (200, 400)), "second-voice": ("second-voice-original.png", (240, 480))}
 # The portrait's frame and easel, above its contact stipple (frame px).
 FRAME_KEEP = [(0, 0), (616, 0), (616, 462), (528, 466), (470, 526), (80, 498), (0, 498)]
 
@@ -408,6 +411,11 @@ def build() -> tuple[dict[str, bytes], dict, dict]:
         files[f"op/{k}.webp"] = webp(img, quality=86, alpha=95)
         geo["op"][k] = {"src": f"op/{k}.webp", "w": img.width, "h": img.height, "cells": n}
     geo["op"]["laptop"]["box"] = laptop_box
+    for name, (src, heights) in ABOUT.items():
+        img = Image.open(ASSETS / src)
+        img = img.convert("RGBA" if "A" in img.getbands() else "RGB")
+        for h in heights:
+            files[f"about/{name}-{h}.webp"] = webp(img.resize((round(img.width * h / img.height), h), Image.LANCZOS))
     return files, geo, desk
 
 
