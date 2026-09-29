@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 · The darkroom and the line — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="06-gallery.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 06</div><h1 class="board-title">The darkroom and the line <span class="display-cn">暗房与晾衣绳</span></h1></div>
+    <div><p class="board-why">Gallery already has the right metaphor, prints pegged to lines, but nothing behaves like film or paper. Photos <b>pop in</b> whenever their bytes land; the “line” is a border drawn <b>under</b> each row, so every peg clips onto air; hover is an endless 0.32s tremble; and a click opens a near-black glass modal that forgets which print you touched. More prints wait behind a <b>Load more</b> button, and below 860px the lines collapse into one column of 18 large polaroids, about <b>6,575px</b> tall.</p>
+      <p class="evidence">evidence: <code>Gallery.dc.html:127</code> lazy img, no decode gate, every photo cropped 4:3 (35 of 107 are portrait) · <code>:50</code> the line is <code>border-bottom</code> · <code>:53</code> <code>frameTremble</code> infinite · <code>:59</code> lightbox <code>rgba(23,18,12,.9)</code> · <code>:161</code> Load more · <code>:141</code> one-column garland</p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Develop <span class="display-cn">显影</span></span><span class="cand-mech">photochemistry · decode-gated · first view only</span></div>
+      <div class="stage g06-stage" id="stage-a">
+        <label class="slow util"><input type="checkbox" id="slow-a"> slow network · 慢网 <small>(bytes land at random, 0.3–2.6 s)</small></label>
+        <div class="rack" id="rack-a"></div>
+        <div class="string-end" id="end-a"><span class="more">keep scrolling — the next line gets strung here ↓</span><span class="done">all four lines are up · 晾满了</span></div>
+        <span class="hint">each print develops the first time you see it · ↻ replay forgets</span>
+      </div>
+      <div class="cand-foot"><div>Every print arrives as a flat grey-green chemical square and develops over ~2.5 s, but only once its bytes have decoded <i>and</i> it is 40% in view, so scrolling staggers the line by itself. Developed prints are remembered for the session, so a second visit is calm. At the last line another one is strung, nail to nail, and pegged left to right. That replaces Load more.
+        <div class="tradeoff"><b>cost</b> opacity + filter on 148px thumbnails only, two IntersectionObservers · <b>a11y</b> reduced motion: prints show developed as soon as they decode, nothing waits on the animation · <b>support</b> WAAPI, img.decode(), sessionStorage, all evergreen</div></div>
+        <button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Clothesline wind <span class="display-cn">晾衣绳</span></span><span class="cand-mech">rope wave + damped pendulums · pointer velocity</span></div>
+      <div class="stage g06-stage" id="stage-b">
+        <span class="loop-state util" id="loop-b">rAF loop · asleep</span>
+        <div class="rack" id="rack-b"></div>
+        <span class="hint">flick across a line. A slow pass leaves it still ↗</span>
+      </div>
+      <div class="cand-foot"><div>The lines become rope, sagging between two nails, and each print hangs from its peg as a damped pendulum. A pointer crossing the rope plucks it (in proportion to vertical speed) and sends a wobble along it that tilts each print as it passes. Entering a print pushes it by horizontal speed, with more torque the lower you hit. Under 260 px/s nothing moves, and the single loop sleeps at rest (see the readout).
+        <div class="tradeoff"><b>cost</b> one rAF for every line on the page, asleep when still; one path + transforms per frame · <b>a11y</b> reduced motion: still ropes, no swing; nothing to operate · <b>support</b> pointer events; replay plays a scripted gust</div></div>
+        <button class="replay" data-replay="replayB">↻ gust</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">Unclip to view <span class="display-cn">取下来看</span></span><span class="cand-mech">spring flight (FLIP) · peg release · swipe</span></div>
+      <div class="stage g06-stage" id="stage-c">
+        <div class="rack" id="rack-c"></div>
+        <span class="hint">click a print (or Tab, Enter) · then ← → or swipe · Esc</span>
+      </div>
+      <div class="cand-foot"><div>The peg opens, and the print you touched drops a hair, tilts into the move and flies to the centre, settling to 0°. It grows into the enlarged view with its frame and handwritten caption intact, and its neighbours swing from the release. Once the 2560px bytes decode, the window unfolds from the 4:3 thumbnail crop to the full frame, so portrait photos are finally shown whole. ← / → or a swipe sends it home and takes the next print off the line; Esc, a click or the backdrop pegs it back.
+        <div class="tradeoff"><b>cost</b> resizes one contained fixed element per frame (not scale, so the 2px line never thins) · <b>a11y</b> modal dialog, arrows / Esc, focus returns to the print; reduced motion opens instantly · <b>support</b> no View Transitions needed</div></div>
+        <button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-d">
+      <div class="cand-head"><span class="cand-letter">D</span><span class="cand-name">One line, one swipe <span class="display-cn">一根绳，一次划</span></span><span class="cand-mech">scroll-snap lines · 390px · strung on approach</span></div>
+      <div class="stage m-stage" id="stage-d">
+        <div class="m-phone"><div class="m-screen">
+          <header class="m-head">
+            <div class="m-kicker"><span class="m-no">03</span><span>shooting</span></div>
+            <h3 class="m-title" lang="zh">在<span>拍</span>。</h3>
+            <p class="m-note"><span lang="zh">人，岁月，生活。</span><span lang="en">People, Years, Life.</span></p>
+            <p class="m-count">Showing <span data-m="shown">18</span> / <span data-m="total">107</span> · 显示 <span data-m="shown">18</span> / <span data-m="total">107</span> 张</p>
+          </header>
+          <div class="m-lines"></div>
+          <div class="m-sentinel"><span>the next line is strung as you get here · 到这儿再拉一根绳 ↓</span></div>
+          <p class="m-end" hidden>all 107 prints are up · 全部晾好了</p>
+        </div></div>
+        <aside class="m-notes">
+          <div class="m-k"><span class="w">390 × 780 · live, scroll inside</span><span class="n">this column is the 390px layout, live</span></div>
+          <p class="m-fact"><b data-m="shown">18</b> prints on <b data-m="lines">3</b> lines = <b data-m="height">…</b> px tall</p>
+          <p class="m-fact soft">today the same prints ≈ <b data-m="today">6,575</b> px</p>
+          <div class="m-bars" aria-hidden="true">
+            <div class="m-bar-col"><div class="m-bar-slot"><div class="m-bar m-bar-then"></div></div><span>today</span></div>
+            <div class="m-bar-col"><div class="m-bar-slot"><div class="m-bar m-bar-now"></div></div><span>lines</span></div>
+          </div>
+          <ul class="m-list">
+            <li>swipe a line: the prints lag behind the rope, then settle when the snap lands</li>
+            <li>scroll to the bottom: another line is strung, pegged, and develops</li>
+            <li>tap a print: it unclips (C) inside the phone</li>
+          </ul>
+        </aside>
+      </div>
+      <div class="cand-foot"><div>Each line becomes its own horizontal swipe with the pegs and nails in view: one print centred, the next peeking at the edge. Swiping accelerates the rope, so the prints lag and swing before the snap settles them. The same 18 prints take about a sixth of today’s height, and near the bottom the next line is strung instead of showing Load more.
+        <div class="tradeoff"><b>cost</b> native scroll-snap; the swing uses scroll events only · <b>a11y</b> each line is a labelled section, prints stay buttons in DOM order; reduced motion: no swing, lines arrive already strung · <b>support</b> scroll-snap everywhere</div></div>
+        <button class="replay" data-replay="replayD">↻ reset</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A + C + D, hung on B’s rope.</b> Develop (A) is the page’s one dense event, and it happens once: the first time each print is seen, gated on real bytes, then remembered. Unclip (C) is the interaction. The print you touch is the print that arrives, still in its frame and caption, and it goes back onto its own peg. D is the mobile layout, and the next line strung on approach replaces Load more on both widths.</p>
+    <p>From B, take the rope and pendulum engine and give it only caused work: the release and return in C, the swipe inertia in D, the pegging of a newly strung line, and a genuine flick across a rope. Keep the 260 px/s threshold, so ordinary travel to a photo never sets the wall moving and the loop stays asleep. Watch for three things. Develop must never hold back a decoded photo for more than its ~2.5 s. The unclip should fetch the 2560px file on pointerdown so it is usually ready on landing. Portrait photos are cropped 4:3 on the line today; the viewer shows them whole, and the line could follow later with uncropped thumbnails.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：暗房与晾衣绳。照片是实物：冲出来、夹上去、取下来看、再夹回去。
+动作时钟：物理时钟（绳的垂度与波、夹子上的阻尼摆、飞行弹簧一次小过冲后落定）；显影是化学时钟（约 2.5 秒，先出暗部，再回暖，再中和）。本页没有插画角色，没有手的时钟。
+映射：第一次进入视野且字节已解码 → 显影；指针快速穿过绳 → 绳上行波与摆动（低于 260 px/s 不动）；取下 → 夹子张开、绳上弹、邻居摆；放回 → 夹子合上、绳下沉、落定一摆；滑动一根绳 → 惯性摆；到达末尾 → 再拉一根绳，依次夹上。
+线条计划：绳、钉、夹子、相框同一支笔（约 2px 墨色）；悬停与键盘聚焦只用 pen.js 在手写地名下画一道下划线。
+色彩计划：显影底色为平涂暖灰绿化学色（不是渐变）；放大时背景压成纸墨色 rgba(51,48,43,.66)，不是黑玻璃；珊瑚色唯一持有者 = 悬停时的笔迹下划线（页面标题“拍”沿用现状）。</div>
+  </div></section>
+</main>
+<script src="../../content/photos.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="06-line.js"></script><script src="06-develop.js"></script><script src="06-unclip.js"></script><script src="06-mobile.js"></script><script src="06-gallery.js"></script>
+</body></html>

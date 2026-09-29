@@ -26,15 +26,18 @@ time-to-final-render fix, not an LCP fix.
 Serif is tiered because the two audiences differ by 8x: a gateway page renders
 ~230 CJK characters of interface text, an essay renders ~2,900. Splitting means
 gateway pages get 147 KB instead of the full 1,085 KB, and stays a static
-`@font-face` the preload scanner can see - a per-post subset would have to be
-injected by JS after posts.js parses, which costs more than it saves.
+`@font-face` the preload scanner can see. The text tier covers every essay,
+although Reading loads one body file at a time: a per-essay subset would have
+to be injected by JS once the essay is known, which costs more than it saves
+and gives up the shared cache across essays.
 
 Pages load only `fonts/derived/`. Like `images/derived/`, that directory is a
 generated artifact - commit it. `.github/workflows/deploy-pages.yml` deletes
 `scripts/` before deploying, so it cannot be built in CI.
 
-Run it after generate-content.py, because the glyph set is read out of the
-*generated* post HTML rather than re-parsed from Markdown:
+The glyph set is read out of the rendered post HTML: it renders the essays
+through generate-content.py's own pipeline, landmarks and all, so it matches
+the body files exactly. Run it after generate-content.py:
 
     uv run scripts/generate-fonts.py
 
@@ -48,6 +51,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html as html_mod
+import importlib.util
 import json
 import re
 import shutil
@@ -70,35 +74,42 @@ NOTO_SOURCES = {
     "NotoSansSC": "https://github.com/google/fonts/raw/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
 }
 
-# Pages whose entire text is folded into every subset. They are small and almost
-# all ASCII, so taking all of them costs a handful of glyphs and removes any need
-# to resolve CSS selectors against static markup.
+# Pages, and the scripts and stylesheets that write their interface text, whose
+# entire text is folded into every subset. They are small and almost all ASCII,
+# so taking all of them costs a handful of glyphs and removes any need to
+# resolve CSS selectors against static markup. Globs, relative to the root:
+# page code in lib/ and the shared modules at the root render strings of their
+# own (the opener's 点按跳过, Gallery's hand notes), so they count as pages.
 PAGES = [
     "index.html", "Gallery.dc.html", "Writing.dc.html", "Reading.dc.html",
     "About.dc.html", "Building.dc.html", "404.html", "UnderConstruction.dc.html",
-    "site-nav.css", "fred-agent.css",
+    "site*.css", "site*.js", "pen*.js", "pen.css", "motion.js", "transitions.*",
+    "lib/**/*.js", "lib/**/*.css", "assets/fred-agent/fred-agent.css",
 ]
 
-# Which post-derived text reaches which face. Verified against the CSS:
-#   DingTalk JinBuTi  <- .display, .title, .post-body h2/h3   (Reading.dc.html:40,63,78)
-#   MuyaoPleased      <- .hand, .eyebrow, .mn, .fig figcaption (Reading.dc.html:41,61,96,101)
-# `.mn` is footnote and reference text and `figcaption` is image captions, so
-# both faces receive arbitrary essay prose - which is exactly why this has to be
-# generated rather than hand-maintained.
+# Which post-derived text reaches which face, by the selector that sets it in
+# lib/reading/reading.css (the other pages render no essay text):
+#   DingTalk JinBuTi  <- .title (post titles), .lm-t and .lm-head (the essay's
+#                        landmark headings, scripts/landmarks.py)
+#   MuyaoPleased      <- .eyebrow (subtitles), .fig figcaption (image captions)
+#   Noto Sans SC      <- .lm-no and the rail's labels (landmark labels), h4,
+#                        .appendix-title, .appendix-postscript
+#   Noto Serif SC     <- the whole body, text tier only (margin notes included)
+# Captions put arbitrary essay prose in the hand face - which is exactly why
+# this has to be generated rather than hand-maintained. `html_elements` takes
+# `tag` or `tag.class`; the generator never nests those elements.
 FACES = {
     "DingTalkJinBuTi.woff2": {
         "family": "DingTalk JinBuTi",
         "master": "local",
         "post_fields": ["title", "titleZh"],
-        "html_elements": ["h2", "h3"],
-        "html_classes": [],
+        "html_elements": ["span.lm-t", "h2.lm-head"],
     },
     "MuyaoSuixin.woff2": {
         "family": "MuyaoPleased",
         "master": "local",
-        "post_fields": ["subtitle", "subtitleZh", "excerpt", "excerptZh"],
+        "post_fields": ["subtitle", "subtitleZh"],
         "html_elements": ["figcaption"],
-        "html_classes": ["mn"],
     },
     # Body face. The UI tier covers interface Chinese on every page; the text
     # tier adds full essay bodies and is loaded only by Reading.dc.html.
@@ -107,7 +118,6 @@ FACES = {
         "master": "NotoSerifSC",
         "post_fields": [],
         "html_elements": [],
-        "html_classes": [],
     },
     "NotoSerifSC-text.woff2": {
         "family": "Noto Serif SC",
@@ -115,16 +125,15 @@ FACES = {
         "whole_post_body": True,
         "post_fields": ["title", "titleZh", "subtitle", "subtitleZh", "excerpt", "excerptZh"],
         "html_elements": [],
-        "html_classes": [],
     },
-    # Utility face: dates, kickers, meta lines, Chinese h4 and appendix titles
-    # (Reading.dc.html:42,53,59,65,81,107). Interface text only, never bodies.
+    # Utility face: dates, kickers, meta lines, landmark labels, Chinese h4
+    # and the reference appendix's title and postscript. Never bodies.
     "NotoSansSC-ui.woff2": {
         "family": "Noto Sans SC",
         "master": "NotoSansSC",
         "post_fields": [],
-        "html_elements": ["h4"],
-        "html_classes": ["appendix-title"],
+        "landmark_labels": True,
+        "html_elements": ["h4", "h2.appendix-title", "p.appendix-postscript"],
     },
 }
 
@@ -135,51 +144,30 @@ def strip_tags(fragment: str) -> str:
     return html_mod.unescape(TAG_RE.sub(" ", fragment))
 
 
-def element_text(html: str, tag: str) -> str:
-    return " ".join(
-        strip_tags(m) for m in re.findall(rf"<{tag}\b[^>]*>(.*?)</{tag}>", html, flags=re.S)
-    )
+def element_text(html: str, selector: str) -> str:
+    """Text of every `tag` or `tag.class` element."""
+    tag, _, cls = selector.partition(".")
+    attrs = rf'[^>]*\bclass="(?:[^"]*\s)?{cls}(?:\s[^"]*)?"[^>]*' if cls else r"[^>]*"
+    return " ".join(strip_tags(m) for m in re.findall(rf"<{tag}\b{attrs}>(.*?)</{tag}>", html, flags=re.S))
 
 
-def class_text(html: str, cls: str) -> str:
-    """Text inside <span class="mn ..."> ... </span>, nested tags included.
-
-    The generated notes are flat single-level spans, so a non-greedy match to the
-    next </span> would truncate at an inner <span class="num">. Walk instead.
-    """
-    out = []
-    for m in re.finditer(rf'<span class="{cls}\b[^"]*"[^>]*>', html):
-        start = m.end()
-        depth = 1
-        pos = start
-        for tok in re.finditer(r"<(/?)span\b[^>]*>", html[start:]):
-            depth += -1 if tok.group(1) else 1
-            if depth == 0:
-                pos = start + tok.start()
-                break
-        else:
-            pos = len(html)
-        out.append(strip_tags(html[start:pos]))
-    return " ".join(out)
-
-
-def load_manifest_js(path: Path, global_name: str):
-    source = path.read_text(encoding="utf-8")
-    marker = f"window.{global_name}="
-    payload = source.split(marker, 1)[1].strip()
-    return json.loads(payload.rstrip().rstrip(";"))
+def load_posts() -> list[dict]:
+    """Every essay as generate-content.py renders it (standard library only, so no extra dependency)."""
+    path = ROOT / "scripts" / "generate-content.py"
+    spec = importlib.util.spec_from_file_location("fred_website_generate_content", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.load_posts()
 
 
 def base_text() -> str:
     """Static page and stylesheet text, plus every ASCII printable."""
     parts = ["".join(chr(c) for c in range(0x20, 0x7F))]
-    for name in PAGES:
-        p = ROOT / name
-        if p.is_file():
-            # Deliberately unfiltered: .dc.html keeps rendered UI strings inside
-            # its inline component script, so stripping <script> would drop them.
-            parts.append(p.read_text(encoding="utf-8"))
-    for name in ("photos.js", "building-projects.js"):
+    for p in sorted({p for pattern in PAGES for p in ROOT.glob(pattern) if p.is_file()}):
+        # Deliberately unfiltered: .dc.html keeps rendered UI strings inside
+        # its inline component script, so stripping <script> would drop them.
+        parts.append(p.read_text(encoding="utf-8"))
+    for name in ("photos.js", "building-projects.js", "home.js"):
         p = ROOT / "content" / name
         if p.is_file():
             parts.append(p.read_text(encoding="utf-8"))
@@ -192,6 +180,9 @@ def face_text(spec: dict, posts: list[dict]) -> str:
         for field in spec["post_fields"]:
             if post.get(field):
                 parts.append(str(post[field]))
+        if spec.get("landmark_labels"):
+            for key in ("landmarksEn", "landmarksZh"):
+                parts.extend(m["label"] for m in (post.get(key) or {}).get("marks", []))
         for key in ("htmlEn", "htmlZh"):
             html = post.get(key) or ""
             if not html:
@@ -200,10 +191,8 @@ def face_text(spec: dict, posts: list[dict]) -> str:
                 # The body face renders the whole article, so take all of it.
                 parts.append(strip_tags(html))
                 continue
-            for tag in spec["html_elements"]:
-                parts.append(element_text(html, tag))
-            for cls in spec["html_classes"]:
-                parts.append(class_text(html, cls))
+            for selector in spec["html_elements"]:
+                parts.append(element_text(html, selector))
     return "".join(parts)
 
 
@@ -287,11 +276,7 @@ def main() -> int:
         )
         return 1
 
-    posts_js = ROOT / "content" / "posts.js"
-    if not posts_js.is_file():
-        print("error: content/posts.js missing; run generate-content.py first", file=sys.stderr)
-        return 1
-    posts = load_manifest_js(posts_js, "FY_POSTS")
+    posts = load_posts()
     shared = base_text()
 
     previous = {}

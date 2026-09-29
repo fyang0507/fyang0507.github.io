@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2 · 10 · The opener: OP → gag — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="r2-10-opener.css">
+</head>
+<body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD R2 · 10 · ALLOWED TO BREAK THE RULES ONCE</div><h1 class="board-title">The opener: OP, then the gag <span class="display-cn">开场：OP 接连锁反应</span></h1></div>
+    <div>
+      <p class="board-why">Round 1’s <b>C</b> (a manic Nichijou OP, then an eyecatch) and <b>D</b> (a bird pecks the honest loading line, and the desk falls in) now run as <b>one piece</b>. The OP is the loud register, the empty desk is the silence, and the hard cut between them is the joke. Both halves are cut hard to fit: 1.5 s of OP, then the gag with no walk-in. The bird is already on the desk when we cut in, and it’s the same bird the OP just gave the hero close-up.</p>
+      <p class="evidence">first visit <b>3.68 s</b> (target ≤ 3.8, cap 4.2) · returning <b>0.68 s</b> (≤ 0.7) · every variant ≤ 2.5 flashes/s on both audit readings (limit 3) · any click / key / wheel fast-forwards in 250 ms · the reveal waits on the real bytes · reduced motion = no opener · nothing stored per visitor</p>
+    </div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 1">
+    <div class="changed-k">WHAT CHANGED FROM ROUND 1</div>
+    <div class="changed-row"><q>C+D; but the way “Fred” is broken down to pair with the Chinese translation is pretty weird (弗 F / 雷 RE / 德 D). But this is the most WOW factor…</q><span class="arrow">→</span><p>One opener, C → D. FRED is never cut into phonetic pieces. There are three name beats to pick from (a · b · c below, switchable in the stage), and each is bilingual as a whole rather than one letter-pair per frame.</p></div>
+    <div class="changed-row"><q>No per-visitor memory.</q><span class="arrow">→</span><p><b>日常 · ep.NN is content, not a visit count.</b> NN is the number of essays on the shelf (27 today), so it changes only when you publish. “Returning” means this browser session only (sessionStorage, like today’s opener), and nothing is written to localStorage.</p></div>
+    <div class="changed-row"><q>The bird is small at desk scale (round-1 D’s own caveat).</q><span class="arrow">→</span><p>The gag plays through a camera. At 1440 it’s one wide framing at ×1.5, so the desk fills the screen. On a phone there’s a mid shot on the bird and its line, then a hard cut to the wide the moment the line snaps. The eyecatch’s cut hides the camera’s return to the page.</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-cd">
+      <div class="cand-head"><span class="cand-letter">✓</span><span class="cand-name">C → D <span class="display-cn">OP → 连锁反应</span></span><span class="cand-mech">12 fps hard cuts → 60 fps physics · one clock · 3.68 s</span></div>
+      <div class="screen" id="screen"><div class="poster"><span>▶ play · 播放</span></div></div>
+      <div class="opts">
+        <button data-v="desk" aria-pressed="true">1440</button><button data-v="phone" aria-pressed="false">390</button>
+        <span class="gap"></span>
+        <button data-m="first" aria-pressed="true">first visit</button><button data-m="returning" aria-pressed="false">returning</button>
+        <span class="gap"></span><span class="lab">name beat</span>
+        <button data-n="a" aria-pressed="true">a · 一字一切</button><button data-n="b" aria-pressed="false">b · 对撞</button><button data-n="c" aria-pressed="false">c · 书脊</button>
+        <span class="sp"></span><button data-play>↻ replay</button><a id="full" href="r2-10-opener-cd.html" target="_blank" rel="noopener">full screen ↗</a>
+      </div>
+      <div class="cand-foot"><div>
+        <ol class="beats" id="beats"></ol>
+        <div class="breaks"><b>breaks</b> one accent per view and low chroma (1.5 s of four flat fields); the calm-desk economy (a drum fill of falling objects); the two-clock split (objects fall on 60 fps physics, while every reaction stays on held frames) · <b>keeps</b> Fred’s own art, bird identity and pen; the hand clock for everything drawn; honest loading as the joke; 萌 not 媚</div>
+        <div class="tradeoff"><b>weight</b> ≈ 160 KB WebP cut-outs (round 1’s) + 34 KB masks (round 1’s) + ≈ 34 KB gzipped code (101 KB raw); the OP’s CJK face is the site’s existing JinBuTi subset (no new font) · <b>runtime</b> one rAF loop that stops at the hand-off, no GL · <b>honest</b> a cold connection makes the bird wait, visibly, with “tap to skip” after 1.5 s and a 6.5 s cap · <b>ep.NN</b> the mockup reads <code>FY_POSTS.length</code>; production would read a tiny generated count, not the 775 KB posts.js</div>
+      </div></div>
+    </article>
+  </section>
+
+  <h2 class="sub">The name beat: three ways to say 弗雷德 = FRED <span class="display-cn">名字的三种念法</span></h2>
+  <section class="cands names" id="names"></section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div id="verdict">
+    <p><b>C → D with name beat a, 一字一切.</b> It fixes exactly what felt weird and keeps exactly what felt like WOW. The drum of slams stays (弗, then 雷 and 德 quicker, then FRED), but each character stands alone, full-bleed, and FRED lands as the payoff. The pairing is across the sequence, never inside a frame, so nobody reads “RE” as a translation of 雷. It audits at ≤ 2.5 flashes/s on both readings, against a limit of 3.</p>
+    <p><b>c, 书脊</b> is the one to take if you want the OP’s first beat to feel designed rather than loud. It’s one held poster: a spine title on a shelf with the bird as the publisher’s colophon, rhyming with the Writing shelf. It’s also the calmest on flashes (≤ 1.5/s). <b>b, 对撞</b> is the most kinetic, two languages colliding into one person, but its entry and smear frames are motion, not posters. Watch-outs for any of them: the gag honestly slows down on a cold connection (that’s the joke, and the cap is 6.5 s); and the OP breaks the colour rules on purpose, for 1.5 s, once.</p>
+    <div class="record">执行模式：多阶段（Fred 选 C+D → 合并为一支 → 名字三选一 → 等 Fred 选）
+表达锚点：狂躁 OP（硬切、平涂色块、巨字、物件英雄镜头）→ 硬切到安静 → 小鸟啄断真实的加载线 → 物件鼓点般落下 → 过场卡
+动作时钟：手的时钟 — OP 12 fps 定格、所有反应（尘线、翻页、相框弹起、眨眼）；物理时钟 — 物件下落与弹跳
+映射：真实字节 → 线的长度 · 啄 → 断 → 落下 · 最后一件落地 → 相框惊起 · 书架上的篇数 → ep.NN
+线条计划：Fred 的原画不重画；OP 的标记（集中线、速度线、tick、闪星）一笔一稿、按种子固定
+色彩计划：OP 1.5 秒内四个平涂色场（破例）；珊瑚色只给相框里的 Fred；之后回到米色纸面与唯一强调色
+破例：一次、1.5 秒、每秒闪烁 ≤ 3 次（两种读法均已审计）· 不存任何访客记录</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script>
+<script src="shared/mock.js"></script>
+<script src="r2-10-opener.js"></script>
+</body>
+</html>

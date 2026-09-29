@@ -1,0 +1,72 @@
+/* transitions.css — cross-document View Transitions: the desk becomes the nav (board r2-01 A).
+   Loaded on home and on every gateway page. The shared parts carry one name each; transitions.js
+   (pagereveal) replaces the browser's default morph with keyframes sampled from the physics clock.
+   Engines without cross-document View Transitions keep a hard cut; reduced motion gets no transition. */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* ---- names: one rendered element per name per document ---- */
+.site-identity{view-transition-name:identity}
+/* the header strip itself: its labels, status line and home link travel with the named parts in it, instead of
+   crossing over inside the page (from a scrolled page that crossover showed two navs, one above the other) */
+.site-shell-header{view-transition-name:site-head}
+.site-index .site-nav-laptop,.desk-laptop{view-transition-name:obj-laptop}
+.site-index .site-nav-book,.desk-book{view-transition-name:obj-book}
+.site-index .site-nav-frame,.desk-frame{view-transition-name:obj-frame}
+.site-index .site-nav-camera,.desk-camera{view-transition-name:obj-camera}
+.site-rule{view-transition-name:site-rule}
+.site-tabmark{view-transition-name:tabmark}
+.desk-plate{view-transition-name:desk-table}
+.desk-edge{view-transition-name:desk-edge}
+.desk-mug{view-transition-name:desk-mug}
+.desk-plant{view-transition-name:desk-plant}
+.desk-bird{view-transition-name:desk-bird}
+.desk-notes{view-transition-name:desk-notes}
+/* the edge ↔ rule line, drawn live during home ↔ page (a snapshot can't sag or straighten) */
+.fy-rule-live{view-transition-name:rule-live;position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:2147483647;overflow:visible;pointer-events:none;fill:none;stroke-linecap:butt;stroke-linejoin:round}
+
+/* ---- carried objects: transitions.js lays out each snapshot around its ink anchor ---- */
+::view-transition-old(obj-laptop),::view-transition-new(obj-laptop),
+::view-transition-old(obj-book),::view-transition-new(obj-book),
+::view-transition-old(obj-frame),::view-transition-new(obj-frame),
+::view-transition-old(obj-camera),::view-transition-new(obj-camera){left:0;top:0;transform-origin:0 0}
+::view-transition-group(rule-live),::view-transition-new(rule-live){animation:none}
+/* the carried objects fly over everything they pass (props, table, the live line under them) */
+::view-transition-group(obj-laptop),::view-transition-group(obj-book),::view-transition-group(obj-frame),::view-transition-group(obj-camera){z-index:3}
+::view-transition-group(rule-live){z-index:2}
+
+/* ---- the page itself: the paper stays put while the rest crosses over (plus-lighter keeps it solid).
+   The header strip exists on one side only here, so it keeps the page's timing ---- */
+html[data-vt=enter]::view-transition-old(root),html[data-vt=enter]::view-transition-new(root),html[data-vt=enter]::view-transition-new(site-head){animation-duration:.3s;animation-delay:.16s;animation-timing-function:ease-in-out;animation-fill-mode:both}
+html[data-vt=leave]::view-transition-old(root),html[data-vt=leave]::view-transition-new(root),html[data-vt=leave]::view-transition-old(site-head){animation-duration:.2s;animation-timing-function:ease-in;animation-fill-mode:both}
+/* page → page: the sheet you leave is nearly gone before the next one comes up, so two layouts never share the
+   screen at half strength (on a phone that double exposure fills the screen); what shows between is the paper */
+html[data-vt=tab]::view-transition-old(root),html[data-vt=tab]::view-transition-old(site-head){animation-duration:.12s;animation-timing-function:cubic-bezier(.4,0,1,1);animation-fill-mode:both}
+html[data-vt=tab]::view-transition-new(root),html[data-vt=tab]::view-transition-new(site-head){animation-duration:.2s;animation-delay:.07s;animation-timing-function:cubic-bezier(0,0,.2,1);animation-fill-mode:both}
+
+/* ---- home → page: the props have no slot, so a held beat and then gravity (g 7000, 3600 on phones) ---- */
+html[data-vt=enter]::view-transition-old(desk-mug){--w:50ms;--spin:-13deg}
+html[data-vt=enter]::view-transition-old(desk-plant){--w:70ms;--spin:6deg}
+html[data-vt=enter]::view-transition-old(desk-bird){--w:20ms;--spin:0deg}
+html[data-vt=enter]::view-transition-old(desk-mug),html[data-vt=enter]::view-transition-old(desk-plant),html[data-vt=enter]::view-transition-old(desk-bird){
+  --fall:219px;transform-origin:50% 100%;
+  animation:fy-vt-fall .25s cubic-bezier(.333,0,.667,.333) var(--w) both,fy-vt-gone .16s cubic-bezier(.55,0,1,.45) calc(var(--w) + 90ms) both}
+html[data-vt=enter]::view-transition-old(desk-notes){animation:fy-vt-gone .11s ease-in both}
+html[data-vt=enter]::view-transition-old(desk-edge){animation:none;opacity:0}
+@media (max-width:640px){
+  html[data-vt=enter]::view-transition-old(desk-mug),html[data-vt=enter]::view-transition-old(desk-plant),html[data-vt=enter]::view-transition-old(desk-bird){--fall:112px}
+}
+@keyframes fy-vt-fall{to{transform:translateY(var(--fall)) rotate(var(--spin))}}
+@keyframes fy-vt-gone{to{opacity:0}}
+
+/* ---- page → home: the rule and the tab are handed to the live line and to transitions.js ---- */
+html[data-vt=leave]::view-transition-old(site-rule){animation:none;opacity:0}
+
+/* ---- page → page: the small marks a page answers with (transitions-tab.js), each its own group, so the
+   compositor moves them: the printed page's edge and the laptop's caret, the camera's flash and its 咔嚓 ---- */
+.fy-tab-edge,.fy-tab-caret,.fy-tab-flash,.fy-tab-kacha{position:fixed;left:0;top:0;z-index:2147483646;pointer-events:none}
+.fy-tab-edge{view-transition-name:tab-edge;width:100vw;height:1.5px;background:var(--ink)}
+.fy-tab-caret{view-transition-name:tab-caret;width:11px;height:20px;background:var(--ink)}
+.fy-tab-flash{view-transition-name:tab-flash;width:92px;height:92px;border-radius:50%;background:#FFFDF6;box-shadow:inset 0 0 0 1.2px var(--ink)}
+.fy-tab-kacha{view-transition-name:tab-kacha;font:22px/1 "DingTalk JinBuTi",serif;color:var(--ink);white-space:nowrap}
+::view-transition-group(tab-edge),::view-transition-group(tab-caret),::view-transition-group(tab-flash),::view-transition-group(tab-kacha){z-index:4}

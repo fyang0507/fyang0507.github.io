@@ -1,0 +1,227 @@
+/* lib/writing/writing.css — the Writing page: the intro
+   statement, the bookcase (paper boxes under one camera, planks with lips, contact stipple, the held book's
+   cover, obi and title page), and the index beside it (readout, fore-edge tabs, year ledger).
+   Flat tones and ink edges, no light source; the pen (pen.css) is the only highlighter, and nothing chosen is
+   coral at rest. Ink hairlines are color-mix of --ink, so the only literals are the spine tones below. */
+
+@font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+/* The spine tones are this file's one colour exception: the four tans and the series' dark cloth the shelf
+   has always used, kept exact so the books keep their colours. */
+.wr{--tone-0:#C9BDA3;--tone-1:#D8CBB0;--tone-2:#B7AB8F;--tone-3:#E4DAC7;--tone-s:#3D362A;--tone-s-ink:#EFE5D3}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Serif SC","Fraunces",Georgia,serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
+.hand{font-family:"MuyaoPleased","Caveat",cursive}
+.util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.writing-statement{font-size:clamp(19px,2.2vw,24px);line-height:1.35;color:var(--soft);padding-bottom:8px}
+.writing-statement-line{display:block}
+.writing-statement-line + .writing-statement-line{margin-top:2px}
+.writing-statement-line[lang="zh"]{font-family:"MuyaoPleased",cursive;letter-spacing:.025em}
+.writing-statement-line[lang="en"]{font-family:"Caveat",cursive;letter-spacing:.01em}
+.statement-beat{display:inline-block;color:var(--mark);font-size:1.06em;font-weight:600;transform:rotate(-1deg) translateY(-.02em)}
+
+/* ---- the page body: the bookcase takes the width, the index stands beside it and stays in view ---- */
+.wr{container:wr/inline-size;position:relative;--stick:16px;margin-top:clamp(28px,3.4vw,40px)}
+.wr-body{display:grid;grid-template-columns:minmax(0,1fr) 312px;gap:30px;align-items:stretch}
+.wr-case{position:relative;min-width:0}
+.wr-index{position:relative;display:flex;flex-direction:column;min-width:0}
+.wr:not(.is-phone) .wr-index{position:sticky;top:var(--stick);align-self:start}
+.wr.is-phone .wr-body{display:flex;flex-direction:column;gap:0}
+.wr.is-phone .wr-case{margin-top:4px}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---- the camera and its world ---- */
+.sh-view{position:absolute;inset:0;overflow:clip}
+.sh-view.strip{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain}
+.sh-view.strip::-webkit-scrollbar{display:none}
+.sh-world{position:absolute;left:0;top:0;height:100%;transform-style:preserve-3d;pointer-events:none}
+.b3{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.f{position:absolute;left:0;top:0;transform-origin:0 0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+/* a leaving book fades face by face: opacity on the box itself would flatten its 3D */
+.b3.book .f{opacity:var(--o,1)}
+.b3.book.is-out,.stip.is-out{display:none}
+
+/* ---- a book: five paper faces (--sk, the spine type scale, is set on .sh-view by case.js) ---- */
+.book{--bw:1.5px}
+.f-spine > .bk-spine{position:absolute;inset:0;background:var(--tone);border:var(--bw) solid var(--ink);overflow:hidden}
+.bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);max-height:85%;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi",serif;font-size:calc(var(--fs) * var(--sk));line-height:1.25;letter-spacing:.03em;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+.series .bk-title{color:var(--tone-s-ink);max-height:70%}
+/* the series number is a paper library label; coral stays on 写 */
+.bk-badge{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font:500 calc(9px * var(--sk))/1 "IBM Plex Mono",monospace;padding:3px 3px 2px;border-radius:1px;letter-spacing:.02em}
+.bk-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid color-mix(in srgb,var(--ink) 26%,transparent)}
+.bk-band.bb1{top:calc(5px * var(--sk))}.bk-band.bb2{top:calc(8.5px * var(--sk))}.bk-band.bb3{bottom:calc(6px * var(--sk))}
+.series .bk-band{border-color:color-mix(in srgb,var(--tone-s-ink) 26%,transparent)}
+.f-top,.f-fore{background:var(--page) repeating-linear-gradient(90deg,transparent 0 3.2px,color-mix(in srgb,var(--ink) 20%,transparent) 3.2px 4px);border:var(--bw) solid var(--ink)}
+.f-top{border-bottom:0}
+.f-back{background:var(--tone);border:var(--bw) solid var(--ink);border-right-width:0}
+.f-cov{transform-style:preserve-3d;backface-visibility:visible;-webkit-backface-visibility:visible}
+
+/* ---- the ghost of the next essay, planks, contact, the empty note ---- */
+.g-front{border:1.5px dashed var(--pencil);border-bottom:0;display:grid;place-items:center}
+.g-front span{font:calc(15px * var(--sk))/1 "MuyaoPleased",cursive;color:var(--pencil);writing-mode:vertical-rl}
+.g-top{border:1.5px dashed var(--pencil);border-bottom:0}
+.pl-top{background:var(--plank);border:1.5px solid var(--ink);border-bottom:0}
+.pl-lip{background:var(--lip);border:1.5px solid var(--ink)}
+.pl-top,.pl-lip{transition:opacity .22s linear}
+.pl-top.is-off,.pl-lip.is-off{opacity:0}
+/* the shelf label: a printed slip on the lip naming the years standing on it now */
+.pl-lab{position:absolute;left:18px;top:50%;transform:translateY(-50%);padding:1.5px 6px 1px;background:var(--page);border:1px solid color-mix(in srgb,var(--ink) 42%,transparent);
+  font:500 10.5px/1.05 "IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--pencil);white-space:nowrap}
+.pl-lab[hidden]{display:none}
+.stip{background-repeat:repeat-x;background-position:0 0;transition:opacity .12s linear}
+.case-empty{position:absolute;left:0;top:0;font:21px/1.25 "Caveat",cursive;color:var(--pencil);white-space:nowrap;transform-origin:0 100%;opacity:0;transition:opacity .2s linear}
+.case-empty span{display:block;font:17px/1.3 "MuyaoPleased",cursive}
+.case-empty.on{opacity:1}
+
+/* ---- hit targets: flat links over the spines (z = +1px); a held book takes the pointer on every face ---- */
+.hits{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.bk-hit{position:absolute;display:block;transform:translateZ(1px);pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bk-hit.is-out{display:none}
+/* a spine's name wraps inside its own spine (clipped to nothing), so it never lays out across the index */
+.bk-hit .sr-only{inset:0;width:auto;height:auto;margin:0;white-space:normal;clip:auto;clip-path:inset(50%)}
+.bk-hit:focus,.bk-hit:focus-visible{outline:none}
+.book.held .f,.book.held .leaf-front,.book.held .leaf-back,.book.held .p1{pointer-events:auto;cursor:pointer}
+
+/* ---- the bird (hand's clock: stepped frames; its sprite's ground line is clipped so the book is the ground) ---- */
+.bird{position:absolute;left:0;top:0;pointer-events:none}
+.bird-f{position:absolute;inset:0;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat;clip-path:inset(0 0 18% 0)}
+.case-cue{position:absolute;left:0;right:0;top:4px;text-align:center;font:19px/1.2 "Caveat",cursive;color:var(--pencil);transform:rotate(-2deg);pointer-events:none;transition:opacity .2s;z-index:2}
+.case-cue span{margin-left:8px;font:15px/1.2 "MuyaoPleased",cursive}
+.case-cue.off{opacity:0}
+
+/* ---- the book in your hand: front board (cover under the obi), its reverse, the title page ---- */
+.leaf{position:absolute;inset:0;transform-origin:0 50%;transform-style:preserve-3d}
+.leaf-front,.leaf-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.leaf-front{background:var(--tone);border:var(--bw) solid var(--ink);border-left-width:0}
+.leaf-back{transform:rotateY(180deg);background:var(--plank) repeating-linear-gradient(135deg,transparent 0 9px,color-mix(in srgb,var(--ink) 5%,transparent) 9px 10px);border:var(--bw) solid var(--ink)}
+.cv{position:absolute;left:0;top:0;transform-origin:0 0}
+.cv-img{position:absolute;inset:0;overflow:hidden;background:var(--paper2)}
+.cv-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
+.obi{position:absolute;left:0;right:0;bottom:0;min-height:47%;display:flex;flex-direction:column;align-items:flex-start;background:var(--slip);border-top:1.4px solid var(--ink);padding:14px 13px 11px 14px;text-align:left}
+.obi::after{content:"";position:absolute;right:5px;top:0;bottom:0;border-right:1px solid color-mix(in srgb,var(--ink) 22%,transparent)}
+.obi-zh{position:relative;display:inline-block;max-width:100%;font:400 17px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
+.obi-en{margin-top:3px;font:12px/1.25 var(--text);color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.obi-meta{margin-top:9px;font:9.5px/1.6 var(--util);letter-spacing:.03em;color:var(--pencil)}
+.obi-meta .ml{display:block}
+.obi-meta b{white-space:nowrap;font-weight:400}
+.obi-note{margin-top:auto;padding-top:10px;font:16px/1 "Caveat",cursive;color:var(--soft);transform:rotate(-2.5deg);transform-origin:0 50%;white-space:nowrap}
+.obi-note span{font:15px/1 "MuyaoPleased",cursive;margin-left:7px;color:var(--ink)}
+.exlib{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) rotate(-2deg);padding:12px 16px 10px;border:1.5px solid color-mix(in srgb,var(--ink) 70%,transparent);font:10px/1.7 var(--util);letter-spacing:.14em;color:var(--soft);text-align:center;background:var(--page);white-space:nowrap}
+.exlib b{display:block;font:500 17px/1.3 "Caveat",cursive;letter-spacing:0;color:var(--ink)}
+.exlib span{display:block}
+.p1{position:absolute;inset:0;transform:translateZ(-1.5px);background:var(--page);border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);border-left-width:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.p1 .cv{display:flex;flex-direction:column;align-items:flex-start;padding:17% 11% 11%}
+.p1-head{font:8.5px/1 var(--util);letter-spacing:.14em;color:var(--pencil)}
+.p1-zh{position:relative;margin-top:40px;max-width:76%;font:400 22px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
+.p1-en{margin-top:7px;font:13px/1.3 var(--text);color:var(--soft)}
+.p1-rule{display:block;width:34px;margin-top:16px;border-top:1.5px solid var(--ink)}
+.p1-foot{margin-top:auto;font:8.5px/1.4 var(--util);letter-spacing:.08em;color:var(--pencil)}
+
+/* ---- the index: readout ---- */
+.ctl-label{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+.ctl-label [lang=zh]{font:500 12.5px/1 "Noto Sans SC",sans-serif;color:var(--soft);letter-spacing:.06em}
+.ctl-label span:not([lang]){font:10.5px/1 var(--util);color:var(--pencil);letter-spacing:.08em}
+.ix-head{padding:0 0 12px}
+.ro-foot{display:flex;align-items:baseline;gap:12px;min-height:22px}
+.ro-n{font:12px/1 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap}
+.ro-clear{position:relative;margin-left:auto;padding:5px 2px;font:11.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);visibility:hidden;white-space:nowrap}
+.ro-clear > span{position:relative;display:inline-block}
+.ro-clear[data-pen-tier="1"],.ro-clear[data-pen-tier="2"]{color:var(--ink)}
+.ro.narrowed .ro-clear{visibility:visible}
+/* the sentence sits well clear of clear's underline (≥ 10 px, scripts/verify/pen-spacing.mjs) */
+.ro-line{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:9px;min-height:50px;align-content:flex-start;margin-top:12px;font:400 17.5px/1.42 var(--text);color:var(--ink)}
+.ro .zh{font:500 16px/1.42 "Noto Serif SC",serif}
+.ro-v{display:inline-flex;align-items:baseline;gap:7px;white-space:nowrap}
+.ro-t,.ro-was-t{white-space:nowrap}
+.ro-v.is-all{color:var(--soft)}
+.ro-v.is-all .zh{font-weight:400}
+.ro-sep{color:var(--pencil);font-weight:300}
+.ro-was{position:relative;color:var(--pencil)}
+.ro-was[hidden]{display:none}
+.ro-was .zh{font-weight:400}
+.ro-strike{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+
+/* ---- the index: a closed book whose tabs come out of its fore-edge ---- */
+.tb-label{margin-bottom:9px}
+.tb-block,.tb-inner{position:relative}
+.tb{position:relative;display:flex;align-items:center;text-align:left;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.tb-paper{position:absolute;left:0;top:0;z-index:-2;overflow:visible;pointer-events:none}
+.tb-out{fill:var(--paper);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+.tb[aria-checked="true"] .tb-out{fill:var(--page)}
+.tb-lip{fill:var(--paper2)}
+.tb-crease{fill:none;stroke:var(--pencil);stroke-width:1;opacity:.55}
+.tb-contact{fill:none;stroke:var(--pencil);stroke-width:1.1;stroke-linecap:round;opacity:.6}
+.tb-lab{position:relative;display:inline-flex;align-items:baseline;gap:6px;white-space:nowrap}
+.tb-en{font:500 11px/1.2 var(--util);letter-spacing:0;color:var(--ink)}
+.tb-zh{font:12.5px/1.2 "Noto Sans SC",sans-serif;color:var(--soft)}
+.tb-n{margin-left:auto;padding-left:7px;font:11px/1 var(--util);color:var(--pencil)}
+.tb.is-off .tb-out{fill:var(--paper2)}
+.tb.is-off .tb-en,.tb.is-off .tb-zh,.tb.is-off .tb-n{color:var(--pencil)}
+.tb-edge{position:absolute;z-index:2;pointer-events:none;background:var(--page);border:1.5px solid var(--ink);border-radius:2px}
+.tb-side{--cov:72px;--pg:7px}
+.tb-side .tb-inner{padding:11px 0}
+.tb-book{position:absolute;left:0;top:0;bottom:0;width:var(--cov);z-index:3;background:var(--tone-1);border:1.5px solid var(--ink);border-radius:2px 3px 3px 2px}
+.tb-book::before{content:"";position:absolute;left:9px;top:3px;bottom:3px;border-left:1px solid color-mix(in srgb,var(--ink) 28%,transparent)}
+.tb-slip{position:absolute;left:19px;top:14px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px 8px;background:var(--page);border:1px solid color-mix(in srgb,var(--ink) 60%,transparent)}
+.tb-slip b{font:400 17px/1.1 "DingTalk JinBuTi",serif;color:var(--ink);writing-mode:vertical-rl;letter-spacing:.14em}
+.tb-slip i{font:normal 10px/1 var(--util);letter-spacing:.06em;color:var(--soft)}
+.tb-side .tb-edge{left:calc(var(--cov) - 1.5px);top:3px;bottom:3px;width:var(--pg);border-radius:0 1px 1px 0;border-left:0;background-image:repeating-linear-gradient(0deg,transparent 0 2.4px,color-mix(in srgb,var(--ink) 22%,transparent) 2.4px 3.1px)}
+.tb-side .tb-group{display:flex;flex-direction:column;gap:5px;padding-left:calc(var(--cov) - 6px)}
+.tb-side .tb{width:calc(100% - 12px);height:35px;padding:0 8px 0 15px;z-index:1}
+.tb-strip .tb-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;padding-top:13px;margin:0 -2px}
+.tb-strip .tb-scroll::-webkit-scrollbar{display:none}
+.tb-strip .tb-inner{width:max-content;min-width:100%;padding:0 10px 0 4px}
+.tb-strip .tb-group{display:flex;gap:4px;align-items:flex-end}
+.tb-strip .tb{height:42px;align-items:flex-start;padding:10px 12px 0}
+.tb-strip .tb-edge{left:0;right:0;bottom:-2px;height:12px;background-image:repeating-linear-gradient(90deg,transparent 0 2.4px,color-mix(in srgb,var(--ink) 22%,transparent) 2.4px 3.1px)}
+
+/* ---- the index: the year ledger (rows at --rh, 30 px, so an underline never hangs into the next year) ---- */
+.ix-years{margin-top:auto;padding-top:14px}
+.lg-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.lg-all{position:relative;padding:5px 2px;font:11.5px/1 var(--util);letter-spacing:.03em;color:var(--soft);white-space:nowrap}
+.lg-all span{position:relative}
+.lg-all[aria-pressed=true]{color:var(--ink);cursor:default}
+.lg-track{position:relative;user-select:none;-webkit-user-select:none;cursor:pointer}
+.lg-ink{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.lg-rule{stroke:var(--line);stroke-width:1}
+.lg-margin{stroke:var(--pencil);stroke-width:1;opacity:.55}
+.lg-tick{stroke:var(--pencil);stroke-width:1.2;stroke-linecap:round}
+.tl path{fill:none;stroke:var(--ink);stroke-width:1.45;stroke-linecap:round}
+.lg.narrowed .tl:not(.in) path{stroke:var(--pencil);opacity:.42}
+.lg-row{position:relative;display:flex;min-width:0}
+.lg-row:focus-visible,.wr button:focus-visible{outline:none}
+.lg-y{position:relative;font:12.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);white-space:nowrap}
+/* a year with nothing for the chosen tag: pencil (still ≥ 4.5:1, still pressable), and its line has no tally */
+.lg-row.is-dim .lg-y{color:var(--pencil)}
+.lg.narrowed .lg-row:not(.is-in) .lg-y{color:var(--pencil)}
+.lg-row.is-sel .lg-y{color:var(--ink);font-weight:500;opacity:1}
+.lg-rows .lg-track{display:flex;flex-direction:column;height:calc(var(--ny,12) * var(--rh,30px));touch-action:none}
+.lg-rows .lg-row{flex:1 1 0;align-items:center;padding-left:9px}
+.lg.is-drag .lg-track{cursor:ns-resize}
+.lg-cols .lg-track{display:flex;height:66px;touch-action:pan-y}
+.lg-cols.is-drag .lg-track{cursor:ew-resize}
+.lg-cols .lg-row{flex:1 1 0;align-items:flex-end;justify-content:center;padding-bottom:3px}
+.lg-cols .lg-y{font-size:11px}
+.lg-flag{position:absolute;left:0;top:0;z-index:6;padding:5px 9px 6px;background:var(--paper);border:1.5px solid var(--ink);border-radius:3px;
+  font:500 11.5px/1 var(--util);letter-spacing:.03em;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s linear}
+.lg-flag::after{content:"";position:absolute;background:var(--ink)}
+.lg-rows .lg-flag::after{left:100%;top:50%;width:11px;height:1.5px;margin-top:-.75px}
+.lg-cols .lg-flag::after{left:50%;top:100%;width:1.5px;height:9px;margin-left:-.75px}
+.lg.flag-on .lg-flag{opacity:1}
+
+/* ---- phone: the index as one strip above the shelf ---- */
+.wr.is-phone .ix-head{padding-bottom:6px}
+.wr.is-phone .ro-line{min-height:0;font-size:16px;column-gap:7px}
+.wr.is-phone .ro .zh{font-size:14.5px}
+.wr.is-phone .ro-v.is-all .zh,.wr.is-phone .ro-was .zh{display:none}
+.wr.is-phone .tb-label{margin-bottom:0}
+.wr.is-phone .ix-years{margin-top:10px;padding-top:0}
+.wr.is-phone .lg-head{margin-bottom:2px}
+.wr.is-phone .lg-all{padding:8px 4px}
+
+/* ---- reduced motion: nothing fades or slides; states land at once (the springs and the pen snap in JS) ---- */
+@media (prefers-reduced-motion:reduce){ .wr *,.wr *::before,.wr *::after{transition:none!important} }

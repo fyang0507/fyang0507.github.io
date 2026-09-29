@@ -1,0 +1,87 @@
+/* Board r2-02 — slice 2 (Building.dc.html's corkboard) and the key-pose sheet. */
+
+/* The band multiplies with whatever paper it lands on: cream, the corkboard, the lead card's wheat. */
+.tm{mix-blend-mode:multiply}
+
+/* ---- slice 2: the corkboard ---- */
+.bd{padding:30px 26px 26px}
+.bd-shell{--board:#EEE4CE;--line-strong:#CFC1A9;position:relative;padding:20px 0 16px;border:1px solid rgba(140,120,85,.22);border-radius:16px;background-color:var(--board);background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:28px 28px;box-shadow:0 1px 2px rgba(60,50,35,.05),0 10px 26px rgba(60,50,35,.06)}
+.bd-shell::before{content:"";position:absolute;left:48%;top:-9px;width:112px;height:25px;background:rgba(222,196,143,.67);clip-path:polygon(3% 7%,96% 0,100% 84%,4% 100%);transform:translateX(-50%) rotate(-2deg)}
+.bd-toolbar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 28px 6px}
+/* Legible order label (live: 9.5px uppercase mono). */
+.bd-order{font:500 12px/1.4 var(--util);letter-spacing:.02em;color:var(--soft)}
+.bd-order .zh{font:400 11.5px/1.4 var(--util-cn);color:var(--pencil)}
+.bd-order .sep{color:var(--pencil)}
+.bd-actions{display:flex;gap:14px;padding-bottom:6px}
+/* Icon buttons stay round, but transparent: the band has to be able to pass behind the glyph. */
+.bd-scroll{position:relative;display:grid;place-items:center;width:40px;height:40px;border:1.5px solid var(--ink);border-radius:50%;background:transparent;color:var(--ink);font:500 15px/1 var(--util)}
+.bd-scroll:disabled{opacity:.3;cursor:default}
+.bd-g{position:relative;display:block;width:20px;text-align:center;line-height:18px}
+
+.bd-viewport{position:relative;width:100%;overflow-x:auto;overflow-y:hidden;padding:26px 28px 30px;scrollbar-width:thin;scrollbar-color:var(--ink) rgba(126,108,78,.16);overscroll-behavior-inline:contain}
+.bd-track{position:relative;display:flex;align-items:flex-start;gap:42px;width:max-content;min-width:100%;padding:10px 26px 118px 6px;isolation:isolate}
+
+/* Pinned cards: the tilt pivots on the pin's real anchor (AGENTS.md), so the pin never slides. */
+.bd-slot{--tilt:0deg;--drop:var(--drop-d,0px);--pin-left:var(--pin-d,50%);--pin-tilt:-8deg;--w:250px;position:relative;flex:none;width:var(--w);transform:translateY(var(--drop)) rotate(var(--tilt));transform-origin:var(--pin-left) 14px;transition:transform .55s var(--ease-settle)}
+.bd-slot.is-hover,.bd-slot.is-open{transform:translateY(calc(var(--drop) - 4px)) rotate(calc(var(--tilt) * .3))}
+.bd-pin{position:absolute;z-index:8;left:var(--pin-left);top:-22px;width:20px;height:40px;overflow:visible;pointer-events:none;transform:translateX(-50%) rotate(var(--pin-tilt));transform-origin:50% 90%}
+.bd-pin .ps{fill:rgba(60,50,35,.22)}
+.bd-pin .pst{fill:none;stroke:#8d887f;stroke-width:2.4;stroke-linecap:round}
+.bd-pin .ph{fill:var(--pin,var(--ink))}
+.bd-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;width:100%;padding:24px 22px 22px;border:1.5px solid var(--line-strong);border-radius:11px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);text-align:left;color:var(--ink);cursor:pointer;transition:box-shadow .3s ease}
+.bd-slot.is-hover .bd-card,.bd-slot.is-open .bd-card{box-shadow:0 14px 26px rgba(60,50,35,.15)}
+.bd-card--lead{padding:30px 30px 28px;background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper));border-color:transparent}
+.bd-card--featured{background:color-mix(in srgb,#DCE8E7 55%,var(--paper));border-color:transparent}
+.bd-kind{font:500 10.5px/1.3 var(--util);letter-spacing:.06em;color:var(--soft)}
+.bd-kind .life{margin-left:6px;color:var(--pencil)}
+.bd-title{margin-top:12px;font:500 23px/1.15 var(--disp);letter-spacing:-.005em}
+.bd-card--lead .bd-title{margin-top:14px;font-size:32px}
+.bd-title .pen-t{position:relative;display:inline-block}
+.bd-note{margin-top:12px;font:400 14px/1.55 var(--text);color:var(--soft)}
+.bd-card--lead .bd-note{font-size:15.5px;max-width:34ch}
+.bd-caps{margin-top:12px;display:grid;gap:3px;font:400 11px/1.45 var(--util);color:var(--soft)}
+.bd-more{display:none;margin-top:14px;font:500 11px/1.4 var(--util);letter-spacing:.03em;color:var(--ink)}
+.bd-more .zh{white-space:nowrap;margin-left:6px;font:400 11px/1.4 var(--util-cn);color:var(--soft)}
+.is-open .bd-more{display:block}
+
+@container (max-width:620px){
+  .bd-slot{--drop:var(--drop-m,var(--drop-d));--pin-left:var(--pin-m,var(--pin-d))}
+  .pt-note .zh{display:block;margin:4px 0 0 10px}
+  .bd{padding:22px 12px 18px}
+  .bd-toolbar{padding:0 16px 6px}
+  .bd-order .zh{display:none}
+  .bd-viewport{padding:22px 16px 26px}
+  .bd-track{gap:30px;padding-bottom:64px}
+  .bd-card--lead .bd-title{font-size:27px}
+  .bd-card--lead{padding:26px 22px 24px}
+}
+
+/* ---- the key-pose sheet ---- */
+.morph{margin-top:28px;padding:18px 20px 22px;border:1.5px solid var(--ink);border-radius:10px}
+.morph-sub{margin-left:auto;font-size:11px;color:var(--pencil)}
+.sheet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.kf{position:relative;display:flex;flex-direction:column;align-items:center;padding:34px 10px 12px;border:1px dashed var(--line);border-radius:8px;min-width:0}
+.kf-w{position:relative;display:inline-block;margin-left:18px;font:400 16px/1.3 var(--text);color:var(--soft);white-space:nowrap}
+.kf-w .zh{font:400 15px/1.3 var(--text-cn)}
+.kf-w .sep{color:var(--pencil)}
+.kf-w.ink{color:var(--ink)}
+.kf-n{position:absolute;left:10px;top:9px;font:500 10.5px/1 var(--util);color:var(--pencil)}
+.kf-t{margin-top:24px;font:11px/1.45 var(--util);color:var(--soft);text-align:center}
+.kf-t b{display:block;font-weight:500;color:var(--ink)}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.cmp{display:flex;flex-direction:column;align-items:center;padding:16px 16px 18px;border:1px dashed var(--line);border-radius:8px;min-width:0}
+.cmp.pick-cmp{border:1.5px solid var(--ink)}
+.cmp-k{align-self:flex-start;font-size:11px;color:var(--soft)}
+.cmp-k b{font-weight:500;color:var(--ink)}
+.cmp-w{position:relative;margin:40px 0 34px 22px;padding:2px 0;font:400 25px/1.3 var(--text);color:var(--ink);cursor:pointer}
+.cmp-w .zh{font:400 23px/1.3 var(--text-cn)}
+.cmp-note{max-width:440px;font-size:11px;line-height:1.55;color:var(--pencil);text-align:center}
+.scrub{width:min(100%,380px);margin:0 0 10px;accent-color:var(--ink)}
+
+@media (max-width:760px){
+  .sheet{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .compare{grid-template-columns:1fr}
+  .morph-sub{margin-left:0}
+  .cmp-w{font-size:16px;white-space:nowrap}
+  .cmp-w .zh{font-size:15px}
+}

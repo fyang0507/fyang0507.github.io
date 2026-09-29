@@ -1,0 +1,32 @@
+/* pen.css — the pen's marks (pen.js, pen-tier.js). Values come from site-tokens.css.
+
+   Coral (--pen) is the pen's live attention: the notice line, the focus 「 」 and the pointer. It is one
+   ink drawn as each paper shows it: it reads 3.19:1 on cream, but flat on cork or the lead card's
+   wheat it drops under the 3:1 a state mark needs, so on those papers the same coral is drawn
+   multiplied by the paper (≥ 3:1). Mark a surface with data-paper="cork | wheat | cream".
+   Chosen is the wheat band (--hl) with its darker edge (--hl-ink): no coral at rest. */
+
+/* Each per-paper value (site-tokens.css) is the cream coral multiplied by that paper:
+   3.17:1 on cork (--board), 3.07:1 on the lead card's wheat (--wash-wheat). */
+[data-paper="cream"]{--pen:var(--pen-cream)}
+[data-paper="cork"]{--pen:var(--pen-cork)}
+[data-paper="wheat"]{--pen:var(--pen-wheat)}
+
+/* TierMark: the wheat layer multiplies with whatever paper it lands on; the coral layer does not */
+.tm{mix-blend-mode:multiply}
+.tm-band{fill:var(--hl);opacity:.86}
+.tm-line{fill:none;stroke:var(--hl-ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tm-pool{fill:none;stroke:var(--hl-ink);stroke-width:1.7;stroke-linecap:round;opacity:.42}
+.tm-hot{fill:none;stroke:var(--pen);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* FocusMark 「 」 and the pointer glyph: the same 2.2 px pen */
+.fm-c,.pt-s{fill:none;stroke:var(--pen);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* The pen replaces the browser's focus ring only where a FocusMark actually draws 「 」 */
+[data-pen-focus]:focus-visible{outline:none}
+
+@media (forced-colors:active){
+  .tm-band{fill:Highlight;opacity:.5}
+  .tm-line,.tm-hot,.fm-c,.pt-s{stroke:CanvasText}
+  [data-pen-focus]:focus-visible{outline:2px solid CanvasText}
+}

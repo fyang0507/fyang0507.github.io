@@ -1,0 +1,62 @@
+/* r2-10 · the name beat, three variants (r2-10-op-names.js). Landscape composed for 1440 × 900, portrait
+   (≤ 5:6) recomposed for 390 × 844. Per-tick poses are held drawings (data-f), never tweens. */
+
+/* ---------- a · 一字一切: each character alone, full-bleed, then FRED ---------- */
+.sh-a-fu .gl{--x:43%;--y:52%;--r:-6deg;font-size:100vh}
+.sh-a-lei .gl{--x:57%;--y:50%;--r:5deg;font-size:114vh}
+.sh-a-de .gl{--x:50%;--y:52%;--r:-3deg;font-size:100vh}
+.sh-a-fred{color:#FBF6EC}
+.sh-a-fred .word{--x:50%;--y:50%;--r:-5deg;font-size:40vw}
+
+/* ---------- b · 对撞: two words, one collision ---------- */
+.sh-b-in .cn,.sh-b-hit .cn{font-size:17vw;letter-spacing:.02em}
+.sh-b-in .word,.sh-b-hit .word{font-size:22vw}
+/* tick 0: entering from the frame edges; tick 1: the one smear, stretched along the travel */
+.sh-b-in .cn{--x:4%;--y:41%}
+.sh-b-in .word{--x:96%;--y:60%}
+.sh-b-in[data-f="1"] .cn{--x:14%;transform:translate(-50%,-50%) skewX(-16deg) scaleX(1.5)}
+.sh-b-in[data-f="1"] .word{--x:86%;transform:translate(-50%,-50%) skewX(16deg) scaleX(1.5)}
+/* the hold (default pose): one interlocked lockup, each word tipped by the hit */
+.sh-b-hit .cn{--x:27.5%;--y:41%;--r:-4deg}
+.sh-b-hit .word{--x:72%;--y:61%;--r:3deg}
+/* the impact frame: squashed into each other, overlapping at the seam */
+.sh-b-hit[data-f="0"] .cn{--x:31%;--y:43%;transform:translate(-50%,-50%) scale(.84,1.12)}
+.sh-b-hit[data-f="0"] .word{--x:69%;--y:59%;transform:translate(-50%,-50%) scale(.84,1.12)}
+
+/* ---------- c · 书脊: one spine title on a shelf ---------- */
+.sh-c-spine .spine{--x:46%;--y:34%;--r:-2deg;width:60vh;height:112vh;background:#1F1B17;color:#FBF6EC;border-radius:.9vh}
+.sh-c-spine[data-f="0"] .spine{transform:translate(-50%,-50%) translateY(-3vh) rotate(4deg)}   /* mid-fall, tipped the other way: it lands and rocks back to −2° */
+.sh-c-spine .sp-cn,.sh-c-spine .sp-en{position:absolute;top:29vh;writing-mode:vertical-rl;white-space:nowrap;line-height:1}
+.sh-c-spine .sp-cn{right:6vh;font-size:22vh;letter-spacing:.03em}
+.sh-c-spine .sp-en{left:6vh;font-family:"Fraunces",serif;font-style:italic;font-weight:500;font-size:28.5vh;line-height:.8;letter-spacing:-.01em;color:#FFC629}
+.sh-c-spine .sp-band{position:absolute;left:0;right:0;height:.55vh;background:#FFC629}
+.sh-c-spine .sp-band.t{bottom:13.4vh}
+.sh-c-spine .sp-band.b{bottom:12vh}
+.sh-c-spine .colo{position:absolute;left:0;top:0;overflow:visible}
+
+/* ---------- portrait ---------- */
+@media (max-aspect-ratio:5/6){
+  .sh-a-fu .gl{--x:47%;--y:43%;--r:-6deg;font-size:104vw}
+  .sh-a-lei .gl{--x:53%;--y:53%;--r:5deg;font-size:120vw}
+  .sh-a-de .gl{--x:50%;--y:46%;--r:-3deg;font-size:106vw}
+  .sh-a-fred .word{--x:50%;--y:50%;--r:-90deg;font-size:36vh}
+
+  .sh-b-in .cn,.sh-b-hit .cn{font-size:29vw}
+  .sh-b-in .word,.sh-b-hit .word{font-size:37vw}
+  .sh-b-in .cn{--x:50%;--y:5%}
+  .sh-b-in .word{--x:50%;--y:95%}
+  .sh-b-in[data-f="1"] .cn{--y:22%;transform:translate(-50%,-50%) skewY(-8deg) scaleY(1.8)}
+  .sh-b-in[data-f="1"] .word{--y:78%;transform:translate(-50%,-50%) skewY(8deg) scaleY(1.8)}
+  .sh-b-hit .cn{--x:49%;--y:41.5%;--r:-5deg}
+  .sh-b-hit .word{--x:51%;--y:57.5%;--r:4deg}
+  .sh-b-hit[data-f="0"] .cn{--x:50%;--y:44.5%;transform:translate(-50%,-50%) scale(1.08,.82)}
+  .sh-b-hit[data-f="0"] .word{--x:50%;--y:54.5%;transform:translate(-50%,-50%) scale(1.08,.82)}
+
+  .sh-c-spine .spine{--x:50%;--y:36%;--r:-2deg;width:88vw;height:108vh;border-radius:2vw}
+  .sh-c-spine[data-f="0"] .spine{transform:translate(-50%,-50%) translateY(-4vh) rotate(4deg)}
+  .sh-c-spine .sp-cn,.sh-c-spine .sp-en{top:29vh}
+  .sh-c-spine .sp-cn{right:6vw;font-size:36vw}
+  .sh-c-spine .sp-en{left:5vw;font-size:46vw}
+  .sh-c-spine .sp-band.t{bottom:19.4vh}
+  .sh-c-spine .sp-band.b{bottom:18vh}
+}

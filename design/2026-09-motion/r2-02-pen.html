@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2 · 02 · The pen, in three tiers — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r2-02-pen.css"><link rel="stylesheet" href="r2-02-build.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 02 · ROUND 2</div><h1 class="board-title">The pen, in three tiers <span class="display-cn">笔：三级强调</span></h1></div>
+    <div><p class="board-why">Round 1 gave every state its own mark, and Fred liked three of them. Used side by side, an underline, a wash and an arrow are <b>three vocabularies on one page</b>. Used as tiers they become one sentence said louder: <b>notice → choose → point</b>, each mark growing out of the one before it by the same hand, and the single coral mark kept for the only thing a view asks of you.</p>
+      <p class="evidence">evidence: <code>site-nav.css:48</code> current = coral dot · <code>Writing.dc.html:45–46</code> <code>Gallery.dc.html:45–46</code> .chip.on = coral pill · <code>Gallery.dc.html:161</code> Load more pill · <code>Building.dc.html:64</code> scroll button hover = ink fill + coral outline · <code>Building.dc.html:90</code> lead pin <code>--mark-deep</code> · <code>Reading.dc.html:40</code> link hover = coral swap</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 1">
+    <div class="changed-k util">WHAT CHANGED FROM ROUND 1</div>
+    <blockquote class="changed-q">“I like B+C+D, maybe we can blend them together as tiered selection/highlighting/pointing animations.” <cite class="util">— Fred</cite></blockquote>
+    <ul class="changed-list">
+      <li><b>B’s underline → tier 1 · notice.</b> Hover draws it, exactly as in round 1, but in the highlighter’s own ink instead of coral.</li>
+      <li><b>D’s wash → tier 2 · choose.</b> Not swapped in: the pen turns its chisel tip and comes back over the word, and the underline thickens upward into the band behind it, then flicks a tick where a checkbox belongs.</li>
+      <li><b>C’s arrow → tier 3 · point.</b> One per view, drawn once, and now the only coral on the interface.</li>
+      <li><b>Kept:</b> B’s ink 「 」 for keyboard focus. <b>Dropped:</b> A’s loop, the coral current-page scribble, coral on hover.</li>
+    </ul>
+  </section>
+
+  <div class="live-row">
+    <p class="live-hint">both stages are live — hover, click, Tab, or tap ↓</p>
+    <label class="slowmo"><input type="checkbox" id="slowmo"> <span>slow motion ¼× · 慢放</span></label>
+  </div>
+
+  <section class="cands wide" aria-label="Candidate">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Three tiers, one hand <span class="display-cn">三级强调，一只手</span></span><span class="cand-mech">underline → band → arrow · 「 」 · hand’s clock</span></div>
+      <div class="stage spec-stage" data-slice="read"></div>
+      <div class="cand-foot"><div>Hover a tab or a tag and the pen underlines it. Click it and the same stroke becomes the highlight — the pen comes back over the word broad-side down, the line rising into a wash behind the tip — and the old choice drains back into its line and lifts. The coral arrow points at the one action on this view, taps twice, and once you use it stays gone for the rest of the browser session (the replay tour brings it back).<div class="tradeoff"><b>cost</b> one SVG layer per marked element, one rAF loop that sleeps when idle · <b>a11y</b> tier 2 is also ink text + a tick or aria-current; focus is a shape, not a colour · <b>support</b> SVG + rAF, all evergreen</div></div><button class="replay" data-replay="replayRead">↻ replay tour</button></div>
+    </article>
+
+    <article class="cand proof" id="cand-a2">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Same rules on the corkboard <span class="display-cn">同一套规则，换到在造页</span></span><span class="cand-mech">Building toolbar · pinned cards · icon buttons</span></div>
+      <div class="stage bd-stage board-bg-off" data-slice="build"></div>
+      <div class="cand-foot"><div>A harder test: no filter words at all. The scroll buttons are icons, so tier 1 underlines the button and a press sweeps the band behind it. Cards are opened, not selected, so tier 2 means “open” and the band sits behind the card’s title — on the lead card’s wheat paper it multiplies, so it still reads. Tier 3 is Fred’s own emphasis, the lead project, with a two-word note because a card title doesn’t say why.<div class="tradeoff"><b>cost</b> the lead pin goes ink so the arrow is the view’s only coral · <b>a11y</b> aria-expanded carries “open”; the viewport gets 「 」 like any other stop · <b>support</b> all evergreen</div></div><button class="replay" data-replay="replayBuild">↻ replay tour</button></div>
+    </article>
+  </section>
+
+  <section class="lab" aria-label="Rules">
+    <article class="lab-card lab-wide" id="rule-tiers">
+      <div class="lab-head"><span class="lab-k">RULE 1</span><h2 class="lab-title">Three tiers, one hand <span class="display-cn">三级，一只手</span></h2></div>
+      <p class="lab-lede">An element shows its highest tier. Lower tiers are absorbed, not removed: the tier-1 line survives as the band’s darker bottom edge. At rest (tier 0) nothing carries a mark except prose links, which keep a 1px pencil hairline so they can be found.</p>
+      <div class="table-scroll"><table class="rules">
+        <thead><tr><th>tier</th><th>when</th><th>the mark</th><th>ink</th><th>draw · retract</th></tr></thead>
+        <tbody>
+          <tr><th><span class="lgm" data-lgm="1">1 · notice</span><span class="zh">留意</span></th><td>pointer hover (fine pointers only)</td><td>pen underline, one pass, lifts at the end</td><td><i class="sw sw-ink"></i>wheat ink · 2px</td><td>200 + 1.1 × length ms (≤ 620) · 200 ms, tail chases head</td></tr>
+          <tr><th><span class="lgm" data-lgm="2">2 · choose</span><span class="zh">选定</span></th><td>selected · current page · open · pressed</td><td>the underline thickens upward into a band on the return stroke; a tick only where a checkbox belongs</td><td><i class="sw sw-wash"></i>wheat wash · ink tick</td><td>return 190 + 0.9 × width ms (≤ 400), tick 150 · sink 210 ms, then tier-1 retract</td></tr>
+          <tr><th><span class="lgm" data-lgm="3">3 · point</span><span class="zh">指向</span></th><td>the one thing this view asks of you · max one per view</td><td>curved arrow in from the margin, two taps, then still; a hand note only if the target’s label doesn’t say why</td><td><i class="sw sw-coral"></i>coral — the only interactive coral</td><td>≤ 620 + head 140 + 2 taps at 11 fps · lifts 240 ms when used; gone until a new session</td></tr>
+          <tr><th><span class="lgm" data-lgm="f">focus</span><span class="zh">焦点</span></th><td>:focus-visible (keyboard only)</td><td>corner brackets 「 」, independent of tiers</td><td><i class="sw sw-ink2"></i>ink</td><td>140 ms × 2, 70 ms apart · 120 ms</td></tr>
+        </tbody>
+      </table></div>
+    </article>
+
+    <article class="lab-card" id="rule-moves">
+      <div class="lab-head"><span class="lab-k">RULE 2</span><h2 class="lab-title">Up and down the tiers <span class="display-cn">升与降</span></h2></div>
+      <dl class="spec-list">
+        <dt>0 → 1</dt><dd>pointer arrives: the underline draws left → right.</dd>
+        <dt>1 → 2</dt><dd>click / Enter: the pen doesn’t lift. It turns the chisel and comes back <b>right → left</b>; behind the tip the line thickens upward into the band; at the left end it flicks the tick.</dd>
+        <dt>0 → 2</dt><dd>tap or keyboard: the whole gesture at once — line in 170 ms, return stroke, tick.</dd>
+        <dt>2 → 1</dt><dd>closed while still under the pointer: the band sinks back into its line; the tick lifts.</dd>
+        <dt>2 → 0</dt><dd>the choice moves elsewhere: band sinks → line → line lifts, while the new choice draws.</dd>
+        <dt>press</dt><dd>momentary targets (links, Load more, ← →): 1 → 2 on press, held at least until the gesture lands, then back to 1.</dd>
+        <dt>interrupt</dt><dd>every reversal starts from the current frame. A half-grown band sinks from half height; nothing snaps.</dd>
+        <dt>3</dt><dd>draws once when the view is first seen; its target still uses tiers 1–2; using it lifts the arrow for the rest of the session (sessionStorage; it returns in a new browser session).</dd>
+      </dl>
+    </article>
+
+    <article class="lab-card" id="rule-inputs">
+      <div class="lab-head"><span class="lab-k">RULE 3</span><h2 class="lab-title">Coral, touch, stillness <span class="display-cn">珊瑚色、触摸、静止</span></h2></div>
+      <dl class="spec-list">
+        <dt>coral</dt><dd><b>Tier 3 owns it, alone.</b> Tier 3 is already rationed to one element per view — the same budget as the accent, so the two rules become one. Tier 1 follows the pointer: coral there turns the accent into a cursor and spends it on everything you pass (and it doesn’t exist on touch). Tier 2 is plural at rest — current page, selected tag, open card — so coral there spends it three times a view: the pill-chip problem again. Tiers 1–2 answer you; tier 3 is the only mark that speaks first.</dd>
+        <dt>title</dt><dd>the subpage title’s coral character (造 / 写) stays: it is fixed page identity, not interaction. The arrow is transient — first view in a session, lifted once used — so a brief overlap of the two is accepted.</dd>
+        <dt>so</dt><dd>resting link underlines and footnote numbers go pencil; the Building lead pin goes ink; a view whose arrow has been used has no interactive coral at all.</dd>
+        <dt>touch</dt><dd>no tier 1 — nothing sticks after a finger lifts. A tap is tier 2 directly (the 0 → 2 gesture); momentary targets play it through, then sink.</dd>
+        <dt>keyboard</dt><dd>Tab shows 「 」 only. Enter / Space is the 0 → 2 gesture.</dd>
+        <dt>reduced</dt><dd>every mark appears in its end state, instantly: band and tick at once, the arrow complete with no taps; retracts are instant.</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="morph" aria-label="The morph, frame by frame">
+    <div class="lab-head"><span class="lab-k">THE MORPH</span><h2 class="lab-title">Key poses <span class="display-cn">关键帧</span></h2><span class="morph-sub util">travel log · 游记 — hover, click, then another tag is chosen</span></div>
+    <div class="sheet" data-sheet></div>
+    <div class="compare">
+      <div class="cmp pick-cmp">
+        <div class="cmp-k util"><b>return stroke · 回笔</b> — recommended</div>
+        <button type="button" class="cmp-w" data-cmp="return"><span class="en">stories we live</span> <span class="zh">我们生活的故事</span></button>
+        <input class="scrub" type="range" min="0" max="1000" value="0" data-scrub aria-label="Scrub the tier choreography">
+        <div class="cmp-note util">drag to scrub 0 → 1 → 2 → 0 · or click the words</div>
+      </div>
+      <div class="cmp">
+        <div class="cmp-k util"><b>press harder · 压笔</b> — the plainer alternative</div>
+        <button type="button" class="cmp-w" data-cmp="rise"><span class="en">stories we live</span> <span class="zh">我们生活的故事</span></button>
+        <div class="cmp-note util">the band rises in place from the line and the tick simply follows. Correct, calmer, and forgettable: no travel, no sense of one hand finishing a gesture.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A · three tiers, one hand, with the return-stroke morph.</b> It keeps what Fred liked in B, C and D and gives them a grammar: an underline is interest, a wash is a decision, an arrow is a request — and each is visibly the previous mark said louder, because the band grows out of the line and the line survives inside it.</p>
+    <p>Watch: tier 3 must stay rare or it becomes a sale sticker — one per view, never on navigation, and it retires after use. The band needs ~4px of air past each end and the tick ~20px before a word, so keep tag gaps ≥ 26px. The subpage title’s coral character stays as fixed identity; its brief overlap with a first-view arrow is accepted.</p>
+    <div class="record">执行模式：多阶段（第二轮：受控迭代，Fred 已选 B+C+D）
+表达锚点：一支凿头荧光笔——细边划线，转过笔头宽边回扫就成了荧光带；同一只手，一个连贯动作。
+动作时钟：手的时钟。划线一遍画完（200–620 ms），回笔 190–400 ms，勾 150 ms；收笔更快；箭头落下后按 11 fps 点两下，然后静止。
+映射：指针经过 → 划线（留意）/ 点击、当前页、打开、按下 → 线向上变粗成荧光带 + 需要时打勾（选定）/ 本页唯一请求 → 珊瑚色箭头从页边画进来（指向）/ 键盘 → 墨色「」。
+规则表：tier 1 → 麦色墨线 · tier 2 → 麦色荧光带 + 墨色勾 · tier 3 → 珊瑚箭头（每页最多一个，用过即收）· focus → 墨色「」
+线条计划：一支笔，2px 圆头，单遍；荧光带是同一笔的宽边，底边保留原来那条线（第二遍更深）。
+色彩计划：珊瑚色只给 tier 3（本页唯一的请求）；tier 1–2 用麦色，勾与「」用墨色；正文链接静止下划线与脚注号改为铅笔灰；在造页主卡的图钉改为墨色。</div>
+  </div></section>
+</main>
+
+<!-- Slice 1 — round 1's specimen: subpage nav (site-nav.css), a Reading paragraph (谷歌只想躺赢 §3),
+     Writing's tags as words, Gallery's primary action. -->
+<template id="slice-read">
+  <div class="spec">
+    <nav class="pn-nav" aria-label="Primary navigation (specimen)">
+      <a class="pn-home" href="../../index.html" aria-label="Home — 首页" data-tier="nav"><span class="pn-obj pn-peek"></span><span class="pn-label"><span class="pen-t"><span class="en">home</span> <span class="zh">首页</span></span></span></a>
+      <a class="pn-tab" href="../../Writing.dc.html" aria-label="Writing — 在写" aria-current="page" data-tier="nav"><span class="pn-obj pn-book"></span><span class="pn-label"><span class="pen-t"><span class="en">writing</span> <span class="zh">在写</span></span></span></a>
+      <a class="pn-tab" href="../../Building.dc.html" aria-label="Building — 在造" data-tier="nav"><span class="pn-obj pn-laptop"></span><span class="pn-label"><span class="pen-t"><span class="en">building</span> <span class="zh">在造</span></span></span></a>
+      <a class="pn-tab" href="../../Gallery.dc.html" aria-label="Shooting — 在拍" data-tier="nav"><span class="pn-obj pn-camera"></span><span class="pn-label"><span class="pen-t"><span class="en">shooting</span> <span class="zh">在拍</span></span></span></a>
+      <a class="pn-tab" href="../../About.dc.html" aria-label="About — 关于" data-tier="nav"><span class="pn-obj pn-frame"></span><span class="pn-label"><span class="pen-t"><span class="en">about</span> <span class="zh">关于</span></span></span></a>
+    </nav>
+    <div class="pn-body">
+      <div class="pn-read">
+        <p class="pn-p" lang="en">Speaking of Niulai—a few weeks earlier, a model had appeared on <a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">OpenRouter</a> under the codename <a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">Ox Alpha</a>: generous context, genuinely smart, killer at code. Universally praised, the model earned the nickname “Niulai”—the bull had arrived<sup class="fnref"><a href="#fn2" data-tier="link" aria-label="footnote 2">[2]</a></sup>.</p>
+        <p class="pn-p zh" lang="zh">说起牛来，两三周前<a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">OpenRouter</a>上面出现了一个代号<a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">Ox Alpha</a>的模型：量大管饱，智能在线，编程牛逼。获得全网好评的该模型遂喜得“牛来”称号<sup class="fnref"><a href="#fn2" data-tier="link" aria-label="脚注 2">[2]</a></sup>。</p>
+      </div>
+      <div class="pn-side">
+        <div class="pn-k util">filter · 筛选</div>
+        <div class="pn-filters" role="group" aria-label="Filter essays by tag · 按类别筛选">
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="true"><span class="en">all</span> <span class="sep">·</span> <span class="zh">全部</span><span class="n">27</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">travel log</span> <span class="sep">·</span> <span class="zh">游记</span><span class="n">15</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">stories we live</span> <span class="sep">·</span> <span class="zh">我们生活的故事</span><span class="n">5</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">commentary</span> <span class="sep">·</span> <span class="zh">杂文</span><span class="n">3</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">poem</span> <span class="sep">·</span> <span class="zh">诗</span><span class="n">2</span></button>
+        </div>
+        <button type="button" class="pn-action" data-tier="action"><span class="pen-t"><span class="en">Load more</span> <span class="sep">·</span> <span class="zh">再晾一批</span></span><span class="n" data-remaining="12">12 remaining · 还剩 12 张</span></button>
+      </div>
+    </div>
+    <div class="pn-legend" aria-label="Legend · 图例">
+      <div class="lg"><button type="button" class="lg-w" data-lg="1"><span class="en">notice</span><span class="zh">留意</span></button><p class="lg-note">tier 1 · hover draws a wheat-ink underline</p></div>
+      <div class="lg"><button type="button" class="lg-w" data-lg="2"><span class="en">choose</span><span class="zh">选定</span></button><p class="lg-note">tier 2 · the line thickens into the wash, tick where a checkbox belongs</p></div>
+      <div class="lg"><button type="button" class="lg-w" data-lg="3"><span class="en">point</span><span class="zh">指向</span></button><p class="lg-note">tier 3 · coral arrow, one per view, once</p></div>
+      <div class="lg"><button type="button" class="lg-w" data-lg="f"><span class="en">focus</span><span class="zh">焦点</span></button><p class="lg-note">keyboard · ink corner brackets, independent of tiers</p></div>
+    </div>
+  </div>
+</template>
+
+<!-- Slice 2 — Building.dc.html's corkboard: toolbar (order label + scroll buttons) and pinned
+     project cards from content/building-projects.js, sorted as the live page sorts them. -->
+<template id="slice-build">
+  <div class="bd">
+    <section class="bd-shell" aria-label="Projects on the building board (specimen)">
+      <div class="bd-toolbar">
+        <span class="bd-order"><span class="en">projects</span> <span class="zh">项目</span> <span class="sep">·</span> scroll →</span>
+        <div class="bd-actions" role="group" aria-label="Timeline controls · 滚动">
+          <button class="bd-scroll" type="button" data-tier="scroll" data-dir="-1" aria-label="Scroll toward the start of the board · 往前"><span class="bd-g">←</span></button>
+          <button class="bd-scroll" type="button" data-tier="scroll" data-dir="1" aria-label="Scroll toward the end of the board · 往后"><span class="bd-g">→</span></button>
+        </div>
+      </div>
+      <div class="bd-viewport" tabindex="0" data-focus="viewport" aria-label="Scrollable project board, Fred Agent first">
+        <div class="bd-track" data-track></div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-02-anim.js"></script><script src="r2-02-tier.js"></script><script src="r2-02-point.js"></script>
+<script src="r2-02-cards.js"></script><script src="r2-02-slices.js"></script><script src="r2-02-lab.js"></script>
+</body></html>

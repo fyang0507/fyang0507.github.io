@@ -1,0 +1,97 @@
+/* 03-cands.css — the three filter controls. The pen (coral) marks the chosen state; pencil marks
+   what can be pressed; paper moves on springs. No pills, no fills, no colour-swap hovers. */
+
+/* ---------- A · sentence filter ---------- */
+.sf{position:relative;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:16px;row-gap:2px}
+.sf-line{font:400 19px/1.6 var(--text);color:var(--soft)}
+.sf-zh{font:400 16.5px/1.6 var(--text-cn)}
+.sf-sep{font:300 20px/1 var(--text);color:var(--line)}
+.sf-tok{position:relative;display:inline-block;margin:0 3px;padding:0 1px;font:inherit;font-weight:500;color:var(--ink);cursor:pointer}
+.sf-zh .sf-tok{margin:0 2px}
+.sf-tok:focus-visible{outline:none}
+.sf-tok:focus-visible .sf-txt{outline:2px solid var(--mark);outline-offset:3px;border-radius:2px}
+.sf-ul{position:absolute;left:1px;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.slip{position:absolute;z-index:20;min-width:236px;padding:6px 0 8px;background:var(--paper);border:1.5px solid var(--ink);border-radius:3px;box-shadow:0 1px 2px rgba(60,50,35,.06),0 14px 30px rgba(60,50,35,.12);transform-origin:22px 0}
+.slip:focus{outline:none}
+.slip-opt{position:relative;display:flex;align-items:baseline;gap:8px;padding:6px 16px 7px 34px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+.slip-opt:last-child{border-bottom:0}
+.so-en{position:relative;font:16px/1.3 var(--text);color:var(--ink)}
+.so-zh{font:13.5px/1.3 var(--text-cn);color:var(--soft)}
+.so-n{margin-left:auto;padding-left:18px;font:11px/1 var(--util);color:var(--pencil)}
+.so-tick{position:absolute;left:12px;top:50%;margin-top:-8px;width:1px;height:1px;overflow:visible}
+.so-ul{position:absolute;width:1px;height:1px;overflow:visible;pointer-events:none}
+.slip-opt.is-off{cursor:default}
+.slip-opt.is-off .so-en,.slip-opt.is-off .so-zh,.slip-opt.is-off .so-n{color:var(--line)}
+
+/* ---------- B · index dividers + ruler ---------- */
+.ix-band{position:relative;height:64px;border-bottom:1.5px solid var(--ink);overflow:hidden;overflow-x:auto;scrollbar-width:none}
+.ix-band::-webkit-scrollbar{display:none}
+.ix-track{display:flex;gap:4px;height:100%;width:max-content;padding:0 6px 0 50px}
+.ix{position:relative;flex:none;height:80px;padding:10px 18px 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:left;transform:translateY(15px);cursor:pointer}
+.ix-l1{white-space:nowrap;line-height:14px}
+.ix-shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ix-shape path{fill:var(--paper);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+.ix[aria-checked=true] .ix-shape path{fill:#FFFDF8}
+.ix-en{position:relative;font:500 11.5px/14px var(--util);letter-spacing:.03em;color:var(--ink)}
+.ix-n{position:relative;margin-left:7px;font:10.5px/14px var(--util);color:var(--pencil)}
+.ix-zh{position:relative;display:block;margin-top:7px;font:12px/14px var(--util-cn);color:var(--soft)}
+.ix-ul{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.ix.is-off{cursor:default}
+.ix.is-off .ix-shape path{fill:var(--paper2)}
+.ix.is-off .ix-en,.ix.is-off .ix-zh,.ix.is-off .ix-n{color:var(--pencil)}
+.ix:focus-visible{outline-offset:-5px}
+.shelf.with-band .shelf-scroll{padding-bottom:40px}
+button.tick-y{top:-5px;left:-1px;padding:4px 4px 9px;font:10.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);cursor:pointer}
+button.tick-y:hover{color:var(--ink)}
+button.tick-y[aria-pressed=true]{color:var(--ink)}
+.yr-loop{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.yr-reset{position:absolute;right:4px;bottom:0;height:24px;font:11px/1 var(--util);letter-spacing:.04em;color:var(--soft);cursor:pointer}
+.yr-reset span{border-bottom:1px dashed var(--pencil)}
+.yr-reset:hover{color:var(--ink)}
+.shelf.with-band .shelf-main{position:relative}
+
+/* ---------- C · category words + timeline ruler ---------- */
+.cw-row{display:flex;align-items:baseline;gap:18px}
+.cw{display:flex;align-items:baseline;gap:20px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:8px 8px;margin:-4px 0 -4px -8px;min-width:0}
+.cw::-webkit-scrollbar{display:none}
+.cw-w{position:relative;display:inline-flex;align-items:baseline;gap:6px;padding:2px 2px;cursor:pointer;white-space:nowrap}
+.cw-en{position:relative;font:16px/1.3 var(--text);color:var(--ink)}
+.cw-zh{font:14px/1.3 var(--text-cn);color:var(--soft)}
+.cw-n{font:10px/1 var(--util);color:var(--pencil);transform:translateY(-6px)}
+.cw-loop{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.cw-w.is-off{cursor:default}
+.cw-w.is-off .cw-en,.cw-w.is-off .cw-zh{color:var(--line)}
+.cw-w:focus-visible{outline:none}
+.cw-w:focus-visible .cw-en{outline:2px solid var(--mark);outline-offset:3px}
+.cw-read{margin-left:auto;font:11.5px/1 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap}
+.tr{position:relative;height:50px;margin:8px 0 0;touch-action:pan-y}
+.tr-ink{position:absolute;left:0;top:0;overflow:visible}
+.tr-labels{position:absolute;left:0;right:0;top:25px;display:flex}
+.tr-y{flex:1;min-width:0;height:22px;font:10.5px/1 var(--util);letter-spacing:.04em;color:var(--pencil);opacity:.6;cursor:pointer}
+.tr-y.is-in{color:var(--soft);opacity:1}
+.tr-y:hover{color:var(--ink);opacity:1}
+.tr-short{display:none}
+.tr-br{position:absolute;left:-14px;top:0;width:28px;height:46px;cursor:ew-resize;touch-action:none;z-index:2}
+.tr-br svg{position:absolute;left:14px;top:3px;width:1px;height:1px;overflow:visible;pointer-events:none}
+.tr-br.is-drag{cursor:grabbing}
+.tr-br:focus-visible{outline:none}
+.tr-br:focus-visible svg path{stroke-width:3.2}
+
+/* ---------- phone widths ---------- */
+@container wx (max-width:640px){
+  .sf{flex-direction:column;align-items:flex-start;row-gap:0}
+  .sf-sep{display:none}
+  .sf-line{font-size:17.5px}
+  .sf-zh{font-size:15.5px}
+  .slip{min-width:0;width:min(300px,100%)}
+  .cw-row{flex-direction:column;align-items:stretch;gap:2px}
+  .cw{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:8px 10px 8px 12px;margin:0 -16px 0 -12px}
+  .cw::-webkit-scrollbar{display:none}
+  .cw-read{margin-left:0}
+  .tr-full{display:none}
+  .tr-short{display:inline}
+}
+@container wx (max-width:340px){
+  .sf-line{font-size:16px}
+  .sf-zh{font-size:15px}
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 · Reading, with a pencil in hand — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="08-reading-base.css">
+<link rel="stylesheet" href="08-reading-ab.css">
+<link rel="stylesheet" href="08-reading-cd.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 08</div><h1 class="board-title">Reading, with a pencil in hand <span class="display-cn">阅读</span></h1></div>
+    <div><p class="board-why">Reading is where the words live, and it has the least authored detail. <b>On posts with a cover the sticky nav is transparent</b>, so the essay scrolls straight through “← 全部文章” and the EN/◐ buttons. <b>Citations are set in handwriting</b>: dates and titles in Caveat and MuyaoPleased are hard to read, and they spend the rationed <code>hand</code> voice on the least hand-like content on the page. A ten-section essay gives no sense of place beyond a 2px coral bar, because its “1.0 / 2.0” markers are bold text with no role. The cover wash is static and murky, and the essay ends on a hairline and a card.</p>
+      <p class="evidence">evidence: <code>Reading.dc.html:52</code> <code>.wrap:has(.post-wash) .rnav{background:transparent}</code> · <code>:97–98</code> <code>.mn</code> in <code>--hand-en / --hand-cn</code>, rotated −1° · <code>:47–48</code> 2px <code>.progress</code> is the only position cue · <code>:72–75</code> static <code>.post-wash</code> at .34 opacity, sepia, gradient mask · <code>:117–121</code> <code>.pn</code> ending · <code>content/posts.js</code>: sections are <code>&lt;strong&gt;1.0&lt;/strong&gt;</code> inside one <code>&lt;p&gt;</code></p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Pencil margin <span class="display-cn">铅笔页边</span></span><span class="cand-mech">scroll-linked stroke · pen loop on the current section · hand’s clock for marks, physics clock for the peek slip</span></div>
+      <div class="stage rd-stage" id="stage-a"><div class="rd" tabindex="0" role="region" aria-label="Candidate A: the essay, scrollable · 可滚动阅读"></div></div>
+      <div class="cand-foot"><div>A graphite line in the empty left margin draws as you read. Each section is a tick labelled in utility mono; hover or focus one to preview its first line, click to go there. The section you are in gets the pen loop, and the in-body markers become real headings with anchors. On a phone it collapses to a pencil hairline under the nav and a “3.0 / 10” counter.
+        <div class="tradeoff"><b>cost</b> one SVG, one scroll handler, no layout thrash (section offsets are cached on layout) · <b>a11y</b> real <code>&lt;nav&gt;</code> of anchors, ↑/↓ between ticks, preview on focus · <b>reduced motion</b> the line steps per section, with no continuous drawing · <b>replaces</b> the 2px coral bar</div></div>
+        <button class="replay" data-replay="replayA">↻ back to top</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Footnotes that point <span class="display-cn">会指的脚注</span></span><span class="cand-mech">hover / focus → pen connector + loop (hand’s clock) · touch → paper slip on a spring (physics clock)</span></div>
+      <div class="stage rd-stage" id="stage-b"><div class="rd" tabindex="0" role="region" aria-label="Candidate B: the essay, scrollable · 可滚动阅读"></div></div>
+      <div class="cand-foot"><div>Margin notes are reset in small upright serif, with sources in ink and dates in utility mono. The full reference replaces the truncated “Flas…”. Hovering or focusing a reference number draws a dotted pencil leader from it through the leading, never across glyphs, then one stroke down the gutter that loops the note’s number. Hovering the note draws the line back. On a phone, tapping a number slides the note up from the bottom as a paper slip, which you swipe down or tap away.
+        <div class="tradeoff"><b>cost</b> the connector is one path built on demand, so nothing runs while idle · <b>a11y</b> refs stay real links to the reference list, focus draws the same line, Esc closes the slip and focus returns to the ref · <b>hand</b> goes back to asides only · <b>dark</b> press ◐ in the demo’s nav</div></div>
+        <button class="replay" data-replay="replayB">↻ point at note 3</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">Marker <span class="display-cn">荧光笔</span></span><span class="cand-mech">Selection API → range.getClientRects() → ragged wash under the ink · localStorage per post</span></div>
+      <div class="stage rd-stage" id="stage-c"><div class="rd" tabindex="0" role="region" aria-label="Candidate C: the essay, scrollable · 可滚动阅读"></div></div>
+      <div class="cand-foot"><div>Select any passage and a flat peach marker band is laid behind those lines, with hand-cut ends and never over the ink. A small tag offers <i>引用 quote</i>, which copies the passage with a deep link that scrolls a friend to it, or <i>复制 copy</i>. Marks persist for this essay; click one to erase it.
+        <div class="tradeoff"><b>cost</b> rects are recomputed only on selection change and resize · <b>a11y</b> keyboard selection works, and the tag takes focus after a keyboard selection · <b>support</b> text-fragment links work in Chromium and Safari; Firefox opens the page without jumping · <b>risk</b> on phones the OS selection callout competes with the tag</div></div>
+        <button class="replay" data-replay="replayC">↻ clear marks</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-d">
+      <div class="cand-head"><span class="cand-letter">D</span><span class="cand-name">Hero settles <span class="display-cn">题图落定</span></span><span class="cand-mech">animation-timeline: view() · halftone dissolve · the nav as a window onto the wash</span></div>
+      <div class="stage rd-stage" id="stage-d"><div class="rd" tabindex="0" role="region" aria-label="Candidate D: the essay, scrollable · 可滚动阅读"></div></div>
+      <div class="cand-foot"><div>At rest the cover is crisper than today. As you read, it drifts a little slower than the page, and paper eats it from below as halftone dots rather than a gradient. The nav is always opaque, but it paints the exact slice of wash behind it, so at the top it looks transparent while text can never pass through it. The paper and hairline arrive when the wash is gone, and the title tucks into the nav as the heading leaves. At the end, the previous essay’s cover develops out of the same dots.
+        <div class="tradeoff"><b>cost</b> transforms only, on the compositor · <b>support</b> CSS scroll timelines in Chromium 115+ and Safari 26+; Firefox and older engines get a rAF fallback with the same keyframes <span class="engine" id="d-engine"></span> · <b>reduced motion</b> a static wash with a halftone edge, and the nav turns to paper as a discrete step · <b>dark</b> press ◐ in the demo’s nav: the drawing’s ink flips to chalk</div></div>
+        <button class="replay" data-replay="replayD">↻ back to top</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>D + B, built as one change.</b> D fixes the overlap bug structurally rather than cosmetically. The nav never becomes transparent to content; it only paints what is behind it. D also turns the murky static wash into an opening that settles and an ending that develops. B returns handwriting to asides and gives every citation a legible home, and its pointing line is the pen doing its one job: connecting a mark to the note it refers to.</p>
+    <p>Add A’s section rail as a second step once D and B ship. It is the right answer to “where am I in ten sections”, but it adds persistent chrome to the margin, so it should arrive after the page is quiet and correct. The mocks already show the 2px progress bar in graphite rather than coral; retire it entirely when A lands. Park C: highlights are a product feature with storage, sync and mobile-callout questions, not a detail. Watch for three things. In D, the nav’s wash slice must share the page wash’s timeline, or a one-pixel seam appears. In B, the leader must stay dotted and in the leading; a solid rule there reads as an underline of the row above. Neither may add a second coral event to a view.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）；推荐 D + B 合并，A 作为第二步
+表达锚点：“拿着铅笔读书”：题图像印在下一层纸上，越读越被纸盖住；注释用铅笔连线指回原文
+动作时钟：D 纸与题图走物理时钟（与滚动一一对应，没有回弹）；B 连线与圈号走手的时钟（一笔画出，收笔更快）；移动端纸条走物理时钟（弹簧，一次小回弹后停稳）
+映射：往下读 → 纸从下方吃掉题图（半色调网点，不用渐变）；题图离开 → 导航得到纸底与细线，标题收进导航；读到结尾 → 上一篇题图从同样的网点里显影；指向注释号 → 铅笔线沿行距走到页边，圈住注释号；在手机上点注释号 → 纸条从底部弹上来，下滑收起
+线条计划：一支笔，1.6px 圆头，按元素固定种子抖动（不逐帧重掷）；连线穿过正文时是行距里的点状引线（实线会被读成下一行的上划线或上一行的下划线），到页边空白处才变成一笔实线
+色彩计划：珊瑚色唯一持有者是“当前那一笔”（连线加圈号，或 A 的当前章节圈）；注释号、参考号平时用墨色和铅笔色；进度条改为铅笔色；题图降为纸下的淡彩，深色模式下线稿反相成粉笔色（反相加色相旋转，保留原色相）；深色模式用本页已有的 #1E1913 / #EFE5D3 / #EE8E72
+字体：hand 退回批注，引用改为 text 衬线（中文 Noto Serif SC 13px，行高 1.7），日期用 utility 等宽；中文强调一律直立，不用伪斜体</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="08-reading-render.js"></script>
+<script src="08-reading-a.js"></script><script src="08-reading-b.js"></script>
+<script src="08-reading-c.js"></script><script src="08-reading-d.js"></script>
+</body></html>

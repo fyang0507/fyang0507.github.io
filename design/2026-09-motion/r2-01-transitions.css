@@ -1,0 +1,111 @@
+/* r2-01 · transitions — stage, miniature site shell, desk layers and the transition overlay. Mockup-only. */
+
+/* ---- stage: the real viewport (1440×900 / 390×844), scaled to fit ---- */
+.stage.ms-stage{flex:none;min-height:0;background:var(--paper)}
+.ms-stage .hint{left:auto;right:14px;bottom:8px;z-index:60;padding:2px 8px 3px;border-radius:4px;background:var(--paper)}
+@media (max-width:640px){.ms-stage .hint{top:3px;bottom:auto;right:8px;padding:1px 4px;font-size:15px;background:transparent}}
+.ms-vp{position:absolute;left:0;top:0;width:1440px;height:900px;transform-origin:0 0;overflow:hidden;background:var(--paper);isolation:isolate;color:var(--ink)}
+.ms-vp.m{width:390px;height:844px}
+.ms-vp :focus-visible{outline:2px solid var(--mark);outline-offset:3px}
+.ms-home,.ms-page{position:absolute;inset:0;padding:30px 57.6px 0}
+.ms-vp.m .ms-home{padding:30px 15.6px 0}
+.ms-vp.m .ms-page{padding:24px 15.6px 0}
+.ms-home{z-index:1;display:flex;flex-direction:column;align-items:center;background:var(--paper)}
+.ms-page{z-index:2;display:flex;flex-direction:column;align-items:center}
+
+/* ---- rest / live: plain CSS at rest, the animated twins while something moves ---- */
+.ms-vp[data-rest="home"] .ms-page{visibility:hidden}
+.ms-vp[data-rest="page"] .ms-home{visibility:hidden}
+.ms-vp:not([data-rest="home"]) .ms-head{visibility:hidden}
+/* the door objects are always their overlay twins (at rest too); the real sprites only hold the layout */
+.ms-page .site-nav-object{visibility:hidden}
+/* the rule stays the vector line at rest too: under the board's scale() a masked 1.5px ::after rasterises
+   lighter than the live site draws it, so switching would be a visible seam that production never has */
+.ms-vp .site-index::after{visibility:hidden}
+.ms-vp[data-rest=""][data-view="page"] .ms-home,.ms-vp[data-rest=""][data-view="home"] .ms-page{pointer-events:none}
+.ms-vp[data-rest=""] .site-nav-label{transition:none}   /* the clock drives them frame by frame while live */
+
+/* ---- home: the desk in layers (geometry from index.html) ---- */
+.ms-head{width:min(1180px,100%);position:relative;z-index:6;display:flex;align-items:flex-start}
+.ms-scene{position:relative;width:880px;aspect-ratio:1448/1086;margin-top:4px;container-type:inline-size}
+.ms-vp.m .ms-scene{width:358.8px}
+.ms-scene>*{position:absolute}
+.r2-table{left:0;top:0;width:100%;height:100%;z-index:1;transform-origin:0 0}
+.r2-table img{position:absolute;display:block}
+.r2-prop{z-index:2;display:block;transform-origin:50% 100%}
+.r2-prop>img,.r2-prop>.face{position:absolute;inset:0;width:100%;height:100%}
+.face{display:block;background-repeat:no-repeat;background-position:0 0}
+.face-bird{background-image:url("../../assets/bird-strip6-light.png");background-size:600% 100%}
+.face-book{background-image:url("../../assets/book-flip2-light.png");background-size:600% 100%}
+.face-book.holed{background-image:url("r2-01-hole-book.png");background-size:100% 100%}
+.face-frame{background-image:url("../../assets/frame-exp3-light.png");background-size:400% 100%;-webkit-mask:url("r2-01-mask-frame.png") 0 0/100% 100% no-repeat;mask:url("r2-01-mask-frame.png") 0 0/100% 100% no-repeat}
+.face-frame.holed{-webkit-mask-image:url("r2-01-mask-frame-hole.png");mask-image:url("r2-01-mask-frame-hole.png")}
+.r2-steam{position:absolute;left:16.9%;top:-71.9%;width:64.4%;overflow:visible}
+.r2-steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;opacity:0;animation:r2Onsen 3.1s ease-in-out infinite}
+.r2-steam path:nth-child(2){animation-delay:1.05s}.r2-steam path:nth-child(3){animation-delay:2.1s}
+@keyframes r2Onsen{0%{transform:translateY(12px);opacity:0}28%{opacity:.4}60%{opacity:.22}100%{transform:translateY(-24px);opacity:0}}
+.ms-arrows{left:0;top:0;width:100%;height:100%;z-index:4;pointer-events:none}
+.ms-arrows path{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ms-note{z-index:5;font:3cqw/1 var(--hand-cn);color:var(--ink);white-space:nowrap}
+.ms-note span{display:inline-block}
+.ms-note:hover{color:var(--mark)}
+.ms-hot{z-index:5;cursor:pointer}
+/* home hovers (index.html): the book leafs through its pages, the portrait smiles */
+.ms-vp[data-rest="home"]:has(.ms-scene [data-go="writing"]:hover) .r2-fly[data-obj="writing"] .face-book{animation:msBook 1.15s steps(1,end) infinite}
+.ms-vp[data-rest="home"]:has(.ms-scene [data-go="about"]:hover) .r2-fly[data-obj="about"] .face-frame{background-position:66.667% 0}
+@keyframes msBook{0%{background-position:0% 0}16.6%{background-position:20% 0}33.3%{background-position:40% 0}50%{background-position:60% 0}66.6%{background-position:80% 0}83.3%,100%{background-position:100% 0}}
+.ms-mnav{display:none;width:min(1180px,100%);flex-wrap:wrap;gap:8px 26px;margin-top:14px;font:24px/1.3 var(--hand-cn)}
+.ms-mnav a{border-bottom:2px solid var(--mark)}
+.ms-vp.m .ms-mnav{display:flex}
+.ms-vp.m .ms-note,.ms-vp.m .ms-arrows{display:none}
+.ms-fig{width:min(1180px,100%);margin-top:14px;font:12.5px/1 var(--util);color:var(--pencil)}
+
+/* ---- page shell: real site-nav.css, with fixed virtual type sizes ---- */
+.ms-page .site-shell-header{flex:none}
+.ms-main{flex:1;min-height:0;width:min(1180px,100%);display:flex;flex-direction:column;margin-top:38px}
+.ms-vp.m .ms-main{margin-top:30px}
+.ms-intro{flex:none;height:112px;position:relative}
+.ms-vp.m .ms-intro{height:auto}
+.ms-strip{flex:1;min-height:0;overflow:hidden;position:relative}
+.ms .subpage-title{font-family:var(--disp-cn);font-weight:400;font-size:72px;line-height:.96;white-space:nowrap}
+.ms .subpage-title-en{font-size:21px}
+.ms .subpage-note{font-size:24px}
+.ms-vp.m .subpage-title{font-size:54px}
+.ms-vp.m .subpage-title-en{font-size:17px}
+.ms-vp.m .subpage-note{font-size:21px}
+.ms-vp.m .site-header-status{font-size:10px}
+
+/* the pen-drawn folder tab replaces the CSS border + dot (round 1's A, kept) */
+.ms-tabmark{position:absolute;z-index:4;pointer-events:none}
+.ms-tabmark svg{position:absolute;left:0;top:0;overflow:visible}
+.ms-tabmark path{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.ms-tabmark .ms-dot{position:absolute;top:-5px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--mark);box-shadow:0 1px 0 rgba(51,48,43,.18);transform:scale(0)}
+.ms-page .site-tab[aria-current="page"]{border-color:transparent}
+.ms-page .site-tab[aria-current="page"]::before{display:none}
+
+/* ---- the overlay: the carried objects and the line that is first the table edge, then the rule ---- */
+.r2-over{position:absolute;inset:0;z-index:3;pointer-events:none}
+.r2-rule{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;fill:none;stroke-linecap:butt;stroke-linejoin:round}
+.r2-fly{position:absolute;left:0;top:0;transform-origin:0 0}
+.r2-fly>*{position:absolute}
+.r2-fly-desk>img,.r2-fly-desk>.face{position:absolute;inset:0;width:100%;height:100%}
+.r2-fly .site-nav-object{bottom:auto;transform:none;transition:none}
+/* page hovers (site-nav.css), on the twins: individual transform properties, so they compose with the scale */
+.ms-vp[data-rest="page"] .r2-fly .site-nav-object{transition:translate .16s cubic-bezier(.2,.7,.2,1),rotate .16s cubic-bezier(.2,.7,.2,1),scale .16s cubic-bezier(.2,.7,.2,1)}
+@media (hover:hover){
+  .ms-vp[data-rest="page"]:has(.site-tab--writing:hover,.site-tab--writing:focus-visible) .r2-fly[data-obj="writing"] .site-nav-object{translate:0 -2px;rotate:-3deg}
+  .ms-vp[data-rest="page"]:has(.site-tab--building:hover,.site-tab--building:focus-visible) .r2-fly[data-obj="building"] .site-nav-object{translate:0 -2px}
+  .ms-vp[data-rest="page"]:has(.site-tab--shooting:hover,.site-tab--shooting:focus-visible) .r2-fly[data-obj="shooting"] .site-nav-object{translate:0 -1px;rotate:-2deg;scale:1.04}
+  .ms-vp[data-rest="page"]:has(.site-tab--about:hover,.site-tab--about:focus-visible) .r2-fly[data-obj="about"] .site-nav-object{translate:0 -1px;rotate:2deg}
+}
+
+/* ---- board bits ---- */
+.r2-changed{display:grid;grid-template-columns:150px 1fr;gap:18px;margin-top:22px;padding:14px 0 16px;border-bottom:1px solid var(--line)}
+.r2-changed .k{font:500 11px/1.5 var(--util);letter-spacing:.1em;color:var(--mark)}
+.r2-changed q{display:block;font:italic 17px/1.45 var(--disp);color:var(--ink)}
+.r2-changed p{margin-top:6px;font-size:15px;line-height:1.55;color:var(--soft)}
+.r2-changed p b{color:var(--ink);font-weight:500}
+@media (max-width:760px){.r2-changed{grid-template-columns:1fr;gap:6px}}
+.cand-foot code{font:11px var(--util);color:var(--ink);background:var(--paper2);padding:0 3px;border-radius:3px}
+.r2-btns{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.replay[aria-pressed="true"]{background:var(--ink);color:var(--paper)}

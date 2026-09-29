@@ -1,0 +1,125 @@
+/* r3-03-index.css — the index beside the bookcase: readout at its head, fore-edge tabs, year ledger.
+   Pen = board 02's tiers (the r2-02 mark classes are restyled here, since r2-02-pen.css carries its own
+   board chrome): hover underline in the highlighter's thin edge, chosen = the wheat band, focus = ink 「 」.
+   Paper tabs move on springs (r3-03-tabs.js); no fills, glows or colour swaps mark state; no coral. */
+
+.tm-band{fill:var(--hl);opacity:.86}
+.tm-line{fill:none;stroke:var(--hl-ink);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.tm-pool{fill:none;stroke:var(--hl-ink);stroke-width:1.7;stroke-linecap:round;opacity:.42}
+.tm-tick{display:none}
+.fm-c{fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.wr-index button:focus-visible,.lg-row:focus-visible{outline:none}
+
+.ctl-label{display:flex;align-items:baseline;gap:7px;white-space:nowrap}
+.ctl-label [lang=zh]{font:500 12.5px/1 var(--util-cn);color:var(--soft);letter-spacing:.06em}
+.ctl-label span:not([lang]){font:10.5px/1 var(--util);color:var(--pencil);letter-spacing:.08em}
+
+/* ---------- the head: readout ---------- */
+.ix-head{padding:0 0 12px}
+.ro-line{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:9px;min-height:48px;align-content:flex-start;margin-top:5px;font:400 17.5px/1.42 var(--text);color:var(--ink)}
+.ro .zh{font:500 16px/1.42 var(--text-cn)}
+.ro-v{display:inline-flex;align-items:baseline;gap:7px;white-space:nowrap}
+.ro-t,.ro-was-t{white-space:nowrap}
+.ro-v.is-all{color:var(--soft)}
+.ro-v.is-all .zh{font-weight:400}
+.ro-sep{color:var(--pencil);font-weight:300}
+.ro-was{position:relative;color:var(--pencil)}
+.ro-was[hidden]{display:none}
+.ro-was .zh{font-weight:400}
+.ro-strike{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.ro-foot{display:flex;align-items:baseline;gap:12px;min-height:22px}
+.ro-n{font:12px/1 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap}
+.ro-clear{position:relative;margin-left:auto;padding:5px 2px;font:11.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);visibility:hidden;white-space:nowrap}
+.ro-clear span{position:relative}
+.ro-clear:hover{color:var(--ink)}
+.ro.narrowed .ro-clear{visibility:visible}
+
+/* ---------- tabs on the fore-edge ---------- */
+.tb-label{margin-bottom:9px}
+.tb-block{position:relative}
+.tb-inner{position:relative}
+.tb{position:relative;display:flex;align-items:center;text-align:left;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.tb-paper{position:absolute;left:0;top:0;z-index:-2;overflow:visible;pointer-events:none}
+.tb-out{fill:var(--paper);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+.tb.is-on .tb-out{fill:#FFFDF8}
+.tb-lip{fill:var(--paper2)}
+.tb-crease{fill:none;stroke:var(--pencil);stroke-width:1;opacity:.55}
+.tb-contact{fill:none;stroke:var(--pencil);stroke-width:1.1;stroke-linecap:round;opacity:.6}
+.tb-lab{position:relative;display:inline-flex;align-items:baseline;gap:9px;white-space:nowrap}
+.tb-en{font:500 12px/1.2 var(--util);letter-spacing:.03em;color:var(--ink)}
+.tb-zh{font:12.5px/1.2 var(--util-cn);color:var(--soft)}
+.tb-n{margin-left:auto;font:11px/1 var(--util);color:var(--pencil)}
+.tb.is-off .tb-out{fill:var(--paper2)}
+.tb.is-off .tb-en,.tb.is-off .tb-zh,.tb.is-off .tb-n{color:var(--pencil)}
+/* the page block: countable page edges, inked at both sides and both ends */
+.tb-edge{position:absolute;z-index:2;pointer-events:none;background:var(--page);border:1.5px solid var(--ink);border-radius:2px}
+
+/* side: a closed book, cover toward you; the tabs come out from between its pages at the fore-edge */
+.tb-side{--cov:98px;--pg:7px}
+.tb-side .tb-inner{padding:11px 0}
+.tb-book{position:absolute;left:0;top:0;bottom:0;width:var(--cov);z-index:3;background:#D8CBB0;border:1.5px solid var(--ink);border-radius:2px 3px 3px 2px}
+/* the hinge: the groove where a board flexes, drawn lighter, not thicker */
+.tb-book::before{content:"";position:absolute;left:9px;top:3px;bottom:3px;border-left:1px solid rgba(51,48,43,.28)}
+.tb-slip{position:absolute;left:24px;top:16px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 7px 9px;background:var(--page);border:1px solid rgba(51,48,43,.6)}
+.tb-slip b{font:400 19px/1.1 var(--disp-cn);color:var(--ink);writing-mode:vertical-rl;letter-spacing:.14em}
+.tb-slip i{font:normal 10px/1 var(--util);letter-spacing:.06em;color:var(--soft)}
+.tb-side .tb-edge{left:calc(var(--cov) - 1.5px);top:3px;bottom:3px;width:var(--pg);z-index:2;border-radius:0 1px 1px 0;border-left:0;background-image:repeating-linear-gradient(0deg,transparent 0 2.4px,rgba(51,48,43,.22) 2.4px 3.1px)}
+.tb-side .tb-group{display:flex;flex-direction:column;gap:5px;padding-left:calc(var(--cov) - 6px)}
+.tb-side .tb{width:198px;height:42px;padding:0 11px 0 19px;z-index:1}
+.tb-side .tb-en{font-size:11.5px}
+.tb-side .tb-lab{flex-direction:column;gap:5px;align-items:flex-start}
+.tb-side .tb-n{align-self:flex-start;margin-top:8px}
+
+/* strip (phone): a horizontal block, tabs standing up out of it; the strip swipes */
+.tb-strip .tb-scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;padding-top:13px;margin:0 -2px}
+.tb-strip .tb-scroll::-webkit-scrollbar{display:none}
+.tb-strip .tb-inner{width:max-content;min-width:100%;padding:0 10px 0 4px}
+.tb-strip .tb-group{display:flex;gap:4px;align-items:flex-end}
+.tb-strip .tb{height:54px;align-items:flex-start;padding:8px 11px 0}
+.tb-strip .tb-lab{flex-direction:column;gap:4px}
+.tb-strip .tb-n{margin-left:9px}
+.tb-strip .tb-edge{left:0;right:0;bottom:-2px;height:12px;background-image:repeating-linear-gradient(90deg,transparent 0 2.4px,rgba(51,48,43,.2) 2.4px 3.1px)}
+
+/* ---------- the year ledger ---------- */
+.ix-years{margin-top:auto;padding-top:14px}
+.lg-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.lg-all{position:relative;padding:5px 2px;font:11.5px/1 var(--util);letter-spacing:.03em;color:var(--soft);white-space:nowrap}
+.lg-all span{position:relative}
+.lg-all[aria-pressed=true]{color:var(--ink);cursor:default}
+.lg-all:hover{color:var(--ink)}
+.lg-track{position:relative;user-select:none;-webkit-user-select:none;cursor:pointer}
+.lg-ink{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.lg-rule{stroke:var(--line);stroke-width:1}
+.lg-margin{stroke:var(--pencil);stroke-width:1;opacity:.55}
+.lg-tick{stroke:var(--pencil);stroke-width:1.2;stroke-linecap:round}
+.tl path{fill:none;stroke:var(--ink);stroke-width:1.45;stroke-linecap:round}
+.lg.narrowed .tl:not(.in) path{stroke:var(--pencil);opacity:.42}
+.lg-row{position:relative;display:flex;min-width:0}
+.lg-y{position:relative;font:12.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);white-space:nowrap}
+.lg-row.is-dim .lg-y{color:var(--pencil);opacity:.6}
+.lg.narrowed .lg-row:not(.is-in) .lg-y{color:var(--pencil)}
+.lg-row.is-sel .lg-y{color:var(--ink);font-weight:500;opacity:1}
+.lg-rows .lg-track{display:flex;flex-direction:column;height:calc(12 * 21.5px);touch-action:none}
+.lg-rows .lg-row{flex:1 1 0;align-items:center;padding-left:9px}
+.lg.is-drag .lg-track{cursor:ns-resize}
+.lg-cols .lg-track{display:flex;height:66px;touch-action:pan-y}
+.lg-cols.is-drag .lg-track{cursor:ew-resize}
+.lg-cols .lg-row{flex:1 1 0;align-items:flex-end;justify-content:center;padding-bottom:3px}
+.lg-cols .lg-y{font-size:11px}
+/* the drag flag: a paper tag beside the pointer (left of the ledger), above the thumb on a phone */
+.lg-flag{position:absolute;left:0;top:0;z-index:6;padding:5px 9px 6px;background:var(--paper);border:1.5px solid var(--ink);border-radius:3px;
+  font:500 11.5px/1 var(--util);letter-spacing:.03em;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s linear}
+.lg-flag::after{content:"";position:absolute;background:var(--ink)}
+.lg-rows .lg-flag::after{left:100%;top:50%;width:11px;height:1.5px;margin-top:-.75px}
+.lg-cols .lg-flag::after{left:50%;top:100%;width:1.5px;height:9px;margin-left:-.75px}
+.lg.flag-on .lg-flag{opacity:1}
+
+/* ---------- phone: one strip above the shelf ---------- */
+.wr.is-phone .ix-head{padding-bottom:6px}
+.wr.is-phone .ro-line{min-height:0;font-size:16px;column-gap:7px}
+.wr.is-phone .ro .zh{font-size:14.5px}
+.wr.is-phone .ro-v.is-all .zh,.wr.is-phone .ro-was .zh{display:none}
+.wr.is-phone .tb-label{margin-bottom:0}
+.wr.is-phone .ix-years{margin-top:10px;padding-top:0}
+.wr.is-phone .lg-head{margin-bottom:2px}
+.wr.is-phone .lg-all{padding:8px 4px}

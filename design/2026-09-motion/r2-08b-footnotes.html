@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08b · Footnotes with a body — redesign mockups, round 2</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="r2-08b-base.css">
+<link rel="stylesheet" href="r2-08b-board.css">
+<link rel="stylesheet" href="r2-08b-slip.css">
+<link rel="stylesheet" href="r2-08b-a.css">
+<link rel="stylesheet" href="r2-08b-b.css">
+<link rel="stylesheet" href="r2-08b-c.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 08b · ROUND 2</div><h1 class="board-title">Footnotes with a body <span class="display-cn">有身体的脚注</span></h1></div>
+    <div><p class="board-why">Round 1 fixed legibility: margin notes stopped being set in handwriting, and each note got its full reference instead of a truncated “Flas…”. But the pointing itself was only a line fading in. <b>Nothing with mass moved</b>, so a dotted leader and a loop read as a highlight, not an event. On a phone the note rose as a generic bottom sheet. Round 2 keeps the readable type and gives the note a body that answers when you point at it: a slip on a thread, a folded strip, or a catalogue card.</p>
+      <p class="evidence">evidence: <code>Reading.dc.html:97–99</code> <code>.mn</code> in <code>--hand-en / --hand-cn</code>, rotated −1°, truncated · round 1 <code>08-reading-b.js:60–100</code> dotted leader + loop · data: <code>FY_POSTS[0]</code>, 9 refs, all real citations (outlet · title · date · URL), three of them double</p></div>
+  </header>
+
+  <div class="r2-changed">
+    <div class="r2-changed-k">WHAT CHANGED<br>FROM ROUND 1</div>
+    <div><q>The animation and pointing effect looks dull, WOW me.</q>
+      <p>Round 2 has three bolder mechanisms, and in each one the note itself <b>physically answers</b>, not only a line. A: the note is tugged across the margin on a thread. B: the sentence parts and a folded strip unfolds between the lines. C: one annotator’s gesture pulls a catalogue card out of a drawer. Each plays a <b>first-time choreography once, then a quick repeat</b> so that hovering a dozen refs stays fast. The phone note is now a <b>slip pulled out of a slot cut in the page</b>, and you swipe it back in. The note type is unchanged: upright serif, utility-mono dates, never handwriting for a citation.</p></div>
+  </div>
+
+  <section class="cands wide">
+    <article class="cand" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Tugged slip <span class="display-cn">拽纸条</span></span><span class="cand-mech">coral thread under tension · slip on a spring, pivoting on its eyelet · physics clock</span></div>
+      <div class="stage rd-stage" id="stage-a" data-hint="hover a footnote number ↗ 指一下注释号"><div class="rd-frame"><div class="rd" tabindex="0" role="region" aria-label="Candidate A: the essay, scrollable · 可滚动阅读"></div></div></div>
+      <div class="cand-foot"><div>Each margin note is a paper slip with a punched eyelet. Point at a number and a coral thread knots around it, flies slack across the leading and catches the eyelet. At that instant it goes taut: it twangs once, the number gets tugged a hair, and the slip lurches out of the margin toward the sentence. The slip rises to the ref’s line and squares up to face the text, pivoting on the eyelet with its trailing edge lagging. Let go and the thread slackens and reels back into the knot, and the slip drifts home to its tilt. Hovering down the refs feels like plucking strings.
+        <span class="clock"><b>first</b> knot → throw → catch → lurch, reads by ~450 ms, settles by ~800 · <b>repeat</b> no throw, stiffer spring, ~300 ms · <b>phone</b> slip from the slot</span>
+        <div class="tradeoff"><b>cost</b> one path and one transform per live note, and the rAF loop stops when everything is at rest · <b>a11y</b> refs stay real links, focus pulls the note just as hover does, Esc lets go, touch taps to pull · <b>reduced motion</b> the thread is simply drawn to the note where it rests, and nothing travels · <b>accent</b> the thread echoes the red string on Building’s corkboard</div></div>
+        <div class="foot-ctl"><button class="replay" data-replay="replayA">↻ first time · 初见</button><button class="replay" data-replay="repeatA">↻ repeat · 再见</button><button class="replay" data-phone="stage-a" aria-pressed="false"><span class="ph-t">phone 390 · 手机</span></button></div></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Unfolds between the lines <span class="display-cn">行间展开</span></span><span class="cand-mech">text reflows around a strip of 3D-hinged flaps · each flap on its own spring · fold line on the hand’s clock</span></div>
+      <div class="stage rd-stage" id="stage-b" data-hint="click a footnote number ↗ 点一下注释号"><div class="rd-frame"><div class="rd" tabindex="0" role="region" aria-label="Candidate B: the essay, scrollable · 可滚动阅读"></div></div></div>
+      <div class="cand-foot"><div>The margin goes quiet, and the notes live inside the text. Point at a number and a dashed coral fold line is drawn in the leading under its row, meaning “it opens here”. Click, Enter or tap parts the text exactly there. The visual line ends, a folded packet drops in, and its flaps unroll one after another from behind the tab. The gap is the paper’s projected height on every frame, so the paper itself pushes the lines apart; no tween does it. Click again, “fold ↑” or Esc folds it away and the lines close over it. Every crease falls between two lines of the note.
+        <span class="clock"><b>first</b> tab drops, flaps unroll in sequence, ~650–850 ms by length · <b>repeat</b> all flaps at once, ~300 ms · <b>phone</b> the same, because the column is the room</span>
+        <div class="tradeoff"><b>cost</b> the gap’s height is the one layout property animated, bounded to about half a second; the hinges are transforms · <b>a11y</b> the ref is a disclosure (<code>aria-expanded</code>), the strip follows it in reading order, and its source links and fold button come next in tab order · <b>loses</b> glanceable margin notes, since a note is read only on request · <b>reduced motion</b> open / shut</div></div>
+        <div class="foot-ctl"><button class="replay" data-replay="replayB">↻ first time · 初见</button><button class="replay" data-replay="repeatB">↻ repeat · 再见</button><button class="replay" data-phone="stage-b" aria-pressed="false"><span class="ph-t">phone 390 · 手机</span></button></div></div>
+    </article>
+
+    <article class="cand pick" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">The annotator’s hand <span class="display-cn">批注一笔 · 目录卡</span></span><span class="cand-mech">one continuous pen path, ⌟ → loop → arrow (hand’s clock) · catalogue card hinged at its foot (physics clock)</span></div>
+      <div class="stage rd-stage" id="stage-c" data-hint="hover a footnote number ↗ 指一下注释号"><div class="rd-frame"><div class="rd" tabindex="0" role="region" aria-label="Candidate C: the essay, scrollable · 可滚动阅读"></div></div></div>
+      <div class="cand-foot"><div>Pointing at a number plays one gesture, the way a reader with a pen marks a source. A corner ⌜ goes down where the claim starts. Then, without lifting, the pen draws a ⌟ where the claim ends, a loop around the number, and a swift arrow through the leading into the margin. As the arrow arrives, the note is pulled up out of its drawer as a library catalogue card: No. · host, who, title, date and the rod hole. The pen then underlines the title. The bracket is information, not decoration: it shows exactly which words the source backs.
+        <span class="clock"><b>first</b> touch down, lift, one stroke (580 ms), card at 455, underline by ~900 · <b>repeat</b> one quick stroke, card at 170, done by ~450 ms · <b>phone</b> slip from the slot</span>
+        <div class="tradeoff"><b>cost</b> three paths and one card per reveal, WAAPI only, so nothing runs while idle · <b>a11y</b> refs stay links, focus plays the same gesture, the card is decorative and <code>aria-hidden</code> because the note is in the reference list · <b>reduced motion</b> the marks and card are simply there · <b>risk</b> the phrase finder is heuristic (a clause stop or ~34 characters back)</div></div>
+        <div class="foot-ctl"><button class="replay" data-replay="replayC">↻ first time · 初见</button><button class="replay" data-replay="repeatC">↻ repeat · 再见</button><button class="replay" data-phone="stage-c" aria-pressed="false"><span class="ph-t">phone 390 · 手机</span></button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>C, the annotator’s hand.</b> It is the only one where the WOW also carries information. The ⌜⌟ shows exactly which words the source backs, the arrow shows where the source lives, and the card sets the citation out as fields: who, title, date, host. It is Fred’s thesis in one gesture, a person with a pen noticing a real source, and the catalogue card is an ordinary object given unusual attention. It stays fast: the first reveal takes about 0.9 s, and every one after is a single quick stroke of about 0.45 s. On a phone, the same card is pulled out of the slot and swiped back in.</p>
+    <p><b>A</b> is the most visceral: the tug is a real physical surprise, and it rhymes with Building’s red string. But a dozen hovers means a dozen moving slips and a travelling coral line, which is more toy than reading aid. Keep it in reserve for a page with fewer notes. <b>B</b> is the boldest structurally and the best reading experience on a phone, because nothing covers the text. If Fred prefers text that parts to a slip that rises, use B’s unfold as C’s narrow-screen behaviour; both share one note model, so this is a swap, not a rebuild. Watch for three things. C’s phrase finder is a heuristic (a clause stop, or about 34 characters back), so an author-marked span would be exact. The card must stay aria-hidden, since the reference list is the accessible source. And the pen stays the view’s only coral.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）；推荐 C，B 的“行间展开”可作为 C 的窄屏替代
+表达锚点：“拿着笔读书的人”：注释不是亮一下，而是有身体地回应：纸条被线拽过来（A），句子分开、纸条在行间展开（B），一笔圈出出处、从抽屉里抽出目录卡（C）
+动作时钟：笔迹走手的时钟（一笔落下，收笔更快）；纸条、折页、卡片走物理时钟（弹簧，一次小回弹后停稳）；首次完整编排，之后一律快速版
+映射：指向注释号 → 线绷紧，纸条被拽向句子（A）；点击 → 行在参考处断开，纸的投影高度推开下文（B）；指向 → 笔从论断起点画到终点、圈号、箭头甩进页边，卡片被抽出，笔划下标题（C）；手机上点 → 笔在页面下方割一道口，纸条从口里抽出，下滑塞回
+线条计划：一支笔，1.5–1.7px 圆头，按注释号固定种子抖动；C 的 ⌟、圈、箭头是同一条路径，不抬笔；B 的折线是虚线，意思是“从这里打开”
+色彩计划：珊瑚色唯一持有者是“当前那一笔”（A 的线、B 的折线与圈号、C 的笔迹）；纸条、折页、卡片只用墨色、铅笔色与纸色；阴影只标接触，不打光
+字体：注释一律直立衬线（中文 Noto Serif SC），来源名与日期、域名用 utility 等宽，目录卡页眉 No. · 域名为打字机式等宽；hand 字体不用于任何引用</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-08b-render.js"></script><script src="r2-08b-notes.js"></script><script src="r2-08b-slip.js"></script>
+<script src="r2-08b-a.js"></script><script src="r2-08b-b.js"></script><script src="r2-08b-c.js"></script>
+</body></html>

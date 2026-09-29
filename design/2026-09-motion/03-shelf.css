@@ -1,0 +1,56 @@
+/* 03-shelf.css — the Writing bookshelf as rendered live (Writing.dc.html:146–190), shared by all candidates.
+   Book heights are calc(--inner × --h) instead of percentages so a leaving book keeps its size when the
+   engine lifts it out of the flex flow. */
+.shelf{--inner:221px;display:flex;gap:20px;align-items:stretch}
+.shelf-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.shelf-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:26px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.shelf.no-ticks .shelf-scroll{padding-bottom:4px}
+/* Headroom: entering books start above the shelf, so the scroll clip edge moves up out of sight
+   (the filter above is z-indexed over it). B keeps its clip at the dividers' edge on purpose. */
+.shelf:not(.with-band) .shelf-scroll{padding-top:80px;margin-top:-80px}
+.shelf-row{position:relative;display:flex;align-items:flex-end;gap:5px;padding:26px 6px 0;border-bottom:5px solid var(--ink);width:max-content;min-width:100%;height:calc(var(--inner) + 31px)}
+
+.tsuzuku{flex:none;width:40px;height:calc(var(--inner) * .7);background:var(--paper);border:2px dashed var(--mark);border-radius:3px 3px 0 0;display:grid;place-items:center;position:relative;z-index:1}
+.tsuzuku span{font:13px/1 var(--hand-cn),var(--hand);color:var(--mark);writing-mode:vertical-rl}
+
+.book{position:relative;flex:none;width:var(--w);height:calc(var(--inner) * var(--h));transform-origin:50% 100%;z-index:1}
+.book.is-out{display:none}
+.book.is-leaving{position:absolute;z-index:0;pointer-events:none}
+.spine{position:absolute;inset:0;display:block;background:var(--tone);border:1.5px solid var(--ink);border-radius:3px 3px 0 0;color:var(--ink);transition:transform .18s cubic-bezier(.2,.7,.2,1)}
+.spine:hover,.spine:focus-visible{transform:translateY(-20px)}
+.spine:focus-visible{outline-offset:2px}
+.spine-title{position:absolute;top:8%;left:50%;transform:translateX(-50%);max-height:84%;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--disp-cn),var(--disp);font-weight:400;line-height:1.3;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.is-series .spine-title{max-height:68%;color:#efe5d3}
+.spine-num{position:absolute;bottom:10%;left:50%;transform:translateX(-50%);background:var(--mark);color:#fff;font:9px/1.25 var(--util);padding:2px 6px;border-radius:2px;letter-spacing:.02em}
+
+/* Year ticks ride under the first book of each year (live: the .year-row mirror at :159–169). */
+.tick{position:absolute;left:0;top:calc(100% + 11px);height:18px;opacity:0;visibility:hidden;transition:opacity .16s ease,visibility 0s .16s;white-space:nowrap}
+.tick::before{content:"";position:absolute;left:0;top:0;width:1.5px;height:6px;background:var(--pencil)}
+.tick-y{position:absolute;left:3px;top:-1px;font:9.5px/1 var(--util);letter-spacing:.04em;color:var(--pencil)}
+.book.first-y .tick{opacity:1;visibility:visible;transition:opacity .2s ease .12s,visibility 0s}
+.book.is-leaving .tick,.book.is-entering .tick{opacity:0;visibility:hidden;transition:opacity .08s,visibility 0s .08s}
+.shelf.no-ticks .tick{display:none}
+
+.shelf-bird{position:absolute;left:52px;bottom:-9.3px;width:56px;aspect-ratio:308/317;z-index:3;pointer-events:none}
+.shelf-bird .bframe{position:absolute;inset:0;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat}
+
+/* Preview panel (live :172–190). */
+.shelf-panel{flex:none;width:236px;position:relative;min-height:280px}
+.prev{position:absolute;inset:0;display:flex;flex-direction:column;color:var(--ink)}
+.warm-cover{position:relative;overflow:hidden;height:118px;background:var(--paper2)}
+.warm-cover img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.18);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
+.prev-body{flex:1;background:#fff;border:1px solid var(--line);border-top:none;padding:10px 13px}
+.prev-zh{font:400 18px/1.3 var(--disp-cn),var(--disp)}
+.prev-en{margin-top:3px;color:var(--soft);font:13px/1.25 var(--disp)}
+.prev-meta{margin-top:8px;font:10px/1.5 var(--util);letter-spacing:.04em;color:var(--pencil)}
+.prev-empty{align-items:center;justify-content:center;background:var(--paper2);border:2px dashed var(--line);text-align:center;padding:20px}
+.prev-tz{font:20px/1 var(--hand-cn),var(--hand);color:var(--mark)}
+
+@container wx (max-width:760px){
+  .shelf-panel{display:none}
+}
+@container wx (max-width:520px){
+  .shelf{--inner:176px}
+  .shelf-row{padding-top:18px;height:calc(var(--inner) + 23px)}
+  .spine:hover{transform:none}
+}

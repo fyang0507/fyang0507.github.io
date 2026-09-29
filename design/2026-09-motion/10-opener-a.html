@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 · A — The desk draws itself · 一笔画</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="preload" href="../../assets/desk-scene2-light.png" as="image">
+<link rel="preload" href="../../fonts/derived/MuyaoSuixin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="09-home-desk.css"><link rel="stylesheet" href="10-opener-a.css">
+<script>
+  /* Decide before first paint whether an opener will play, so the landing never flashes first. */
+  (function () {
+    var r = document.documentElement, q = new URLSearchParams(location.search);
+    var rm = sessionStorage.getItem('mock-rm') === '1' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    r.classList.add('a10');
+    if (!rm && q.get('autoplay') !== '0') r.classList.add('a10-op');
+  })();
+</script>
+</head><body>
+<div class="home" id="home">
+  <header class="hd">
+    <a class="site-identity" href="../../index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。首页">
+      <span class="site-identity-copy">
+        <span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span>
+        <span class="site-identity-tag" lang="zh">继续写，继续造</span>
+        <span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="../../assets/identity-sticker-ghost.png" srcset="../../assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="../../assets/identity-sticker-blob.png" srcset="../../assets/identity-sticker-blob@2x.png 2x" alt=""></span>
+      </span>
+    </a>
+  </header>
+  <div class="deskhost" id="deskhost"></div>
+  <nav class="mnav" aria-label="site">
+    <a href="../../Writing.dc.html"><span class="t">在写 writing</span><i class="ul" aria-hidden="true"></i></a>
+    <a href="../../Building.dc.html"><span class="t">在造 building</span><i class="ul" aria-hidden="true"></i></a>
+    <a href="../../Gallery.dc.html"><span class="t">在拍 shooting</span><i class="ul" aria-hidden="true"></i></a>
+    <a href="../../About.dc.html"><span class="t">关于 about</span><i class="ul" aria-hidden="true"></i></a>
+  </nav>
+  <div class="fig">fig.01</div>
+</div>
+<div class="catch" id="catch" aria-hidden="true" hidden></div>
+<div class="ctl" id="ctl" role="group" aria-label="Opener mockup controls">
+  <button type="button" data-act="replay">↻ replay</button><span class="sep">·</span>
+  <button type="button" data-act="skip">skip</button><span class="sep">·</span>
+  <button type="button" data-mode="first" aria-pressed="true">first visit</button><span class="sep">/</span>
+  <button type="button" data-mode="returning" aria-pressed="false">returning</button><span class="sep">·</span>
+  <label><input type="checkbox" id="rm"> reduced motion</label>
+</div>
+<script src="shared/pen.js"></script>
+<script src="assets-gen/10a-strokes.js"></script>
+<script src="09-home-desk.js"></script>
+<script src="10-opener-a-draw.js"></script>
+<script src="10-opener-a-camera.js"></script>
+<script src="10-opener-a.js"></script>
+</body></html>

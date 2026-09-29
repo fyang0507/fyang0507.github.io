@@ -1,114 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>Writing · Fred Yang</title>
-<meta name="description" content="Fred Yang's bilingual essays and travel writing, 2015–2025.">
+<meta name="description" content="Fred Yang's bilingual essays and travel writing, 2015–2026.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
 <script src="./support.js"></script>
-<script src="./content/posts.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
-  a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
-  .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
-  .hand{font-family:"MuyaoPleased","Caveat",cursive}
-  .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
-  .writing-statement{font-size:clamp(19px,2.2vw,24px);line-height:1.35;color:var(--soft);padding-bottom:8px}
-  .writing-statement-line{display:block}
-  .writing-statement-line + .writing-statement-line{margin-top:2px}
-  .writing-statement-line[lang="zh"]{font-family:"MuyaoPleased",cursive;letter-spacing:.025em}
-  .writing-statement-line[lang="en"]{font-family:"Caveat",cursive;letter-spacing:.01em}
-  .statement-beat{display:inline-block;position:relative;color:var(--mark);font-size:1.06em;font-weight:600;transform:rotate(-1deg) translateY(-.02em)}
-  .statement-beat::after{content:"";position:absolute;left:-.06em;right:-.06em;bottom:-.02em;height:2px;border-radius:50%;background:var(--mark);opacity:.5;transform:rotate(1.4deg)}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @keyframes wRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes birdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .wr{animation:wRise .5s cubic-bezier(.2,.7,.2,1) both}
-  .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
-  .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
-  .t-tabs{--tabs-dur:250ms;--tabs-ease:cubic-bezier(0.22,1,0.36,1);position:relative;display:inline-flex;align-items:center;gap:3px;padding:3px;border-radius:999px;background:var(--paper2);border:1.3px solid var(--line)}
-  .t-tab{position:relative;appearance:none;border:0;background:transparent;height:26px;padding:4px 14px;color:var(--soft);cursor:pointer;border-radius:999px;z-index:1;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:400;transition:color var(--tabs-dur) var(--tabs-ease),font-weight var(--tabs-dur) var(--tabs-ease)}
-  .t-tab:not([aria-selected="true"]):hover{color:var(--ink)}
-  .t-tab[aria-selected="true"]{color:var(--mark);font-weight:500}
-  .t-tabs-pill{position:absolute;top:3px;left:0;height:26px;width:0;background:#fff;border-radius:999px;transform:translateX(0);transition:transform var(--tabs-dur) var(--tabs-ease),width var(--tabs-dur) var(--tabs-ease);will-change:transform,width;z-index:0;pointer-events:none;box-shadow:0 1px 2px rgba(60,50,35,.12)}
-  @media (prefers-reduced-motion:reduce){.t-tabs-pill,.t-tab{transition:none!important}}
-  .book{transition:transform .18s cubic-bezier(.2,.7,.2,1)}
-  .book:hover{transform:translateY(-20px)}
-  .preview-title-en{margin-top:3px;color:var(--soft);font-family:"Fraunces",serif;font-size:13px;line-height:1.25}
-  .mobile-pass-button{appearance:none;border:0;padding:0;background:transparent;color:inherit;font:inherit}
-  .prev{position:absolute;inset:0;opacity:0;transition:opacity .15s ease;display:flex;flex-direction:column;z-index:1}
-  .shelf-panel>.prev:nth-child(2){opacity:1}
-  .warm-cover{position:relative;overflow:hidden;background:var(--paper2);border:0!important;box-shadow:none!important}
-  .warm-cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.18);transform-origin:center;filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
-  .shelf-scroll:has(.book:nth-child(1):hover) ~ .shelf-panel .prev:nth-child(1){opacity:1}
-  .shelf-scroll:has(.book:nth-child(1):hover) ~ .shelf-panel .prev:nth-child(2){opacity:0}
-  .shelf-scroll:has(.book:nth-child(2):hover) ~ .shelf-panel .prev:nth-child(2){opacity:1}
-  .shelf-scroll:has(.book:nth-child(3):hover) ~ .shelf-panel .prev:nth-child(3){opacity:1}
-  .shelf-scroll:has(.book:nth-child(4):hover) ~ .shelf-panel .prev:nth-child(4){opacity:1}
-  .shelf-scroll:has(.book:nth-child(5):hover) ~ .shelf-panel .prev:nth-child(5){opacity:1}
-  .shelf-scroll:has(.book:nth-child(6):hover) ~ .shelf-panel .prev:nth-child(6){opacity:1}
-  .shelf-scroll:has(.book:nth-child(7):hover) ~ .shelf-panel .prev:nth-child(7){opacity:1}
-  .shelf-scroll:has(.book:nth-child(8):hover) ~ .shelf-panel .prev:nth-child(8){opacity:1}
-  .shelf-scroll:has(.book:nth-child(9):hover) ~ .shelf-panel .prev:nth-child(9){opacity:1}
-  .shelf-scroll:has(.book:nth-child(10):hover) ~ .shelf-panel .prev:nth-child(10){opacity:1}
-  .shelf-scroll:has(.book:nth-child(11):hover) ~ .shelf-panel .prev:nth-child(11){opacity:1}
-  .shelf-scroll:has(.book:nth-child(12):hover) ~ .shelf-panel .prev:nth-child(12){opacity:1}
-  .shelf-scroll:has(.book:nth-child(13):hover) ~ .shelf-panel .prev:nth-child(13){opacity:1}
-  .shelf-scroll:has(.book:nth-child(14):hover) ~ .shelf-panel .prev:nth-child(14){opacity:1}
-  .shelf-scroll:has(.book:nth-child(15):hover) ~ .shelf-panel .prev:nth-child(15){opacity:1}
-  .shelf-scroll:has(.book:nth-child(16):hover) ~ .shelf-panel .prev:nth-child(16){opacity:1}
-  .shelf-scroll:has(.book:nth-child(17):hover) ~ .shelf-panel .prev:nth-child(17){opacity:1}
-  .shelf-scroll:has(.book:nth-child(18):hover) ~ .shelf-panel .prev:nth-child(18){opacity:1}
-  .shelf-scroll:has(.book:nth-child(19):hover) ~ .shelf-panel .prev:nth-child(19){opacity:1}
-  .shelf-scroll:has(.book:nth-child(20):hover) ~ .shelf-panel .prev:nth-child(20){opacity:1}
-  .shelf-scroll:has(.book:nth-child(21):hover) ~ .shelf-panel .prev:nth-child(21){opacity:1}
-  .shelf-scroll:has(.book:nth-child(22):hover) ~ .shelf-panel .prev:nth-child(22){opacity:1}
-  .shelf-scroll:has(.book:nth-child(23):hover) ~ .shelf-panel .prev:nth-child(23){opacity:1}
-  .shelf-scroll:has(.book:nth-child(24):hover) ~ .shelf-panel .prev:nth-child(24){opacity:1}
-  .shelf-scroll:has(.book:nth-child(25):hover) ~ .shelf-panel .prev:nth-child(25){opacity:1}
-  .ph{background:repeating-linear-gradient(45deg,#F3ECDD 0 7px,#EDE4D2 7px 14px)}
-
-  @media (prefers-reduced-motion:reduce){.wr{animation:none!important;opacity:1!important}.book,.mobile-card{transition:none!important}.book:hover{transform:none}}
-  @media (max-width:760px){.shelf-wrap{display:none!important}.mobile-list{display:flex!important}.shelf-lang-row{display:none!important}}
-</style>
-</helmet>
-
-<div data-screen-label="writing" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
-
-  <header class="site-shell-header">
-    <div class="site-header-row wr">
-      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status">{{ totalN }} essays · 2015–2025</div>
+<link rel="stylesheet" href="./site-tokens.css">
+<link rel="stylesheet" href="./site-nav.css">
+<link rel="stylesheet" href="./pen.css">
+<link rel="stylesheet" href="./transitions.css">
+<link rel="stylesheet" href="./lib/writing/writing.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="./motion.js" defer blocking="render"></script>
+<script src="./transitions-tab.js" defer blocking="render"></script>
+<script src="./transitions.js" defer blocking="render"></script>
+<script src="./pen.js" defer></script>
+<script src="./pen-tier.js" defer></script>
+<script src="./site.js" defer></script>
+<script src="./content/posts-index.js" defer></script>
+<script type="module" src="./lib/writing/app.js"></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang — home"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status" data-essay-count>27 essays · 2015–2026</div>
     </div>
-    <nav class="site-index wr" aria-label="Primary navigation" style="animation-delay:.08s">
-      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
     </nav>
   </header>
-
+</div>
+<x-dc>
+<div data-screen-label="writing" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px">
   <div style="width:min(1180px,100%);margin-top:40px">
-    <header class="subpage-intro wr" aria-labelledby="writing-title">
+    <header class="subpage-intro" aria-labelledby="writing-title">
       <div class="subpage-title-group">
         <div class="subpage-title-kicker"><span class="subpage-title-number">01</span><span class="subpage-title-en" lang="en">writing</span></div>
         <h1 id="writing-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">写</span>。</h1>
@@ -119,412 +59,11 @@
       </div>
     </header>
 
-    <div class="wr" style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
-      <sc-for list="{{ tags }}" as="t" hint-placeholder-count="4">
-        <button type="button" class="{{ t.cls }}" onClick="{{ t.onClick }}" aria-pressed="{{ t.pressed }}">{{ t.label }}</button>
-      </sc-for>
-    </div>
-    <div class="wr" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
-      <sc-for list="{{ years }}" as="y" hint-placeholder-count="11">
-        <button type="button" class="{{ y.cls }}" onClick="{{ y.onClick }}" aria-pressed="{{ y.pressed }}">{{ y.label }}</button>
-      </sc-for>
-    </div>
-    <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ totalN }} essays · 显示 {{ visibleN }} / {{ totalN }} 篇</div>
+    <div class="wr" data-mount="writing"></div>
 
-    <div class="shelf-lang-row" style="margin-top:22px;display:flex;align-items:center;gap:10px">
-      <div class="t-tabs" role="tablist" ref="{{ langTabsRef }}">
-        <span class="t-tabs-pill" aria-hidden="true"></span>
-        <button type="button" class="t-tab" role="tab" onClick="{{ setShelfLangZh }}" aria-selected="{{ shelfLangZhPressed }}">中文</button>
-        <button type="button" class="t-tab" role="tab" onClick="{{ setShelfLangEn }}" aria-selected="{{ shelfLangEnPressed }}">EN</button>
-      </div>
-    </div>
-    <!-- The shelf and the mobile card deck render the same posts. Only one is
-         ever mounted: the shelf's 24 hover-preview cards use opacity, not
-         display, so `loading="lazy"` cannot defer them and all 24 covers were
-         fetched even on a phone that can never show the shelf. -->
-    <sc-if value="{{ wideLayout }}" hint-placeholder-val="{{ true }}">
-    <div class="shelf-wrap" style="margin-top:8px;display:flex;gap:20px;align-items:stretch">
-      <div class="shelf-scroll" style="flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;display:flex;flex-direction:column">
-        <div class="shelf-row" style="position:relative;flex:1 1 auto;min-height:0;display:flex;align-items:flex-end;gap:5px;padding:26px 6px 0;border-bottom:5px solid var(--ink);width:max-content">
-          <div class="book" style="flex:none;width:40px;height:70%;background:var(--paper);border:2px dashed var(--mark);border-radius:3px 3px 0 0;display:grid;place-items:center" title="つづく">
-            <span class="hand" style="font-size:13px;color:var(--mark);writing-mode:vertical-rl">つづく</span>
-          </div>
-          <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-            <a class="book" href="{{ p.href }}" style="{{ p.bookStyle }}" title="{{ p.titleAttr }}" aria-label="{{ p.readLabel }}"><span style="{{ p.titleStyle }}">{{ p.spineTitle }}</span><span style="{{ p.numStyle }}">{{ p.numLabel }}</span></a>
-          </sc-for>
-          <div ref="{{ birdRef }}" style="position:absolute;left:6%;bottom:-9.3px;width:56px;aspect-ratio:308/317;z-index:2" role="img" aria-label="a small bird hopping along the shelf">
-            <div class="bframe" style="position:absolute;inset:0;background-image:url('./assets/bird-strip6-light.png');background-size:600% 100%;background-position:0 0;background-repeat:no-repeat"></div>
-          </div>
-        </div>
-        <div class="year-row" style="flex:none;display:flex;gap:5px;padding:6px 6px 4px;width:max-content">
-          <div style="flex:none;width:40px"></div>
-          <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-            <div style="{{ p.yearSlotStyle }}">
-              <sc-if value="{{ p.newYear }}" hint-placeholder-val="{{ false }}">
-                <div style="position:absolute;left:0;top:0;width:1.5px;height:6px;background:var(--pencil)"></div>
-                <div class="util" style="position:absolute;left:3px;top:-1px;font-size:9.5px;color:var(--pencil);white-space:nowrap">{{ p.year }}</div>
-              </sc-if>
-            </div>
-          </sc-for>
-        </div>
-      </div>
-
-      <div class="shelf-panel" style="flex:none;width:236px;position:relative;min-height:280px">
-        <div class="prev" style="align-items:center;justify-content:center;background:var(--paper2);border:2px dashed var(--line);text-align:center;padding:20px">
-          <div class="hand" style="font-size:20px;color:var(--mark)">つづく</div>
-          <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">Still writing · 还在写</div>
-        </div>
-        <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
-          <a class="{{ p.prevClass }}" href="{{ p.href }}" aria-label="{{ p.readLabel }}">
-            <div class="warm-cover" style="height:118px"><img data-content-src="{{ p.cover }}" data-content-srcset="{{ p.coverSrcset }}" sizes="236px" alt="" loading="lazy" decoding="async"></div>
-            <div style="background:#fff;border:1px solid var(--line);border-top:none;padding:10px 13px;flex:1">
-              <div class="display" style="font-size:18px">{{ p.zh }}</div>
-              <div class="preview-title-en" lang="en">{{ p.en }}</div>
-              <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">{{ p.tagLine }}</div>
-            </div>
-          </a>
-        </sc-for>
-        <div class="motif-default" style="position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center">
-          <img src="./assets/sticker-happy.png" alt="" aria-hidden="true" style="width:112px;transform:rotate(-5deg)">
-        </div>
-      </div>
-    </div>
-    </sc-if>
-
-    <sc-if value="{{ narrowLayout }}" hint-placeholder-val="{{ false }}">
-    <div class="mobile-list" style="display:none;flex-direction:column;align-items:center;margin-top:8px">
-      <div style="position:relative;width:min(84vw,340px);height:430px">
-        <sc-if value="{{ showPassed }}" hint-placeholder-val="{{ false }}">
-          <button type="button" class="mobile-pass-button" onClick="{{ goBack }}" aria-label="Previous article · 上一篇" style="position:absolute;left:-34px;bottom:0;width:64px;height:84px;cursor:pointer;z-index:5">
-            <span style="position:absolute;display:block;inset:8px 2px 0;background:#e4dac7;border:1.5px solid var(--line);border-radius:6px;transform:rotate(6deg)"></span>
-            <span style="position:absolute;display:block;inset:4px 0 4px 4px;background:#EDE4D2;border:1.5px solid var(--line);border-radius:6px;transform:rotate(-4deg)"></span>
-            <span style="position:absolute;inset:0 4px 8px;background:#fff;border:1.5px solid var(--ink);border-radius:6px;display:grid;place-items:center;transform:rotate(2deg)">
-              <span class="util" style="font-size:11px;color:var(--soft)">{{ passedCount }}</span>
-            </span>
-          </button>
-        </sc-if>
-        <sc-if value="{{ peek3 }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;inset:22px 30px -4px 2px;background:#e4dac7;border:1.5px solid var(--line);border-radius:8px;transform:rotate(-7deg);box-shadow:0 6px 14px rgba(60,50,35,.09)"></div>
-        </sc-if>
-        <sc-if value="{{ peek2 }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;inset:16px 0 0 20px;background:#EDE4D2;border:1.5px solid var(--line);border-radius:8px;transform:rotate(4deg);box-shadow:0 8px 18px rgba(60,50,35,.1)"></div>
-        </sc-if>
-        <sc-if value="{{ peek1 }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;inset:6px 8px 0 -4px;background:var(--paper2);border:1.5px solid var(--line);border-radius:8px;transform:rotate(-4deg);box-shadow:0 10px 22px rgba(60,50,35,.12)"></div>
-        </sc-if>
-        <sc-if value="{{ top }}" hint-placeholder-val="{{ false }}">
-          <div class="mobile-card" style="{{ topStyle }};position:absolute;inset:0;background:#fff;border:{{ top.topBorder }};border-radius:8px;box-shadow:0 16px 34px rgba(60,50,35,.2);overflow:hidden;touch-action:pan-y;cursor:grab"
-               onPointerDown="{{ onDown }}" onPointerMove="{{ onMove }}" onPointerUp="{{ onUp }}" onPointerCancel="{{ onUp }}">
-            <div class="warm-cover" style="height:46%">
-              <img data-content-src="{{ top.cover }}" data-content-srcset="{{ top.coverSrcset }}" sizes="min(84vw,340px)" alt="" decoding="async">
-              <sc-if value="{{ top.series }}" hint-placeholder-val="{{ false }}">
-                <span style="position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--mark);color:#fff;display:grid;place-items:center;font-family:'IBM Plex Mono',monospace;font-size:12px">{{ top.numLabel }}</span>
-              </sc-if>
-            </div>
-            <div style="padding:14px 20px">
-              <div class="display" style="font-size:25px">{{ top.zh }}</div>
-              <div class="preview-title-en" lang="en">{{ top.en }}</div>
-              <div class="util" style="font-size:11.5px;color:var(--pencil);margin-top:10px">{{ top.tagLine }}</div>
-              <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
-                <a href="{{ top.hrefZh }}" class="util" aria-label="{{ top.readLabelZh }}" style="color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">阅读全文</a>
-                <a href="{{ top.hrefEn }}" class="util" aria-label="{{ top.readLabelEn }}" style="color:var(--mark);font-size:11.5px;border-bottom:1px solid var(--mark)">read →</a>
-              </div>
-            </div>
-          </div>
-        </sc-if>
-        <sc-if value="{{ noTop }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--paper2);border:2px dashed var(--line);border-radius:8px;padding:20px;text-align:center">
-            <img src="./assets/sticker-happy.png" alt="" style="width:52px;transform:rotate(-6deg)">
-            <sc-if value="{{ filteredEmpty }}" hint-placeholder-val="{{ false }}">
-              <div class="hand" style="font-size:20px;color:var(--soft);margin-top:10px">No matching essays · 没有符合条件的文章</div>
-            </sc-if>
-            <div class="hand" style="font-size:22px;color:var(--mark);margin-top:10px">つづく</div>
-            <div class="util" style="font-size:11px;color:var(--pencil);margin-top:6px">Still writing · 还在写</div>
-          </div>
-        </sc-if>
-      </div>
-      <div class="hand" style="margin-top:20px;font-size:16px;color:var(--pencil)">← swipe for next · 左滑下一篇 / 右滑上一篇 →</div>
-      <div class="util" style="margin-top:6px;font-size:11px;color:var(--pencil)">{{ cardPos }} / {{ mobileTotal }}</div>
-    </div>
-    </sc-if>
-
-    <div class="util wr" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
+    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.01</div>
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script>
-const TAG_ZH = { 'stories we live':'我们生活的故事', 'everyday chronicles':'日常记趣', 'travel log':'游记', 'commentary':'杂文', 'poem':'诗' };
-const TONES = ['#c9bda3','#d8cbb0','#b7ab8f','#e4dac7'];
-
-const PRIMARY_TAGS = Object.keys(TAG_ZH);
-const POSTS = (window.FY_POSTS || []).slice().sort((a, b) => b.date.localeCompare(a.date)).map((p, index) => {
-  const allTags = (p.tags || []).concat(p.tagsZh || []);
-  const tagEns = [];
-  allTags.forEach(tag => {
-    const normalized = PRIMARY_TAGS.find(t => tag === t || tag === TAG_ZH[t]);
-    if (normalized && !tagEns.includes(normalized)) tagEns.push(normalized);
-  });
-  const seriesMatch = p.title.match(/Our Stories\s+(\d+)/i) || p.titleZh.match(/故事\s*0?(\d+)/);
-  return {
-    id: index + 1,
-    zh: p.titleZh,
-    en: p.title,
-    sub: p.subtitleZh || p.subtitle,
-    date: p.date,
-    tagEns,
-    series: seriesMatch ? Number(seriesMatch[1]) : null,
-    readingMin: p.readingMin,
-    cover: p.cover,
-    coverSrcset: p.coverSrcset,
-    baseHref: 'Reading.dc.html?post=' + encodeURIComponent(p.id),
-    hrefZh: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=zh',
-    hrefEn: 'Reading.dc.html?post=' + encodeURIComponent(p.id) + '&lang=en'
-  };
-});
-
-function readStoredLang() {
-  try {
-    var v = localStorage.getItem('fy-lang');
-    return (v === 'en' || v === 'zh') ? v : 'zh';
-  } catch (e) { return 'zh'; }
-}
-function writeStoredLang(lang) {
-  try { localStorage.setItem('fy-lang', lang); } catch (e) {}
-}
-
-// Matches the 760px breakpoint in the stylesheet above. Kept in sync manually:
-// the shelf/mobile-list CSS and this query must agree or a layout renders unstyled.
-const NARROW_QUERY = '(max-width:760px)';
-
-class Component extends DCLogic {
-  state = { activeTag: 'all', activeYear: 'all', cardIndex: 0, dragX: 0, phase: 'idle', shelfLang: readStoredLang(),
-    narrow: window.matchMedia(NARROW_QUERY).matches };
-  birdRef = React.createRef();
-  langTabsRef = React.createRef();
-  reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  componentDidMount() {
-    this._alive = true;
-    if (!this.reduceMotion) this.birdLoop();
-    this.hydrateImages();
-    this.positionLangPill(true);
-    this._onResize = () => this.positionLangPill(true);
-    window.addEventListener('resize', this._onResize);
-    this._mq = window.matchMedia(NARROW_QUERY);
-    this._onMq = e => this.setState({ narrow: e.matches });
-    this._mq.addEventListener('change', this._onMq);
-  }
-  componentDidUpdate() {
-    this.hydrateImages();
-    this.positionLangPill(false);
-  }
-  componentWillUnmount() {
-    this._alive = false;
-    if (this._onResize) window.removeEventListener('resize', this._onResize);
-    if (this._mq) this._mq.removeEventListener('change', this._onMq);
-  }
-  hydrateImages() {
-    requestAnimationFrame(() => {
-      document.querySelectorAll('img[data-content-src]').forEach(img => {
-        // Set srcset before src so the browser picks a candidate once rather
-        // than fetching the src and then re-selecting from the srcset.
-        const srcset = img.getAttribute('data-content-srcset');
-        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
-        const src = img.getAttribute('data-content-src');
-        if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
-      });
-    });
-  }
-  positionLangPill(snap) {
-    const container = this.langTabsRef.current;
-    if (!container) return;
-    const pill = container.querySelector('.t-tabs-pill');
-    const tabs = container.querySelectorAll('.t-tab');
-    const activeTab = tabs[this.state.shelfLang === 'zh' ? 0 : 1];
-    if (!pill || !activeTab) return;
-    if (snap) pill.style.transition = 'none';
-    pill.style.transform = 'translateX(' + activeTab.offsetLeft + 'px)';
-    pill.style.width = activeTab.offsetWidth + 'px';
-    if (snap) {
-      void pill.offsetHeight;
-      pill.style.transition = '';
-    }
-  }
-  birdLoop() {
-    var bird = this.birdRef.current;
-    if (!bird) return;
-    var frames = bird.querySelectorAll('.bframe');
-    var setF = function (i) { frames.forEach(function (f) { f.style.backgroundPosition = (i * 20) + '% 0'; }); };
-    var sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
-    var self = this, x = 6, dir = 1, MIN_X = 3, MAX_X = 17;
-    (async function () {
-      await sleep(1200);
-      while (self._alive) {
-        await sleep(500 + Math.random() * 1200);
-        if (x <= MIN_X) dir = 1; else if (x >= MAX_X) dir = -1; else if (Math.random() < .45) dir = -dir;
-        bird.style.transform = dir > 0 ? 'scaleX(-1)' : '';
-        var hops = 2 + Math.floor(Math.random() * 3);
-        for (var h = 0; h < hops && self._alive; h++) {
-          var seq = [[1, 90, 0], [2, 95, .3], [3, 105, .4], [4, 90, .3], [5, 70, 0], [0, 90, 0]];
-          for (var s = 0; s < seq.length; s++) {
-            setF(seq[s][0]);
-            x += seq[s][2] * 1.5 * dir;
-            x = Math.max(MIN_X, Math.min(MAX_X, x));
-            bird.style.left = x + '%';
-            await sleep(seq[s][1]);
-          }
-          await sleep(130);
-        }
-      }
-    })();
-  }
-
-  renderVals() {
-    const st = this.state;
-    const matchesYear = p => st.activeYear === 'all' ||
-      (st.activeYear === 'before-2020' ? p.date.slice(0,4) < '2020' : p.date.slice(0,4) === st.activeYear);
-    const matches = p => (st.activeTag === 'all' || p.tagEns.includes(st.activeTag)) && matchesYear(p);
-    const filtered = POSTS.filter(matches);
-
-    const tagBase = st.activeYear === 'all' ? POSTS : POSTS.filter(matchesYear);
-    const tagCounts = {};
-    tagBase.forEach(p => p.tagEns.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
-    const tagOrder = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]);
-    const tags = [{ id:'all', label:'All · 全部 ' + tagBase.length, cls: st.activeTag==='all' ? 'chip on' : 'chip', pressed:st.activeTag==='all'?'true':'false',
-      onClick: () => this.setState({ activeTag:'all', cardIndex:0, dragX:0, phase:'idle' }) }]
-      .concat(tagOrder.map(t => ({ id:t, label:t + ' · ' + (TAG_ZH[t]||t) + ' ' + tagCounts[t], cls: st.activeTag===t ? 'chip on' : 'chip', pressed:st.activeTag===t?'true':'false',
-        onClick: () => this.setState({ activeTag:t, cardIndex:0, dragX:0, phase:'idle' }) })));
-
-    const yrBase = st.activeTag === 'all' ? POSTS : POSTS.filter(p => p.tagEns.includes(st.activeTag));
-    const yrCounts = {};
-    yrBase.forEach(p => { const y = p.date.slice(0,4); yrCounts[y] = (yrCounts[y] || 0) + 1; });
-    const yrOrder = Object.keys(yrCounts).filter(y => y >= '2020').sort((a,b) => b.localeCompare(a));
-    const before2020Count = Object.keys(yrCounts).filter(y => y < '2020').reduce((sum, y) => sum + yrCounts[y], 0);
-    const years = [{ id:'all', label:'All years · 全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip', pressed:st.activeYear==='all'?'true':'false',
-      onClick: () => this.setState({ activeYear:'all', cardIndex:0, dragX:0, phase:'idle' }) }]
-      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip', pressed:st.activeYear===y?'true':'false',
-        onClick: () => this.setState({ activeYear:y, cardIndex:0, dragX:0, phase:'idle' }) })))
-      .concat(before2020Count ? [{ id:'before-2020', label:'Before 2020 · 2020以前 · ' + before2020Count, cls: st.activeYear==='before-2020' ? 'chip on' : 'chip', pressed:st.activeYear==='before-2020'?'true':'false',
-        onClick: () => this.setState({ activeYear:'before-2020', cardIndex:0, dragX:0, phase:'idle' }) }] : []);
-
-    const decorate = (p, i, arr) => {
-      const heightPct = 58 + ((p.id * 29) % 38);
-      const tone = TONES[p.id % 4];
-      const dateLabel = p.date.slice(0,7).replace('-','·');
-      const tagLine = dateLabel + (p.tagEns.length ? (' · ' + p.tagEns.join(' · ')) : '') + (p.readingMin ? (' · ~' + p.readingMin + ' min') : '');
-      const w = p.series ? 30 : (22 + (p.id % 4) * 4);
-      const year = p.date.slice(0,4);
-      const prevYear = i > 0 ? arr[i - 1].date.slice(0,4) : null;
-      const isEn = st.shelfLang === 'en';
-      const spineTitle = isEn ? p.en : p.zh;
-      const effectiveLen = Math.max(p.zh.length, p.en.length);
-      const baseFontSize = 11;
-      const comfortLen = 11;
-      const minFontSize = 8.5;
-      const titleFontSize = effectiveLen > comfortLen
-        ? Math.max(minFontSize, +(baseFontSize - (effectiveLen - comfortLen) * 0.12).toFixed(2))
-        : baseFontSize;
-      return { ...p,
-        bookStyle: (() => {
-          const h = p.series ? 96 : heightPct;
-          const base = p.series ? '#3d362a' : tone;
-          return 'flex:none;width:' + w + 'px;height:' + h + '%;position:relative;cursor:pointer;background:' + base + ';border:1.5px solid var(--ink);border-radius:3px 3px 0 0';
-        })(),
-        numStyle: p.series ? 'position:absolute;bottom:10%;left:50%;transform:translateX(-50%);background:var(--mark);color:#fff;font-family:\'IBM Plex Mono\',monospace;font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:.02em' : 'display:none',
-        numLabel: p.series ? ('0' + p.series) : '',
-        spineTitle,
-        titleStyle: 'position:absolute;top:8%;left:50%;transform:translateX(-50%);max-height:' + (p.series ? '68%' : '84%') + ';white-space:nowrap;writing-mode:vertical-rl;text-orientation:' + (isEn ? 'sideways' : 'mixed') + ';font-family:' + (isEn ? '"Fraunces",serif' : '"DingTalk JinBuTi","Fraunces",serif') + ';font-size:' + titleFontSize + 'px;font-weight:' + (isEn ? '600' : '400') + ';line-height:1.3;letter-spacing:.02em;color:' + (p.series ? '#efe5d3' : 'var(--ink)') + ';overflow:hidden;text-overflow:ellipsis;pointer-events:none',
-        href: p.baseHref + '&lang=' + (isEn ? 'en' : 'zh'),
-        dateLabel, tagLine,
-        titleAttr: p.en + ' · ' + p.zh + ' · ' + dateLabel,
-        readLabel: 'Read ' + p.en + ' — 阅读 ' + p.zh,
-        readLabelZh: '阅读全文 · ' + p.zh,
-        readLabelEn: 'Read in English · ' + p.en,
-        accentColor: p.series ? 'var(--mark)' : 'var(--line)',
-        mobileCardStyle: 'background:#fff;border:' + (p.series?'2px solid var(--mark)':'1.5px solid var(--line)') + ';border-radius:4px;overflow:hidden;box-shadow:0 6px 16px rgba(60,50,35,.1);transform:rotate(' + (((p.id*37)%5)-2) + 'deg)',
-        topBorder: p.series ? '2.5px solid var(--mark)' : '1.5px solid var(--line)',
-        prevClass: 'prev',
-        year,
-        newYear: year !== prevYear,
-        yearSlotStyle: 'flex:none;width:' + w + 'px;position:relative;height:18px' };
-    };
-
-    const decorated = filtered.map(decorate);
-    const idx = Math.max(0, Math.min(st.cardIndex, decorated.length));
-    const top = idx < decorated.length ? decorated[idx] : null;
-    const peek1 = decorated[idx + 1] || null;
-    const peek2 = decorated[idx + 2] || null;
-    const peek3 = decorated[idx + 3] || null;
-    const dx = st.dragX;
-    const topStyle = 'transform:translateX(' + dx + 'px) rotate(' + (dx / 18) + 'deg);' +
-      (this.reduceMotion || st.phase === 'resetting' ? 'transition:none' : 'transition:transform .3s cubic-bezier(.2,.8,.2,1)');
-
-    const onDown = (e) => {
-      this._downX = e.clientX;
-      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
-      this.setState({ phase: 'dragging', dragX: 0 });
-    };
-    const onMove = (e) => {
-      if (this.state.phase !== 'dragging' || this._downX == null) return;
-      this.setState({ dragX: e.clientX - this._downX });
-    };
-    const total = decorated.length + 1;
-    const onUp = () => {
-      if (this.state.phase !== 'dragging') return;
-      const cur = this.state.dragX;
-      this._downX = null;
-      if (cur < -70 && this.state.cardIndex < total) {
-        this.setState({ phase: 'flying', dragX: -520 });
-        setTimeout(() => {
-          this.setState(s => ({ phase: 'resetting', dragX: 0, cardIndex: Math.min(s.cardIndex + 1, total - 1) }));
-          requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ phase: 'idle' })));
-        }, this.reduceMotion ? 0 : 260);
-      } else if (cur > 70 && this.state.cardIndex > 0) {
-        this.setState({ phase: 'flying', dragX: 520 });
-        setTimeout(() => {
-          this.setState(s => ({ phase: 'resetting', dragX: 0, cardIndex: Math.max(s.cardIndex - 1, 0) }));
-          requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ phase: 'idle' })));
-        }, this.reduceMotion ? 0 : 260);
-      } else {
-        this.setState({ phase: 'idle', dragX: 0 });
-      }
-    };
-
-    const goBack = () => {
-      if (this.state.cardIndex <= 0) return;
-      this.setState(s => ({ phase: 'resetting', dragX: -520, cardIndex: Math.max(s.cardIndex - 1, 0) }));
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        this.setState({ phase: 'returning', dragX: 0 });
-        setTimeout(() => this.setState({ phase: 'idle' }), this.reduceMotion ? 0 : 320);
-      }));
-    };
-
-    return {
-      tags, years,
-      // Only the mounted layout's list is populated; see the sc-if pair above.
-      filtered: st.narrow ? [] : decorated,
-      wideLayout: !st.narrow,
-      narrowLayout: st.narrow,
-      visibleN: filtered.length,
-      totalN: POSTS.length,
-      top, peek1, peek2, peek3,
-      noTop: !top,
-      filteredEmpty: decorated.length === 0,
-      cardPos: idx + 1,
-      mobileTotal: total,
-      topStyle, onDown, onMove, onUp,
-      passedCount: idx,
-      showPassed: idx > 0,
-      goBack,
-      birdRef: this.birdRef,
-      langTabsRef: this.langTabsRef,
-      shelfLangZhPressed: st.shelfLang === 'zh' ? 'true' : 'false',
-      shelfLangEnPressed: st.shelfLang === 'en' ? 'true' : 'false',
-      setShelfLangZh: () => { writeStoredLang('zh'); this.setState({ shelfLang: 'zh' }); },
-      setShelfLangEn: () => { writeStoredLang('en'); this.setState({ shelfLang: 'en' }); }
-    };
-  }
-}
-</script>
 </body>
 </html>

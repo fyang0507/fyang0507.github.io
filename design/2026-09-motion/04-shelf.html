@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 · The bookshelf, physically — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="04-shelf.css"><link rel="stylesheet" href="04-shelf-3d.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 04</div><h1 class="board-title">The bookshelf, physically <span class="display-cn">书架</span></h1></div>
+    <div><p class="board-why">The Writing shelf is a lovely idea rendered flat. Hovering a spine lifts it 20&nbsp;px and swaps a <b>detached, pure-white preview card</b> on the far right, so the eye has to jump between spine and card; clicking hard-cuts to Reading. Spines have <b>no depth, no weight, no neighbours</b>, the yellow bird hops on a random timer and never cares what you are doing, and on phones the shelf is replaced by a generic swipe-card stack.</p>
+      <p class="evidence">evidence: <code>Writing.dc.html:53-54</code> hover = translateY(-20px) · <code>:172-186</code> side card, <code>background:#fff</code> · <code>:61-86</code> :has() opacity swap · <code>:353-380</code> bird on Math.random() · <code>:194-248</code> mobile swipe deck · <code>:433</code> five coral series chips</p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Pull the book <span class="display-cn">抽书</span></span><span class="cand-mech">hover: lift + neighbours lean · click: pull → turn → open → grow · physics clock · bird on the spine tops</span></div>
+      <div class="stage s-a" id="stage-a"><span class="stage-note">hover or ← → · Enter / click pulls it out<br>back · Esc puts it back</span><span class="hint">hover a spine, then click it ↗</span></div>
+      <div class="cand-foot"><div>A finger hooks the head of a spine: it rides up and toward you while its neighbours lose support, lean into the gap and settle. Click and the book comes out, turns in your hand to show its real cover, opens, and its title page becomes the Reading page — the thing you touched is the thing that arrives.
+        <div class="tradeoff"><b>cost</b> ≈1.4&nbsp;s from click to page — a ceremony, too long for a daily path · CSS&nbsp;3D box (spine, page-block top, hinged cover over a title page), spring-baked <code>linear()</code> easings · <b>a11y</b> focus = hover, Enter = click, back/Esc reverses, reduced motion = instant page · <b>support</b> preserve-3d + linear(): Chrome&nbsp;113, Safari&nbsp;17.2, Firefox&nbsp;112</div></div>
+        <button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Lean and slip <span class="display-cn">斜靠书签</span></span><span class="cand-mech">hover: tip on the bottom edge + bookmark rises and turns · click: slip becomes the page · physics clock · bird on the plank lip</span></div>
+      <div class="stage s-b" id="stage-b"><span class="stage-note">hover, or Tab in and walk with ← →<br>Enter / click opens · back · Esc returns</span><span class="hint">point at a spine and pause ↗</span></div>
+      <div class="cand-foot"><div>The book tips forward on its bottom edge — for the first time you see its page block — and a paper bookmark rises between the pages edge-on, then swivels to face you with the cover, both titles, date, tag, time and one hand-written aside. No side card: the answer sits where your eye already is. Click draws the slip out and it becomes the page.
+        <div class="tradeoff"><b>cost</b> one rotateX per spine, one slip per considered book (built lazily) · click to page ≈0.6&nbsp;s · <b>a11y</b> the shelf is one tab stop, ← → / Home / End walk it, Enter opens; the slip is aria-hidden because the link label carries the same facts · <b>support</b> perspective + preserve-3d (without them the slip still rises, flat)</div></div>
+        <button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">Open on the desk <span class="display-cn">摊开在桌上</span></span><span class="cand-mech">hover: pages flip (sprite, stepped) · click: right page grows · hand's clock · bird on the spine tops</span></div>
+      <div class="stage s-c" id="stage-c"><span class="stage-note">hover a spine · ← → · click opens</span><span class="hint">the book on the desk follows you ↗</span></div>
+      <div class="cand-foot"><div>The side preview becomes the site's own drawn open book lying beside the shelf. Pointing at a spine turns its pages on the hand's clock — the strip's stepped frames after an anticipation hold, forward or back — and it settles on a spread printed into the drawing: the real cover on the left page, title and excerpt typeset on the right. Click grows the right page into Reading.
+        <div class="tradeoff"><b>cost</b> one sprite + two matrix3d pages · the eye still travels to the desk, so the core complaint survives, just nicer · the 462&nbsp;px strip is soft at 1.3×: needs a 2× redraw · <b>a11y</b> the open book is a labelled image; shelf keys as B · <b>support</b> everywhere</div></div>
+        <button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-m">
+      <div class="cand-head"><span class="cand-letter">M</span><span class="cand-name">B on a phone <span class="display-cn">手机上的书架</span></span><span class="cand-mech">390 px · tap to tip, tap again to read · native swipe strip</span></div>
+      <div class="stage s-m" id="stage-m">
+        <div class="phone"><div class="phone-screen" id="phone-screen">
+          <div class="m-head"><div class="m-kick"><b>01</b>writing</div><div class="m-title">在写。</div><div class="m-sub">27 essays · 2015–2025</div></div>
+          <div class="m-scroll"></div>
+          <div class="m-cue hand">tap a spine ↓<span>点一下书脊</span></div><div class="m-hint"><div class="util">← swipe the shelf · 左右滑动 →</div><div class="util">27 · 全部</div></div>
+        </div></div>
+        <div class="m-notes">
+          <h4>WHAT CHANGES ON A PHONE</h4>
+          <ul>
+            <li><b>The shelf stays a shelf.</b> All 27 spines on one plank as a horizontal strip — native swipe, soft snap — instead of a swipe-card stack that hides everything but one card.</li>
+            <li><b>Tap = tip.</b> The first tap tips the book and raises its slip; the strip recentres so the slip has room. A second tap on the book or on the slip opens it.</li>
+            <li><b>The slip keeps the cover.</b> Nothing today's card shows is lost; it just rises out of the book you chose.</li>
+            <li><b>The bird walks the lip</b> to the foot of the book you tapped — late, unhurried.</li>
+          </ul>
+          <p class="zh">书架不再变成卡片堆：一排书脊横向滑动，点一下书前倾、书签升起；再点一下，书签抽出，成为那一页。</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The recommended mechanism at 390&nbsp;px. Spines grow 1.28× so each is a comfortable tap target; the tip is a little shallower and the slip a little wider. Returning from the page drops the slip back into the book, still tipped where you left it.
+        <div class="tradeoff"><b>cost</b> same code as B (tap mode) · <b>a11y</b> spines stay links with full labels; the strip is keyboard-walkable too · <b>support</b> scroll-snap everywhere</div></div>
+        <button class="replay" data-replay="replayM">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>B — Lean and slip.</b> It fixes the actual complaint: the facts rise out of the book you are pointing at, so the eye never leaves the spine and the white side card disappears. The tip shows the page block — the first moment these spines read as books — the slip still carries the real cover so nothing is lost from today's card, the arrow keys walk it, and it survives the phone as a tap-to-tip strip (M).</p>
+    <p>Combine: keep B's slip-becomes-page arrival for everyday clicks (≈0.6&nbsp;s); borrow A's leaning neighbours for B's hover — cheap, and it gives the row weight; keep the bird on every shelf, on the plank lip in B (the slip owns the spine tops) and on the tops in A/C. A's full pull–turn–open is a ≈1.4&nbsp;s ceremony: lovely once, tiring daily. C keeps the side glance and its sprite is too soft at this size. Series badges become paper labels and つづく goes pencil, so the pen is the only coral on the shelf.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：书被手指从书架上勾出来——是读者自己的动作，而不是界面替他换一张卡片
+动作时钟：物理时钟 = 书前倾、邻书倚靠、书签升起并转身、纸张长成阅读页（弹簧 ζ≈0.6，一次小回弹后站稳）；手的时钟 = 小鸟跳跃（6 帧逐格约 10 fps，先迟疑半拍再动）、C 的翻页（逐格 + 预备停顿）
+映射：指向 → 书以底部前沿为轴前倾（手指勾住书顶）；停下 → 书签从书页间侧立升起、转过来面对你；点击 → 书签被抽出、成为那一页；移开 → 书签收回得比升起快；邻书失去支撑 → 倚向空位再站稳；小鸟注意到你 → 迟半拍跳过去，不追
+线条计划：沿用书脊 1.5px 墨线与书头书尾两道细线；书页顶面用可数的细线表示纸边，不用渐变；书签 1.3px 墨线，打一个孔
+色彩计划：珊瑚色唯一持有者 = 笔在书签标题下划的那一道；系列编号改为纸质书标、「つづく」改为铅笔虚线，把珊瑚色让出来；侧边纯白卡片取消</div></div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="04-shelf-core.js"></script><script src="04-shelf-read.js"></script>
+<script src="04-shelf-a.js"></script><script src="04-shelf-b.js"></script><script src="04-shelf-c.js"></script><script src="04-shelf-m.js"></script>
+</body></html>

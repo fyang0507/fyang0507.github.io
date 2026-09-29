@@ -8,319 +8,85 @@
 <meta name="description" content="Bilingual essays by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<script>(function(){var r=document.documentElement;var q=new URLSearchParams(location.search);var l=q.get('lang')||localStorage.getItem('fy-lang')||'zh';var saved=q.get('theme')||localStorage.getItem('fy-theme');var t=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.classList.add(l==='zh'?'lang-zh':'lang-en');r.classList.toggle('dark',t==='dark');r.setAttribute('data-theme',t);r.setAttribute('lang',l);})();</script>
+<script>(function(){var p=new URLSearchParams(location.search).get('post');if(!/^[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9_-]+$/.test(p||''))return;var s=document.createElement('script');s.src='./content/bodies/'+p+'.js';s.fetchPriority='high';s.setAttribute('data-fy-body',p);s.onload=s.onerror=function(e){s.setAttribute('data-state',e.type)};document.head.appendChild(s);})();</script>
 <script src="./support.js"></script>
-<script src="./content/posts.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-text.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  :root{color-scheme:light;
-    --paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;
-    --wash-a:#B7D6D3;--wash-b:#F3C6A5;--wash-c:#E9A7A0;--wash-op:.8;
-    --card-shadow:0 1px 2px rgba(60,50,35,.05),0 10px 26px rgba(60,50,35,.06);
-    --disp-en:"Fraunces";--disp-cn:"DingTalk JinBuTi";--text-en:"Fraunces";--text-cn:"Noto Serif SC";
-    --hand-en:"Caveat";--hand-cn:"MuyaoPleased";--util-en:"IBM Plex Mono";--util-cn:"Noto Sans SC"
-  }
-  html.dark{color-scheme:dark;--paper:#1E1913;--paper2:#282018;--ink:#EFE5D3;--soft:#b0a591;--pencil:#8f8471;--mark:#EE8E72;--line:#37301f;--wash-op:.34;--card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35)}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);line-height:1.5;overflow-x:hidden;font-family:var(--text-en),Georgia,serif;transition:background .3s,color .3s}
-  html.lang-zh body{font-family:var(--text-cn),serif}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  html.dark body::before{mix-blend-mode:screen;opacity:.03}
-  a{color:inherit;text-decoration:none}a:hover{color:var(--mark)}
-  html.lang-zh .en,html.lang-en .zh{display:none!important}
-  .display{font-family:var(--disp-en)}html.lang-zh .display{font-family:var(--disp-cn);font-weight:400}
-  .hand{font-family:var(--hand-en)}html.lang-zh .hand{font-family:var(--hand-cn)}
-  .util{font-family:var(--util-en);letter-spacing:.04em}html.lang-zh .util{font-family:var(--util-cn);letter-spacing:.02em}
-  svg .stroke{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-  :focus-visible{outline:2px solid var(--mark);outline-offset:4px}
-  .progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:120;background:transparent}
-  .progress>div{height:100%;background:var(--mark);transition:width .05s linear}
-  .wrap{max-width:1200px;margin:0 auto;padding:0 46px;position:relative}
-  .rnav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:100;transition:background .3s}
-  .wrap:has(.post-wash){--hero-nav-overlap:165px}
-  .wrap:has(.post-wash) .rnav{width:100vw;margin-left:calc(50% - 50vw);padding-right:max(46px,calc((100vw - 1200px)/2 + 46px));padding-left:max(46px,calc((100vw - 1200px)/2 + 46px));background:transparent;border-bottom-color:transparent}
-  .brand,.right{display:flex;align-items:center;gap:11px}.right{gap:8px}
-  .brand-mark{width:34px;height:34px;object-fit:contain;flex:none}
-  .back{font-family:var(--util-en);font-size:13px;letter-spacing:.04em;color:var(--soft)}html.lang-zh .back{font-family:var(--util-cn)}
-  .btn{border:1.5px solid var(--line);background:var(--paper2);color:var(--soft);height:34px;min-width:34px;padding:0 11px;border-radius:999px;cursor:pointer;font-size:13px;font-family:var(--util-en);display:grid;place-items:center}
-  .btn:hover{color:var(--mark);border-color:var(--mark)}
-  article{max-width:640px;margin:0 auto;padding:56px 0 40px;position:relative}
-  article:has(.post-wash){padding-top:0}
-  .kicker{display:inline-block;font-family:var(--util-en);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px;margin-bottom:16px}
-  html.lang-zh .kicker{font-family:var(--util-cn);letter-spacing:.08em;text-transform:none}
-  .eyebrow{font-family:var(--hand-en);font-size:22px;font-weight:600;color:var(--mark);transform:rotate(-2deg);display:block;width:max-content;max-width:100%;margin-top:10px}
-  html.lang-zh .eyebrow{font-family:var(--hand-cn)}
-  .title{font-family:var(--disp-en);font-size:clamp(34px,5vw,52px);line-height:1.1;letter-spacing:-.01em;font-weight:600}
-  html.lang-zh .title{font-family:var(--disp-cn);font-weight:400;line-height:1.2;letter-spacing:.02em}
-  .meta{margin-top:18px;font-family:var(--util-en);font-size:13px;letter-spacing:.05em;color:var(--pencil);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-  html.lang-zh .meta{font-family:var(--util-cn);letter-spacing:.02em}.meta .dot{color:var(--line)}
-  .article-intro{position:relative}
-  .article-intro:has(.post-wash){width:100vw;min-height:480px;margin-left:calc(50% - 50vw)}
-  .article-intro-copy{position:relative;z-index:2}
-  .article-intro:has(.post-wash) .article-intro-copy{width:min(640px,calc(100vw - 92px));margin:0 auto;padding-top:46px}
-  .post-wash{position:absolute;z-index:0;top:calc(-1 * var(--hero-nav-overlap));right:0;bottom:auto;left:0;width:100%;height:calc(100% + var(--hero-nav-overlap));margin:0;overflow:hidden;opacity:.34;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 44%,rgba(0,0,0,.72) 66%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 44%,rgba(0,0,0,.72) 66%,transparent 100%)}
-  .post-wash img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.18);transform-origin:center;filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
-  html.dark .post-wash{opacity:.22}
-  html.dark .post-wash img{filter:saturate(.45) contrast(.9) sepia(.14) brightness(.72)}
-  .post-body{position:relative}
-  .post-body p{font-size:18px;line-height:1.72;margin:0}
-  html.lang-zh .post-body p{font-size:17px;line-height:1.9}
-  .post-body h2,.post-body h3{font-family:var(--disp-en);font-weight:600;line-height:1.3;letter-spacing:-.01em}
-  html.lang-zh .post-body h2,html.lang-zh .post-body h3{font-family:var(--disp-cn);font-weight:400;letter-spacing:0}
-  .post-body h2{font-size:28px;margin:44px 0 16px}.post-body h3{font-size:23px;margin:38px 0 13px}
-  .post-body h4{font-family:var(--util-en);font-size:13px;font-weight:500;line-height:1.5;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:34px 0 12px;padding-left:10px;border-left:2px solid var(--mark)}
-  html.lang-zh .post-body h4{font-family:var(--util-cn);letter-spacing:.06em;text-transform:none}
-  .post-body a{color:var(--ink);text-decoration-color:var(--mark);text-decoration-thickness:1px;text-underline-offset:3px}.post-body a:hover{color:var(--mark)}
-  .post-body strong{font-weight:600;color:var(--ink)}.post-body em{font-style:italic}
-  .scribble{position:relative;white-space:nowrap}.scribble svg{position:absolute;left:-2%;bottom:-9px;width:104%;height:9px;overflow:visible}.scribble-stroke{fill:none;stroke:var(--mark);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-  .post-body code{font-family:var(--util-en),monospace;font-size:.86em;background:var(--paper2);padding:.1em .35em;border-radius:4px}
-  .post-body pre{overflow:auto;margin:30px 0;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:var(--paper2);font:13px/1.7 var(--util-en),monospace}
-  .post-body pre code{padding:0;background:transparent;font:inherit}
-  .post-body ul,.post-body ol{margin:0 0 24px;padding-left:1.5em}.post-body li{font-size:18px;line-height:1.72;margin:8px 0;padding-left:.25em}
-  html.lang-zh .post-body li{font-size:17px;line-height:1.9}.post-body li::marker{color:var(--mark)}
-  .pull{margin:34px 0;padding:4px 0 4px 22px;border-left:2px solid var(--mark)}
-  .pull p{font-family:var(--text-en);font-style:italic;font-size:23px;line-height:1.4;color:var(--ink);margin:0}
-  html.lang-zh .pull{border-left:0;margin:36px 0;padding:0 0 0 42px;position:relative}
-  html.lang-zh .pull::before{content:"「";position:absolute;left:-2px;top:0;color:var(--mark);font-family:var(--text-cn);font-size:30px;line-height:1.62}
-  html.lang-zh .pull p{font-family:var(--text-cn);font-style:normal;font-size:24px;font-weight:500;line-height:1.62;color:var(--ink)}
-  .mn{float:right;clear:right;width:210px;margin:6px -258px 20px 0;font-family:var(--hand-en);font-size:17px;line-height:1.4;color:var(--soft);transform:rotate(-1deg)}
-  html.lang-zh .mn{font-family:var(--hand-cn);font-size:16px;line-height:1.6}.mn .num{color:var(--mark);font-family:var(--util-en);font-size:12px;margin-right:5px}
-  .fnref{font-family:var(--util-en);font-size:.7em;position:relative;top:-.5em;vertical-align:baseline}.fnref a{color:var(--mark);font-weight:500;text-decoration:none}
-  .reference-note{overflow-wrap:anywhere}.ref-cite{white-space:nowrap}
-  .fig{margin:34px 0;text-align:center}.fig .washbg{position:relative;display:block;padding:8px;background:var(--paper2);border:1px solid var(--line);box-shadow:var(--card-shadow);transform:rotate(-.35deg)}
-  .fig img{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}.fig figcaption{font-family:var(--hand-en);font-size:17px;color:var(--pencil);margin-top:10px;transform:rotate(-1deg)}
-  html.lang-zh .fig figcaption{font-family:var(--hand-cn);font-size:16px}
-  .stars{text-align:center;color:var(--pencil);letter-spacing:.5em;margin:34px 0;font-size:15px}
-  .foot{margin-top:16px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--soft);line-height:1.6}.foot .fn{display:flex;gap:10px;margin-bottom:8px}.foot .num{color:var(--mark);font-family:var(--util-en);font-size:12px;flex:none;padding-top:2px}
-  .appendix{clear:both;position:relative;margin-top:58px;padding-top:30px;border-top:1px solid var(--line);color:var(--soft)}
-  .appendix::before{content:"✦";position:absolute;top:0;left:50%;transform:translate(-50%,-50%);padding:0 12px;background:var(--paper);color:var(--mark);font-size:12px}
-  .post-body .appendix-title{margin:0 0 18px;font-family:var(--util-en);font-size:12px;font-weight:500;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;color:var(--pencil)}
-  html.lang-zh .post-body .appendix-title{font-family:var(--util-cn);letter-spacing:.08em;text-transform:none}
-  .post-body .appendix-list{list-style:none;margin:0;padding:0}
-  .post-body .appendix-item{display:grid;grid-template-columns:24px minmax(0,1fr);gap:9px;margin:0 0 12px;padding:0;font-size:14px;line-height:1.62;color:var(--soft);overflow-wrap:anywhere;scroll-margin-top:92px}
-  .post-body .appendix-item:target{margin-left:-10px;padding:8px 10px;background:var(--paper2);border-left:2px solid var(--mark);border-radius:0 8px 8px 0;color:var(--ink)}
-  html.lang-zh .post-body .appendix-item{font-size:14px;line-height:1.75}
-  .appendix-number{padding-top:2px;font-family:var(--util-en);font-size:11px;color:var(--mark)}
-  .post-body .appendix-postscript{margin:24px 0 0;font-family:var(--util-en);font-size:11px;line-height:1.6;color:var(--pencil)}
-  html.lang-zh .post-body .appendix-postscript{font-family:var(--util-cn);font-size:11px;line-height:1.7}
-  .pn{display:flex;justify-content:space-between;gap:16px;margin:14px 0 8px}
-  .pn a{flex:1;border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--paper2);box-shadow:var(--card-shadow)}
-  .pn a:hover{border-color:var(--mark);color:inherit}
-  .pn .lab{font-family:var(--util-en);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}html.lang-zh .pn .lab{font-family:var(--util-cn);letter-spacing:.04em;text-transform:none}
-  .pn .t{margin-top:6px;font-size:16px}.pn .next{text-align:right}
-  footer{padding:26px 0 60px}footer .row{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);padding-top:20px;font-family:var(--util-en);font-size:12.5px;color:var(--pencil)}
-  html.lang-zh footer .row{font-family:var(--util-cn)}
-  @media(max-width:1080px){.mn{display:none}}
-  @media(max-width:640px){.wrap{padding:0 22px}.wrap:has(.post-wash){--hero-nav-overlap:133px}.rnav{padding:16px 0}.wrap:has(.post-wash) .rnav{padding-right:22px;padding-left:22px}article{padding:36px 0 30px}.brand-mark{width:30px;height:30px}.back{font-size:12px}.article-intro:has(.post-wash){min-height:380px}.article-intro:has(.post-wash) .article-intro-copy{width:calc(100vw - 44px);padding-top:26px}.post-wash{opacity:.27}.post-wash img{transform:scale(1.22)}html.dark .post-wash{opacity:.19}.post-body p,.post-body li{font-size:17px}.pn{flex-direction:column}.pn .next{text-align:left}footer .row{align-items:flex-start;flex-direction:column}.title{overflow-wrap:anywhere}}
-  @media(prefers-reduced-motion:reduce){body,.rnav{transition:none}.progress>div{transition:none}}
-</style>
-</helmet>
-
-<div class="progress"><div style="width:{{ progWidth }}"></div></div>
-<div class="wrap">
-  <nav class="rnav" aria-label="article">
+<link rel="stylesheet" href="./site-tokens.css">
+<link rel="stylesheet" href="./site-nav.css">
+<link rel="stylesheet" href="./pen.css">
+<link rel="stylesheet" href="./transitions.css">
+<link rel="stylesheet" href="./lib/reading/reading.css">
+<link rel="stylesheet" href="./lib/reading/notes.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script>(function(){var r=document.documentElement;var q=new URLSearchParams(location.search);var l=q.get('lang')||localStorage.getItem('fy-lang')||'zh';var saved=q.get('theme')||localStorage.getItem('fy-theme');var t=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.classList.add(l==='zh'?'lang-zh':'lang-en');r.classList.toggle('dark',t==='dark');r.setAttribute('data-theme',t);r.setAttribute('lang',l);})();</script>
+<script src="./content/posts-index.js" defer fetchpriority="high"></script>
+<script type="module" src="./lib/reading/essay.js"></script>
+<script src="./motion.js" defer blocking="render"></script>
+<script src="./transitions-tab.js" defer blocking="render"></script>
+<script src="./transitions.js" defer blocking="render"></script>
+<script src="./pen.js" defer></script>
+<script src="./pen-tier.js" defer></script>
+<script src="./site.js" defer></script>
+<script type="module" src="./lib/reading/main.js"></script>
+</head>
+<body>
+<nav class="rnav" aria-label="Article · 文章">
+  <div class="nav-plate" aria-hidden="true"></div>
+  <div class="nav-title" aria-hidden="true"><span class="nav-title-t"></span></div>
+  <div class="nav-row">
     <div class="brand">
       <img class="brand-mark" src="./favicon.png" width="34" height="34" alt="Fred Yang">
-      <a class="back" href="Writing.dc.html"><span class="en">← all writing</span><span class="zh">← 全部文章</span></a>
+      <a class="back" href="Writing.dc.html"><span class="back-arrow" aria-hidden="true">←&nbsp;</span><span class="back-t"><span class="en">all writing</span><span class="zh">全部文章</span></span></a>
     </div>
     <div class="right">
-      <button class="btn" onClick="{{ toggleLang }}" aria-label="{{ langButtonLabel }}"><span class="en">中</span><span class="zh">EN</span></button>
-      <button class="btn" onClick="{{ toggleTheme }}" aria-label="{{ themeButtonLabel }}" aria-pressed="{{ darkMode }}">◐</button>
+      <button class="btn" type="button" data-act="lang" aria-label="Switch language · 切换语言"><span class="en">中</span><span class="zh">EN</span></button>
+      <button class="btn" type="button" data-act="theme" aria-label="Dark mode · 深色" aria-pressed="false">◐</button>
     </div>
-  </nav>
-
-  <nav class="site-index site-index--reading" aria-label="Primary navigation">
-    <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-    <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-    <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-    <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-    <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
-  </nav>
-
-  <main>
+  </div>
+</nav>
+<div class="nav-space" aria-hidden="true"></div>
+<div class="site-top rd-top">
+  <header class="site-shell-header site-shell-header--reading" id="site-nav">
+    <nav class="site-index site-index--reading" aria-label="Primary navigation">
+      <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
+    </nav>
+  </header>
+</div>
+<x-dc>
+<main class="wrap rd-main" data-mount="reading">
+  <!-- lib/reading writes the essay into this skeleton (its text, both bodies, the neighbours), then the hero, the
+       margin rail and the notes attach to it. It carries no template values, so it is right whenever React renders. -->
   <article>
     <header class="article-intro">
-      <div class="article-intro-copy">
-        <span class="kicker"><span class="en">{{ tagsEn }}</span><span class="zh">{{ tagsZh }}</span></span>
-        <h1 class="title"><span class="en">{{ title }}</span><span class="zh">{{ titleZh }}</span></h1>
-        <sc-if value="{{ hasSubtitle }}" hint-placeholder-val="{{ false }}">
-          <div class="eyebrow"><span class="en">{{ subtitle }}</span><span class="zh">{{ subtitleZh }}</span></div>
-        </sc-if>
-        <div class="meta">
-          <time datetime="{{ date }}"><span class="en">{{ dateLabelEn }}</span><span class="zh">{{ dateLabelZh }}</span></time><span class="dot">·</span>
-          <span><span class="en">{{ readingMin }} min read</span><span class="zh">约 {{ readingMin }} 分钟</span></span><span class="dot">·</span><span>中 / EN</span>
-        </div>
+      <div class="kick-row">
+        <span class="kicker"><span class="en" data-f="tagsEn"></span><span class="zh" data-f="tagsZh"></span></span>
+        <span class="meta"><time><span class="en" data-f="dateEn"></span><span class="zh" data-f="dateZh"></span></time><span class="dot">·</span><span><span class="en" data-f="minEn"></span><span class="zh" data-f="minZh"></span></span><span class="dot">·</span><span>中 / EN</span></span>
       </div>
-      <sc-if value="{{ hasCover }}" hint-placeholder-val="{{ false }}">
-        <figure class="post-wash">
-          <img data-content-src="{{ cover }}" data-content-srcset="{{ coverSrcset }}" sizes="100vw" alt="{{ coverAlt }}" decoding="async">
-        </figure>
-      </sc-if>
+      <h1 class="title"><span class="en" data-f="title"></span><span class="zh" data-f="titleZh"></span></h1>
+      <div class="eyebrow"><span class="en" data-f="subtitle"></span><span class="zh" data-f="subtitleZh"></span></div>
     </header>
-    <div class="post-body en" ref="{{ bodyEnRef }}"></div>
-    <div class="post-body zh" ref="{{ bodyZhRef }}"></div>
+    <div class="body-col">
+      <div class="rail-col"></div>
+      <div class="post-body zh" lang="zh"></div>
+      <div class="post-body en" lang="en"></div>
+    </div>
   </article>
-
-  <div class="pn">
-    <sc-if value="{{ previous }}" hint-placeholder-val="{{ false }}">
-      <a href="{{ previous.href }}">
-        <div class="lab"><span class="en">← previous</span><span class="zh">← 上一篇</span></div>
-        <div class="t"><span class="en">{{ previous.title }}</span><span class="zh">{{ previous.titleZh }}</span></div>
-      </a>
-    </sc-if>
-    <sc-if value="{{ next }}" hint-placeholder-val="{{ false }}">
-      <a class="next" href="{{ next.href }}">
-        <div class="lab"><span class="en">next →</span><span class="zh">下一篇 →</span></div>
-        <div class="t"><span class="en">{{ next.title }}</span><span class="zh">{{ next.titleZh }}</span></div>
-      </a>
-    </sc-if>
-  </div>
-  </main>
-
+  <nav class="pn" aria-label="More essays · 更多文章"></nav>
   <footer>
     <div class="row">
       <span>© 2026 Fred Yang · 杨</span>
       <span><a href="mailto:fredyang0507@gmail.com">email</a> · <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/fyang0507/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://www.instagram.com/yangruntong/" target="_blank" rel="noopener noreferrer">Instagram</a></span>
     </div>
   </footer>
-</div>
+</main>
 </x-dc>
-<script type="text/x-dc" data-dc-script>
-class Component extends DCLogic {
-  state = { prog: 0, uiTick: 0 };
-  bodyEnRef = React.createRef();
-  bodyZhRef = React.createRef();
-
-  getPost() {
-    const posts = window.FY_POSTS || [];
-    const wanted = new URLSearchParams(window.location.search).get('post');
-    return posts.find(p => p.id === wanted) || posts[0] || {};
-  }
-  componentDidMount() {
-    this.apply(false);
-    this.mountContent();
-    this.hydrateImages();
-    this._onScroll = () => {
-      const h = document.documentElement;
-      const sc = h.scrollTop || document.body.scrollTop;
-      const max = h.scrollHeight - h.clientHeight;
-      this.setState({ prog: max > 0 ? (sc / max * 100) : 0 });
-    };
-    window.addEventListener('scroll', this._onScroll, { passive: true });
-  }
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this._onScroll);
-  }
-  mountContent() {
-    const post = this.getPost();
-    if (this.bodyEnRef.current) {
-      this.bodyEnRef.current.innerHTML = post.htmlEn || '';
-      this.namespaceNotes(this.bodyEnRef.current, 'en-');
-    }
-    if (this.bodyZhRef.current) {
-      this.bodyZhRef.current.innerHTML = post.htmlZh || '';
-      this.namespaceNotes(this.bodyZhRef.current, 'zh-');
-    }
-    this.updateMetadata();
-  }
-  namespaceNotes(root, prefix) {
-    root.querySelectorAll('[id^="fn-"], [id^="ref-"]').forEach(node => { node.id = prefix + node.id; });
-    root.querySelectorAll('a[href^="#fn-"], a[href^="#ref-"]').forEach(link => { link.setAttribute('href', '#' + prefix + link.getAttribute('href').slice(1)); });
-  }
-  updateMetadata() {
-    const post = this.getPost();
-    const zh = document.documentElement.classList.contains('lang-zh');
-    document.title = ((zh ? post.titleZh : post.title) || post.titleZh || post.title || 'Reading') + ' · Fred Yang';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', (zh ? post.excerptZh : post.excerpt) || post.excerpt || post.excerptZh || 'Bilingual essays by Fred Yang.');
-  }
-  componentDidUpdate() { this.hydrateImages(); }
-  hydrateImages() {
-    requestAnimationFrame(() => {
-      document.querySelectorAll('img[data-content-src]').forEach(img => {
-        // Set srcset before src so the browser picks a candidate once rather
-        // than fetching the src and then re-selecting from the srcset.
-        const srcset = img.getAttribute('data-content-srcset');
-        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
-        const src = img.getAttribute('data-content-src');
-        if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
-      });
-    });
-  }
-  apply(fromTweaks) {
-    const root = document.documentElement;
-    const queryLang = new URLSearchParams(window.location.search).get('lang');
-    const lang = fromTweaks ? (root.classList.contains('lang-zh') ? 'zh' : 'en') : (queryLang || localStorage.getItem('fy-lang') || 'zh');
-    const queryTheme = new URLSearchParams(window.location.search).get('theme');
-    const theme = fromTweaks ? (root.classList.contains('dark') ? 'dark' : 'light') : (queryTheme || localStorage.getItem('fy-theme') || (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'));
-    root.classList.toggle('lang-zh', lang === 'zh');
-    root.classList.toggle('lang-en', lang !== 'zh');
-    root.classList.toggle('dark', theme === 'dark');
-    root.setAttribute('data-theme', theme);
-    root.setAttribute('lang', lang);
-  }
-  renderVals() {
-    const posts = window.FY_POSTS || [];
-    const post = this.getPost();
-    const chronological = posts.slice().reverse();
-    const index = chronological.findIndex(p => p.id === post.id);
-    const makeNav = p => p ? { ...p, href: 'Reading.dc.html?post=' + encodeURIComponent(p.id) } : null;
-    const date = new Date(post.date + 'T00:00:00');
-    const validDate = !Number.isNaN(date.getTime());
-    const isZh = document.documentElement.classList.contains('lang-zh');
-    const darkMode = document.documentElement.classList.contains('dark');
-    return {
-      title: post.title || '', titleZh: post.titleZh || post.title || '',
-      subtitle: post.subtitle || '', subtitleZh: post.subtitleZh || post.subtitle || '',
-      hasSubtitle: Boolean(post.subtitle || post.subtitleZh),
-      cover: post.cover || '',
-      coverSrcset: post.coverSrcset || '',
-      hasCover: Boolean(post.cover),
-      coverAlt: isZh ? ((post.titleZh || post.title || '') + '题图') : ('Opening image for ' + (post.title || post.titleZh || 'this essay')),
-      excerpt: post.excerpt || '', excerptZh: post.excerptZh || post.excerpt || '',
-      tagsEn: (post.tags || []).join(' · ') || 'essay',
-      tagsZh: (post.tagsZh || []).join(' · ') || '文章',
-      date: post.date || '',
-      dateLabelEn: validDate ? date.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : '',
-      dateLabelZh: validDate ? date.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' }) : '',
-      readingMin: post.readingMin || 1,
-      previous: index > 0 ? makeNav(chronological[index - 1]) : null,
-      next: index >= 0 && index < chronological.length - 1 ? makeNav(chronological[index + 1]) : null,
-      progWidth: (this.state.prog || 0).toFixed(2) + '%',
-      darkMode,
-      langButtonLabel: isZh ? 'Switch to English' : '切换到中文',
-      themeButtonLabel: darkMode ? (isZh ? '切换到浅色模式' : 'Switch to light mode') : (isZh ? '切换到深色模式' : 'Switch to dark mode'),
-      bodyEnRef: this.bodyEnRef, bodyZhRef: this.bodyZhRef,
-      toggleLang: () => {
-        const root = document.documentElement;
-        const zh = !root.classList.contains('lang-zh');
-        root.classList.toggle('lang-zh', zh); root.classList.toggle('lang-en', !zh);
-        root.setAttribute('lang', zh ? 'zh' : 'en');
-        localStorage.setItem('fy-lang', zh ? 'zh' : 'en');
-        this.updateMetadata();
-        this.setState({ uiTick: this.state.uiTick + 1 });
-      },
-      toggleTheme: () => {
-        const root = document.documentElement;
-        const dark = root.classList.toggle('dark');
-        root.setAttribute('data-theme', dark ? 'dark' : 'light');
-        localStorage.setItem('fy-theme', dark ? 'dark' : 'light');
-        this.setState({ uiTick: this.state.uiTick + 1 });
-      }
-    };
-  }
-}
-</script>
 </body>
 </html>

@@ -1,0 +1,150 @@
+/* 05 · corkboard — faithful copy of Building.dc.html's board and cards, restructured so paper and pin
+   are siblings. Sizes use container units (cqw) against .cork-wrap, so the same board renders its
+   desktop layout on the mockup stage and its mobile layout inside a 390px phone frame. */
+.cork-wrap{container-type:inline-size;position:relative}
+:root{--mark-deep:#A5453A;--line-strong:#CFC1A9;--wash-blue:#DCE8E7;--wash-peach:#F0D9CD;--wash-wheat:#E9DFC5;--board:#EEE4CE}
+.cork,.unpin-layer{--pencil:#7C7468;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
+.cork{position:relative;padding:clamp(14px,2.4cqw,28px) 0 clamp(18px,2.6cqw,30px);border:1px solid rgba(140,120,85,.22);border-radius:clamp(12px,1.4cqw,16px);
+  background-color:var(--board);background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:28px 28px}
+/* The live board also carries box-shadow: 0 18px 42px — removed here. A corkboard is fixed to a wall;
+   the depth belongs to the paper on it, not to the board. */
+.cork::before{content:"";position:absolute;z-index:4;left:48%;top:-9px;width:clamp(86px,9.5cqw,112px);height:clamp(21px,2.1cqw,25px);background:rgba(222,196,143,.67);clip-path:polygon(3% 7%,96% 0,100% 84%,4% 100%);transform:translateX(-50%) rotate(-2deg)}
+.cork a:hover{color:var(--mark-deep)}
+.cork-toolbar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 clamp(15px,2.5cqw,30px) 14px}
+.cork-order{color:#625B51;font:9.5px/1.4 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+.cork-actions{display:flex;gap:7px}
+.cork-btn{width:38px;height:38px;border:1.5px solid var(--ink);border-radius:50%;background:var(--paper);color:var(--ink);font:14px/1 "IBM Plex Mono",monospace;cursor:pointer;transition:background-color .16s ease,color .16s ease,opacity .16s ease}
+.cork-btn:hover,.cork-btn:focus-visible{background:var(--ink);color:var(--paper)}
+.cork-btn:disabled{opacity:.3;cursor:default;background:var(--paper);color:var(--ink)}
+.cork-viewport{position:relative;width:100%;overflow-x:auto;overflow-y:hidden;padding:24px clamp(15px,2.5cqw,30px) 32px;scrollbar-color:var(--ink) rgba(126,108,78,.16);overscroll-behavior-inline:contain}
+.cork-viewport:focus-visible{outline:3px solid var(--mark);outline-offset:-3px}
+.cork-viewport::-webkit-scrollbar{height:11px}
+.cork-viewport::-webkit-scrollbar-track{border-radius:999px;background:rgba(126,108,78,.16)}
+.cork-viewport::-webkit-scrollbar-thumb{border:3px solid transparent;border-radius:999px;background:var(--ink);background-clip:padding-box}
+.cork-track{position:relative;display:flex;align-items:flex-start;gap:44px;width:max-content;min-width:100%;min-height:560px;padding:0 18px 0 6px;isolation:isolate}
+
+/* ---- slot = the card's place on the cork; swing = the paper that pivots on the pin ---- */
+.slot{--tilt:0deg;--drop:0px;--pin-left:50%;--pin-tilt:-8deg;--pin-color:var(--ink);
+  --torn-slip:polygon(0 0,100% 0,100% 96%,95% 100%,90% 97%,85% 100%,80% 96%,75% 100%,70% 97%,65% 100%,60% 96%,55% 100%,50% 97%,45% 100%,40% 96%,35% 100%,30% 97%,25% 100%,20% 96%,15% 100%,10% 97%,5% 100%,0 96%);
+  --torn-wide:polygon(0 0,100% 0,100% 97%,97.5% 100%,95% 97%,92.5% 100%,90% 97.5%,87.5% 100%,85% 97%,82.5% 100%,80% 97.5%,77.5% 100%,75% 97%,72.5% 100%,70% 97.5%,67.5% 100%,65% 97%,62.5% 100%,60% 97.5%,57.5% 100%,55% 97%,52.5% 100%,50% 97.5%,47.5% 100%,45% 97%,42.5% 100%,40% 97.5%,37.5% 100%,35% 97%,32.5% 100%,30% 97.5%,27.5% 100%,25% 97%,22.5% 100%,20% 97.5%,17.5% 100%,15% 97%,12.5% 100%,10% 97.5%,7.5% 100%,5% 97%,2.5% 100%,0 97.5%);
+  --torn:var(--torn-slip);position:relative;flex:none;margin-top:var(--drop)}
+/* Pivot = the pin's real anchor: --pin-left across, 14px down (the pin SVG's tip, see .board-pin). */
+.swing{position:relative;transform:rotate(var(--tilt));transform-origin:var(--pin-left) 14px}
+/* The pin is a sibling of the paper, so it never rotates or slides with it. Its tip sits at
+   top:-24px + 90% of 42px ≈ 14px — the same point the paper pivots on. */
+.board-pin{position:absolute;z-index:8;left:var(--pin-left);top:-24px;width:20px;height:42px;overflow:visible;pointer-events:none;transform:translateX(-50%) rotate(calc(var(--pin-tilt) + var(--tilt)));transform-origin:50% 90%;filter:drop-shadow(0 2px 1px rgba(60,50,35,.24))}
+.board-pin .pin-shadow{fill:rgba(60,50,35,.3)}
+.board-pin .pin-stem{fill:none;stroke:#898989;stroke-width:2.6;stroke-linecap:round}
+.board-pin .pin-stem-glint{fill:none;stroke:#e4e4e4;stroke-width:.9;stroke-linecap:round}
+.board-pin .pin-head{fill:var(--pin-color)}
+.board-pin .pin-glint{fill:rgba(255,255,255,.58)}
+/* Lift shadow: a pre-blurred copy of the torn shape; hover only changes its opacity. */
+.lift{position:absolute;inset:0;z-index:0;filter:blur(13px);opacity:0;transform:translate(-11px,22px);transition:opacity .28s var(--ease-out);pointer-events:none}
+.lift-shape{position:absolute;inset:0;background:rgba(60,50,35,.34);clip-path:var(--torn)}
+.slot.lifted .lift{opacity:1}
+.paper{position:relative;z-index:1;display:flex;flex-direction:column;color:var(--ink)}
+
+/* ---- lead (highlighted) ---- */
+.slot--lead{--tilt:-1.65deg;--drop:18px;--pin-left:50%;--pin-tilt:-9deg;--pin-color:var(--mark-deep);--torn:var(--torn-wide);z-index:5;width:min(700px,72cqw)}
+.slot--lead .swing::after,.slot--featured .swing::after{content:"";position:absolute;z-index:2;background:rgba(225,196,138,.6)}
+.slot--lead .swing::after{right:7%;top:-10px;width:80px;height:24px;clip-path:polygon(3% 0,100% 8%,96% 100%,0 86%);transform:rotate(3deg)}
+.paper--lead{filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-7px 14px 22px rgba(60,50,35,.16))}
+.paper--lead .paper-body{display:flex;flex-direction:column;min-height:470px;padding:clamp(30px,4cqw,50px);background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper));clip-path:var(--torn-wide)}
+.highlighted-title{max-width:760px;margin-top:auto;color:var(--ink);font:500 clamp(52px,7.6cqw,96px)/1.3 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.045em}
+.wm-mark{position:relative;display:inline-block}
+.highlighted-note{max-width:750px;margin-top:21px;color:#504A42;font-size:clamp(16px,1.8cqw,20px);line-height:1.55}
+.project-meta{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:18px;color:var(--soft);font:10px/1.5 "IBM Plex Mono",monospace;letter-spacing:.035em}
+.project-meta span+span::before{content:"/";margin-right:16px;color:var(--mark)}
+.highlighted-footer{display:flex;justify-content:space-between;align-items:end;gap:22px;margin-top:23px}
+.project-cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:10px/1 "IBM Plex Mono",monospace;letter-spacing:.035em;transition:background-color .16s ease,color .16s ease}
+.project-cta::after{content:"→";color:var(--mark)}
+.paper--lead:hover .project-cta,.paper--lead:focus-visible .project-cta{background:var(--ink);color:var(--paper)}
+.paper--lead:focus-visible,.paper--featured:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+/* ---- featured ---- */
+.slot--featured{--tilt:2.75deg;--drop:112px;--pin-left:72%;--pin-tilt:11deg;--pin-color:#3D5C52;--torn:var(--torn-wide);z-index:6;width:min(390px,48cqw)}
+.slot--featured .swing::after{left:-15px;top:24px;width:74px;height:22px;clip-path:polygon(2% 10%,98% 0,100% 84%,0 100%);transform:rotate(-10deg)}
+.paper--featured{filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(8px 12px 18px rgba(60,50,35,.14))}
+.paper--featured .paper-body{display:flex;flex-direction:column;min-height:360px;padding:30px 28px;background:color-mix(in srgb,var(--wash-blue) 55%,var(--paper));clip-path:var(--torn-wide)}
+.paper--featured h2{margin-top:34px;font:500 clamp(38px,4cqw,52px)/.95 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.025em}
+.paper--featured p{margin-top:19px;color:#575149;font-size:16px;line-height:1.62}
+.featured-actions{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-top:auto;padding-top:22px}
+.featured-actions .project-meta{margin-top:0}
+.featured-cta{display:inline-flex;align-items:center;gap:7px;border-bottom:1px solid var(--mark);color:var(--ink);font:9px/1.45 "IBM Plex Mono",monospace;letter-spacing:.035em}
+
+/* ---- slips: instrument + standard ---- */
+.paper--instrument,.paper--standard{filter:drop-shadow(-6px 11px 12px rgba(60,50,35,.15))}
+.paper-edge{display:flex;width:100%;padding:1.5px;background:var(--line-strong);clip-path:var(--torn-slip)}
+.paper-inner{position:relative;display:flex;flex:1;flex-direction:column;min-width:0;clip-path:var(--torn-slip);background:rgba(251,246,236,.98)}
+.paper--standard .paper-edge{min-height:146px}
+.paper--standard .paper-inner{padding:18px 16px 15px}
+.paper--instrument .paper-inner{padding:17px 17px 14px;background-color:var(--paper);background-image:repeating-linear-gradient(rgba(207,193,169,.30) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(207,193,169,.30) 0 1px,transparent 1px 9px)}
+.paper--instrument .paper-inner::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--instrument-hue,var(--ink))}
+.slot--instrument{width:min(292px,33cqw)}
+.slot--standard{width:min(178px,23cqw)}
+.instrument-motif{position:absolute;right:13px;top:13px;width:34px;height:34px;color:var(--instrument-hue,var(--ink));opacity:.9;transform:rotate(var(--motif-tilt,-5deg));pointer-events:none}
+.instrument-motif path,.instrument-motif polyline{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.paper--instrument .project-label{margin-right:40px}
+.paper--instrument h2{margin-top:9px;font:500 21px/1.24 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.02em}
+.paper--standard h2{font:500 20px/1.02 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.018em}
+.instrument-capabilities{margin:11px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+.instrument-capabilities li{position:relative;padding-left:13px;color:var(--soft);font:9.5px/1.55 "IBM Plex Mono",monospace;letter-spacing:.005em}
+.instrument-capabilities li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1.2px;border-radius:1px;background:var(--instrument-hue,var(--line-strong))}
+.standard-period{margin-top:7px;color:var(--soft);font:8px/1.45 "IBM Plex Mono",monospace;letter-spacing:.025em}
+.paper--instrument .standard-period{margin-top:12px}
+.project-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
+.paper--instrument .project-actions{margin-top:11px;padding-top:0}
+.project-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px 11px;color:var(--soft);font:9px/1.4 "IBM Plex Mono",monospace;letter-spacing:.07em;text-transform:uppercase}
+.project-label strong{color:var(--ink);font-weight:500}
+.project-label-dot{width:6px;height:6px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
+.github-link{display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid var(--mark);color:var(--ink);font:10px/1.45 "IBM Plex Mono",monospace;letter-spacing:.025em}
+.github-link svg{width:15px;height:15px;flex:none}
+.github-link--card{padding:7px 0;font-size:8.5px}
+.github-link--panel{margin-top:16px}
+.morph-toggle{position:relative;z-index:3;flex:none;width:26px;height:26px;border:1.5px solid var(--ink);border-radius:50%;background:var(--ink);color:var(--paper);box-shadow:0 3px 7px rgba(60,50,35,.15);cursor:pointer}
+.morph-icon{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);transition:transform .33s var(--ease-settle)}
+.morph-icon::before,.morph-icon::after{content:"";position:absolute;left:50%;top:50%;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
+.morph-icon::before{width:10px;height:1.3px}
+.morph-icon::after{width:1.3px;height:10px}
+.slot.open .morph-icon{transform:translate(-50%,-50%) rotate(45deg)}
+
+.slot[data-id="audio-processing-cli"]{--tilt:2.1deg;--drop:136px;--pin-left:34%;--pin-tilt:12deg;--pin-color:#3E6274;--instrument-hue:#3E6274;--motif-tilt:6deg;z-index:10}
+.slot[data-id="publish-cli"]{--tilt:-2.8deg;--drop:46px;--pin-left:66%;--pin-tilt:-11deg;--pin-color:#7A4A63;--instrument-hue:#7A4A63;--motif-tilt:-7deg;z-index:11}
+.slot[data-id="tsugi"]{--tilt:-3.15deg;--drop:62px;--pin-left:28%;--pin-tilt:-14deg;--pin-color:var(--mark-deep);z-index:7}
+.slot[data-id="instant-bookmark"]{--tilt:3.25deg;--drop:174px;--pin-left:42%;--pin-tilt:8deg;--pin-color:#A5822C;z-index:8}
+.slot[data-id="instant-bookmark"] .paper-inner{background:color-mix(in srgb,var(--wash-wheat) 40%,var(--paper))}
+.slot[data-id="wavelength"]{--tilt:-2.45deg;--drop:94px;--pin-left:78%;--pin-tilt:14deg;--pin-color:#3D5C52;z-index:9}
+.slot[data-id="wavelength"] .paper-inner{background:color-mix(in srgb,var(--wash-peach) 40%,var(--paper))}
+
+/* ---- note that hangs off a slip (A, B) ---- */
+.note-pop{position:absolute;z-index:4;right:-8px;top:calc(100% - 10px);width:min(300px,80cqw);transform:rotate(.8deg);transform-origin:90% 0}
+.note-pop:not([hidden]){animation:notePop .42s var(--ease-settle) both}
+@keyframes notePop{from{opacity:0;transform:translateY(-8px) rotate(-1.5deg)}to{opacity:1;transform:rotate(.8deg)}}
+.note-pop-paper{padding:20px 22px 22px;background:var(--paper);clip-path:polygon(0 0,100% 0,100% 95%,94% 100%,84% 96%,74% 100%,64% 95%,54% 100%,44% 96%,34% 100%,24% 95%,14% 100%,5% 96%,0 100%);filter:drop-shadow(.6px 0 0 var(--ink)) drop-shadow(-.6px 0 0 var(--ink)) drop-shadow(0 .6px 0 var(--ink)) drop-shadow(0 -.6px 0 var(--ink))}
+.note-pop-kicker{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line-strong);color:var(--soft);font:8.5px/1.2 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+.note-pop p{color:#504A42;font-size:14px;line-height:1.6}
+.slot.open{z-index:30!important}
+
+/* ---- the live page's mobile layout, keyed to the board's own width ---- */
+@container (max-width:900px){
+  .slot--lead{width:min(680px,78cqw)} .slot--featured{width:min(380px,62cqw)} .slot--instrument{width:min(276px,42cqw)} .slot--standard{width:min(184px,29cqw)}
+}
+@container (max-width:640px){
+  .cork{background-size:24px 24px}
+  .cork-track{gap:36px;min-height:640px;padding-right:12px}
+  .slot--lead{--tilt:-1.2deg;--drop:12px;width:calc(100cqw - 32px)}
+  .paper--lead .paper-body{min-height:540px;padding:30px 22px 26px}
+  .highlighted-title{font-size:clamp(50px,18cqw,74px)}
+  .highlighted-note{font-size:16px}
+  .highlighted-footer{display:block}
+  .slot--featured{--tilt:1.8deg;--drop:76px;width:82cqw}
+  .paper--featured .paper-body{min-height:390px;padding:28px 23px}
+  .slot--instrument{width:min(286px,78cqw)}
+  .slot--standard{width:min(190px,50cqw)}
+  .slot[data-id="audio-processing-cli"]{--tilt:1.6deg;--drop:96px}
+  .slot[data-id="publish-cli"]{--tilt:-2deg;--drop:30px}
+  .slot[data-id="tsugi"]{--tilt:-2.2deg;--drop:42px}
+  .slot[data-id="instant-bookmark"]{--tilt:2.35deg;--drop:126px}
+  .slot[data-id="wavelength"]{--tilt:-1.8deg;--drop:64px}
+  .morph-toggle{width:30px;height:30px}
+}

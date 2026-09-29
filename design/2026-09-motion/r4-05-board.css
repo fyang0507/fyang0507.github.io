@@ -1,0 +1,53 @@
+/* r4-05 · the shipped corkboard: r2-05 board + r3-05 flower (r3-05-board.css supplies .stk and the
+   strip), with board 02's round-4 pen in place of the board's own hover fills and focus rings. */
+
+/* the flower is not on the card until it has been applied (first view per session) */
+.stk--unapplied{visibility:hidden}
+
+/* ---- the pen replaces colour swaps and outline rings (board 02) ---- */
+.pen-t{display:inline-block;position:relative}
+.unpin-trigger--title{display:inline-block;position:relative}
+.cork :focus-visible,.cork-viewport:focus-visible,.unpin-layer :focus-visible{outline:none!important}
+.cork-btn:hover,.cork-btn:focus-visible{background:var(--paper);color:var(--ink)}
+.paper--lead:hover .project-cta,.paper--lead:focus-visible .project-cta,.unpin-cta:hover,.unpin-cta:focus-visible{background:var(--paper);color:var(--ink)}
+.phone-title h3 .mk{color:var(--mark)}   /* the title's coral character: fixed identity (revised coral rule) */
+
+/* ---- stage note: what pressed it last ---- */
+.r4-cue{display:inline-flex;align-items:baseline;gap:8px;font:11px/1.3 var(--util);color:var(--pencil);letter-spacing:.02em}
+.r4-cue b{font-weight:500;color:var(--ink)}
+.r4-replays{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}
+.r4-replays button{font:11px/1 var(--util);color:var(--pencil);padding:6px 2px;border-bottom:1px solid transparent}
+.r4-replays button:hover,.r4-replays button:focus-visible{color:var(--ink);border-bottom-color:var(--pencil)}
+
+/* ---- the cause table ---- */
+.r4-causes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line)}
+.r4-cause{padding:16px clamp(12px,1.3vw,18px) 18px;border-right:1px solid var(--line);background:var(--paper)}
+.r4-cause:last-child{border-right:0}
+.r4-cause h4{font:500 15px/1.25 var(--disp)}
+.r4-cause h4 .display-cn{margin-left:6px;font-size:.9em;color:var(--soft)}
+.r4-cause .k{display:block;margin-bottom:6px;font:10px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--pencil)}
+.r4-cause p{margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--soft)}
+.r4-cause p b{color:var(--ink);font-weight:500}
+
+/* the key-pose strip reuses r3-05's crops; its captions are poses, not candidates */
+.r4-strip .r3-tile-head{min-height:0}
+.r4-strip .r3-cap{font-size:13.5px}
+.r4-strip .r3-crop--m{margin:0 0 38px}
+
+@media (max-width:1100px){
+  .r4-causes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .r4-cause{border-bottom:1px solid var(--line)}
+  .r4-cause:nth-child(3n){border-right:0}
+}
+@media (max-width:760px){
+  .r4-causes{grid-template-columns:1fr}
+  .r4-cause,.r4-cause:nth-child(3n){border-right:0}
+  .r4-cause:last-child{border-bottom:0}
+  .r3-tag{display:none}
+  #cand-a .cand-foot,#cand-k .cand-foot{grid-template-columns:1fr}
+  #cand-a .cand-foot .replays{flex-direction:row;align-items:center;justify-content:flex-start}
+  .r4-strip .r3-tile--was{grid-column:auto;border-right:1px solid var(--line)}
+  .r4-strip .r3-tile:nth-child(2n){border-right:0}
+}
+.changed .note{font:11.5px/1 var(--util);color:var(--pencil);white-space:nowrap}
+.nw{white-space:nowrap}

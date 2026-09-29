@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2·03 · Tags and years, both in hand — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r2-03-board.css"><link rel="stylesheet" href="r2-03-shelf.css"><link rel="stylesheet" href="r2-03-ctl.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD R2 · 03</div><h1 class="board-title">Tags and years, both in hand <span class="display-cn">类别与年份，一句话说清</span></h1></div>
+    <div><p class="board-why">Round-1 B made the <b>tag</b> a physical thing (index dividers rising behind the shelf) but left the <b>year</b> as tiny 9px ticks under the books that you had to discover, could only toggle one by one, and that carried no counts. The two dimensions were unequal, and nothing on screen said what the shelf was currently showing when both were set. The live page still spends three rows of pills and a status line on this.</p>
+      <p class="evidence">evidence: <code>03-cand-b.js:88–118</code> year ticks as 30px toggles · <code>03-shelf.css:30–33</code> 9.5px tick labels · <code>Writing.dc.html:122–132</code> chip rows + “Showing 27 / 27” · <code>Gallery.dc.html:100–109</code> the same two rows for photos</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 1">
+    <div class="changed-k">WHAT CHANGED<br>FROM ROUND 1</div>
+    <ul>
+      <li><q>I like B, but the question is to present both the tag + date/year selection.</q>— Fred</li>
+      <li><b>Years get their own labelled ruler</b> (年份 · years) under the plank: one equal cell per calendar year, 2020 included, each with a 正 tally of what the current tag holds. Click a year, drag across years, or shift-click for a span.</li>
+      <li><b>Tags keep B’s dividers</b>, now labelled 类别 · tags with bilingual names and live counts. Sunk dividers stay clickable. One rule governs both: <b>the dimension you touch wins, the other gives way</b>, and the readout shows what gave way.</li>
+      <li><b>One sentence states the combined filter</b> above the shelf, with a single clear · 清除. The same component runs the Gallery clothesline with real photos, and both work at 390px with touch.</li>
+    </ul>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Dividers + ruler, span by drag <span class="display-cn">书签与年份尺 · 拖选</span></span><span class="cand-mech">divider springs · live-reflow ruler drag · bracket springs · 正 recount</span></div>
+      <div class="fx-sub">on writing <span class="zh">在写</span></div>
+      <div class="stage fx-stage"><div class="wx" data-page="writing" data-mode="range" data-inst="a-d"></div><span class="hint">pick a divider ↑ · drag across the years ↓</span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>tabs swipe · ruler cells ≈ 30×59px</span></figcaption><div class="phone-screen"><div class="wx" data-page="writing" data-mode="range" data-inst="a-m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>Two controls, one grammar <span class="zh">两个控件，一套语法</span></h4>
+          <p>Both dimensions sit in the same left column with the same small bilingual label, <b>类别 · tags</b> above the shelf and <b>年份 · years</b> below it, so the books sit between their two filters. Each has an explicit “all” (the first divider; <b>all · 全部</b> beside the ruler), each shows its counts (numbers on the tabs, 正 tallies on the ruler), and each dims what the other has emptied without disabling it.</p>
+          <h4>The ruler <span class="zh">年份尺</span></h4>
+          <p>Every year from 2026 to 2015 gets an equal cell, including 2020, which has none: a ruler that skips a year misrepresents the gaps. Click once for a year and again for every year. <b>Drag across the ruler</b> and the coral brackets hop from cell to cell on a spring while a paper flag names the span (“2015–2019 · 11 篇”). The books tip out and drop in <i>while you drag</i> (at most one reflow per 90ms). Drag from a bracketed end to resize, or use shift-click and shift+←/→. Hover a year or a tab and its books rise a finger’s width off the plank, so the controls point at the books.</p>
+          <p>The tallies are <b>正-counting</b>: one stroke per essay, five strokes make 正, the way Chinese classrooms count votes. Three strokes read as three to anyone. When the tag changes the ruler <b>recounts by hand</b>: extra strokes lift off, and missing ones are written one at a time, left to right.</p>
+          <h4>When the two disagree <span class="zh">两者冲突时</span></h4>
+          <div class="rule">The dimension you touch wins; the other one gives way.<span class="zh">你碰哪一个，哪一个说了算；另一个让开。</span></div>
+          <p>Choose <b>commentary</b> (sunk, since it has none in 2015–2019) and the years release to every year. The readout keeps <b>2015–2019</b> on the line with a pencil strike until your next move. Click a dim year and the tag releases the same way. A span that is empty for every tag (2020) stays honestly empty.</p>
+          <h4>On a phone <span class="zh">手机上</span></h4>
+          <p>The dividers become a swipe strip that scrolls the chosen one into view. The ruler takes the full width with ’26-style labels and cells about 30×59px. <code>touch-action: pan-y</code> lets a horizontal thumb-drag select a span while a vertical one still scrolls the page, and the flag rides above the thumb, not under it. The readout wraps to two lines: what is chosen, then how many.</p>
+        </div>
+      </div>
+      <div class="fx-sub">on gallery <span class="zh">在拍</span> — same component, other nouns</div>
+      <div class="stage fx-stage"><div class="wx" data-page="gallery" data-mode="range" data-inst="g-d"></div></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>107 frames · 2015–2025</span></figcaption><div class="phone-screen"><div class="wx" data-page="gallery" data-mode="range" data-inst="g-m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>It generalises <span class="zh">可以通用</span></h4>
+          <p>The filter only asks its collection for five things: <b>cats, years, items, noun, apply()</b>. The Gallery rack answers with 107 real frames and nine dividers (cityscape 28 · landscape 20 · people 19 …), and the dividers now rise from behind the <b>first clothesline</b> instead of the shelf edge. The ruler runs 2025 → 2015. Photo counts are big enough that the 正 tallies become a real histogram: 2024’s 29 frames are five full 正 plus four strokes.</p>
+          <h4>Same engine, hanging physics <span class="zh">同一引擎，悬挂物理</span></h4>
+          <p>The reflow engine gained one option, <code>hang</code>. A print that leaves loses one peg, swings about the other and drops. One that arrives is hung on the line and swings from its peg as it lands. As on the live page, the rack shows three lines and a “+68 more on the line · 还有 68 张” tag for the rest, while the readout always states the full count.</p>
+          <div class="cmp"><div><b>1 line</b>readout, desktop</div><div><b>2 lines</b>readout, phone</div><div><b>0</b>rows of pills</div></div>
+        </div>
+      </div>
+      <div class="cand-foot"><div>B’s dividers, plus a real ruler for years: tag and year are equally visible, both carry counts, a year span takes one drag, and the sentence above the shelf always says what you are looking at.<div class="tradeoff"><b>cost</b> the most machinery of any filter so far (three small components + one rule), but it replaces three rows of pills and a status line on two pages · <b>a11y</b> tabs = radiogroup (←→ Home End); ruler = multiselectable listbox (←→ move, Enter/Space pick, Shift+←→ extend, Esc all years); readout aria-live · <b>support</b> pointer events + capture, ResizeObserver; works with mouse, touch, pen, keyboard</div></div><div class="foot-btns"><button class="replay" data-replay="replayA">↻ replay writing</button><button class="replay" data-replay="replayG">↻ replay gallery</button></div></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Dividers + ruler, circle any years <span class="display-cn">书签与年份尺 · 圈选</span></span><span class="cand-mech">same tabs, ruler, readout · years as a set · tap only</span></div>
+      <div class="stage fx-stage"><div class="wx" data-page="writing" data-mode="set" data-inst="b-d"></div><span class="hint">circle a few years ↓</span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>tap to circle</span></figcaption><div class="phone-screen"><div class="wx" data-page="writing" data-mode="set" data-inst="b-m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>What differs <span class="zh">区别</span></h4>
+          <p>Identical tabs, ruler, tallies, readout and yield rule. Only the year model changes: <b>years are a set, not a span</b>. Each tap circles or uncircles one year in pen, so any combination works (2015, 2019, 2024), and the readout collapses neighbouring years (“2015, 2018–2019”).</p>
+          <p><b>Gained:</b> non-adjacent years, for “my 2015 and 2019 trips”. Nothing to learn beyond tapping, and no drag gesture that could fight page scroll on a phone. <b>Lost:</b> a decade takes ten taps instead of one drag, the brackets’ “window on time” reading goes away, and the readout can grow long.</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The round-1 loops, promoted onto the explicit ruler. Simpler to operate, weaker at the thing a timeline is for.<div class="tradeoff"><b>cost</b> slightly less than A (no drag, no brackets) · <b>a11y</b> ruler = multiselectable listbox, Enter/Space toggles, Esc clears · <b>support</b> everywhere</div></div><button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A · span by drag.</b> Years are ordered, so the natural question is “from when to when”. A answers it in one gesture, reflows live while you drag, and the readout reads back as “游记 travel log · 2015–2019 · 11 essays”. Clicking a single year is still one tap, so A loses nothing to B for the common case.</p>
+    <p>Keep from B the loop vocabulary for anything that is a set rather than a span. Watch two things when this ships. First, the coral budget: the filter spends coral only while a dimension is narrowed, so at rest it adds none to the page. Second, the phone ruler cells are about 30×59px, which clears WCAG 2.2’s 24px minimum but is narrower than 44. Dragging makes precise aim unnecessary, and the flag confirms the year above the thumb.</p>
+    <div class="record">执行模式：多阶段（精修候选 → 等待 Fred 选择）
+表达锚点：书架夹在两个筛选之间——上面是插在书后的索引书签（类别），下面是一把写着正字的年份尺（年份）；上方一句话把两者读出来
+动作时钟：物理时钟（书签弹簧升降、括号在年份格之间弹跳、书倾倒/滑拢/落下、照片脱夹摆落/挂上）；手的时钟（正字一笔一笔重数、括号/圈/删除线一笔画成、小鸟跳一下）
+映射：点书签 → 书签升起，年份尺上的正字重数 → 书重排；拖年份尺 → 括号逐格跳、纸旗报区间 → 书边拖边重排；碰了冲突的维度 → 另一维让开，旧值在句子里被铅笔划掉
+线条计划：pen.js 一只手——书签下划线、年份括号与窗口线（A）/ 圈（B）、正字、句中删除线；种子固定不抖动
+色彩计划：纸/墨/铅笔三值；珊瑚色唯一持有者 = “这一维正在筛选”的标记（书签下划线、年份括号）；都为“全部”时页面上不出现新的珊瑚色</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script><script src="../../content/photos.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-03-reflow.js"></script><script src="r2-03-shelf.js"></script><script src="r2-03-rack.js"></script>
+<script src="r2-03-tally.js"></script><script src="r2-03-tabs.js"></script><script src="r2-03-ruler.js"></script><script src="r2-03-readout.js"></script>
+<script src="r2-03-filter.js"></script><script src="r2-03-board.js"></script>
+</body></html>

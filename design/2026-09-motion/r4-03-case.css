@@ -1,0 +1,30 @@
+/* r4-03-case.css — additions to r3-03-case.css (loaded unchanged before this file) for round 4:
+   flat books in stacks, synthetic books, planks that fade out when the case shortens, per-stack year slips,
+   the whole held book as a hit target, and the obi pen back in coral (board 02, round 4: notice = coral). */
+
+/* the held book takes the pointer on every face: moving onto it keeps it out, clicking it opens it */
+.book.held .f{pointer-events:auto;cursor:pointer}
+
+/* a book lying in a stack: its title turns sideways so that, rolled -90°, it reads across and upright */
+.book.lying .bk-title{text-orientation:sideways;letter-spacing:.04em}
+.book.lying .bk-badge,.book.lying .bk-syn{transform:translateX(-50%) rotate(90deg)}
+
+/* synthetic essays (r4-03-data.js): a dashed inner rule on the spine and a 拟 label */
+.book.syn .bk-spine::after{content:"";position:absolute;inset:3px;border:1px dashed rgba(51,48,43,.34);pointer-events:none}
+.bk-syn{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);padding:2px 3px 1px;border:1px dashed rgba(51,48,43,.55);background:var(--page);
+  font:calc(10px * var(--sk,1))/1 var(--util-cn);color:var(--soft)}
+
+/* planks not in use fade out while the case shortens */
+.pl-top,.pl-lip{transition:opacity .22s linear}
+.pl-top.is-off,.pl-lip.is-off{opacity:0}
+.pl-lab[hidden],.pl-slip[hidden]{display:none}
+/* one year slip under each stack of a capped case, centred on it */
+.pl-slip{position:absolute;top:50%;transform:translate(-50%,-50%);padding:1.5px 5px 1px;background:var(--page);border:1px solid rgba(51,48,43,.42);
+  font:500 10px/1.05 var(--util);letter-spacing:.06em;color:var(--pencil);white-space:nowrap}
+
+/* the pen under a held book's obi title: board 02 round 4's notice, coral (round 3 had cooled it to wheat) */
+.obi-zh > svg path{stroke:var(--mark)}
+
+/* the reading page opens over the part of the page you can see (r4-03-app.js fitFrame), not the whole case */
+.rd-frame{position:absolute;left:0;right:0;top:0;height:100%;z-index:45;pointer-events:none}
+.rd-frame > .rd{pointer-events:auto}

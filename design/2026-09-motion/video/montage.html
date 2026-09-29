@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- The 30 s cut's chrome, rendered to PNG layers by montage.mjs, in one of two layouts (?lay=wide 1920×1080, the
+     sides next to each other; ?lay=tall 1080×1920, one above the other). ?layer=base|top|head|tag|end.
+     head and end carry the site's own pen: pen.js and motion.js come from the branch server, the underline is
+     Pen.underline seeded by its text, hung at baseline + max(3 px, .18 em) and drawn in one pass on the pen's
+     easing and duration. at(ms) poses it, so every frame is deterministic. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;500&display=block" rel="stylesheet">
+<script src="http://127.0.0.1:4173/motion.js"></script>
+<script src="http://127.0.0.1:4173/pen.js"></script>
+<style>
+  @font-face{font-family:"JinBuTi";src:url("http://127.0.0.1:4173/fonts/DingTalkJinBuTi.woff2") format("woff2");font-display:block}
+  :root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#5E574D;--pencil:#7A7063;--mark:#D9695A}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{overflow:hidden;background:var(--paper2);color:var(--ink);font-family:"Fraunces","Noto Serif SC",serif}
+  html.clear,html.clear body{background:transparent}
+  .abs{position:absolute}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .brand{color:var(--pencil);letter-spacing:.06em}
+  .count{color:var(--pencil);letter-spacing:.08em;text-align:right}
+  .count b{font-weight:500;color:var(--ink)}
+  .rule{height:1.5px;background:var(--ink)}
+  .lab{letter-spacing:.12em;line-height:1.35;color:var(--pencil);white-space:nowrap}
+  .lab b{font-weight:500;color:var(--ink)}
+  .lab.after b{color:var(--mark)}
+  .lab .who{letter-spacing:.04em}
+  .lab.after .who{color:var(--ink);font-weight:500}
+  .clip{position:absolute;overflow:hidden}
+  .frame{position:absolute;border:1.5px solid var(--ink);border-radius:6px;box-shadow:0 0 0 40px var(--paper2)}
+  .phone .frame{border-width:2px;border-radius:26px}
+  .head{text-align:center}
+  .head .en{font-weight:500;letter-spacing:-.01em;line-height:1.16}
+  .head .zh{margin-top:.34em;font-family:"Noto Serif SC",serif;color:var(--soft);line-height:1.4}
+  .u{position:relative;white-space:nowrap}   /* a name or phrase the pen marks never breaks */
+  svg.pen{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+  svg.pen path{fill:none;stroke:var(--mark);stroke-linecap:round;stroke-linejoin:round}
+  .tag{color:var(--pencil);letter-spacing:.08em;text-align:right;white-space:nowrap}
+  .end{position:absolute;inset:0;background:var(--paper);display:flex;flex-direction:column;justify-content:center}
+  .end .k{font:500 1em/1 "IBM Plex Mono",monospace;letter-spacing:.16em;color:var(--pencil);text-transform:uppercase}
+  .end h1{font-weight:500;letter-spacing:-.018em;line-height:1.06}
+  .end .zh{font-family:"JinBuTi",serif;color:var(--soft);letter-spacing:.04em;line-height:1.25}
+  .end .perch{position:relative;height:2.4px;background:var(--ink)}
+  .end .bird{position:absolute;right:4px;bottom:calc(100% - 6px);width:78px;height:76px;background:url("http://127.0.0.1:4173/assets/bird-strip-light.png") 100% 0/200% 100% no-repeat}
+  .end .was{color:var(--soft)}
+  .end .was .wzh{display:block;margin-top:.4em;font-family:"Noto Serif SC",serif;color:var(--pencil)}
+  .end .foot{font-family:"IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--ink)}
+</style>
+</head>
+<body>
+<script>
+  const q = new URLSearchParams(location.search);
+  const esc = (s) => (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  // *phrase* is the one the pen underlines
+  const md = (s) => esc(s).replace(/\*(.+?)\*/g, '<span class="u">$1</span>');
+  const lay = q.get('lay') || 'wide', layer = q.get('layer') || 'base', G = JSON.parse(q.get('geo') || '{}');
+  const S = G.S, W = G.W, H = G.H;
+  const px = (o) => Object.entries(o).map(([k, v]) => `${k}:${typeof v === 'number' ? v + 'px' : v}`).join(';');
+  document.documentElement.style.cssText = `width:${W}px;height:${H}px`;
+  document.body.style.cssText = `width:${W}px;height:${H}px`;
+  document.body.className = G.mode || 'desk';
+  let html = '';
+  const [pb, pa] = G.panes || [];
+  if (layer === 'base') {
+    const sep = G.labWrap ? '<br>' : ' · ';   // a narrow pane takes the credit on its own line
+    html =`<div class="abs mono brand" style="${px({ left: G.m, top: G.brandY, 'font-size': S.brand })}">fyang0507.github.io</div>
+      <div class="abs mono count" style="${px({ right: G.m, top: G.brandY, 'font-size': S.brand })}"><b>${esc(q.get('n'))}</b> / ${esc(q.get('of'))}</div>
+      <div class="abs rule" style="${px({ left: G.m, right: G.m, top: G.ruleY })}"></div>
+      <div class="abs mono lab" style="${px(Object.assign(G.labBRight ? { right: W - pb.x - pb.w, 'text-align': 'right' } : { left: pb.x }, { top: G.labB, 'font-size': G.labWrap ? S.lab * .84 : S.lab }))}"><b>BEFORE</b>${sep}<span class="who">${esc(q.get('bw'))}</span></div>
+      <div class="abs mono lab after" style="${px({ left: pa.x, top: G.labA, 'font-size': G.labWrap ? S.lab * .84 : S.lab })}"><b>AFTER</b>${sep}<span class="who">${esc(q.get('aw'))}</span></div>`;
+  } else if (layer === 'top') {
+    document.documentElement.className = 'clear';
+    const bw = G.mode === 'phone' ? 2 : 1.5, pad = 6;   // just past the rounded corner, clear of the labels above
+    html = [pb, pa].map((p) => `<div class="clip" style="${px({ left: p.x - pad, top: p.y - pad, width: p.w + 2 * pad, height: p.h + 2 * pad })}"><div class="frame" style="${px({ left: pad - bw, top: pad - bw, width: p.w + 2 * bw, height: p.h + 2 * bw })}"></div></div>`).join('');
+  } else if (layer === 'head') {
+    document.documentElement.className = 'clear';
+    html = `<div class="abs head" style="${px({ left: G.m, right: G.m, top: G.headY, height: G.headH, display: 'flex', 'flex-direction': 'column', 'justify-content': 'center' })}">
+      <div class="en" style="${px({ 'font-size': S.en })}">${md(q.get('h'))}</div><div class="zh" style="${px({ 'font-size': S.zh })}">${md(q.get('hzh'))}</div></div>`;
+  } else if (layer === 'tag') {
+    document.documentElement.className = 'clear';
+    html = `<div class="abs mono tag" style="${px({ right: G.m, top: G.labA, 'font-size': S.lab })}">${esc(q.get('tag'))}</div>`;
+  } else if (layer === 'end') {
+    const E = G.end;
+    html = `<div class="end" style="${px({ 'padding-left': E.x, 'padding-right': E.x, 'font-size': E.k })}">
+      <div class="k">${esc(q.get('k'))}</div>
+      <h1 style="${px({ 'margin-top': E.k * 1.8, 'font-size': E.h1 })}">${md(q.get('h'))}</h1>
+      <div class="zh" style="${px({ 'margin-top': E.h1 * .3, 'font-size': E.zh })}">${md(q.get('hzh'))}</div>
+      <div class="perch" style="${px({ width: 132, 'margin-top': E.h1 * 1.1 })}"><i class="bird"></i></div>
+      <p class="was" style="${px({ 'margin-top': E.h1 * .42, 'font-size': E.p })}">${esc(q.get('was'))}<span class="wzh" style="${px({ 'font-size': E.p * .82 })}">${esc(q.get('waszh'))}</span></p>
+      <div class="abs foot" style="${px({ left: E.x, bottom: E.foot, 'font-size': E.k * 1.35 })}">fyang0507.github.io</div></div>`;
+  }
+  document.body.innerHTML = html;
+
+  // ---- the pen: one underline per marked phrase, drawn in reading order ----
+  const marks = [];
+  function inkUnderlines() {
+    const pen = Math.max(2.2, (layer === 'end' ? G.end.h1 : S.en) * .066);
+    let t = +(q.get('at') || 150);
+    document.querySelectorAll('.u').forEach((u) => {
+      const fs = parseFloat(getComputedStyle(u).fontSize), probe = document.createElement('span');
+      probe.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+      const rects = [...u.getClientRects()], last = rects[rects.length - 1];
+      u.appendChild(probe); const drop = probe.getBoundingClientRect().top - last.top + Math.max(3, fs * .18); probe.remove();
+      rects.forEach((r, j) => {   // a phrase that wraps gets one stroke per line, each hung from its own baseline
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'), p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        svg.setAttribute('class', 'pen'); svg.style.cssText = px({ left: r.left, top: r.top, width: r.width, height: r.height + 20 });
+        p.setAttribute('d', Pen.underline(r.width, u.textContent + (j ? '|' + j : ''), { y: drop })); p.setAttribute('stroke-width', pen.toFixed(2));
+        svg.appendChild(p); document.body.appendChild(svg);
+        const L = p.getTotalLength(), dur = Math.min(620, 200 + L * 1.1);
+        marks.push({ p, L, at: t, dur }); t += Math.min(dur * .7, 240);
+      });
+    });
+    at(0);
+  }
+  const ease = window.Motion ? Motion.cubic(.55, .1, .25, 1) : (t) => t;
+  // pose every underline at ms after the layer starts; returns when the last one has landed
+  window.at = (ms) => {
+    marks.forEach((m) => {
+      const k = ease(Math.min(1, Math.max(0, (ms - m.at) / m.dur)));
+      m.p.style.strokeDasharray = `${m.L + 1} ${m.L + 40}`;
+      m.p.style.strokeDashoffset = ((m.L + 20) * (1 - k)).toFixed(2);
+    });
+    return marks.reduce((a, m) => Math.max(a, m.at + m.dur), 0);
+  };
+  const art = layer === 'end' ? new Promise((r) => { const i = new Image(); i.onload = i.onerror = r; i.src = 'http://127.0.0.1:4173/assets/bird-strip-light.png'; }) : null;
+  Promise.all([document.fonts.ready, art]).then(() => { if (layer === 'head' || layer === 'end') inkUnderlines(); document.body.dataset.ready = '1'; });
+</script>
+</body>
+</html>

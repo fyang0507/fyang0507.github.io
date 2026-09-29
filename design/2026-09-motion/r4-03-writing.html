@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R4·03 · The Writing page at any size — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r2-04-book.css">
+<link rel="stylesheet" href="r4-03-board.css"><link rel="stylesheet" href="r3-03-case.css"><link rel="stylesheet" href="r4-03-case.css">
+<link rel="stylesheet" href="r3-03-index.css"><link rel="stylesheet" href="r4-03-index.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD R4 · 03</div><h1 class="board-title">The Writing page at any size <span class="display-cn">书越写越多，书架怎么办</span></h1></div>
+    <div><p class="board-why">Round 3 sized the bookcase for today’s 27 essays and gave every book a home plank. Fred asked whether that still works when there are many more. It does not, as round 3 built it: at 120 essays a year filter would leave its few books spread down a nine-plank case. He also found that a pulled book left the pointer. Hover lifted the book away from the cursor, so the click that should open it landed on the empty slot.</p>
+      <p class="evidence">evidence: <code>r3-03-pull.js:34–44</code> the held pose is placed by plank (in front of the other row), not by the pointer · <code>r3-03-case.js</code> home planks · <code>r3-03-index.css</code> a 12-year ledger at a fixed 21.5&nbsp;px a row</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 3">
+    <div class="changed-k">WHAT CHANGED<br>FROM ROUND 3</div>
+    <ul>
+      <li><q>will the double/multi shelf design holds when many more articles are added?</q><b>A stress switch, and a growth rule.</b> The board runs at 27 real essays or 60 or 120, where the extra ones are synthetic: cloned from real metadata, dated 2009–2026, and marked 拟 with a dashed spine. Two growth rules sit behind the switch: (a) add a plank per ~13–14 books, or (b) keep today’s planks and lay the oldest years flat in stacks. The measurements are below; <b>(a) is the rule</b>.</li>
+      <li><q>… the taken out book moves out of the cursor space … they are clicking on the empty space where the book was placed</q><b>The book comes to the hand.</b> The pulled book is placed so that the pointer lands on its lower cover, on the obi, and the whole book takes the pointer. Clicking at the same spot opens it, moving onto the book keeps it out, and leaving both puts it back. On the phone, the second tap on the same spot opens it.</li>
+      <li><q>notice coral, focus coral, chosen = wheat band</q><b>Board 02’s round-4 pen</b> (<code>r4-02-tier.js</code>, loaded as is). Hover draws a coral line. When you choose, the band sweeps over that line and it cools into the band’s wheat edge. Keyboard 「 」 is coral. The obi pen is coral again. Nothing chosen is coral at rest.</li>
+      <li><b>Kept from round 3:</b> the index book and its tabs, the 正 ledger, the readout, the reflow, the pull, the obi and the open, and the plank labels. The labels now name the years standing on each plank, so they change with the filter.</li>
+    </ul>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">A bookcase that grows <span class="display-cn">书架按需加层</span></span><span class="cand-mech">stress switch · growth rule · the book comes to the hand · round-4 pen</span></div>
+      <div class="sx-bar" role="group" aria-label="Stress test">
+        <div class="sx-g"><span class="sx-k">essays</span><button type="button" class="sx-b" data-n="27">27 <small>real</small></button><button type="button" class="sx-b" data-n="60">60</button><button type="button" class="sx-b" data-n="120">120</button></div>
+        <div class="sx-g"><span class="sx-k">growth</span><button type="button" class="sx-b" data-rule="grow">(a) add planks</button><button type="button" class="sx-b" data-rule="cap">(b) capped · flat stacks</button></div>
+        <span class="sx-note"></span>
+      </div>
+      <div class="stage wr-stage"><div class="wr" data-inst="d"></div><span class="hint"></span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>follows the essays switch</span></figcaption><div class="phone-screen"><div class="wr" data-inst="m"></div></div></figure>
+        <div class="fx-notes" id="notes">
+          <h4>Does it hold? The numbers <span class="zh">能不能装下：数字</span></h4>
+          <p>Measured on the full page (<a href="r4-03-page.html?n=120">r4-03-page.html</a>, the real site header above), from the top of the page to the foot of the last book. Synthetic essays are clones of real metadata, dated 2009–2026.</p>
+          <table class="nums">
+            <tr><th>essays</th><th>1440 · (a) add planks</th><th>1440 · (b) capped</th><th>1024 · (a) / (b)</th><th>390 · one strip</th></tr>
+            <tr class="rec"><td><b>27</b> real</td><td>2 planks · 1,014 px</td><td>same (fits the cap)</td><td>3 / 3 planks · 1,328 px</td><td>1,248 px of shelf</td></tr>
+            <tr class="rec"><td><b>60</b></td><td>5 planks · 2,010 px</td><td>6 planks · 2,321 px<br>35 flat in 12 stacks</td><td>6 / 9 planks · 2,324 / 3,299 px</td><td>2,549 px</td></tr>
+            <tr class="rec"><td><b>120</b></td><td>9 planks · 3,338 px</td><td>10 planks · 3,652 px<br>93 flat in 23 stacks</td><td>12 / 15 planks · 4,316 / 5,288 px</td><td>4,919 px</td></tr>
+          </table>
+          <p><b>Spines</b> stay 36–55&nbsp;px wide and 162–269&nbsp;px tall at every count. Titles stay 12–16&nbsp;px, and a flat book sets the same title across at the same size. On the phone spines are 26–41&nbsp;px. <b>The index holds:</b> the ledger grows to 18 years, and its rows shrink only when the viewport forces it (21.5&nbsp;px at 1440×900, 19.1&nbsp;px at 1024×800). At 120 the tag counts read 120 · 52 · 23 · 21 · 16 · 10. The index sticks beside the planks, 815&nbsp;px tall at 1440, so any filter is one click away from any plank. <b>Reflow at 120</b> (headless Chromium) runs at a median 8.3&nbsp;ms a frame with p95 ≈ 17&nbsp;ms (60&nbsp;fps), plus a single 25–33&nbsp;ms frame when it starts. The engine’s own JavaScript takes 0.6–4.6&nbsp;ms of each frame (median).</p>
+          <h4>Why (a) and not (b) <span class="zh">为什么加层，不压平</span></h4>
+          <p>A flat book’s footprint is its spine length, and a stack can only be as tall as the gap under the plank above. A year’s stack is about 250&nbsp;px wide however few books it holds, and at 60–120 essays a year holds 3–7. So laying years flat costs <b>more</b> plank than standing them up: one extra plank at 1440, and three at 1024. It also turns the older three-quarters of the archive on its side. A capped case cannot hide books, so it grows anyway, only faster. The stacks are built (switch to (b)): they take the reflow, a flat book slides out of its stack and stands up in your hand, and the titles read horizontally. They are simply the worse rule.</p>
+          <h4>What makes (a) hold <span class="zh">加层为什么撑得住</span></h4>
+          <p><b>Books fill the planks in reading order, from the top.</b> Round 3 kept a home plank for every book. At 120 that would have left a year filter’s few books spread down nine planks. Now a filter gathers its books at the top of the case. A book that has to change planks fades out where it stands and drops into its new slot (no flying across the case). The case shortens once they settle. If you filter from deep down the case, the page comes back to its top. <b>The eye travels with you:</b> the camera moves down with the scroll, as r2-04’s phone strip does sideways, so the ninth plank is drawn at the same angle as the first. <b>The plank labels</b> name the years standing on each plank now (“2026 — 2025”, “2025 — 2023”, …).</p>
+          <h4>The book comes to the hand <span class="zh">书跟着手</span></h4>
+          <p>When a book comes out, its held pose is placed from where the pointer is: the book rises only so far that the pointer lands 74% down its cover, on the obi. Every face of the held book takes the pointer. Moving from the slot onto the book keeps it out, clicking at the same spot opens it, and leaving both puts it back. The empty slot still opens it during the slide-out. Verified with a real pointer path (hover the spine → wait → click at the same point → the page opens): 4/4 on both planks, 1/1 for a flat book in a stack, and 4/4 taps on the phone at 27 and 120. The trade: the held book now covers part of its own slot, so less of the gap shows. Round 3 also had a bug where a click could re-shelve the book being clicked (a stale keyboard blur); it is fixed.</p>
+          <h4>Pen <span class="zh">笔</span></h4>
+          <p>This uses board 02’s round-4 tier, <code>r4-02-tier.js</code>, loaded as is. Hover draws a coral line under a tab, a year or clear. When you choose, the band sweeps over that line and the coral cools into the band’s darker wheat edge. You can watch 2012 and 2011 still coral mid-drag while 2014 and 2013 are already wheat. Keyboard 「 」 is coral. The pen under a held book’s obi title is coral again (notice). Nothing chosen is coral at rest.</p>
+          <h4>On a phone <span class="zh">手机上</span></h4>
+          <p>The phone is still one swipe strip with the index strip above it, and the growth rule doesn’t apply. At 120 the strip is about 13 screen-widths long, so the index is the way in: the ruler holds 18 years, with dense year labels below 24&nbsp;px a column. Tap a spine and the book comes up under your finger; tap it again to open it.</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The bookcase stays one continuous, chronological case and simply grows. The index sticks beside it, so any shelf is one click from any filter, and a filter gathers its books at the top so results are never scattered. The pulled book stays under your pointer, so the click that opens it lands on the book.<div class="tradeoff"><b>cost</b> one CSS-3D paper box per essay (5 faces), all under one camera · the reflow stays near 60 fps at 120 (numbers below) · <b>a11y</b> as round 3: tabs = radiogroup, ledger = multiselectable listbox, shelf = one tab stop, readout aria-live · <b>support</b> preserve-3d + linear(): Chrome 113, Safari 17.2, Firefox 112</div></div><div class="foot-btns"><button class="replay" data-replay="replayA">↻ replay</button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict" id="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Fred’s question: yes, with rule (a).</b> The multi-shelf design holds as the writing grows, as long as the case adds a plank per 13–14 books and stays one chronological case. At 120 essays that is 9 planks and about 3,300&nbsp;px of page at 1440, a bookcase you scroll down. It holds because the index is pinned beside it, a filter gathers its books at the top, and the eye travels with you. Capping the case and laying old years flat (b) doesn’t save room: it needs more planks at 60 and 120, at both 1440 and 1024, and it puts most of the archive on its side.</p>
+    <p>The hover-to-click gap is closed: the pulled book stays under the pointer (or finger), and clicking the book opens it. Watch: past ~200 essays the page at 1440 would pass ~5,500&nbsp;px. The filters still gather results at the top, but browsing “all” becomes a long scroll, and that is the point to add a decade jump beside the ledger. The phone strip is 13 screens long at 120, so there the index is the way in. The pen comes from board 02’s in-progress <code>r4-02-tier.js</code>; if its API changes, this board follows it.</p>
+    <div class="record">执行模式：单一推荐 + 一个对照规则（按 Fred 的两条批注：书多了还撑不撑得住；抽出的书离开了光标）
+表达锚点：一个能一直加层的书架；索引书钉在旁边跟着你往下走；你指向哪本书，那本书就被拿到你的手边
+动作时钟：物理时钟（书倾倒、滑拢、落下；换层或换姿势的书在原地淡出、在新位置落下，不飞过书架；抽书、立起、腰封、打开同 r2-04 A；书架高度等书落定后才缩短）；手的时钟（正字重数；小鸟逐格跳）
+映射：书变多 → 按阅读顺序从上往下填，满一层加一层，板沿书标写着这一层现在的年份；筛选 → 书向书架顶部聚拢，如果你在书架深处，页面回到书架顶；往下滚 → 视点跟着你下移，每一层都以同一个角度被看见；指向书脊 → 书只抬到让光标落在它下半截封面（腰封）上 → 点同一个位置 = 打开；平放的书 → 从书堆里抽出、在手里立起来
+线条计划：pen.js 一只手；02 第四轮：悬停 = 珊瑚色的平下划线；选中 = 荧光笔带扫过，珊瑚色冷却成带子的深麦色下沿；焦点「 」珊瑚色；平放书的书名横排、字头朝上；模拟文章用虚线书脊和“拟”标
+色彩计划：纸 / 墨 / 铅笔 + 麦色带；珊瑚色 = 标题“写”，加上正在被注意的那一笔（悬停、焦点、手里那本书的腰封）；任何已选中的状态静止时都不是珊瑚色</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-02-anim.js"></script><script src="r4-02-tier.js"></script><script src="r2-02-point.js"></script>
+<script src="r2-04-kit.js"></script><script src="r2-04-cover.js"></script><script src="r2-04-read.js"></script>
+<script src="r4-03-data.js"></script><script src="r4-03-fill.js"></script><script src="r4-03-reflow.js"></script><script src="r4-03-case.js"></script>
+<script src="r4-03-bird.js"></script><script src="r4-03-pull.js"></script>
+<script src="r3-03-tally.js"></script><script src="r3-03-tabs.js"></script><script src="r3-03-ledger.js"></script><script src="r3-03-readout.js"></script>
+<script src="r2-03-filter.js"></script><script src="r4-03-app.js"></script>
+</body></html>

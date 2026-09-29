@@ -15,8 +15,8 @@
 
 | Derivative | Size | Used by |
 | --- | --- | --- |
-| `<stem>-200.jpg`, `-400.jpg`, `-800.jpg` | pre-cropped 4:3 thumbnails | the rack and garland `srcset` |
-| `<stem>-2560.jpg` | long edge capped at 2560px | the lightbox |
+| `<stem>-200.jpg`, `-400.jpg`, `-800.jpg` | pre-cropped 4:3 thumbnails | the pegged prints' `srcset` on the clotheslines |
+| `<stem>-2560.jpg` | long edge capped at 2560px | the print viewer |
 
 Consequences worth knowing before you touch this:
 
@@ -24,7 +24,7 @@ Consequences worth knowing before you touch this:
 - Thumbnails are pre-cropped to 4:3 because the gallery CSS already center-crops to that box. The crop is deterministic, so it is not a content decision you need to review.
 - Derivative filenames come from the original's stem, so `foo.JPG` and `foo.jpg` would collide. Both the generator and the audit fail loudly if that happens; rename one original.
 - A source PNG with an alpha channel is rejected rather than silently flattened to black. Flatten the original first.
-- `content/image-dimensions.json` records each original's pixel size. `content/photos.js` turns it into the lightbox's `width`/`height` attributes, which is what keeps the caption from jumping ~350px when the full image arrives. Regenerate it whenever you add media.
+- `content/image-dimensions.json` records each original's pixel size. `content/photos.js` carries it as `dw`/`dh`, which the print viewer uses to unfold its window from the thumbnail's 4:3 crop to the photo's true aspect and to place the caption, without waiting to measure the full image. Regenerate it whenever you add media.
 
 To rebuild everything from scratch, or after changing a size ladder in `scripts/generate-content.py`:
 
@@ -83,5 +83,5 @@ After generation and the archive audit:
 1. Confirm every new image request returns HTTP 200 with exact path casing. Requests should be for `images/derived/gallery/...`; a request for `images/gallery/...` means a page regressed to the original.
 2. Open `Gallery.dc.html` and filter by the new year and category.
 3. Because the gallery shuffles, use filters rather than assuming a fixed position.
-4. Open every new photo in the lightbox. Confirm image, location, capture date, and category.
+4. Open every new print in the viewer (click or tap it, or Enter on a focused print). Confirm image, location, capture date, and category, and that ← / → and Esc behave.
 5. Check desktop and mobile widths and ensure the console remains clean.

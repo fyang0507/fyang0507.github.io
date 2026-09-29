@@ -1,0 +1,15 @@
+/* r2-08b-a.css — A · Tugged slip. The note is a lighter sheet laid on the page: hand-cut top and bottom edges,
+   a contact shadow, a seeded resting tilt and a punched eyelet (the page shows through it) where the thread ties.
+   The float box (.mn) never moves, so its hit area is stable; only the sheet inside (.mn-in) is pulled. */
+.rd.ta .mn{margin:0 -262px 20px 0}
+.rd.ta .mn-in{position:relative;display:block;padding:8px 12px 10px 25px;transform-origin:11.5px 14.5px;will-change:transform;
+  filter:drop-shadow(0 1px .8px rgba(60,50,35,.10)) drop-shadow(0 4px 7px rgba(60,50,35,.07));transition:color .15s,filter .3s var(--ease-out)}
+.rd.ta .mn-in::before{content:"";position:absolute;inset:0;z-index:-1;background:#FFFCF5;
+  clip-path:polygon(0 2px,9% .6px,19% 2.2px,30% .4px,41% 1.9px,52% .5px,63% 2.3px,74% .7px,85% 2px,94% .4px,100% 1.6px,100% calc(100% - 1.5px),91% calc(100% - .3px),80% calc(100% - 2px),68% calc(100% - .5px),57% calc(100% - 2.2px),46% calc(100% - .4px),35% calc(100% - 1.9px),23% calc(100% - .5px),12% calc(100% - 2.1px),0 calc(100% - .6px))}
+.rd.ta .mn-in::after{content:"";position:absolute;left:8px;top:11px;width:7px;height:7px;border-radius:50%;box-sizing:border-box;border:1.3px solid #d9ccb4;background:var(--paper)}
+.rd.ta .mn .num{margin-right:6px}
+.rd.ta .mn.on{z-index:4}   /* above the other slips, under the thread (.fn-wire, z 5) */
+.rd.ta .mn.on .mn-in{color:var(--ink);filter:drop-shadow(0 2px 1.5px rgba(60,50,35,.12)) drop-shadow(0 12px 14px rgba(60,50,35,.12))}   /* lifted off the page while the thread holds it */
+.rd.ta .mn.on .num{color:var(--ink)}
+.rd.ta .fnref a{will-change:transform}
+.ta-thread{fill:none;stroke:var(--mark);stroke-width:1.5;stroke-linecap:round}

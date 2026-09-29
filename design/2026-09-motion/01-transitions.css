@@ -1,0 +1,116 @@
+/* 01 · transitions — stage, miniature site shell, and the transition layers. Mockup-only. */
+
+/* ---- stage: a virtual viewport scaled to fit ---- */
+.stage.ms-stage{flex:none;min-height:0;background:var(--paper)}
+.ms-stage .hint{left:auto;right:14px;bottom:8px;z-index:60;padding:2px 8px 3px;border-radius:4px;background:var(--paper)}
+@media (max-width:640px){.ms-stage .hint{top:3px;bottom:auto;right:8px;padding:1px 4px;font-size:15px;background:transparent}}
+.ms-vp{position:absolute;left:0;top:0;width:1240px;height:720px;transform-origin:0 0;overflow:hidden;background:var(--paper);isolation:isolate;color:var(--ink)}
+.ms-vp.m{width:390px;height:760px}
+.ms-vp :focus-visible{outline:2px solid var(--mark);outline-offset:3px}
+.ms-home,.ms-page{position:absolute;inset:0;padding:26px 40px 0;background:var(--paper)}
+.ms-vp.m .ms-home,.ms-vp.m .ms-page{padding:24px 16px 0}
+.ms-page{z-index:1;display:flex;flex-direction:column}
+.ms-home{z-index:2;display:flex;flex-direction:column;align-items:center}
+.ms-vp[data-view="home"] .ms-page{visibility:hidden}
+.ms-vp[data-view="page"] .ms-home{visibility:hidden}
+.ms-vp.b-top .ms-page{z-index:3}
+/* A: while both pages are up, the desk layer is see-through and its (identical) header steps aside */
+.ms-pen[data-view="both"] .ms-home{background:transparent}
+.ms-pen[data-view="both"] .ms-head{visibility:hidden}
+
+/* ---- home: the desk (geometry from index.html) ---- */
+.ms-head{align-self:stretch;height:66px;position:relative;z-index:6}
+.ms-scene{position:relative;width:700px;margin-top:4px;container-type:inline-size}
+.ms-vp.m .ms-scene{width:358px;margin-top:40px}
+.ms-scene>*{position:absolute}
+.ms-scene>.ms-desk{position:relative;display:block;width:100%;z-index:1}
+.ms-obj{z-index:2;display:block;pointer-events:none}
+.ms-obj .face,.ms-fly .face{position:absolute;inset:0;background-repeat:no-repeat;background-position:0 0}
+.face-book,.ms-obj--book .face{background-image:url("../../assets/book-flip2-light.png");background-size:600% 100%}
+.face-frame,.ms-obj--frame .face{background-image:url("../../assets/frame-exp3-light.png");background-size:400% 100%}
+.ms-patch{z-index:2;display:block;background:var(--paper);-webkit-mask-size:100% 100%;mask-size:100% 100%;visibility:hidden}
+.ms-bird{left:14%;top:67.5%;width:7%;aspect-ratio:308/317;z-index:3;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat}
+.ms-arrows{left:0;top:0;width:100%;height:100%;z-index:4;pointer-events:none}
+.ms-arrows path{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ms-note{z-index:5;font:3cqw/1 var(--hand-cn);color:var(--ink);white-space:nowrap}
+.ms-note span{display:inline-block}
+.ms-note:hover{color:var(--mark)}
+.ms-hot{z-index:5;cursor:pointer}
+.ms-scene:has([data-go="writing"]:hover) .ms-obj--book .face{animation:msBook 1.15s steps(1,end) infinite}
+.ms-scene:has([data-go="about"]:hover) .ms-obj--frame .face{background-position:66.667% 0}
+.ms-vp.busy .ms-obj .face{animation:none!important;background-position:0 0!important}
+@keyframes msBook{0%{background-position:0% 0}16.6%{background-position:20% 0}33.3%{background-position:40% 0}50%{background-position:60% 0}66.6%{background-position:80% 0}83.3%,100%{background-position:100% 0}}
+.ms-mnav{display:none;align-self:stretch;flex-wrap:wrap;gap:8px 26px;margin-top:14px;font:24px/1.3 var(--hand-cn)}
+.ms-mnav a{border-bottom:2px solid var(--mark)}
+.ms-vp.m .ms-mnav{display:flex}
+.ms-vp.m .ms-note,.ms-vp.m .ms-arrows{display:none}
+.ms-fig{align-self:stretch;margin-top:14px;font:12.5px/1 var(--util);color:var(--pencil)}
+
+/* ---- page shell: real site-nav.css, with fixed virtual type sizes ---- */
+.ms-page .site-shell-header{width:100%;flex:none}
+.ms-main{flex:1;min-height:0;display:flex;flex-direction:column;margin-top:36px}
+.ms-vp.m .ms-main{margin-top:22px}
+.ms-intro{flex:none;height:112px;position:relative}
+.ms-vp.m .ms-intro{height:auto}
+.ms-strip{flex:1;min-height:0;overflow:hidden;position:relative}
+.ms .subpage-title{font-family:var(--disp-cn);font-weight:400;font-size:72px;line-height:.96;white-space:nowrap}
+.ms .subpage-title-en{font-size:21px}
+.ms .subpage-note{font-size:24px}
+.ms-vp.m .subpage-title{font-size:54px}
+.ms-vp.m .subpage-title-en{font-size:17px}
+.ms-vp.m .subpage-note{font-size:21px}
+.ms-vp.m .site-header-status{font-size:10px}
+
+/* ---- A: the pen-drawn folder tab replaces the CSS border + dot ---- */
+.ms-tabmark{display:none;position:absolute;z-index:4;pointer-events:none}
+.ms-pen .ms-tabmark{display:block}
+.ms-tabmark svg{position:absolute;left:0;top:0;overflow:visible}
+.ms-tabmark path{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.ms-tabmark .ms-cover{position:absolute;left:1.6px;right:1.6px;bottom:-1px;height:3px;background:var(--paper);opacity:0}
+.ms-tabmark.open .ms-cover{opacity:1}
+.ms-tabmark .ms-dot{position:absolute;top:-5px;left:50%;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--mark);box-shadow:0 1px 0 rgba(51,48,43,.18);transform:scale(0)}
+.ms-tabmark.open .ms-dot{transform:scale(1)}
+.ms-pen .site-tab[aria-current="page"]{border-color:transparent}
+.ms-pen .site-tab[aria-current="page"]::before{display:none}
+.ms-pen .site-index::after{-webkit-mask-image:none;mask-image:none}
+
+/* the carried object: desk drawing and nav drawing stacked, crossfaded in flight */
+.ms-fly{position:absolute;left:0;top:0;z-index:30;transform-origin:0 0;pointer-events:none;will-change:transform}
+.ms-fly>*{position:absolute}
+.ms-fly-desk img{position:absolute;inset:0;width:100%;height:100%}
+.ms-fly .site-nav-object{bottom:auto;transform:none;transition:none}
+
+/* ---- C: the iris (look reused from the home opener: #17120C, round hole) ---- */
+.ms-iris{position:absolute;inset:-2px;z-index:50;display:none;pointer-events:none}
+.ms-iris.on{display:block}
+.ms-iris svg{position:absolute;left:0;top:0;width:100%;height:100%}
+.ms-ep{position:absolute;left:0;right:0;top:39%;text-align:center;color:#EFE5D3;visibility:hidden}
+.ms-ep .n{display:block;font:23px/1 var(--hand-cn);letter-spacing:.16em;opacity:.85}
+.ms-ep .t{display:block;margin-top:16px;font:40px/1 var(--hand-cn);letter-spacing:.05em}
+.ms-ep .t span{font-family:var(--hand);font-size:1.05em;letter-spacing:.02em}
+.ms-ep-bird{position:absolute;width:46px;height:45px;visibility:hidden}
+.ms-ep-bird i{position:absolute;inset:0;transform:scaleX(-1);background:url("../../assets/bird-strip6-dark.png") 0 0/600% 100% no-repeat}
+.ms-vp.m .ms-ep .n{font-size:19px}
+.ms-vp.m .ms-ep .t{font-size:30px}
+
+/* ---- A · tab→tab as a real same-document View Transition (maps 1:1 to cross-document CSS) ---- */
+html.vt-a::view-transition-old(root){display:none}
+html.vt-a::view-transition-new(root){animation:none}
+html.vt-a::view-transition-group(a-tabmark){animation-duration:var(--a-dur,600ms);animation-timing-function:var(--a-spring,cubic-bezier(.34,1.36,.5,1))}
+html.vt-a::view-transition-old(a-tabmark){display:none}
+html.vt-a::view-transition-new(a-tabmark){animation:none}
+html.vt-a::view-transition-group(a-title),html.vt-a::view-transition-group(a-strip){animation:none}
+html.vt-a::view-transition-old(a-title),html.vt-a::view-transition-new(a-title),html.vt-a::view-transition-old(a-strip),html.vt-a::view-transition-new(a-strip){mix-blend-mode:normal}
+html.vt-a::view-transition-old(a-title){animation:a-out 140ms cubic-bezier(.4,0,1,1) both}
+html.vt-a::view-transition-new(a-title){animation:a-land var(--a-land-dur,520ms) var(--a-land,ease-out) 120ms both}
+html.vt-a::view-transition-old(a-strip){animation:a-fade-out 170ms ease-in both}
+html.vt-a::view-transition-new(a-strip){animation:a-fade-in 240ms ease-out 90ms both}
+@keyframes a-out{to{opacity:0;transform:translateY(10px)}}
+@keyframes a-land{from{opacity:0;transform:translateY(-18px)}}
+@keyframes a-fade-out{to{opacity:0}}
+@keyframes a-fade-in{from{opacity:0}}
+
+/* ---- board bits ---- */
+.t01-note{margin-top:8px;font:11.5px/1.6 var(--util);color:var(--pencil)}
+.t01-note b{color:var(--ink);font-weight:500}
+.cand-foot code{font:11px var(--util);color:var(--ink);background:var(--paper2);padding:0 3px;border-radius:3px}

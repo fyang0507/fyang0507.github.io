@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3 · 02 · One stroke, two tiers — and a pointer — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r3-02-pen.css"><link rel="stylesheet" href="r3-02-build.css"><link rel="stylesheet" href="r3-02-spec.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 02 · ROUND 3</div><h1 class="board-title">One stroke, two tiers — and a pointer <span class="display-cn">一笔两级，另有指向</span></h1></div>
+    <div><p class="board-why">Round 2 called the pen “three tiers”. Two of them really are one stroke: the highlighter’s thin edge <b>notices</b>, and the same pen coming back broad-side down <b>chooses</b>. The arrow was never that stroke said louder. A stroke sits under its word; an arrow has to travel, and in round 2 <b>the layout decided how far and how bent</b> — so the “start here” arrow came out long and curved. Round 3 keeps the stroke, drops its tick, and turns the arrow into a <b>glyph placed by rules</b> that would rather not draw than draw badly.</p>
+      <p class="evidence">evidence: <code>shared/pen.js:78–85</code> arrow() = one quadratic between two free points, bend ∝ their distance · <code>r2-02-cards.js:49–56</code> note anchored to the next card, ~260 px from the target · <code>r2-02-tier.js:60–62, 162</code> the tick · <code>site-nav.css:48</code> current = coral dot · <code>Writing.dc.html:45–46</code> .chip.on = coral pill</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 2">
+    <div class="changed-k util">WHAT CHANGED FROM ROUND 2</div>
+    <blockquote class="changed-q">“Agree; except I think we can remove the tick from selection/choose and just keep the highlight marker; point with arrow is a different thing because the arrow could be drawn arbitrarily bad depend on the relative position. The ‘start here’ arrow in my opinion is badly drawn (unnecessarily long and curved).” <cite class="util">— Fred</cite></blockquote>
+    <ul class="changed-list">
+      <li><b>The tick is gone.</b> Choose is the highlighter band alone — in both slices, the rule table, the legend, the key poses and the record. The band is a shape, not only a colour, and aria-pressed / aria-current / aria-expanded still announce the state.</li>
+      <li><b>Two tiers of one stroke, plus focus.</b> Notice → choose is one stroke; 「 」 stays independent. Point is no longer “tier 3”: it is a separate mark with its own rules (Rule 3), because an arrow has to go somewhere and a stroke doesn’t.</li>
+      <li><b>The arrow is a glyph, not a curve between two points.</b> A 26–40 px shaft whatever the distance, a bow of at most 1.8 px, ~7 px barbs at 25–30°, the tip 5 px short. It comes from one of eight fixed directions chosen by free space, never crosses text, and if nothing fits it isn’t drawn. “start here · 从这里开始” sits tight at its tail.</li>
+      <li><b>Proof, not a promise.</b> A specimen sheet of 12 placements — edges, a small icon, a wrapping bilingual label, a crowd, 390 px, both top corners — with round 2’s arrow in one tile; a playground where you drag the target anywhere; a 400-placement audit. Two taps became one settle.</li>
+    </ul>
+  </section>
+
+  <div class="live-row">
+    <p class="live-hint">both stages are live — hover, click, Tab, or tap ↓</p>
+    <label class="slowmo"><input type="checkbox" id="slowmo"> <span>slow motion ¼× · 慢放</span></label>
+  </div>
+
+  <section class="cands wide" aria-label="Candidate">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">One stroke, two tiers, one pointer <span class="display-cn">一笔两级，一个指向</span></span><span class="cand-mech">underline → band · 「 」 · short arrow by rule · hand’s clock</span></div>
+      <div class="stage spec-stage" data-slice="read"></div>
+      <div class="cand-foot"><div>Hover a tab or a tag and the pen underlines it. Click it and the same stroke becomes the highlight — the pen comes back over the word broad-side down, the line rising into a band behind the tip, ending on the chisel’s cut — and the old choice drains back into its line and lifts. The coral arrow is the view’s one request: a short glyph at “Load more”, from the left, no note (the label says why); use it and it stays gone for the browser session.<div class="tradeoff"><b>cost</b> one SVG layer per marked element, one rAF loop that sleeps when idle; the arrow is solved once per layout · <b>a11y</b> chosen = a shape + aria state, never colour alone; focus is 「 」 · <b>support</b> SVG + rAF + Range rects, all evergreen</div></div><button class="replay" data-replay="replayRead">↻ replay tour</button></div>
+    </article>
+
+    <article class="cand proof" id="cand-a2">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Same rules on the corkboard <span class="display-cn">同一套规则，换到在造页</span></span><span class="cand-mech">Building toolbar · pinned cards · icon buttons</span></div>
+      <div class="stage bd-stage" data-slice="build"></div>
+      <div class="cand-foot"><div>The case Fred flagged. The arrow now points at the lead card from the board it is pinned to, and comes from wherever the board is free: from the upper right on a wide board (the second card hangs low), from above on a phone. The note is written at the tail, not across the board. Pins and other cards count as obstacles, like text. Tier 2 here means “open”: the band sits behind the card’s title and multiplies on its wheat paper.<div class="tradeoff"><b>cost</b> the lead pin goes ink so the arrow is the view’s only coral · <b>a11y</b> aria-expanded carries “open”; the viewport gets 「 」 like any other stop · <b>support</b> all evergreen</div></div><button class="replay" data-replay="replayBuild">↻ replay tour</button></div>
+    </article>
+  </section>
+
+  <section class="ptr" id="pointer" aria-label="The pointer">
+    <div class="lab-head"><span class="lab-k">THE POINTER</span><h2 class="lab-title">A separate mark, drawn by rule <span class="display-cn">指向：另一个记号，按规则画</span></h2><span class="morph-sub util">the answer to “could be drawn arbitrarily bad”</span></div>
+    <div class="anat">
+      <figure class="anat-fig anat-glyph"><div class="anat-art" data-anatomy></div><figcaption class="util"><b>the glyph · 字形</b> — magnified, the real stroke. Only where it stands changes; its shape never depends on the layout.</figcaption></figure>
+      <figure class="anat-fig anat-rose"><div class="anat-art" data-rose></div><figcaption class="util"><b>eight approaches · 八个方向</b> — tried in this order; the first that clears text, icons, pins, other paper and the view’s edge wins.</figcaption></figure>
+      <figure class="anat-fig anat-seeds"><div class="anat-art" data-seeds></div><figcaption class="util"><b>six targets, six seeds · 六个目标</b> — same rules, a hand’s variation: length, bow side, barbs. Wobble, not jitter.</figcaption></figure>
+    </div>
+    <div class="poses" data-poses aria-label="The arrow, frame by frame"></div>
+    <div class="tiles-head"><h3 class="tiles-title">Specimen sheet <span class="display-cn">标本页</span></h3><p class="tiles-note util">each tile is a view with its own edge; the arrow is solved live from the tile’s real text. On the site only one of these exists per view.</p><button type="button" class="replay" data-replay="replayTiles">↻ redraw</button></div>
+    <div class="tiles" data-tiles></div>
+    <div class="play" data-play>
+      <div class="play-head">
+        <div><b class="play-title">Try to break it <span class="display-cn">试着把它画坏</span></b><p class="play-note">Drag the target anywhere in the frame — or focus it and use the arrow keys (Shift = big steps). The arrow re-solves as it moves and redraws when you let go.</p></div>
+        <div class="play-opts" role="group" aria-label="Target kind · 目标">
+          <button type="button" class="po" data-kind="label" aria-pressed="true"><span class="en">label</span> <span class="zh">标签</span></button>
+          <button type="button" class="po" data-kind="icon" aria-pressed="false"><span class="en">icon</span> <span class="zh">图标</span></button>
+          <button type="button" class="po" data-kind="heading" aria-pressed="false"><span class="en">heading + note</span> <span class="zh">标题加旁注</span></button>
+        </div>
+      </div>
+      <div class="play-f" data-play-frame></div>
+      <div class="play-foot"><span class="util play-pick" data-play-pick aria-live="polite"></span><button type="button" class="replay" data-audit>↻ audit 400 random placements</button></div>
+      <p class="util play-audit" data-audit-out aria-live="polite">The audit drops the target at 400 random free spots, solves each, then re-measures every drawn arrow with the browser’s own path geometry: crossings, edges, length, bow, barbs.</p>
+    </div>
+  </section>
+
+  <section class="lab" aria-label="Rules">
+    <article class="lab-card lab-wide" id="rule-tiers">
+      <div class="lab-head"><span class="lab-k">RULE 1</span><h2 class="lab-title">One stroke, two tiers <span class="display-cn">一笔，两级</span></h2></div>
+      <p class="lab-lede">An element shows its highest tier. The lower tier is absorbed, not removed: the tier-1 line survives as the band’s darker bottom edge. At rest (tier 0) nothing carries a mark except prose links, which keep a 1px pencil hairline so they can be found. The band is a shape — a bar behind the word — and aria-pressed / aria-current / aria-expanded say the same thing to a screen reader, so “chosen” never rests on colour alone. The pointer is not in this table: it is not a tier (Rule 3).</p>
+      <div class="table-scroll"><table class="rules">
+        <thead><tr><th>tier</th><th>when</th><th>the mark</th><th>ink</th><th>draw · retract</th></tr></thead>
+        <tbody>
+          <tr><th><span class="lgm" data-lgm="1">1 · notice</span><span class="zh">留意</span></th><td>pointer hover (fine pointers only)</td><td>pen underline, one pass, level, blunt end</td><td><i class="sw sw-ink"></i>wheat ink · 2px</td><td>200 + 1.1 × length ms (≤ 620) · 200 ms, tail chases head</td></tr>
+          <tr><th><span class="lgm" data-lgm="2">2 · choose</span><span class="zh">选定</span></th><td>selected · current page · open · pressed</td><td>the return stroke: back right → left, the line thickening upward into the band, ending on the chisel’s cut. No tick.</td><td><i class="sw sw-wash"></i>wheat wash</td><td>return 190 + 0.9 × width ms (≤ 400) · sink 210 ms, then the tier-1 retract</td></tr>
+          <tr><th><span class="lgm" data-lgm="f">focus</span><span class="zh">焦点</span></th><td>:focus-visible (keyboard only)</td><td>corner brackets 「 」, independent of the tiers</td><td><i class="sw sw-ink2"></i>ink</td><td>140 ms × 2, 70 ms apart · 120 ms</td></tr>
+        </tbody>
+      </table></div>
+    </article>
+
+    <article class="lab-card" id="rule-moves">
+      <div class="lab-head"><span class="lab-k">RULE 2</span><h2 class="lab-title">Up and down the tiers <span class="display-cn">升与降</span></h2></div>
+      <dl class="spec-list">
+        <dt>0 → 1</dt><dd>pointer arrives: the underline draws left → right.</dd>
+        <dt>1 → 2</dt><dd>click / Enter: the pen doesn’t lift. It turns the chisel and comes back <b>right → left</b>; behind the tip the line thickens upward into the band, and the stroke ends on the chisel’s cut at the left.</dd>
+        <dt>0 → 2</dt><dd>tap or keyboard: the whole gesture at once — line in 170 ms, then the return stroke.</dd>
+        <dt>2 → 1</dt><dd>closed while still under the pointer: the band sinks back into its line.</dd>
+        <dt>2 → 0</dt><dd>the choice moves elsewhere: band sinks → line → line lifts, while the new choice draws.</dd>
+        <dt>press</dt><dd>momentary targets (links, Load more, ← →): 1 → 2 on press, held at least until the gesture lands, then back to 1.</dd>
+        <dt>interrupt</dt><dd>every reversal starts from the current frame. A half-grown band sinks from half height; nothing snaps.</dd>
+      </dl>
+    </article>
+
+    <article class="lab-card" id="rule-point">
+      <div class="lab-head"><span class="lab-k">RULE 3</span><h2 class="lab-title">The pointer is a separate mark <span class="display-cn">指向是另一个记号</span></h2></div>
+      <dl class="spec-list">
+        <dt>what</dt><dd>a short coral arrow at the one thing a view asks of you. Tiers answer what you did; the pointer speaks first — and it has to travel, which is where arrows go wrong.</dd>
+        <dt>glyph</dt><dd>shaft <b>26–40 px</b> whatever the distance · a hand bow <b>≤ 1.8 px</b> in its first third, straight for the last, so it never S-bends or hooks and the head sits square on the line · two barbs <b>≈ 7 px at 25–30°</b>, drawn barb → tip → barb with the same 2.2 px pen · the tip stops <b>4.5–6 px</b> short.</dd>
+        <dt>from</dt><dd>eight fixed approaches in reading order: left, upper left, above, upper right, right, lower left, lower right, below. The first whose shaft, head and note clear every line of text, icon, pin and other card inside the view wins. Too tight → the same approach at 26 px. Nothing → drop the note. Still nothing → <b>no arrow</b>. A bad arrow is never drawn.</dd>
+        <dt>note</dt><dd>only when the target’s label doesn’t say why (“start here · 从这里开始” on a card; none on “Load more”). Tight at the tail like a margin note: stacked beside a sideways arrow, a row above a downward one. Hand fonts, soft ink — not coral.</dd>
+        <dt>seed</dt><dd>length, bow side, barbs and the few degrees of lean are seeded by the target: the same arrow every time.</dd>
+        <dt>motion</dt><dd>note written 420 ms → the pen lifts back to the tail (60 ms) → shaft in one pass ≈ 240 ms → head 130 ms → one settle, 2 px toward the target for a held frame, resting at 1 px. Round 2’s two taps are gone: on a 30 px arrow they read as fidgeting.</dd>
+        <dt>budget</dt><dd>coral is this mark’s alone — one per view, drawn when the view is first seen. Acting on the target lifts it (tail chases head) for the rest of the browser session (sessionStorage). Never on navigation.</dd>
+      </dl>
+    </article>
+
+    <article class="lab-card" id="rule-inputs">
+      <div class="lab-head"><span class="lab-k">RULE 4</span><h2 class="lab-title">Coral, touch, stillness <span class="display-cn">珊瑚色、触摸、静止</span></h2></div>
+      <dl class="spec-list">
+        <dt>coral</dt><dd><b>The pointer owns it, alone.</b> It is already rationed to one per view — the accent’s own budget. Tier 1 follows the pointer: coral there turns the accent into a cursor. Tier 2 is plural at rest — current page, selected tag, open card — so coral there spends it three times a view.</dd>
+        <dt>title</dt><dd>the subpage title’s coral character (造 / 写) stays: fixed identity, not interaction. A brief overlap with a first-view arrow is accepted.</dd>
+        <dt>so</dt><dd>resting link underlines and footnote numbers go pencil; the Building lead pin goes ink; a view whose arrow has been used has no interactive coral at all.</dd>
+        <dt>touch</dt><dd>no tier 1 — nothing sticks after a finger lifts. A tap is tier 2 directly (the 0 → 2 gesture); momentary targets play it through, then sink.</dd>
+        <dt>keyboard</dt><dd>Tab shows 「 」 only. Enter / Space is the 0 → 2 gesture.</dd>
+        <dt>reduced</dt><dd>every mark appears in its end state, instantly: the band at once, the arrow complete and settled, no note-writing; retracts are instant.</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="morph" aria-label="The stroke, frame by frame">
+    <div class="lab-head"><span class="lab-k">THE STROKE</span><h2 class="lab-title">Key poses <span class="display-cn">关键帧</span></h2><span class="morph-sub util">travel log · 游记 — hover, click, then another tag is chosen</span></div>
+    <div class="sheet" data-sheet></div>
+    <div class="compare">
+      <div class="cmp pick-cmp">
+        <div class="cmp-k util"><b>return stroke · 回笔</b> — scrub the whole choreography</div>
+        <button type="button" class="cmp-w" data-cmp="return"><span class="en">stories we live</span> <span class="zh">我们生活的故事</span></button>
+        <input class="scrub" type="range" min="0" max="1000" value="0" data-scrub aria-label="Scrub the tier choreography">
+        <div class="cmp-note util">drag to scrub 0 → 1 → 2 → 0 · or click the words to play it</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A · one stroke, two tiers, and a pointer that can’t be drawn badly.</b> The stroke is round 2’s without the tick: notice is the highlighter’s thin edge, choose is the same pen coming back broad-side down, focus 「 」 stays apart. The pointer left the tiers because it is a different problem. It is now one glyph — 26–40 px, a bow under 2 px, 7 px barbs — placed by rules that try a fixed set of approaches and refuse to draw rather than cross text or run long.</p>
+    <p>Watch: the solver reads real text line boxes, so non-text objects that must stay clear (icons, pins, other cards) need an attribute in production (<code>data-pen-ob</code>; <code>data-ob</code> here). Solve after fonts load and again on resize. The floor case — no clean path, so no arrow — is shown on the sheet; the real targets on this board never hit it at 1440 or 390.</p>
+    <div class="record">执行模式：多阶段（第三轮：按 Fred 的批注收尾，只改他点名的两处）
+表达锚点：一支凿头荧光笔——细边划线是“留意”，转过笔头宽边回扫成荧光带是“选定”；指向箭头是另一个记号，不是第三级。
+动作时钟：手的时钟。划线一遍画完（200–620 ms），回笔 190–400 ms；箭头：旁注 420 ms → 提笔回到箭尾 60 ms → 箭杆一笔约 240 ms → 箭头 130 ms → 朝目标轻压一下（2 px，停一帧，落在 1 px），然后静止。
+映射：指针经过 → 划线（留意）/ 点击、当前页、打开、按下 → 回笔把线加粗成荧光带（选定，不打勾）/ 键盘 → 墨色「」/ 本页唯一请求 → 珊瑚色短箭头（指向，独立记号）。
+规则表：tier 1 → 麦色墨线 · tier 2 → 麦色荧光带（无勾；状态由形状与 aria 传达）· focus → 墨色「」· 指向 → 珊瑚短箭头（每页最多一个，用过即收）
+箭头规则：箭杆 26–40 px，与距离无关 · 弧度 ≤ 1.8 px，只在前三分之一，落笔前拉直，不做 S 形、不带钩 · 两根箭羽约 7 px、25–30° · 箭尖离目标 4.5–6 px · 八个固定方向按阅读顺序尝试（左、左上、上、右上、右、左下、右下、下），第一个不压字、不压图标与图钉、不压别的卡片、不出界的方向胜出；太挤就缩到 26 px；再不行去掉旁注；再不行就不画。
+旁注：只在目标文字说不清“为什么”时出现（卡片上的“start here · 从这里开始”；“Load more”不加），紧贴箭尾，像页边批注；手写体、铅笔灰，不用珊瑚色。
+线条计划：一支笔，2.2 px 圆头，单遍；荧光带是同一支笔的宽边，底边保留原来那条线（第二遍更深）。
+色彩计划：珊瑚色只给指向箭头（每页一个，本次会话用过即不再出现）；留意、选定用麦色，「」用墨色；正文链接静止下划线与脚注号改为铅笔灰；在造页主卡的图钉改为墨色。</div>
+  </div></section>
+</main>
+
+<!-- Slice 1 — the specimen: subpage nav (site-nav.css), a Reading paragraph (谷歌只想躺赢 §3),
+     Writing's tags as words, Gallery's primary action. -->
+<template id="slice-read">
+  <div class="spec">
+    <nav class="pn-nav" aria-label="Primary navigation (specimen)">
+      <a class="pn-home" href="../../index.html" aria-label="Home — 首页" data-tier="nav"><span class="pn-obj pn-peek" data-ob></span><span class="pn-label"><span class="pen-t"><span class="en">home</span> <span class="zh">首页</span></span></span></a>
+      <a class="pn-tab" href="../../Writing.dc.html" aria-label="Writing — 在写" aria-current="page" data-tier="nav"><span class="pn-obj pn-book" data-ob></span><span class="pn-label"><span class="pen-t"><span class="en">writing</span> <span class="zh">在写</span></span></span></a>
+      <a class="pn-tab" href="../../Building.dc.html" aria-label="Building — 在造" data-tier="nav"><span class="pn-obj pn-laptop" data-ob></span><span class="pn-label"><span class="pen-t"><span class="en">building</span> <span class="zh">在造</span></span></span></a>
+      <a class="pn-tab" href="../../Gallery.dc.html" aria-label="Shooting — 在拍" data-tier="nav"><span class="pn-obj pn-camera" data-ob></span><span class="pn-label"><span class="pen-t"><span class="en">shooting</span> <span class="zh">在拍</span></span></span></a>
+      <a class="pn-tab" href="../../About.dc.html" aria-label="About — 关于" data-tier="nav"><span class="pn-obj pn-frame" data-ob></span><span class="pn-label"><span class="pen-t"><span class="en">about</span> <span class="zh">关于</span></span></span></a>
+    </nav>
+    <div class="pn-body">
+      <div class="pn-read">
+        <p class="pn-p" lang="en">Speaking of Niulai—a few weeks earlier, a model had appeared on <a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">OpenRouter</a> under the codename <a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">Ox Alpha</a>: generous context, genuinely smart, killer at code. Universally praised, the model earned the nickname “Niulai”—the bull had arrived<sup class="fnref"><a href="#fn2" data-tier="link" aria-label="footnote 2">[2]</a></sup>.</p>
+        <p class="pn-p zh" lang="zh">说起牛来，两三周前<a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">OpenRouter</a>上面出现了一个代号<a href="https://openrouter.ai/stealth/ox-alpha" data-tier="link">Ox Alpha</a>的模型：量大管饱，智能在线，编程牛逼。获得全网好评的该模型遂喜得“牛来”称号<sup class="fnref"><a href="#fn2" data-tier="link" aria-label="脚注 2">[2]</a></sup>。</p>
+      </div>
+      <div class="pn-side">
+        <div class="pn-k util">filter · 筛选</div>
+        <div class="pn-filters" role="group" aria-label="Filter essays by tag · 按类别筛选">
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="true"><span class="en">all</span> <span class="sep">·</span> <span class="zh">全部</span><span class="n">27</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">travel log</span> <span class="sep">·</span> <span class="zh">游记</span><span class="n">15</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">stories we live</span> <span class="sep">·</span> <span class="zh">我们生活的故事</span><span class="n">5</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">commentary</span> <span class="sep">·</span> <span class="zh">杂文</span><span class="n">3</span></button>
+          <button type="button" class="pn-f" data-tier="filter" aria-pressed="false"><span class="en">poem</span> <span class="sep">·</span> <span class="zh">诗</span><span class="n">2</span></button>
+        </div>
+        <button type="button" class="pn-action" data-tier="action"><span class="pen-t"><span class="en">Load more</span> <span class="sep">·</span> <span class="zh">再晾一批</span></span><span class="n" data-remaining="12">12 remaining · 还剩 12 张</span></button>
+      </div>
+    </div>
+    <div class="pn-legend" aria-label="Legend · 图例">
+      <div class="lg-set">
+        <div class="lg-k util">one stroke, two tiers · 一笔两级</div>
+        <div class="lg-row">
+          <div class="lg"><button type="button" class="lg-w" data-lg="1"><span class="en">notice</span><span class="zh">留意</span></button><p class="lg-note">tier 1 · hover draws the highlighter’s thin edge</p></div>
+          <div class="lg"><button type="button" class="lg-w" data-lg="2"><span class="en">choose</span><span class="zh">选定</span></button><p class="lg-note">tier 2 · the return stroke grows it into the band</p></div>
+          <div class="lg"><button type="button" class="lg-w" data-lg="f"><span class="en">focus</span><span class="zh">焦点</span></button><p class="lg-note">keyboard · ink 「 」, apart from the tiers</p></div>
+        </div>
+      </div>
+      <div class="lg-set lg-sep">
+        <div class="lg-k util">a separate mark · 另一个记号</div>
+        <div class="lg lg-pt"><button type="button" class="lg-w" data-lg="p"><span class="en">point</span><span class="zh">指向</span></button><p class="lg-note">coral · one per view · once a session</p></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Slice 2 — Building.dc.html's corkboard: toolbar (order label + scroll buttons) and pinned
+     project cards from content/building-projects.js, sorted as the live page sorts them. -->
+<template id="slice-build">
+  <div class="bd">
+    <section class="bd-shell" aria-label="Projects on the building board (specimen)">
+      <div class="bd-toolbar">
+        <span class="bd-order"><span class="en">projects</span> <span class="zh">项目</span> <span class="sep">·</span> scroll →</span>
+        <div class="bd-actions" role="group" aria-label="Timeline controls · 滚动">
+          <button class="bd-scroll" type="button" data-tier="scroll" data-dir="-1" aria-label="Scroll toward the start of the board · 往前"><span class="bd-g">←</span></button>
+          <button class="bd-scroll" type="button" data-tier="scroll" data-dir="1" aria-label="Scroll toward the end of the board · 往后"><span class="bd-g">→</span></button>
+        </div>
+      </div>
+      <div class="bd-viewport" tabindex="0" data-focus="viewport" aria-label="Scrollable project board, Fred Agent first">
+        <div class="bd-track" data-track></div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-02-anim.js"></script><script src="r2-02-cards.js"></script>
+<script src="r3-02-arrow.js"></script><script src="r3-02-tier.js"></script><script src="r3-02-point.js"></script>
+<script src="r3-02-slices.js"></script><script src="r3-02-lab.js"></script>
+<script src="r3-02-spec.js"></script><script src="r3-02-tiles.js"></script><script src="r3-02-play.js"></script>
+</body></html>

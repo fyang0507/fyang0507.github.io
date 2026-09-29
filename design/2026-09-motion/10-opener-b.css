@@ -1,0 +1,42 @@
+/* 10 · B — Ink bloom: the landing composition (index.html's home, reproduced over 09's desk) and
+   the opener's states. html.ob-pre = before the script runs; html.ob-playing = during the opener. */
+.ob-home{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px}
+.ob-head{width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:6}
+.ob-scene{position:relative;width:min(1180px,100%,calc((100vh - 240px)*1.3333));margin-top:4px}
+.ob-home .desk{width:100%}
+.ob-home .desk .scene-img{aspect-ratio:1448/1086}
+.ob-home .desk .navnote .lbl{font-size:clamp(18px,3cqw,36px)}
+.ob-mnav{display:none;width:min(1180px,100%);flex-wrap:wrap;gap:8px 26px;margin-top:14px;font:24px/1.5 var(--hand-cn),var(--hand);position:relative}
+.ob-mnav a{border-bottom:2px solid var(--mark)}
+.ob-mnav a:hover{color:var(--mark)}
+.ob-fig{width:min(1180px,100%);font-size:12.5px;color:var(--pencil);margin-top:14px;position:relative}
+@media (max-width:760px){
+  .ob-home .desk .navnote,.ob-home .desk .arrows{display:none}
+  .ob-mnav{display:flex}
+}
+
+/* 09's own entrance animations are replaced by the opener (or by nothing, at rest). */
+.ob-home .desk .scene-img,.ob-home .desk .bookhold,.ob-home .desk .frameface,.ob-home .desk .bird,
+.ob-home .desk .screen,.ob-home .desk .spark,.ob-home .desk .rise{animation:none}
+.ob-home .desk .spark{opacity:1;transform-origin:50% 55%}
+
+/* The GL sheet lives inside the desk's stacking context: above the drawing layers it stands in for,
+   below the pen's arrows and labels, which are drawn on top of the drying ink. */
+.ob-canvas{position:absolute;z-index:3;pointer-events:none;display:block}
+
+.ob-pre .ob-head,.ob-pre .ob-mnav,.ob-pre .ob-fig,.ob-pre .desk .navnote,.ob-pre .desk .arrows,.ob-pre .desk .spark{opacity:0}
+.ob-pre .desk .scene-img,.ob-pre .desk .bookhold,.ob-pre .desk .frameface,.ob-pre .desk .bird,.ob-pre .desk .steam,.ob-pre .desk .screen,
+.ob-playing .desk .scene-img,.ob-playing .desk .bookhold,.ob-playing .desk .frameface,.ob-playing .desk .bird,.ob-playing .desk .steam,.ob-playing .desk .screen{visibility:hidden}
+.ob-playing,.ob-playing body{cursor:pointer}
+.ob-playing .ob-home a{pointer-events:none}   /* the first tap skips; it never lands on a door mid-opener */
+
+/* Mockup-only control strip. */
+.ob-strip{position:fixed;left:12px;bottom:10px;z-index:1000;display:flex;align-items:center;gap:6px;font:11px/1 var(--util);letter-spacing:.03em;color:var(--pencil);opacity:.62;cursor:auto}
+.ob-strip:hover,.ob-strip:focus-within{opacity:1}
+.ob-strip button{padding:4px 2px;color:inherit;cursor:pointer}
+.ob-strip button:hover{color:var(--ink)}
+.ob-strip button[aria-pressed=true]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.ob-strip label{display:flex;align-items:center;gap:5px;cursor:pointer}
+.ob-strip input{accent-color:var(--mark)}
+/* The portrait sheet is played larger than the page; never let it scroll the page sideways. */
+.ob-playing .ob-home{overflow:clip}

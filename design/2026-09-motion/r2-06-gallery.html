@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2 · 06 · The darkroom and the line, as one page — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r2-06-gallery.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 06 · ROUND 2</div><h1 class="board-title">The darkroom and the line, as one page <span class="display-cn">暗房与晾衣绳 · 合成一页</span></h1></div>
+    <div><p class="board-why">Fred picked all four round-1 ideas. Shown on separate stages each one looked finished, but put on one page they collide. A flick sets a print swinging <b>just as you reach to click it</b>. On the phone, a swipe that ends in a tap <b>opens the wrong print</b>. And the unclipped print <b>left its peg on the rope</b>, so the enlarged view read as a picture of a photo rather than the photo in your hand. This board hangs develop, rope, unclip and swipe on one engine, with one rule for who wins when gestures overlap.</p>
+      <p class="evidence">round 1: <code>06-gallery.html</code> four separate stages, peg stays on the rope (<code>06-unclip.js:108</code>) · live: <code>Gallery.dc.html:127</code> lazy img, no decode gate · <code>:50</code> the line is <code>border-bottom</code> · <code>:59</code> near-black lightbox · <code>:161</code> Load more</p></div>
+  </header>
+
+  <section class="r2-changed" aria-label="What changed from round 1">
+    <div class="r2-k">WHAT CHANGED<br>FROM ROUND 1</div>
+    <div class="r2-rows">
+      <div class="r2-row"><q>All should apply.</q><span class="arr">→</span><span><b>One page, one loop.</b> A (develop on first view), B (rope and pendulums), C (unclip) and D (one swipe per line) now share a single set of prints and a single physics loop that sleeps when nothing has a cause to move. The desktop page is live, and so is a 390 phone below it.</span></div>
+      <div class="r2-row"><q>…we could still have the clip displayed in the zoom-in version so it’s more real.</q><span class="arr">→</span><span><b>The peg is what you hold it by.</b> It squeezes open on the rope, lifts off with the print, closes on its top edge and grows with it, held a few degrees off plumb. The pen stays the same weight at every size, so the solid ink clip opens up into a drawn wooden peg with its spring. ← / → clips this print back and takes the next one down by its own peg. Esc: the jaws snap shut on the rope.</span></div>
+      <div class="r2-row"><q class="new">NEW · THE WOW</q><span class="arr">→</span><span><b>The rope carries the weight.</b> Every print is a load, so the line kinks under each peg. Take one off and the rope springs up where the weight left, carrying its neighbours with it. Hang it back and the line sags again under it. Stringing a new line works the same way: it dips once for each print pegged on.</span></div>
+      <div class="r2-row"><q class="new">NEW · CONFLICTS</q><span class="arr">→</span><span><b>Flicks are judged on the exit.</b> A pass swings a print only if the pointer is still moving 50 ms after it crosses. You brake to aim, so a print you’re about to click stays still. On the phone, a tap within 140 ms of a line moving just stops it.</span></div>
+    </div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-one">
+      <div class="cand-head"><span class="cand-letter span">A–D</span><span class="cand-name">One gallery, four behaviours <span class="display-cn">一页，四件事</span></span><span class="cand-mech">rope loads + pendulums · peg-carried flight · decode-gated develop · scroll-snap lines</span></div>
+      <div class="stage-k"><span><b>1440 · desktop</b> <span class="w">· flick across a line, click a print, ← → Esc, scroll to the end</span></span><span class="loop-state" id="loop-state">rAF loop · asleep</span></div>
+      <div class="stage d-stage" id="stage-desk">
+        <div class="d-page">
+          <header class="d-intro">
+            <div><div class="d-kicker"><span class="d-no">03</span><span class="d-en" lang="en">shooting</span></div><h2 class="d-title" lang="zh">在<span>拍</span>。</h2></div>
+            <p class="d-note"><span lang="zh">人，岁月，生活。</span><span lang="en">People, Years, Life.</span></p>
+          </header>
+          <div class="d-bar"><p class="d-count">Showing 18 / 107 · 显示 18 / 107 张 · 107 frames total</p>
+            <label class="d-slow"><input type="checkbox"> slow network · 慢网</label></div>
+          <div class="d-rack"></div>
+          <div class="d-end"><span class="more">keep scrolling, the next line gets strung here ↓ · 往下走，再拉一根绳</span><span class="done">the live page keeps stringing to all 107 · 这里拉到第六根就停</span></div>
+        </div>
+        <p class="d-narrow">The desktop layout needs a wider screen. At this width the phone layout below is the page · 窄屏请看下面的手机版。</p>
+      </div>
+      <div class="stage-k"><span><b>390 · phone</b> <span class="w">· swipe a line, tap a print, swipe the enlarged print, scroll to the bottom</span></span><span>live</span></div>
+      <div class="stage m-stage" id="stage-phone">
+        <div class="m-phone"><div class="m-screen">
+          <header class="m-head">
+            <div class="m-kicker"><span class="m-no">03</span><span>shooting</span></div>
+            <h2 class="m-title" lang="zh">在<span>拍</span>。</h2>
+            <p class="m-note"><span lang="zh">人，岁月，生活。</span><span lang="en">People, Years, Life.</span></p>
+            <p class="m-count">Showing <span data-m="shown">18</span> / <span data-m="total">107</span> · 显示 <span data-m="shown">18</span> / <span data-m="total">107</span> 张</p>
+          </header>
+          <div class="m-lines"></div>
+          <div class="m-sentinel"><span>the next line is strung as you get here · 到这儿再拉一根绳 ↓</span></div>
+          <p class="m-end" hidden>all 107 prints are up · 全部晾好了</p>
+        </div></div>
+        <aside class="m-notes">
+          <div class="m-k"><span class="w">390 × 780 · live, scroll inside</span><span class="n">this column is the 390px layout, live</span></div>
+          <p class="m-fact"><b data-m="shown">18</b> prints on <b data-m="lines">3</b> lines = <b data-m="height">…</b> px tall</p>
+          <p class="m-fact soft">today the same prints ≈ <b data-m="today">6,575</b> px</p>
+          <ul class="m-list">
+            <li><b>Swipe a line.</b> The rope accelerates and the prints lag behind it, then settle when the snap lands.</li>
+            <li><b>Tap a print.</b> Its peg squeezes, the rope springs up, and the print comes to you still clipped. <b>Swipe it</b> to clip it back and take the next one; the line slides along behind the veil to meet it. <b>Tap</b> to put it back.</li>
+            <li><b>Tap while a line is still gliding.</b> It stops. It doesn’t open anything.</li>
+            <li><b>Scroll to the bottom.</b> Another line is strung, dipping once per print, and each one develops the first time it’s seen.</li>
+          </ul>
+        </aside>
+      </div>
+      <div class="cand-foot"><div>Prints arrive as flat chemical squares and develop the first time they’re seen, but only once their bytes have decoded. A session remembers them. They hang from pegs on a rope that carries their weight, and they swing only with a cause: a real flick, a release, a return, a swipe, a new line being pegged. Clicking or tapping unclips a print by its peg and flies it to you, frame, caption and clip intact. Once the 2560px file decodes, the window unfolds to the photo’s true aspect. The next line is strung as you reach the end.
+        <div class="tradeoff"><b>cost</b> one rAF for the whole page, asleep at rest (see the readout); one rope path plus transforms per frame; the flight resizes a single contained element · <b>a11y</b> prints are buttons in DOM order with a pen underline on focus; Enter unclips; ← → Esc in the viewer; focus returns to the print; on the phone ← → walk a line · <b>reduced motion</b> no swing, flight or develop; the viewer opens with the peg already clipped; the rope still shows, standing higher where a print is away</div></div>
+        <div class="r2-btns"><button class="replay" data-replay="demoDesk">▶ play sequence</button><button class="replay" data-replay="replayDesk">↻ desktop: new visitor</button><button class="replay" data-replay="replayPhone">↻ phone: new visitor</button></div></div>
+    </article>
+  </section>
+
+  <section class="rules" aria-label="Who wins when gestures overlap">
+    <div class="r2-k">WHO WINS WHEN<br>GESTURES OVERLAP<br><span class="hand-cn" style="font-size:15px;letter-spacing:0">手势打架时谁赢</span></div>
+    <div class="rules-grid">
+      <div class="rule"><h3>FLICK vs CLICK <span>· mouse</span></h3>A fast pass across a print or rope is only noted at first. It swings things if the pointer is still moving at 220 px/s 50 ms later (420 for the rope). You slow down to aim, so the print under a click is never set moving. Pressing cancels whatever is pending.</div>
+      <div class="rule"><h3>SWIPE vs TAP <span>· touch</span></h3>The browser sorts pan from tap. A tap that lands while a line is still gliding or snapping (it moved in the last 140 ms) only stops it. Keyboard presses are never held back like this.</div>
+      <div class="rule"><h3>TAP vs SWIPE <span>· viewer</span></h3>Under 6 px of movement it’s a tap, and the print is clipped back. A sideways drag carries the print, tilting it. Let go past 80 px or 650 px/s and it’s clipped back while the next one comes down.</div>
+      <div class="rule"><h3>KEYBOARD</h3>Tab reaches the prints in order and the pen underlines the focused caption. Enter or Space unclips. ← → re-clips and takes the next, bringing its line into view behind the veil. Esc returns the print, and focus goes back to it.</div>
+      <div class="rule"><h3>STRINGING vs EVERYTHING</h3>A new line is strung only when you scroll to the end, never while the viewer is open, and never on resize or replay. Its prints can’t develop until their peg is on.</div>
+      <div class="rule"><h3>DEVELOP vs UNCLIP</h3>A print you unclip mid-development keeps developing in your hand. The sharp 2560px file waits until the chemistry finishes, then the window unfolds to the full frame.</div>
+    </div>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship it as one piece.</b> Develop is the page’s one dense event and it happens once. The rope is the constant: it carries weight, and that weight is what makes unclipping feel real. The rope springs up when a print leaves and sags when it comes back, and it’s the same peg in your hand as on the line. On the phone each line is a swipe, and the page stops being a 6,575 px garland.</p>
+    <p>Watch for three things. First, the 50 ms exit rule assumes a mouse. A trackpad’s slow final approach suits it, but a very fast clicker could still catch a print mid-swing, which is harmless because the flight starts from wherever the print is. Second, the peg reaches the photo’s top edge in the viewer by design (it’s holding the frame), so a photo whose subject sits hard against the top edge loses a few pixels behind the jaws. Third, filters (board 03) will need to restring the lines. A filter change should re-peg prints onto the same ropes, not rebuild the page.</p>
+    <div class="record">执行模式：精修（第二轮 · 四个方向合成一页）
+表达锚点：暗房与晾衣绳。照片是实物：冲出来、夹上去、捏着夹子取下来看、再夹回去。夹子始终跟着照片走。
+动作时钟：物理时钟（绳的垂度与点载荷、阻尼波、夹子上的阻尼摆、飞行弹簧一次小过冲）；显影是化学时钟（约 2.5 秒）；夹子合上的两帧“啪”记号走手的时钟（两帧定格，约 12 fps）。
+映射：第一次进入视野且字节已解码 → 显影；指针快速穿过且 50 ms 后仍在走 → 摆动（瞄准会刹车，所以不动）；捏夹子 → 夹口张开；照片离绳 → 该处载荷消失、绳上弹、邻居随波起落；飞回 → 夹口在绳前张开、合上一“啪”、载荷回来、绳再下沉、照片带着飞行的角速度摆一下；滑动一根绳 → 惯性摆；到末尾 → 再拉一根绳，每夹一张沉一下。
+线条计划：绳、钉、夹子、相框同一支笔（约 1.5–2px 墨色，夹子用不随尺寸缩放的描边，小时是实心墨，放大后成为带弹簧的线描木夹）。
+色彩计划：显影底色为平涂暖灰绿化学色（非渐变）；放大时背景压成纸墨色 rgba(51,48,43,.66)；珊瑚色唯一持有者 = 悬停/聚焦时的笔迹下划线（页面标题“拍”沿用现状）。</div>
+  </div></section>
+</main>
+<script src="../../content/photos.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-06-line.js"></script><script src="r2-06-flick.js"></script><script src="r2-06-develop.js"></script><script src="r2-06-viewer.js"></script>
+<script src="r2-06-desk.js"></script><script src="r2-06-phone.js"></script><script src="r2-06-app.js"></script>
+</body></html>

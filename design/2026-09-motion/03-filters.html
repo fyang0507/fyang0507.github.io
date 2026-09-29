@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 · Filters that belong to the shelf — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="03-filters.css"><link rel="stylesheet" href="03-shelf.css"><link rel="stylesheet" href="03-cands.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 03</div><h1 class="board-title">Filters that belong to the shelf <span class="display-cn">筛选</span></h1></div>
+    <div><p class="board-why">Writing and Gallery each carry <b>two full rows of mono pill chips</b> (category, then year) plus a “Showing 27 / 27 essays · 显示 27 / 27 篇” line. It is the most generic, SaaS-looking element on the site, and it sits between a beautiful title and the bookshelf eating ~150px. On a phone it wraps into <b>seven rows before any content</b>. And filtering is an instant re-render with no continuity: the books just blink.</p>
+      <p class="evidence">evidence: <code>Writing.dc.html:122–132</code> chip rows + count line · <code>Writing.dc.html:45–46</code> <code>.chip</code> pill style · <code>Writing.dc.html:152</code> shelf re-rendered from <code>filtered</code> with no transition · <code>Gallery.dc.html:100–109</code> the same two rows for photos</p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Sentence filter <span class="display-cn">一句话筛选</span></span><span class="cand-mech">sentence + paper slip listbox · physics clock (slip, books) · pen marks state</span></div>
+      <div class="stage fx-stage"><div class="wx" data-cand="a" data-inst="a-d"></div><span class="hint">press an underlined word ↑</span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>filter ≈ 53px · was ≈ 330px</span></figcaption><div class="phone-screen"><div class="wx" data-cand="a" data-inst="a-m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>What changed <span class="zh">改了什么</span></h4>
+          <p>The count line <i>was</i> the filter all along; it just never admitted it. Two rows of chips and a status line become one sentence you can edit: <b>Showing all 27 essays from every year</b> / <b>显示全部 27 篇，所有年份</b>. Only the words that can change are underlined — pencil when they say “everything”, coral once they say something narrower, so the one accent means “this shelf is filtered”.</p>
+          <div class="cmp"><div><b>1 line</b>desktop filter (was 3 rows)</div><div><b>2 lines</b>phone filter (was 7 rows)</div><div><b>−130px</b>title → shelf, desktop</div></div>
+          <h4>On a phone <span class="zh">手机上</span></h4>
+          <p>The sentence wraps to two short lines and the shelf becomes a horizontal strip you thumb through, so spines appear within the first screen instead of after seven rows of chips. The slip clamps to the screen edge; options are 30px+ tall touch targets.</p>
+          <h4>Gallery <span class="zh">在拍</span></h4>
+          <p>Same component, other nouns: <b>Showing all 107 frames from every year</b> / <b>显示全部 107 张，所有年份</b>. The category slip lists cityscape 28 · landscape 20 · people 19 …; the year slip lists 2025 … 2015. The reflow engine only reads <code>offsetLeft/Top</code>, so it drives the clothesline racks unchanged — polaroids that leave pivot off their peg, entering ones drop onto the line.</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>Replaces the chips and the “Showing” line with the sentence they add up to. Each changeable word drops a small paper slip of alternatives (with counts); choosing one re-marks the word with the pen and the shelf reflows.<div class="tradeoff"><b>cost</b> smallest: one sentence, one slip, no new geometry · <b>a11y</b> real listbox: ↑↓ Home End, Enter picks, Esc closes and returns focus; aria-expanded/activedescendant · <b>support</b> everywhere; the phone layout needs nothing special</div></div><button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Index tabs + shelf ruler <span class="display-cn">书签与书架尺</span></span><span class="cand-mech">divider tabs on springs · clickable year ticks · physics clock + pen loop</span></div>
+      <div class="stage fx-stage"><div class="wx" data-cand="b" data-inst="b-d"></div><span class="hint">pick a divider ↑ · circle a year under the shelf ↑</span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>dividers ≈ 64px · was ≈ 330px</span></figcaption><div class="phone-screen"><div class="wx" data-cand="b" data-inst="b-m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>What changed <span class="zh">改了什么</span></h4>
+          <p>Categories become <b>paper index dividers standing behind the books</b>: their lower half hides behind the shelf's top edge, the chosen one rises clear of it, empty ones sink out of reach. There is no year row at all — the shelf already prints its year ticks, so <b>the ticks are the year filter</b>. Circle one or several; unchosen years collapse to a narrow empty slot that keeps its tick, so the ruler never loses a year you might circle next.</p>
+          <h4>On a phone <span class="zh">手机上</span></h4>
+          <p>The dividers become one band you can swipe sideways; the ruler rides under the strip of spines. One band plus the shelf instead of seven rows.</p>
+          <h4>Gallery <span class="zh">在拍</span></h4>
+          <p>Dividers need a thing to stand behind. On the clothesline page they would hang as <b>paper tags clipped to the top line</b> (8 categories), and the date stamps already written on each polaroid would become the year toggles — workable, but it is a second design, not the same component.</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The most physical and the most “Fred's shelf”: dividers on springs, years circled in pen on the shelf's own ruler. Also the most machinery, and the year targets are small.<div class="tradeoff"><b>cost</b> highest: tab band, slot logic for empty years, two control types · <b>a11y</b> tabs are a radiogroup (← → Home End); ticks are toggle buttons with roving focus (← →), but 30px-wide targets · <b>support</b> everywhere; tab band scrolls sideways on phones</div></div><button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">Timeline scrub <span class="display-cn">时间尺</span></span><span class="cand-mech">draggable pen brackets on a year ruler · live reflow while dragging · physics clock</span></div>
+      <div class="stage fx-stage"><div class="wx" data-cand="c" data-inst="c-d"></div><span class="hint">drag a bracket under the shelf ↑</span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>words ≈ 54px + ruler · was ≈ 330px</span></figcaption><div class="phone-screen"><div class="wx" data-cand="c" data-inst="c-m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>What changed <span class="zh">改了什么</span></h4>
+          <p>The shelf stands on <b>a ruler of every year, 2026 → 2015</b>, in the same direction as the books. Each essay is one countable dot above its year (2020 honestly has none). Two pen brackets window the years; drag them and books outside the window leave while you are still dragging. Categories are one line of plain words, the chosen one circled.</p>
+          <h4>On a phone <span class="zh">手机上</span></h4>
+          <p>Words scroll as a single line; the ruler shortens its labels to ’26 … ’15 and stays fixed under the strip, brackets draggable by thumb (touch-action: none on the handles only).</p>
+          <h4>Gallery <span class="zh">在拍</span></h4>
+          <p>The best fit of the three for photos: 107 frames over 2015–2025 make the dots a real, readable histogram (29 in 2024), and windowing a trip’s years is exactly how you browse a photo archive.</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The most dynamic: scrubbing time and watching the shelf empty and refill is the one dense event. But a range slider is still a dashboard idiom, and 27 essays rarely need a window.<div class="tradeoff"><b>cost</b> medium: ruler + two sliders; throttled to one reflow per year crossed, ≤ 1 per 90ms · <b>a11y</b> brackets are role=slider (← → Home End, aria-valuetext); year labels click to isolate that year · <b>support</b> pointer capture, ResizeObserver</div></div><button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A · Sentence filter.</b> It removes the most (three rows become one sentence, seven phone rows become two lines), it is the only candidate that reads as a person talking rather than a control panel, and it transfers to Gallery by swapping two nouns. The movement lives where it should: in the books, through the shared reflow engine, not in the control.</p>
+    <p>Borrow one thing from each of the others: C’s <b>countable dots</b> could sit inside the year slip (one dot per essay beside each year), and B’s <b>clickable year ticks</b> are a cheap second door into the same year state if Fred wants it. Ship the engine regardless of which control wins — it is the part that fixes “the books just blink”. Watch the coral budget: the underline turns coral only while a filter is active.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：书架本身——筛选是“从架上抽书、再推拢”，不是刷新列表；控件退回成一句手写说明
+动作时钟：物理时钟（书的滑动/倒下/落下、纸条落下、书签弹起、括号回弹）；手的时钟只给小鸟——书落定时它跳一下
+映射：点选 → 离开的书以底角为支点朝空处倾倒并淡出 → 留下的书按“离变动处的距离”依次滑拢（弹簧，一次小回弹）→ 新书从架上方落下，着板弹一次；连点时从当前位置接着走，不重播
+线条计划：pen.js 一人一笔——A 可改的词下划线（铅笔色=全部，珊瑚=已筛选），纸条里选中项打勾、悬停项画线；B 圈年份、书签下划线；C 括号与圈词。种子固定，不抖动
+色彩计划：纸/墨/铅笔三值；珊瑚色唯一持有者 = “当前筛选”这一标记（页面原有的“写”与系列编号保持现状，交由书架看板处理）</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="03-reflow.js"></script><script src="03-shelf.js"></script>
+<script src="03-cand-a.js"></script><script src="03-cand-b.js"></script><script src="03-cand-c.js"></script>
+<script src="03-filters.js"></script>
+</body></html>

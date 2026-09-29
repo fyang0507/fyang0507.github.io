@@ -1,0 +1,27 @@
+/* vt harness: stand-in tokens and page frame for scripts/verify/vt-*.mjs (never deployed). */
+:root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#7A7063;--mark:#D9695A;--line:#E4DAC7;--hl:#DCCF98;--hl-ink:#AD9650;--pen:#D9695A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:"Fraunces",Georgia,serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.page{display:flex;flex-direction:column;align-items:center;padding:30px 4vw 0}
+.hz-main{width:min(1180px,100%);margin-top:38px}
+.hz-main h1{font-size:64px;line-height:1;font-weight:500}
+.hz-main p{margin-top:18px;max-width:640px;font-size:19px;color:var(--soft)}
+.hz-block{height:900px;margin-top:30px;border-top:1px solid var(--line)}
+/* stub desk (home), geometry from board r2-01 (scene 1448 × 1086) */
+.hz-home{display:flex;flex-direction:column;align-items:center;padding:30px 4vw 0}
+.hz-head{width:min(1180px,100%);display:flex}
+.hz-scene{position:relative;width:min(880px,100%);aspect-ratio:1448/1086;margin-top:4px}
+.hz-scene>*{position:absolute;display:block}
+.hz-scene img{position:absolute;inset:0;width:100%;height:100%}
+.desk-book{background:url("../../../assets/book-flip2-light.png") 0 0/600% 100% no-repeat}
+.desk-frame{background:url("../../../assets/frame-exp3-light.png") 0 0/400% 100% no-repeat;-webkit-mask:url("../../../design/2026-09-motion/r2-01-mask-frame.png") 0 0/100% 100% no-repeat;mask:url("../../../design/2026-09-motion/r2-01-mask-frame.png") 0 0/100% 100% no-repeat}
+.desk-bird{background:url("../../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat}
+.desk-edge{background:url("../../../design/2026-09-motion/r2-01-cut-table.png") no-repeat}
+.desk-notes{left:0;top:0;width:100%;height:100%;pointer-events:none}
+.desk-notes svg{position:absolute;inset:0;width:100%;height:100%}
+.desk-notes path{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.hz-note{position:absolute;font:24px/1 "Caveat",cursive;white-space:nowrap;pointer-events:auto}
+.hz-hot{z-index:5}
+.hz-fig{width:min(1180px,100%);margin-top:14px;font:12.5px/1 "IBM Plex Mono",monospace;color:var(--pencil)}

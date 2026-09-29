@@ -1,0 +1,16 @@
+{"fps": 60, "crf": 20,
+ "credits": {"before": "Claude Design (Fable 5) + GPT-5.6-sol", "after": "Claude Opus 5.5"},
+ "beats": [
+  {"rec": "02-arrive", "h": "Same site. *Redesigned by Claude Opus 5.5*.", "hzh": "同一个网站，*由 Claude Opus 5.5 重新设计*。", "pieces": [[1.25, 3.0, 0.6], [3.0, 4.95]]},
+  {"rec": "03-desk-nav", "h": "The desk *becomes the nav*.", "hzh": "书桌*变成导航*。", "pieces": [[1.6, 2.3], [2.3, 3.1, 0.4], [3.1, 3.4]]},
+  {"rec": "04-writing", "h": "Books *slide out* and turn their covers.", "hzh": "书会*抽出来*，转过封面。", "pieces": [[0.8, 3.3]]},
+  {"rec": "09-between", "h": "Click the camera, and the page *opens out of its lens*.", "hzh": "点一下相机，页面*从镜头里展开*。", "pieces": [[1.6, 2.15], [2.15, 2.85, 0.5], [2.85, 3.1]]},
+  {"rec": "06-gallery", "h": "Prints develop, then *unclip, peg and all*.", "hzh": "照片显影，*连夹子一起取下*。", "pieces": [[0.2, 1.6], [8.35, 9.45, 0.7]]},
+  {"rec": "09-between", "from": "mid", "h": "The nav *falls back into a desk*.", "hzh": "导航*落回成书桌*。", "pieces": [[1.7, 2.2], [2.2, 3.0, 0.5], [3.0, 3.25]]},
+  {"rec": "08-reading", "h": "The cover *dissolves into halftone*.", "hzh": "封面*散成半调网点*。", "pieces": [[0.7, 3.4]]},
+  {"rec": "07-about", "h": "Pulled *out of its sleeve*, turned in place.", "hzh": "从卡套里*抽出来*，原地翻面。", "pieces": [[2.1, 3.5], [7.3, 8.8]]},
+  {"rec": "10a-phone-home", "mode": "phone", "h": "On a phone, the camera *walks the desk*.", "hzh": "手机上，镜头*绕着书桌走*。", "pieces": [[0.6, 1.9], [3.75, 4.5], [5.3, 6.55]]}
+ ],
+ "end": {"k": "the redesign · 重新设计", "h": "Motion, transitions and graphic design by *Claude Opus 5.5*.", "hzh": "动效、转场与平面设计：*Claude Opus 5.5*。",
+  "was": "Before: Claude Design (Fable 5) + GPT-5.6-sol.", "waszh": "之前：Claude Design（Fable 5）+ GPT-5.6-sol。", "dur": 3.0}
+}

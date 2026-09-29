@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3·03 · The Writing page: one bookcase, one index — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r2-04-book.css">
+<link rel="stylesheet" href="r3-03-board.css"><link rel="stylesheet" href="r3-03-case.css"><link rel="stylesheet" href="r3-03-index.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD R3 · 03</div><h1 class="board-title">The Writing page: one bookcase, one index <span class="display-cn">书架与侧边索引</span></h1></div>
+    <div><p class="board-why">Round 2 put the two filters on either side of the shelf, with the tag dividers above it and the year ruler below it, and built the 3D shelf on a separate board. You had to look in two places to read one filter. The live shelf is also small: at 1440×900 it is a <b>924×252&nbsp;px</b> box beside a 236&nbsp;px preview card, with spines at most 212&nbsp;px tall and 11&nbsp;px titles. This board is the Writing page as it would ship: r2-04 A’s paper shelf, grown into a two-plank bookcase, with both filters in one index beside it.</p>
+      <p class="evidence">evidence: <code>Writing.dc.html:122–132</code> two chip rows and a status line above the shelf · measured live at 1440×900: shelf box 924×252, spines 128–212 × 22–34&nbsp;px, row 965&nbsp;px in a 924&nbsp;px scroller · <code>r2-03-filters.html</code> tabs above the shelf, ruler below it · <code>r2-04-shelf.html</code> A shown on 18 of 27 books</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 2">
+    <div class="changed-k">WHAT CHANGED<br>FROM ROUND 2</div>
+    <ul>
+      <li><q>splitting two filtering on top and bottom of the shelf is somewhat unintuitive … tags usually appear on the side … make them appear on the side</q><b>One index, in one place.</b> Beside the bookcase stands a closed index book, cover toward you, with a title slip (题签 · 类别 tags). The category tabs come out of its fore-edge in a vertical stack. The year ledger with its 正 tallies sits directly under them, and the readout and clear · 清除 head the index. Nothing sits above or below the shelf any more.</li>
+      <li><q>should we enlarge + lengthen the book display? … fills only half of the screen</q><b>The bookcase fills the page.</b> The shelf and index span the full 1180&nbsp;px content width, and the shelf is now two planks, 840×684&nbsp;px, about 2.5× the live shelf’s area. Spines are 162–269&nbsp;px tall (live: 128–212) and 36–55&nbsp;px wide (live: 22–34), with 15–16&nbsp;px titles (live: 11). All 27 fit without scrolling, 13 and 14 to a plank. <a class="pg-link" href="r3-03-page.html">See it under the real site header ↗</a></li>
+      <li><q>04: do A</q><b>A’s shelf, unchanged in character.</b> Point at a spine and it tips. Pause and the book slides out, clears its plank and turns to show the cover under a paper obi. Click and it opens into the page. <b>r2-03’s reflow now runs this shelf</b>: books tip out, slide along and drop in. Each book keeps its home plank, so the planks close up on their own, and the bookcase stays in date order from top to bottom; a shelf label on each plank’s lip names its years.</li>
+      <li><q>chosen state = highlighter band only, no tick; hover = level underline</q><b>The index uses board 02’s pen.</b> Hovering a tab or a year draws a level underline. The chosen tab or years get the highlighter band. There is no tick. The chosen tab also springs further out of the book. Coral is not a filter colour: the only coral in view is 写 in the title.</li>
+    </ul>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Bookcase + fore-edge index <span class="display-cn">书架 + 书口索引</span></span><span class="cand-mech">tab springs · ledger drag · reflow on the 3D bookcase · pull + obi · 正 recount</span></div>
+      <div class="stage wr-stage"><div class="wr" data-inst="d"></div><span class="hint">pick a tab · drag down the years · point at a spine ↗</span></div>
+      <div class="fx-more">
+        <figure class="phone"><figcaption class="phone-cap"><span>390 px · live</span><span>index strip above the shelf</span></figcaption><div class="phone-screen"><div class="wr" data-inst="m"></div></div></figure>
+        <div class="fx-notes">
+          <h4>The index <span class="zh">索引</span></h4>
+          <p>The index stands where the live preview card was. It is a <b>closed book</b>, cover toward you, with a title slip (题签) reading 类别 · tags. <b>Six paper tabs</b> come out of its fore-edge: all · 全部, then each category by size, each with its English and Chinese name and a count. Each tab has a small glued lip where it enters the pages and a pencil line along the page beneath it. The chosen tab <b>springs further out</b> on the physics clock, with one small overshoot. A tab with nothing in the chosen years sinks back under the cover, but you can still click it.</p>
+          <p>Directly under the tabs, the <b>year ledger</b> is a ruled page with one line per calendar year, 2020 included, and each year’s 正 tally. Click a year to choose it, or <b>drag down the ledger</b> to choose a span. The books reflow while you drag, and a paper flag beside the pointer names the span. Drag from either end of a span to resize it. Hovering any tab or year lifts its books a finger’s width off the plank.</p>
+          <h4>The bookcase <span class="zh">书架</span></h4>
+          <p>This is r2-04 A’s camera and paper boxes. At the new size the eye sits above the top plank, so both rows show their page-block tops, the lower row more. <b>Each book keeps a home plank</b>, the one it stands on when all 27 are out. A filter never moves a book to another plank: the books left on each plank close up toward its start. The upper plank holds 2026–2022 and the lower one 2021–2015, and each plank’s front lip carries a small printed shelf label saying so (“2026 — 2022”), in pencil ink. Choosing 2015–2019 empties the upper plank; its label dims a step, so the empty plank reads as “none from these years”, not a broken layout. A pulled book is held <b>in front of the other row</b>, so the gap it left stays in view: from the lower plank it rises in front of the upper row, and from the upper plank it comes down in front of the lower one.</p>
+          <h4>Pen and colour <span class="zh">笔与颜色</span></h4>
+          <p>Board 02’s tiers: hover = a level underline in the highlighter’s thin edge; chosen = the band, drawn in one return stroke; no tick; keyboard focus = ink 「 」. The tallies are ink and are rewritten stroke by stroke when the tag changes. The pen under a held book’s obi title is the same thin edge. Coral stays on 写.</p>
+          <h4>When the two disagree <span class="zh">两者冲突时</span></h4>
+          <div class="rule">The dimension you touch wins; the other one gives way.<span class="zh">你碰哪一个，哪一个说了算；另一个让开。</span></div>
+          <p>The rule is unchanged from round 2, and the filter controller is <code>r2-03-filter.js</code> loaded as is. The value that gave way stays in the readout, struck through in pencil. 2020 is empty for every tag, so choosing it shows an empty bookcase with a pencilled note.</p>
+          <h4>On a phone <span class="zh">手机上</span></h4>
+          <p>There is no room for a side index, so the same index becomes <b>one strip above the shelf</b>: the readout, then the tabs standing on their page block (swipe them), then the ledger turned on its side as twelve year columns (drag across them). Both filters sit together, and the shelf directly below is r2-04 A’s swipe strip: tap to pull a book out, tap again to open it.</p>
+          <div class="cmp"><div><b>0</b>rows of pills</div><div><b>1</b>index, beside the books</div><div><b>2.5×</b>shelf area vs live</div></div>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The shelf is now the page’s main object, and one index beside it holds both filters. You read what it is showing in one place, and each change is a physical event on the books: they tip out, close the gap, get carried to the next plank, or drop in.<div class="tradeoff"><b>cost</b> 27 CSS-3D paper boxes (5 faces each) under one fixed camera · three small springs (tabs, pull, reflow) that each sleep when idle · <b>a11y</b> tabs = radiogroup (↑↓ Home End) · ledger = multiselectable listbox (↑↓ move, Enter/Space choose, Shift+↑↓ extend, Esc every year) · the shelf is one tab stop (←→ walk, Enter open, Esc re-shelve) · readout aria-live · <b>support</b> preserve-3d + linear(): Chrome 113, Safari 17.2, Firefox 112; pointer events with capture</div></div><div class="foot-btns"><button class="replay" data-replay="replayA">↻ replay</button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship A.</b> It makes the two changes Fred asked for and keeps what he accepted. Both filters sit in one index on the side, where a closed book carries its tabs. The shelf is bigger and taller and spans the full content width. The pieces he liked are unchanged: the 正 tallies and their recount, the readout, the reflow physics, the pull with its obi, and the open.</p>
+    <p>How r2-04 A and r2-03’s reflow fit together. Neither had to give anything up, but three things changed to make them coexist. <b>1.</b> The reflow engine now reads the bookcase’s slot positions instead of DOM layout boxes. Its offsets are added to the pull pose before the single 3D transform is written, so one book can be hooked and reflowing at the same moment. A leaving book fades face by face, because opacity on the box itself would flatten its 3D. <b>2.</b> A book never changes planks. My first build carried books across planks when one emptied, and nine books flying up at once read as a swarm, not a hand, so every book now keeps its home plank. <b>3.</b> A pulled book rises or drops only once it is clear of the plank in front of it, and r2-04’s “the plank is solid” bounce only applies while the book is still over its plank. Starting a filter puts a held book back first.</p>
+    <p>Watch: under the real site header at 1440×900 (<a href="r3-03-page.html">full page ↗</a>), the top plank and the whole index are above the fold and the lower plank ends about 150&nbsp;px below it. That is the cost of taller books. On a phone the index strip comes before the shelf, so the shelf starts near the fold. Gallery can use the same index component with its own nouns (frames, 张, the clothesline); r2-03 already showed that the controller carries over, and it is not rebuilt here.</p>
+    <div class="record">执行模式：单一推荐（第三轮收尾，按 Fred 的批注改，保留已接受的部分）
+表达锚点：两层书板的书架占满页面宽度；旁边立着一本合上的索引书，封面朝你、贴着题签“类别”，分类书签从书口里伸出来；年份账页紧贴在书签下面。一个索引，一个地方
+动作时钟：物理时钟（选中的书签从书口弹出，一次小回弹；没书的书签缩回封面下；书倾倒、滑拢、落下，每本书只在自己那层；抽书、腰封、打开同 r2-04 A，下层的书举到上层前面看，上层的书拿到下层前面看）；手的时钟（正字一笔一笔重数；小鸟逐格跳，书落定时原地跳一下，迟半拍跳到你手里那本书上）
+映射：点书签 → 书签弹出，账页上的正字重数，两层书各自重排；在账页上往下拖 → 年份一行行涂上荧光笔带，纸旗报出区间，书边拖边重排；悬停书签或年份 → 对应的书离开书板一指高，接触网点消失；碰了冲突的维度 → 另一维让开，旧值在读数里被铅笔划掉；指向书脊 → 勾书 → 抽出、离开书板、转身露出腰封 → 点击打开；某层书板被年份筛空 → 板沿上印着年份区间的书标淡一档，读作“这几年没有”，而不是版面坏了
+线条计划：pen.js 一只手，按 02 的层级：悬停 = 平的下划线（荧光笔细边），选中 = 荧光笔带，无勾；键盘焦点 = 墨色「 」；正字和删除线用墨 / 铅笔；书、书签、索引书封面都是纸色平涂 + 墨线；书签有一小段胶边和一道铅笔接触线；没有投影，没有光源
+色彩计划：纸 / 墨 / 铅笔，加 02 的荧光笔（麦色带、深麦细边）；珊瑚色唯一持有者 = 标题里的“写”；筛选状态不用珊瑚色，腰封标题下那一笔也改成荧光笔细边</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-02-anim.js"></script><script src="r2-02-tier.js"></script><script src="r2-02-point.js"></script>
+<script src="r2-04-kit.js"></script><script src="r2-04-cover.js"></script><script src="r2-04-read.js"></script>
+<script src="r3-03-reflow.js"></script><script src="r3-03-case.js"></script><script src="r3-03-bird.js"></script><script src="r3-03-pull.js"></script>
+<script src="r3-03-tally.js"></script><script src="r3-03-tabs.js"></script><script src="r3-03-ledger.js"></script><script src="r3-03-readout.js"></script>
+<script src="r2-03-filter.js"></script><script src="r3-03-app.js"></script>
+</body></html>

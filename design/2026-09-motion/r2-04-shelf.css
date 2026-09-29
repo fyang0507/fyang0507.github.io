@@ -1,0 +1,102 @@
+/* r2-04-shelf.css — board r2-04: the "what changed" strip, stages, and the 3D shelf at rest — book boxes,
+   ghost book, plank with lip, contact stipple, year ticks, invisible hit links, the bird, the phone frame.
+   The cover / obi / title page / reading page live in r2-04-book.css. Flat tones, ink edges, no light. */
+:root{--page:#FEFAEE; --slip:#FCF8EF; --plank:#EFE6D4; --lip:#E4D9C3}
+
+/* ---- what changed from round 1 ---------------------------------------------------------------- */
+.changed{margin-top:22px;display:grid;grid-template-columns:120px 1fr;gap:24px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.changed-k{font:500 11px/1.4 var(--util);letter-spacing:.1em;color:var(--pencil)}
+.changed ol{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 28px}
+.changed li{font-size:14px;line-height:1.5;color:var(--soft)}
+.changed q{display:block;margin-bottom:6px;font:17px/1.25 var(--hand);color:var(--ink);quotes:"“" "”"}
+.changed li b{color:var(--ink);font-weight:500}
+
+/* ---- stages ---------------------------------------------------------------------------------------- */
+.stage.s-a{flex:none;height:700px}
+.stage .hint{z-index:30}
+.stage-note{position:absolute;right:16px;top:14px;font:11px/1.5 var(--util);color:var(--pencil);text-align:right;z-index:30;pointer-events:none}
+
+/* ---- camera + world ---------------------------------------------------------------------------------- */
+.sh-view{position:absolute;inset:0;overflow:hidden}
+.sh-view.strip{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.sh-view.strip.snap{scroll-snap-type:x proximity}   /* only after first layout, or the initial snap lands mid-shelf */
+.sh-view.strip::-webkit-scrollbar{display:none}
+.sh-world{position:absolute;left:0;top:0;height:100%;transform-style:preserve-3d;pointer-events:none}
+.b3{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.f{position:absolute;left:0;top:0;transform-origin:0 0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+
+/* ---- a book: five paper faces ------------------------------------------------------------------------ */
+.book{--bw:1.5px}
+.f-spine > .bk-spine{position:absolute;inset:0;background:var(--tone);border:var(--bw) solid var(--ink);overflow:hidden}
+.bk-title{position:absolute;top:8%;left:50%;transform:translateX(-50%);max-height:84%;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--disp-cn);font-size:var(--fs);line-height:1.3;letter-spacing:.02em;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+.series .bk-title{color:#efe5d3;max-height:68%}
+/* Series number as a paper library label, not a coral chip: the accent is spent on the pen. */
+.bk-badge{position:absolute;bottom:9%;left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font:500 9px/1 var(--util);padding:3px 3px 2px;border-radius:1px;letter-spacing:.02em}
+/* Head and tail bands: the hairlines every bound spine has. Drawn lighter, not thicker. */
+.bk-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid rgba(51,48,43,.26)}
+.bk-band.b1{top:5px}.bk-band.b2{top:8px}.bk-band.b3{bottom:6px}
+.series .bk-band{border-color:rgba(239,229,211,.26)}
+/* Page block from above: countable page edges running front to back, the back edge re-inked by JS. */
+.f-top{background:var(--page) repeating-linear-gradient(90deg,transparent 0 3.2px,rgba(51,48,43,.2) 3.2px 4px);border:var(--bw) solid var(--ink);border-bottom:0}
+.f-fore{background:var(--page) repeating-linear-gradient(90deg,transparent 0 3.2px,rgba(51,48,43,.2) 3.2px 4px);border:var(--bw) solid var(--ink)}
+.f-back{background:var(--tone);border:var(--bw) solid var(--ink);border-right-width:0}
+.f-cov{transform-style:preserve-3d;backface-visibility:visible;-webkit-backface-visibility:visible}
+
+/* ---- the ghost of the next essay ------------------------------------------------------------------------ */
+.g-front{border:1.5px dashed var(--pencil);border-bottom:0;display:grid;place-items:center}
+.g-front span{font:15px/1 var(--hand-cn);color:var(--pencil);writing-mode:vertical-rl}
+.g-top{border:1.5px dashed var(--pencil);border-bottom:0}
+
+/* ---- the plank ------------------------------------------------------------------------------------------ */
+.pl-top{background:var(--plank);border:1.5px solid var(--ink);border-bottom:0}
+.pl-lip{background:var(--lip);border:1.5px solid var(--ink)}
+.stip{background-repeat:repeat-x;background-position:0 0;transition:opacity .12s linear}
+.years{position:absolute;left:0;top:0;width:100%;height:16px}
+.yr{position:absolute;top:0;padding-left:4px;font:9.5px/1 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap}
+.yr i{position:absolute;left:0;top:-1px;width:1.5px;height:7px;background:var(--pencil)}
+.yr b{display:block;font-weight:400}
+.yr.low b{margin-top:11px}
+.yr.low i{height:18px}
+.yr.mute b{visibility:hidden}
+
+/* ---- hit targets: flat links laid exactly over the spines (z = +1px); the boxes never take the pointer -- */
+.hits{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.bk-hit{position:absolute;display:block;transform:translateZ(1px);pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;scroll-snap-align:center}
+.bk-hit:focus,.bk-hit:focus-visible{outline:none}
+/* a book in your hand is part of the gesture: moving onto it keeps it held, clicking it opens it */
+.book.held .f-spine,.book.held .leaf-front,.book.held .leaf-back,.book.held .p1{pointer-events:auto;cursor:pointer}
+
+/* ---- the bird (hand's clock: stepped frames; its sprite ground line is clipped so the book is the ground) */
+.bird{position:absolute;left:0;top:0;pointer-events:none}
+.bird-f{position:absolute;inset:0;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat;clip-path:inset(0 0 18% 0)}
+
+/* ---- M: the phone ------------------------------------------------------------------------------------- */
+.stage.s-m{flex:none;min-height:880px;display:flex;align-items:center;justify-content:center;gap:56px;padding:40px 24px;flex-wrap:wrap}
+.phone{position:relative;flex:none;width:390px;max-width:100%;height:800px;border:1.5px solid var(--ink);border-radius:34px;padding:10px;background:var(--paper2)}
+.phone-screen{position:relative;width:100%;height:100%;border-radius:25px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.m-head{position:absolute;left:20px;right:20px;top:26px;pointer-events:none}
+.m-kick{font:11px/1 var(--util);letter-spacing:.06em;color:var(--pencil)}
+.m-kick b{color:var(--soft);font-weight:500;margin-right:6px}
+.m-title{margin-top:6px;font:400 40px/1 var(--disp-cn)}
+.m-sub{margin-top:10px;font:10.5px/1.5 var(--util);color:var(--pencil)}
+/* the shelf's view covers the screen and sits above the page chrome: a book in your hand passes in front of the title */
+.m-host{position:absolute;inset:0;z-index:1}
+.m-hint{position:absolute;left:20px;right:20px;bottom:22px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;pointer-events:none}
+.m-hint .util{font:10.5px/1 var(--util);color:var(--pencil);white-space:nowrap}
+.m-cue{position:absolute;left:0;right:0;top:180px;text-align:center;font:20px/1.2 var(--hand);color:var(--pencil);transform:rotate(-2deg);pointer-events:none;transition:opacity .2s}
+.m-cue span{display:block;margin-top:2px;font:16px/1.2 var(--hand-cn)}
+.m-cue.off{opacity:0}
+.m-notes{flex:0 1 380px;font-size:14.5px;line-height:1.6;color:var(--soft)}
+.m-notes h4{font:500 11px/1 var(--util);letter-spacing:.1em;color:var(--ink);margin:0 0 10px}
+.m-notes li{margin:0 0 10px 18px}
+.m-notes li b{color:var(--ink);font-weight:500}
+.m-notes .zh{font-size:13.5px}
+
+@media (max-width:760px){
+  .changed{grid-template-columns:1fr;gap:10px}
+  .changed ol{grid-template-columns:1fr}
+  .stage.s-a{height:660px}
+  .stage-note{display:none}
+  .stage.s-m{padding:12px 0;gap:24px}
+  .phone{height:760px;border-radius:30px;padding:6px}
+}

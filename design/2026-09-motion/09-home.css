@@ -1,0 +1,58 @@
+/* 09 · candidate layers on top of the desk: notice marks (A), terminal (B), note (C), phone (D). */
+#cand-a .stage,#cand-b .stage,#cand-c .stage{min-height:0}
+.stage .hint{max-width:calc(100% - 28px)}
+
+/* A — the three short "noticed" strokes above the bird */
+.notice-marks{position:absolute;z-index:4;width:4.2%;overflow:visible;pointer-events:none}
+
+/* B — the terminal on the laptop screen: typed commands in soft, machine answers in ink */
+.term{position:absolute;left:24.1%;top:27.3%;width:24%;height:11.4cqw;padding-left:1.2cqw;overflow:hidden;z-index:6;pointer-events:none;
+  font-family:var(--util),var(--util-cn);font-size:1.24cqw;line-height:1.52;letter-spacing:.01em;color:var(--soft)}
+.term .t-line{white-space:pre-wrap;word-break:break-word;line-height:1.9cqw}   /* whole lines only: the screen scrolls like a terminal */
+.term .cmd{color:var(--pencil)}
+.term .cmd .k{color:var(--soft)}
+.term .ps{color:var(--pencil)}
+.term .t-link{display:block;pointer-events:auto;color:var(--ink);white-space:pre-wrap;cursor:pointer}
+.term .t-link .zh-t{font-family:var(--util-cn);font-weight:500}
+.term .t-link:focus-visible{outline:none}
+.term .meta{color:var(--pencil);font-size:.92em}
+.term .caret{width:.55em;height:1.05em}
+
+/* C — the note */
+.c-panel{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:14px 16px 0}
+.c-panel .c-k{font:500 11px/1 var(--util);letter-spacing:.08em;color:var(--pencil)}
+.c-panel .replay{height:28px}
+.c-status{flex-basis:100%;font:11.5px/1.4 var(--util);color:var(--pencil)}
+.note-arrow{position:absolute;inset:0;width:100%;height:100%;z-index:7;pointer-events:none;overflow:visible}
+.note{position:absolute;z-index:8;touch-action:none;cursor:grab;user-select:none}
+.note.held{cursor:grabbing}
+.note-paper,.note-shadow{transform-origin:50% 0}
+.note-paper{position:relative;padding:1.7cqw 1.35cqw 1.05cqw;background:color-mix(in srgb,var(--wash-wheat) 38%,var(--paper))}
+.note-shadow{position:absolute;inset:2px 1px 0;background:rgba(60,50,35,.13);filter:blur(4px);border-radius:2px}
+.n-en{font:600 2.1cqw/1.02 var(--hand);color:var(--ink)}
+.n-zh{margin:.45cqw 0 .6cqw;font:1.72cqw/1.3 var(--hand-cn);color:var(--ink)}
+#cand-c .hint{left:auto;right:14px}
+.n-meta{display:flex;justify-content:space-between;align-items:baseline;gap:.6cqw;margin-top:.35cqw;white-space:nowrap;font:.98cqw/1.3 var(--util);letter-spacing:.02em;color:var(--pencil)}
+.n-peel{flex:none;font:inherit;color:var(--soft);border-bottom:1px dotted var(--pencil);cursor:pointer;padding:2px 0}
+.n-peel:hover{color:var(--ink)}
+
+/* D — the phone frame on the board: a drawn outline, not a device render */
+.d-stage{display:flex;flex-wrap:wrap;gap:32px 56px;align-items:flex-start;justify-content:center;padding:28px 12px 36px;min-height:0}
+.phone{--s:1;flex:none;position:relative;width:394px;height:848px}
+.phone iframe{position:absolute;left:0;top:0;width:390px;height:844px;border:2px solid var(--ink);border-radius:30px;background:var(--paper);transform:scale(var(--s));transform-origin:0 0;box-sizing:content-box}
+.shotlist{flex:0 1 380px;padding-top:40px;color:var(--soft)}
+.shotlist .sl-k{font:500 11px/1 var(--util);letter-spacing:.08em;color:var(--pencil)}
+.shotlist ol{list-style:none;margin-top:16px;border-top:1px solid var(--line)}
+.shotlist li{padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.45}
+.shotlist li b{display:block;font:500 11px/1.4 var(--util);letter-spacing:.06em;color:var(--ink)}
+.shotlist li i{font-family:var(--util);font-style:normal;font-size:12.5px}
+.sl-note{margin-top:18px;font-size:21px;line-height:1.2;color:var(--soft);transform:rotate(-1.2deg)}
+@media (max-width:760px){.shotlist{padding-top:0}}
+/* narrow desks (phones): the note keeps a readable floor and moves to the corner, clear of 在写 */
+@container (max-width:560px){
+  .note{left:1.2%!important;width:max(17.5cqw,88px)!important}
+  .n-meta{flex-wrap:wrap;white-space:normal;row-gap:1px}
+  .n-since{display:none}
+  .n-en{font-size:max(2.1cqw,11.5px)}.n-zh{font-size:max(1.72cqw,10px)}.n-meta{font-size:max(.98cqw,7.5px)}
+  .note-paper{padding:6px 6px 5px}
+}

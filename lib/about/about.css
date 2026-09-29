@@ -1,0 +1,211 @@
+/* lib/about/about.css — the About page: the specimen card, its kraft sleeve, the statement and the contacts.
+   From design/2026-09-motion/r3-07-about-card.css (the faces, re-laid for a 7:12 card) and r7-07-about.css (stage,
+   sleeve, controls, contacts). Loaded in the head, so it applies at first paint. Page tokens live on .about-page;
+   site-wide ones come from site-tokens.css. */
+@font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Serif SC","Fraunces",Georgia,serif}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+/* the paper's grain */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.about-page{
+  /* the card's two stocks and their inks */
+  --day-meta:#746B5E;--card-rule:#D9CFBD;--note-ink:#B94F43;
+  --night:#16120F;--night-ink:#F3E9D8;--night-soft:#C3B5A0;--night-edge:#55483A;--night-dash:#6E604F;--radar:#EE8E72;
+  /* the stock's edge, ply by ply */
+  --ply:#D9CDB3;--ply-core:#B9AA8C;--ply-outer:#CBBD9F;--ply-line:#4A4238;
+  /* the sleeve's print and the QR slip's paper and tape */
+  --kraft:#D5BB8F;--kraft-back:#C4A677;--kraft-fibre:#9E8158;--kraft-seam:#8F7550;--kraft-ink:#3B3024;--kraft-rule:rgba(59,48,36,.72);--slip:#FFFDF7;--slip-edge:#DDD2BE;--tape:rgba(217,207,160,.72);--dot:rgba(51,48,43,.5);
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px;
+  overflow-x:clip   /* the sleeve set aside past the left edge, and any 「 」 at the right, never widen the page */
+}
+.about-stage{position:relative;width:min(1180px,100%);margin-top:26px;display:flex;flex-direction:column;align-items:center;padding-bottom:4px}
+.guide-heading{width:min(900px,100%);text-align:center}
+.guide-kicker{font:12px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;color:var(--pencil)}
+.ctl-slot{margin-top:5px;min-height:36px;display:flex;justify-content:center}
+
+/* ---------- FLIP / PULL / PUT BACK: glyph + label; the pen's marks come from pen-tier.js ---------- */
+.flip{display:inline-flex;align-items:center;gap:9px;padding:7px 6px;border:0;background:none;color:var(--ink);font:500 12px/1 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.08em;cursor:pointer}
+.flip[hidden]{display:none}
+.flip-ico{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.flip-t{position:relative;padding-bottom:1px}
+.flip-t [lang=zh]{font-family:"Noto Sans SC",sans-serif;letter-spacing:.04em}
+.flip:focus-visible,.soc:focus-visible,.grip:focus-visible,.a-card:focus-visible{outline:none}
+/* PUT BACK for the keyboard: in the tab order after FLIP while the card is held, seen only while it has focus */
+.ctl-put:not(:focus-visible){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.ctl-put{margin-left:14px}
+
+/* ---------- the rig: sleeve panels, the card between them, the shadow, the grip ---------- */
+/* Until the rig has laid it out (data-ready), nothing in it paints: before that the sleeve has no kraft and the card
+   sits at its natural size, a broken frame. The height reserved here is the tucked rig's: 447px at 1440×900, and on a
+   phone 22px + 96vw exactly (rig.js: 74 + 0.96·(width − 54) while the desk scale is clamped at .56, below ~537px). */
+.rig{position:relative;z-index:2;width:100%;height:447px}
+.rig:not([data-ready]) > *{visibility:hidden}
+.rig > .sl,.rig > .card-pos,.rig > .a-shadow{position:absolute;left:0;top:0}
+/* The eye sits a little below the card, as if it lies on the desk: the near edge of the stock shows at rest. */
+.card-pos{z-index:2;transform-origin:50% 50%;perspective:2100px;perspective-origin:50% 110%}
+.a-card{position:relative;display:grid;transform-style:preserve-3d;touch-action:pan-y;cursor:grab;border-radius:14px}
+.a-card:active{cursor:grabbing}
+.a-face{grid-area:1/1;height:100%;min-height:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.a-day{transform:translateZ(6px)}
+/* The night face paints only while it faces you (the rig flips visibility at 90°): hidden behind the day face it
+   would still count as painted, and its figure would be the page's largest paint. */
+.a-night{transform:rotateY(180deg) translateZ(6px);visibility:hidden}
+.a-edge{position:absolute;inset:0;border-radius:14px;background:var(--ply);pointer-events:none}
+.a-edge.core{background:var(--ply-core)}
+.a-edge.outer{background:var(--ply-outer);border:1.3px solid var(--ply-line)}
+/* contact shadow as a halftone dot field — countable marks, not a blur */
+.a-shadow{z-index:5;border-radius:14px;pointer-events:none;transform-origin:50% 50%;opacity:0;
+  background-image:radial-gradient(circle,var(--dot) 0 1.05px,transparent 1.45px);background-size:5px 5px}
+/* fig. caption: beside the card's foot on wide screens */
+.sc-fig{position:absolute;left:calc(100% + 12px);bottom:4px;color:var(--pencil);font:11px/1 "IBM Plex Mono",monospace;letter-spacing:.04em;opacity:0;white-space:nowrap}
+
+.sl{transform-origin:50% 50%}
+.sl svg{position:absolute;left:0;top:0;overflow:visible}
+.sl-back{z-index:1}
+.sl-front{z-index:3;cursor:grab}
+.sl-impact{visibility:hidden;pointer-events:none}
+.sl-mouth{position:absolute;pointer-events:none}
+.sl-print{position:absolute;left:0;right:0;top:0;padding:1.2em 1.5em 0;color:var(--kraft-ink);font-size:10px;line-height:1.4;pointer-events:none}
+.sl-k{font:1em/1.3 "IBM Plex Mono",monospace;letter-spacing:.1em;opacity:.8;white-space:nowrap}
+.sl-t{margin-top:.25em;font:500 1.82em/1.1 "DingTalk JinBuTi","Fraunces",serif;letter-spacing:.01em;white-space:nowrap}
+.sl-t-en{font-size:.6em;letter-spacing:.06em}
+.sl-rule{margin-top:.5em;border-top:1.2px solid var(--kraft-rule)}
+.sl-forms{list-style:none;display:flex;flex-wrap:nowrap;gap:1.2em;margin-top:.6em;font:1.02em/1.3 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.05em;white-space:nowrap}
+.sl-forms li{display:flex;align-items:center;gap:.5em}
+.sl-forms [lang=zh]{font-family:"Noto Sans SC",sans-serif}
+.sl-box{position:relative;flex:none;width:1.2em;height:1.2em;border:1.3px solid var(--kraft-ink);border-radius:2px}
+.sl-box svg{position:absolute;left:-2px;top:-6px;overflow:visible}
+.sl-warn{position:absolute;left:1.5em;bottom:1.15em;color:var(--kraft-ink);font:.8em/1.35 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.08em;opacity:.56;pointer-events:none;white-space:nowrap}
+.sl-warn span{display:block}
+.bird{position:absolute;right:14px;top:-41px;width:46px;height:44px;pointer-events:none}
+.bird-sprite{width:100%;height:100%;background:image-set(url("../../assets/derived/strip/bird2-85.webp") 1x,url("../../assets/derived/strip/bird2-170.webp") 2x) 0 0/200% 100% no-repeat}
+.bird.up{transform:translateY(-6px)}
+.bird.up .bird-sprite{background-position:100% 0}
+/* the hand-note beside the card on its first lifts: pencil, hand fonts; a line greys once it has been done */
+.hold-note{position:absolute;z-index:4;color:var(--pencil);font:17px/1.25 var(--hand);pointer-events:none;opacity:0;transform:rotate(-1.5deg);transform-origin:0 0;transition:opacity .16s linear}
+.hold-note.on{opacity:1}
+.hold-note p{margin:0 0 7px}
+.hold-note .hn-zh{display:block;font-size:15px}
+.hold-note .hn-en{display:block;text-wrap:balance}
+.hold-note .done{opacity:.42}
+.grip{position:absolute;z-index:7;border:0;background:none;border-radius:10px;cursor:grab}
+.grip[hidden]{display:none}
+/* the cue: the pen's arrow glyph pointing along the pull, its hand note under the tail (soft ink, never coral) */
+.cue{position:absolute;z-index:4;display:flex;flex-direction:column;align-items:flex-start;color:var(--soft);font:19px/1 var(--hand);pointer-events:none;opacity:0;transition:opacity .12s linear}
+.cue.on{opacity:1}
+.cue-arrow{width:40px;height:24px;flex:none;overflow:visible}
+.cue-t{margin:4px 0 0 -2px;white-space:nowrap;transform:rotate(-3deg)}
+.cue-zh{font-size:17px}
+
+/* ---------- the two faces: every size in card units, 1u = 1/576 of the card's height, set as --u by the rig ---------- */
+.a-card{--u:1px}
+.sc-face{position:relative;display:flex;flex-direction:column;height:100%;border-radius:calc(14*var(--u));padding:calc(19*var(--u)) calc(18*var(--u)) calc(15*var(--u));overflow:hidden;
+  font-family:"Noto Serif SC","Fraunces",Georgia,serif;line-height:1.5;-webkit-user-select:none;user-select:none}
+.sc-face img{-webkit-user-drag:none}
+.sc-day{border:calc(2.2*var(--u)) solid var(--ink);background:var(--paper);color:var(--ink)}
+.sc-night{border:calc(2.2*var(--u)) solid var(--night-edge);background:var(--night);color:var(--night-ink)}
+
+/* head: meta line, the name, the form — identical on both faces so a flip reads as one card */
+.sc-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:calc(10*var(--u));font:calc(9.4*var(--u))/1.4 "IBM Plex Mono",monospace;letter-spacing:.09em}
+.sc-day .sc-meta{color:var(--day-meta)}
+.sc-night .sc-meta{color:var(--night-soft)}
+.sc-title{margin-top:calc(9*var(--u));font-family:"DingTalk JinBuTi","Fraunces",serif;font-size:calc(35*var(--u));line-height:1.08;font-weight:500;white-space:nowrap}
+.sc-title-en{font-family:"IBM Plex Mono",monospace;font-size:.4em;letter-spacing:.08em;vertical-align:.24em}
+.sc-form{margin-top:calc(3*var(--u));font:calc(9.4*var(--u))/1.5 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.08em;color:var(--day-meta)}
+.sc-night .sc-form{color:var(--night-soft)}
+.sc-zh,.sc-en{display:block}
+
+/* day · the figure band: the one quiet region, the seated figure and the coral hand note beside it */
+.sc-art{display:grid;grid-template-columns:calc(118*var(--u)) 1fr;gap:calc(14*var(--u));align-items:center;margin:calc(10*var(--u)) 0 calc(11*var(--u))}
+.sc-figure{height:calc(152*var(--u));display:flex;align-items:flex-end;justify-content:center}
+.sc-figure img{display:block;height:100%;width:auto;max-width:none}
+.sc-note{position:relative;padding:calc(9*var(--u)) 0 0;border-top:calc(1.4*var(--u)) solid var(--mark);color:var(--note-ink);font-family:"MuyaoPleased","Caveat",cursive;transform:rotate(-1.2deg);transform-origin:0 0}
+.sc-note .sc-zh{font-size:calc(16*var(--u));line-height:1.3}
+.sc-note .sc-en{margin-top:calc(3*var(--u));font-family:"Caveat",cursive;font-size:calc(14.5*var(--u));line-height:1.2;letter-spacing:.02em}
+
+/* day · one field list; RANGE is its first row, under the heavy rule */
+.sc-fields{margin-top:auto;border-bottom:1px solid var(--card-rule)}
+.sc-row{display:grid;grid-template-columns:calc(58*var(--u)) 1fr;gap:calc(10*var(--u));padding:calc(5.6*var(--u)) 0 calc(6.2*var(--u));border-top:1px solid var(--card-rule)}
+.sc-row.sc-row-range{border-top:calc(1.5*var(--u)) solid var(--ink)}
+.sc-label{display:block;font:500 calc(9.6*var(--u))/1.35 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.sc-row .sc-label{color:var(--day-meta);padding-top:calc(2.5*var(--u))}
+.sc-l-zh,.sc-l-en{display:block}
+.sc-l-zh{font-family:"Noto Sans SC",sans-serif;letter-spacing:.06em}
+.sc-l-en{margin-top:calc(1*var(--u));font-size:.92em;font-weight:400}
+.sc-row dd{margin:0;min-width:0}
+.sc-row .sc-zh{font-size:calc(14.6*var(--u));line-height:1.42}
+.sc-row .sc-en{margin-top:calc(1*var(--u));font:calc(10.2*var(--u))/1.32 "IBM Plex Mono",monospace;letter-spacing:.01em}
+
+/* night · the radar across the card, then the stand beside its guard skill */
+.sc-night .sc-label,.sc-night .sc-en{color:var(--night-soft)}
+.sc-radar-panel{margin:calc(8*var(--u)) calc(-6*var(--u)) 0}
+.sc-radar{display:block;width:100%;height:auto;overflow:visible}
+.sc-lower{display:grid;grid-template-columns:calc(128*var(--u)) 1fr;gap:calc(10*var(--u));align-items:end;margin-top:auto;padding-top:calc(6*var(--u))}
+.sc-stand{height:calc(186*var(--u));display:flex;justify-content:center;align-items:flex-end;margin-left:calc(-6*var(--u))}
+.sc-stand img{display:block;height:100%;width:auto;max-width:none;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 2.5%,#000 97.5%,transparent 100%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 2.5%,#000 97.5%,transparent 100%);mask-composite:intersect}
+.sc-lower-t{min-width:0;padding-bottom:calc(2*var(--u))}
+.sc-stand-name{margin-bottom:calc(10*var(--u));font-family:"IBM Plex Mono","Noto Sans SC",sans-serif;line-height:1.3}
+.sc-stand-k{display:block;color:var(--night-soft);font-size:calc(9*var(--u));letter-spacing:.09em}
+.sc-stand-name strong{display:block;margin-top:calc(3*var(--u));color:var(--night-ink);font-size:calc(12.5*var(--u));font-weight:500;letter-spacing:.03em}
+.sc-stand-en{display:block;margin-top:calc(1*var(--u));font-size:.8em;letter-spacing:.06em;color:var(--night-soft)}
+.sc-special{border:calc(1.4*var(--u)) dashed var(--night-dash);border-radius:calc(3*var(--u));padding:calc(10*var(--u)) calc(12*var(--u)) calc(11*var(--u))}
+.sc-special .sc-label{color:var(--night-soft)}
+.sc-special-name{margin-top:calc(5*var(--u));color:var(--night-ink)}
+.sc-special-name .sc-zh{font-size:calc(17*var(--u));line-height:1.35}
+.sc-special-name .sc-en{margin-top:calc(2*var(--u));font:calc(10.2*var(--u))/1.35 "IBM Plex Mono",monospace;letter-spacing:.04em}
+
+/* radar marks — pencil on the night stock; coral only for the data (sizes are in viewBox units) */
+.rd-hatch{fill:none;stroke:var(--radar);stroke-width:2.2;stroke-linecap:round}
+.rd-ring,.rd-spoke{fill:none;stroke:var(--night-soft);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.rd-ring{opacity:.72}
+.rd-spoke{opacity:.6}
+.rd-poly{fill:none;stroke:var(--radar);stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.rd-fill{stroke:none;opacity:0}
+.rd-pts circle{fill:var(--radar);stroke:var(--night);stroke-width:3;opacity:0}
+.rd-level{fill:var(--night-soft);font:500 12px "IBM Plex Mono",monospace}
+.rd-label{fill:var(--night-ink);font:500 19px "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.02em}
+.rd-label .rd-en{fill:var(--night-soft);font-size:17px;font-weight:400;letter-spacing:.01em}
+
+/* ---------- statement + contact row (text first, line icon, the pen's marks) ---------- */
+.sc-statement{width:min(700px,100%);margin-top:40px;padding-top:18px;border-top:1.5px solid var(--line);text-align:center}
+.sc-statement .st-zh{display:block;font-family:"Noto Serif SC",serif;font-size:clamp(18px,2.6vw,25px);line-height:1.5}
+.sc-statement .st-en{display:block;margin-top:7px;color:var(--soft);font:11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.035em}
+.contact-footer{width:100%}
+.soc-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 24px;margin-top:16px}
+.soc{display:inline-flex;align-items:center;gap:7px;padding:7px 2px;border:0;background:none;color:var(--ink);font:12px/1 "IBM Plex Mono",monospace;letter-spacing:.04em;cursor:pointer}
+.soc-ico{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.soc-t{position:relative;white-space:nowrap}
+.soc-zh{font:11.5px/1 "Noto Sans SC",sans-serif;color:var(--soft);letter-spacing:.02em}
+.soc-wx{position:relative;display:inline-flex}
+.qr-slip{position:absolute;right:-18px;bottom:calc(100% + 14px);z-index:30;width:152px;padding:12px 12px 9px;background:var(--slip);border:1px solid var(--slip-edge);box-shadow:3px 4px 0 rgba(51,48,43,.1);text-align:center;
+  opacity:0;visibility:hidden;transform:translateY(12px) rotate(-7deg) scale(.94);transform-origin:70% 100%;transition:transform .5s var(--ease-settle),opacity .12s linear,visibility 0s linear .5s}
+.qr-slip.on{opacity:1;visibility:visible;transform:rotate(-2deg);transition:transform .5s var(--ease-settle),opacity .1s linear,visibility 0s}
+.qr-slip::before{content:"";position:absolute;left:50%;top:-9px;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(3deg)}
+.qr-slip img{display:block;width:126px;height:126px;object-fit:cover;margin:0 auto}
+.qr-cap{display:block;margin-top:6px;font:9.5px/1.3 "IBM Plex Mono","Noto Sans SC",monospace;color:var(--pencil)}
+
+/* a narrow stage stacks the rig: the sleeve above the card, then set aside at the page's left edge */
+.rig.stacked .sc-fig{left:auto;right:4px;bottom:-20px}
+.rig.stacked .hold-note{font-size:15px}
+.rig.stacked .hold-note p{margin-bottom:4px}
+.rig.stacked .hold-note .hn-zh,.rig.stacked .hold-note .hn-en{display:inline}
+.rig.stacked .hold-note .hn-zh{font-size:13.5px}
+.rig.stacked .hold-note .hn-en::before{content:" · "}
+.rig.stacked.held .bird{right:-6px}   /* the bird hops along the set-aside sleeve's top edge into the part that shows */
+@media (max-width:680px){
+  .about-page{padding:0 0 60px}
+  .about-stage{margin-top:18px;padding:0 18px}
+  .rig{margin:0 -18px;width:calc(100% + 36px);height:calc(22px + 96vw)}   /* the rig takes the page edge to edge, for the sleeve set aside there */
+  .sc-statement{text-align:left;margin-top:36px}
+  .soc-row{justify-content:flex-start;gap:2px 20px}
+  .bird{top:-36px;width:40px;height:38px}
+  .cue{font-size:17px}
+  .cue-zh{font-size:15px}
+}
+@media (max-width:380px){.guide-kicker{letter-spacing:.08em;font-size:11px}}
+@media (prefers-reduced-motion:reduce){.hold-note,.cue,.qr-slip,.qr-slip.on{transition:none}}

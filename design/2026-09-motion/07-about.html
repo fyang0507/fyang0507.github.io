@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 · The specimen card, in hand — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="07-about-card.css"><link rel="stylesheet" href="07-about.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 07</div><h1 class="board-title">The specimen card, in hand <span class="display-cn">标本卡</span></h1></div>
+    <div><p class="board-why">The field-guide card — day form <b>架桥者 · BUILDER</b>, night form <b>见证者 · WITNESS</b> — is the site's most characterful object, and its interaction argues with the taste. Pointer tilt paints a <b>glossy radial white glare</b> across it, the FLIP button runs an <b>endless shimmer sweep</b>, and the flip itself is a button-triggered rotateY of a <b>zero-thickness plane</b>: a screen pretending to be a card. The night side's radar arrives already finished, and the contact row is five generic circles.</p>
+      <p class="evidence">evidence: <code>About.dc.html:53–54</code> .tilt-glare radial white gloss · <code>About.dc.html:107–112</code> shimmer, infinite · <code>About.dc.html:52, 400–401</code> two flat faces, rotateY on a button · <code>About.dc.html:284–292</code> static radar · <code>About.dc.html:118–120</code> circle icons, colour-swap hover · <code>About.dc.html:91</code> coral glow on the stand figure · <code>About.dc.html:38, 45</code> bird bump on a 6 s loop</p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Hold the card <span class="display-cn">拿在手里</span></span><span class="cand-mech">tilt · drag-throw flip · pen radar · physics + hand's clock</span></div>
+      <div class="stage a-stage">
+        <div class="sc-kicker">FIELD GUIDE · SET 01 · SPECIMEN 001</div>
+        <div class="flip-slot"></div>
+        <div class="a-hold">
+          <div class="a-shadow" aria-hidden="true"></div>
+          <div class="a-card" id="a-card" tabindex="0" role="group" aria-roledescription="specimen card · 标本卡" aria-label="标本卡，日间形态。左右拖动或按回车翻面。Specimen card, day form. Drag sideways or press Enter to flip.">
+            <article class="sc-face sc-day a-face a-day" aria-hidden="false"></article>
+            <article class="sc-face sc-night a-face a-night" aria-hidden="true"></article>
+          </div>
+          <div class="a-bird" aria-hidden="true"><div class="a-bird-sprite"></div></div>
+          <div class="sc-fig" aria-hidden="true">fig.04</div>
+        </div>
+        <blockquote class="sc-statement"><span class="sc-zh" lang="zh">世如未竟天工卷，格物致知珞玉心。</span><span class="sc-en" lang="en">BY DAY, I MAKE THINGS HAPPEN. BY NIGHT, I KEEP THEM FROM DISAPPEARING.</span></blockquote>
+        <div class="soc-slot"></div>
+        <span class="hint a-hint"><span class="hand-cn">拖住，甩一下</span> · grab it, throw it ↔</span>
+      </div>
+      <div class="cand-foot"><div>A thick mounted specimen card that you hold. Tilt now shows its <b>greyboard edge</b> instead of a glare, and a <b>halftone contact shadow</b> slides opposite the tilt and narrows as the card turns. Drag sideways and let go: the spring picks the nearest face from the angle and the release velocity, overshoots once, then settles. On arrival at night the witness takes notes: rings, spokes and the polygon each draw in one pen pass, and the six grades are stamped in on held beats. The bird on the corner only moves when the card moves under it.<div class="tradeoff"><b>cost</b> 7 flat ply layers + one rAF loop that sleeps at rest · <b>a11y</b> card is focusable (Enter / Space / ← →), FLIP is a real button with aria-pressed, the hidden face is aria-hidden, the radar keeps its title/desc · <b>support</b> preserve-3d everywhere; touch uses pan-y so vertical scroll survives · <b>reduced motion</b> no tilt, instant face swap, radar already drawn</div></div><button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Peel day to night <span class="display-cn">揭开</span></span><span class="cand-mech">clip-path fold · reflected flap · physics clock</span></div>
+      <div class="stage b-stage">
+        <div class="flip-slot"></div>
+        <div class="b-card" id="b-card">
+          <article class="sc-face sc-night b-base"></article>
+          <div class="b-label"><div class="sc-face sc-day b-lface"></div></div>
+          <div class="b-flapwrap"><div class="b-flap" aria-hidden="true"><div class="sc-face sc-day b-ghost"></div></div></div>
+          <button type="button" class="b-tab" aria-label="揭开日间标签，露出夜间形态。Peel off the day label to show the night form."></button>
+          <span class="b-cue" aria-hidden="true"><svg viewBox="0 0 60 40"><path d="M52 34C44 33 30 27 20 14"/><path d="M19 23l1-10 9 3"/></svg><span class="hand-cn">揭开</span> peel</span>
+        </div>
+        <span class="hint"><span class="hand-cn">捏住折角</span> · pinch the dog-ear, pull it off</span>
+      </div>
+      <div class="cand-foot"><div>The day form is a printed label stuck on the night card. Pull the dog-ear and the label folds back along a line that follows your finger; the flap shows the label's reverse, the print ghosting through the paper. Past about a tenth of the label it peels off and hangs from the card's side; press it to smooth it back on. It says something true — night is underneath — but makes the day form a cover rather than a face.<div class="tradeoff"><b>cost</b> two clip-path polygons + one matrix per move, no 3D · <b>a11y</b> the dog-ear and the hung label are buttons; Enter runs an automated peel · <b>support</b> clip-path everywhere · <b>reduced motion</b> label jumps straight to hanging, radar drawn · <b>risk</b> the hung label needs side room: on a phone it hangs below the card and costs ~300 px</div></div><button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">The sleeve <span class="display-cn">卡套</span></span><span class="cand-mech">two cards, one kraft sleeve · physics clock</span></div>
+      <div class="stage c-stage">
+        <div class="flip-slot"></div>
+        <div class="c-rig" id="c-rig">
+          <div class="c-card c-night-card"><article class="sc-face sc-night" aria-hidden="true"></article></div>
+          <div class="c-card c-day-card"><article class="sc-face sc-day"></article></div>
+          <div class="c-sleeve">
+            <svg class="c-kraft" aria-hidden="true"></svg>
+            <div class="c-print" aria-hidden="true">
+              <div class="c-print-k">FIELD GUIDE · SET 01 · 001</div>
+              <div class="c-print-t"><span lang="zh">标本卡</span> · SPECIMEN CARDS</div>
+              <div class="c-print-s"><span lang="zh">内含两种形态</span> · CONTAINS 2 FORMS</div>
+              <ul class="c-forms"><li><span class="c-box"></span><span lang="zh">日间形态</span> · DAY</li><li><span class="c-box"></span><span lang="zh">夜间形态</span> · NIGHT</li></ul>
+            </div>
+            <button type="button" class="c-notch" aria-label="把这张收回卡套，抽出另一张。Tuck this card away and draw out the other."></button>
+          </div>
+        </div>
+        <span class="hint"><span class="hand-cn">收回去，再抽一张</span> · tuck it in, draw the other</span>
+      </div>
+      <div class="cand-foot"><div>Two cards, one kraft sleeve. When the stage arrives the day card slides out of the sleeve on a spring and the sleeve gives a little the other way; flipping tucks it back and draws the night card out, and a pen tick on the sleeve's printed checklist moves to the form that is out. Tactile and collectible — but it is a swap, not a turn: the two forms stop being two sides of one person.<div class="tradeoff"><b>cost</b> three springs, no 3D · <b>a11y</b> FLIP and the thumb notch are buttons; the tucked card is aria-hidden · <b>support</b> everywhere · <b>reduced motion</b> instant swap · <b>risk</b> needs a card's width of side room: on a phone the sleeve becomes a pocket below the card</div></div><button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A, Hold the card.</b> It keeps the object as one card with two sides, which is what the page is saying (“by day, I make things happen; by night, I keep them from disappearing”). It fixes the gloss by moving physicality from light to matter: glare goes, and edge, contact and weight come in. It gives the flip a cause your own hand owns, grab and throw, and it gives the night side its one dense event, the witness filling in the chart.</p>
+    <p>Keep tilt at 7° or less so the edge is a glimpse, not a feature. Retire the 6 s bird bump loop: the bird now only reacts when the card moves under it. The redesigned FLIP control (turn glyph + pen underline) and the text-first contact row carry over to any candidate. B's dog-ear is the strongest idea from the other two; it could return later as the WIP-style “there's more under here” cue, but not as the primary flip.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：标本卡是一张有厚度的卡纸，两面是同一个人的昼与夜。把它拿在手里、甩一下、翻过来。
+动作时钟：物理时钟 —— 卡片的倾斜、拖拽翻面、接触阴影、二维码纸条（弹簧，一次小回弹后停稳）；手的时钟 —— 雷达图逐笔画出、六个评级按拍子盖章（约 8 帧/秒，无缓动）、小鸟的姿势切换（定格两帧）。
+映射：指针位置 → 卡片被按下的一侧后仰，灰板纸边露出来；拖拽与松手速度 → 甩动惯性，落到最近的一面；卡片抬起 → 网点阴影变远、变淡；卡片转动 → 阴影随投影宽度收窄；抵达夜面 → 见证者开始记录（环、辐、多边形各一笔，评级逐拍落点）；卡片在脚下动 → 小鸟惊起一拍。
+线条计划：雷达环与辐线用铅笔色单笔，带一点稳定的抖动；多边形用珊瑚色单笔、保留锐角、收笔略过起点；悬停只用笔的下划线；联系方式图标单线、钝头。
+色彩计划：去掉白色高光、流光、人物背后的珊瑚光晕；日面珊瑚色只留给手写批注，夜面珊瑚色只留给雷达多边形（特殊技能框改为铅笔虚线）；接触阴影用半色调网点，不用模糊。</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="07-about-kit.js"></script><script src="07-about-a.js"></script><script src="07-about-b.js"></script><script src="07-about-c.js"></script>
+</body></html>

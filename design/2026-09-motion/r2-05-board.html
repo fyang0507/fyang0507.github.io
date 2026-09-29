@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2 · 05 · The corkboard, in hand — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="r2-05-cards.css"><link rel="stylesheet" href="r2-05-board.css"><link rel="stylesheet" href="r2-05-wordmark.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 05 · ROUND 2</div><h1 class="board-title">The corkboard, in hand <span class="display-cn">取下来看的软木板</span></h1></div>
+    <div><p class="board-why">Fred picked <b>A + C + W</b>: pinned-paper physics, unpin to read, and a flat ink wordmark. Round 1 showed them as three separate boards, so nothing proved they could live in one object — a press that drags versus a press that unpins, a card that leaves mid-swing, a card that comes back to a moving board. And W's coral underline, a pen stroke that bows and lifts at the end, <b>reads as Amazon's smile-arrow</b> under a two-word name.</p>
+      <p class="evidence">evidence: <code>Building.dc.html:66</code> overflow strip · <code>:141–143</code> gradient orbit · <code>:168</code> blur-in popover · round 1 <code>05-board.html</code> A, C, W · <code>shared/pen.js:47</code> underline “lifts at the end”</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 1">
+    <div class="changed-k">WHAT CHANGED<br>FROM ROUND 1</div>
+    <ol>
+      <li><q>A+C+W makes sense</q><span class="arr">→</span><p><b>One board, one physics loop.</b> Drag, the pendulum swing, the unpin flight, the placement home and the ripple all run in the same loop. A card you unpin mid-swing leaves with the angle and spin it had; a card you pin back arrives swinging, and follows its slot if you drag the board while it is on the way.</p></li>
+      <li><q>W's curved highlight looks very like the Amazon logo</q><span class="arr">→</span><p><b>No curve that rises at one end.</b> Five treatments, each live on the real lead card — full stop, level rule, loop, asterisk sticker, coral pin — beside the round-1 stroke for reference. Try any of them on the full board with the wordmark switch. Pick: <b>W2, the level rule</b>.</p></li>
+      <li><q>surprise / WOW</q><span class="arr">→</span><p><b>The board answers the pin.</b> Pull a card and its neighbours lean into its wake. Push the pin back and the thump travels through the cork: near cards answer first, far ones later and less. And the cork under a lifted card is a shade darker — it hasn't faded like the rest.</p></li>
+    </ol>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Pinned paper, unpin to read <span class="display-cn">钉着的纸，取下来看</span></span><span class="cand-mech">one loop: pan + pendulums + flight + ripple · physics clock; pin pop/press on the hand's clock</span></div>
+      <div class="stage stage--cork">
+        <div class="stage-note"><span class="hand">throw the board · take a card down to read it<span class="zh">拖一下 · 取下来看</span></span>
+          <div class="wm-switch" role="group" aria-label="Try a wordmark on the lead card"><span class="wm-switch-k">wordmark</span></div></div>
+        <div id="board-main"></div>
+      </div>
+      <div class="stage stage--phone">
+        <div class="phone" id="phone" aria-label="The same board on a 390px phone"><div class="phone-screen">
+          <div class="phone-title"><div class="k"><b>02</b>building</div><h3 lang="zh">在造。</h3></div>
+          <div id="board-phone"></div>
+        </div></div>
+        <div class="phone-notes">
+          <h3>On a phone · 390px <span class="display-cn">手机上</span></h3>
+          <ol>
+            <li><b>Swipe sideways:</b> the board follows the thumb 1:1 and coasts on the release; the slips trail, swing past once, and go still. <b>Up or down</b> scrolls the page as always (<code>touch-action: pan-y</code>).</li>
+            <li><b>Tap a card:</b> the pin pops, the card comes to the middle of the screen — scaled to fit — and its field note unfolds beneath it. Tap outside or <b>pin it back · 钉回去</b> to return it.</li>
+            <li><b>No accidental unpins:</b> a press only becomes a drag after 6px of sideways travel; a tap that stops a moving board is a catch, not an unpin; a swipe never follows a link.</li>
+            <li><b>The page title's coral goes ink</b> (在造。) so the lead card's wordmark is the one accent on the first screen.</li>
+            <li><b>Reduced motion:</b> the board still pans under the thumb but never coasts; no swing, no ripple; the card and its note simply appear, and go back the same way.</li>
+          </ol>
+          <span class="hand">the board is one material: what you do to one card, the others feel.</span>
+        </div>
+      </div>
+      <div class="cand-foot"><div>Drag, swipe or trackpad the board: it has momentum and soft ends, and every slip hangs from its pin as a damped pendulum. Click, tap or Enter a card and it comes off its pin <i>as it is</i> — mid-swing, lifted by hover, even while the board steps — is carried to you on a spring, and a field note hinges open beneath it. Esc, outside or “pin it back” places it home on a path that starts from its current speed, so Esc mid-flight simply turns it round. The pin is pushed in, and the board answers.
+        <div class="tradeoff"><b>cost</b> one rAF loop per board, asleep at rest; the unpinned card is a body in that loop, not a second animation system (~300 + ~240 lines) · <b>a11y</b> Tab: board (←/→ step, Enter unpins the card in view) → each card's title or “+” (Enter/Space unpins) → its links; note is a modal dialog, focus trapped, Esc returns focus to the trigger · <b>support</b> pointer events, <code>overflow: clip</code>, container queries, WAAPI</div></div>
+        <div class="replays"><button class="replay" data-replay="replayFling">↻ fling</button><button class="replay" data-replay="replayUnpin">↻ unpin mid-swing</button></div></div>
+    </article>
+
+    <article class="cand" id="cand-w">
+      <div class="cand-head"><span class="cand-letter">W</span><span class="cand-name">Lead wordmark, without the smile <span class="display-cn">主卡字标 · 不要微笑</span></span><span class="cand-mech">static ink · one coral event · each on the real lead card, at phone card size</span></div>
+      <div class="wm-study">
+        <div class="wm-tile wm-tile--was" data-variant="smile">
+          <div class="wm-tile-head"><span class="wm-no">R1</span><span class="wm-name">Round-1 underline <span class="display-cn">第一轮</span></span><span class="wm-tag">was</span></div>
+          <div class="wm-card"></div>
+          <p class="wm-cap"><b>Bows, then lifts at the end</b> — pen.js's underline is a wrist finishing a stroke. Under a two-word name that is Amazon's a→z arrow: a concave arc whose right end rises.</p>
+          <p class="wm-why"><b>why it failed</b> · curvature + a rising terminal + placement under a name = a logo swoosh.</p>
+          <div class="wm-tile-foot"><span></span><button class="wm-redraw" type="button">↻ redraw</button></div>
+        </div>
+        <div class="wm-tile" data-variant="stop">
+          <div class="wm-tile-head"><span class="wm-no">W1</span><span class="wm-name">Coral full stop <span class="display-cn">句号</span></span><span class="wm-tag">typed</span></div>
+          <div class="wm-card"></div>
+          <p class="wm-cap"><b>Typed, not drawn.</b> Same face, same weight; one glyph changes colour, tapped in over two held frames. Rhymes with the page title 在造。 — but a full stop turns a name into a sentence.</p>
+          <p class="wm-why"><b>not a smile</b> · a dot has no length and no direction, and nothing sits under the word.</p>
+          <div class="wm-tile-foot"><button class="wm-try" type="button">try on the board ↑</button><button class="wm-redraw" type="button">↻ redraw</button></div>
+        </div>
+        <div class="wm-tile pick" data-variant="rule">
+          <div class="wm-tile-head"><span class="wm-no">W2</span><span class="wm-name">Level pen rule <span class="display-cn">一笔平划</span></span><span class="wm-tag">pick</span></div>
+          <div class="wm-card"></div>
+          <p class="wm-cap"><b>One pass, left to right, under “Agent” only.</b> Level to within half a pixel, round-capped, and it simply stops. The concept Fred accepted in round 1 — the pen says “highlighted” — with the curve taken out.</p>
+          <p class="wm-why"><b>not a smile</b> · zero curvature and no lift; the end sits a hair <i>lower</i> than the start, never higher. Both things that make the smile are absent.</p>
+          <div class="wm-tile-foot"><button class="wm-try" type="button">try on the board ↑</button><button class="wm-redraw" type="button">↻ redraw</button></div>
+        </div>
+        <div class="wm-tile" data-variant="loop">
+          <div class="wm-tile-head"><span class="wm-no">W3</span><span class="wm-name">Pen loop <span class="display-cn">圈出来</span></span><span class="wm-tag">drawn</span></div>
+          <div class="wm-card"></div>
+          <p class="wm-cap"><b>Fred circled it.</b> The pen's own mark for “this one”, the loop the site uses for a current state. The most hand-annotated of the five — and the heaviest: a lot of coral line round a display word.</p>
+          <p class="wm-why"><b>not a smile</b> · a closed ring has no free end under the word; its lower arc is answered by the upper one, and the overshoot finishes high on the left.</p>
+          <div class="wm-tile-foot"><button class="wm-try" type="button">try on the board ↑</button><button class="wm-redraw" type="button">↻ redraw</button></div>
+        </div>
+        <div class="wm-tile" data-variant="star">
+          <div class="wm-tile-head"><span class="wm-no">W4</span><span class="wm-name">Asterisk sticker <span class="display-cn">星号贴纸</span></span><span class="wm-tag">stuck on</span></div>
+          <div class="wm-card"></div>
+          <p class="wm-cap"><b>A footnote someone stuck on.</b> A die-cut sticker like the identity stickers, its coral asterisk drawn one stroke per held frame. The footnote's other end is the label: the dot before HIGHLIGHTED becomes an ink asterisk.</p>
+          <p class="wm-why"><b>not a smile</b> · radial and footnote-high; nothing runs under or along the word. <b>risk</b> · a superscript after a name can read as ™.</p>
+          <div class="wm-tile-foot"><button class="wm-try" type="button">try on the board ↑</button><button class="wm-redraw" type="button">↻ redraw</button></div>
+        </div>
+        <div class="wm-tile" data-variant="pin">
+          <div class="wm-tile-head"><span class="wm-no">W5</span><span class="wm-name">Ink word, coral pin <span class="display-cn">红图钉</span></span><span class="wm-tag">object</span></div>
+          <div class="wm-card"></div>
+          <p class="wm-cap"><b>The accent leaves the word for the object.</b> Plain ink wordmark; the lead card's pin head is the coral — the pin that pops when you unpin it and is pushed in when you pin it back.</p>
+          <p class="wm-why"><b>not a smile</b> · no mark near the type at all. <b>cost</b> · the smallest accent of the five, and among the other pin colours it reads as a pin colour, not as “highlighted”.</p>
+          <div class="wm-tile-foot"><button class="wm-try" type="button">try on the board ↑</button><button class="wm-redraw" type="button">↻ redraw</button></div>
+        </div>
+      </div>
+      <div class="cand-foot"><div>Every tile is the real lead card — same renderer, markup and CSS as the board — at the width it has on a 390px phone, where the title is smallest (~65px). The board above shows the chosen treatment at desktop size (~89px); the switch swaps it live, including on the card in your hand.
+        <div class="tradeoff"><b>colour</b> with any treatment the lead's label dot, meta slashes and link underlines go ink, and the lead's pin goes ink (W1–W4), so the treatment is the card's only coral · <b>a11y</b> all marks are <code>aria-hidden</code>; the title's accessible name stays “Fred Agent” · <b>reduced motion</b> marks appear already drawn</div></div>
+        <button class="replay" data-replay="replayW">↻ redraw all</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship A with C folded in, and W2.</b> The board is one material now: moving it swings the paper, taking a card down drafts its neighbours, pinning it back thumps the cork. Every motion has a hand behind it — yours, the board's edge, the pin — and at rest nothing moves. For the wordmark, the level rule keeps what Fred accepted in round 1 (flat ink, the pen saying “highlighted”) and removes exactly what he objected to: the bow and the lift.</p>
+    <p>Watch the tuning: the press ripple is the one register break on this page (~3° at the nearest card, under 1° at the far end), and the wake is kept smaller than it so the two never compete. If the ripple feels like a party trick after the tenth time, halve <code>PRESS.ampDeg</code> — don't remove it; it is what makes re-pinning feel like a pin going into cork. W3 (loop) is the runner-up if Fred wants the wordmark to feel more annotated; W5 only works if the other pins go ink.</p>
+    <div class="record">执行模式：多阶段第二轮（受控变体 → 等待 Fred 选择）
+表达锚点：钉在软木板上的纸，是同一种材料——拖板，纸会晃；取下一张，旁边的会被带一下；钉回去，整块板都感觉得到。
+动作时钟：物理时钟（板的动量与软边；纸以图钉为轴的阻尼摆；取下后弹簧送到面前、一次小过冲；放回时五次多项式路径，从当前速度出发；按钉的震动以有限速度在软木里传开）。手的时钟（拔钉两帧定格 + 笔划刻痕；按钉三帧定格 + 冲击刻痕；星号三笔各一帧）。
+映射：拖动速度/加速度 → 纸片滞后与回摆；卡片离开的气流 → 邻卡朝空位倾一下（近大远小，有先后）；拇指按钉 → 震动由近及远传开，近卡先动、远卡后动且更小；被取下时的摆角与角速度 → 飞行的起始状态；放回时的余摆 → 挂回图钉后继续摆；纸下的软木没有褪色 → 取下后露出略深的一块和针孔。
+线条计划：卡片、图钉、胶带、撕边沿用；字标去掉渐变与上扬的弧线，W2 为“Agent”下一笔平直珊瑚色笔划（按元素种子固定、只画一次、末端不高于起点）。
+色彩计划：珊瑚色唯一持有者 = 主卡字标的笔划；主卡标签圆点、分隔斜线、链接下划线、主卡图钉、页面标题“造”一律改墨色；木板大阴影去掉。</div></div></section>
+</main>
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-05-cards.js"></script><script src="r2-05-physics.js"></script><script src="r2-05-unpin.js"></script><script src="r2-05-wordmark.js"></script><script src="r2-05-board.js"></script>
+</body></html>

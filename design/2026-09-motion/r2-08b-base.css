@@ -1,0 +1,112 @@
+/* r2-08b-base.css — Reading.dc.html's real typography and geometry, scoped to a scroller (.rd) that stands in for
+   the browser window (100vw → 100cqw; viewport media queries → container queries). Light-only copy of
+   08-reading-base.css, plus the round-1 B note typography every candidate here shares: notes in small upright
+   serif, sources in ink, dates as machine-side facts in utility mono. Never hand fonts for citations. */
+
+/* ---- stage shell (mock) ---- */
+.cands.wide .stage.rd-stage{min-height:0;padding:0;background:var(--paper)}
+.rd-frame{position:relative;height:min(780px,calc(100vh - 150px));min-height:520px;margin:0 auto;overflow:hidden;background:var(--paper)}
+.rd-stage.phone{background:var(--paper2)}
+.rd-stage.phone .rd-frame{max-width:390px;border-left:1.5px solid var(--ink);border-right:1.5px solid var(--ink)}
+.rd-stage .rd-hint{z-index:30;left:auto;right:22px;bottom:16px;transition:opacity .4s}
+.rd-stage.scrolled .rd-hint,.rd-stage.phone .rd-hint{opacity:0}
+.rd-prog{position:absolute;z-index:25;top:0;left:0;right:0;height:2px;background:#938979;transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+
+/* ---- tokens: Reading.dc.html:27–34 (light) ---- */
+.rd{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;
+  --card-shadow:0 1px 2px rgba(60,50,35,.05),0 10px 26px rgba(60,50,35,.06);--hero-nav-overlap:165px;
+  position:relative;isolation:isolate;display:block;height:100%;overflow-x:hidden;overflow-y:auto;
+  container:rd / inline-size;background:var(--paper);color:var(--ink);line-height:1.5;font-family:var(--text-cn),serif;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.rd.lang-en{font-family:var(--text),Georgia,serif}
+.rd a{color:inherit;text-decoration:none}.rd a:hover{color:var(--mark)}
+.rd .zh,.rd .en{font-family:inherit}
+.rd.lang-zh .en,.rd.lang-en .zh{display:none!important}
+.rd :focus-visible{outline:2px solid var(--mark);outline-offset:4px}
+
+/* ---- wrap + nav: Reading.dc.html:49–57 ---- */
+.rd-page{max-width:1200px;margin:0 auto;padding:0 46px;position:relative}
+.rd .rnav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid transparent;position:sticky;top:0;z-index:100;
+  width:100cqw;margin-left:calc(50% - 50cqw);padding-left:max(46px,calc((100cqw - 1200px)/2 + 46px));padding-right:max(46px,calc((100cqw - 1200px)/2 + 46px))}
+.rd.nav-solid .rnav{background:var(--paper);border-bottom-color:var(--line)}
+.rd .rnav-mid{flex:1;min-width:0;align-self:stretch}
+.rd .brand,.rd .right{display:flex;align-items:center;gap:11px;position:relative;z-index:2}
+.rd .brand-mark{width:34px;height:34px;object-fit:contain;flex:none}
+.rd .back{font-family:var(--util);font-size:13px;letter-spacing:.04em;color:var(--soft)}.rd.lang-zh .back{font-family:var(--util-cn)}
+.rd .btn{border:1.5px solid var(--line);background:var(--paper2);color:var(--soft);height:34px;min-width:34px;padding:0 11px;border-radius:999px;cursor:pointer;font-size:13px;font-family:var(--util);display:grid;place-items:center}
+.rd .btn:hover{color:var(--mark);border-color:var(--mark)}
+
+/* ---- article + hero: Reading.dc.html:58–75 ---- */
+.rd article{max-width:640px;margin:0 auto;padding:56px 0 40px;position:relative}
+.rd article:has(.has-wash){padding-top:0}
+.rd .kicker{display:inline-block;font-family:var(--util);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px 11px;margin-bottom:16px}
+.rd.lang-zh .kicker{font-family:var(--util-cn);letter-spacing:.08em;text-transform:none}
+.rd .title{font-family:var(--disp);font-size:clamp(34px,5vw,52px);line-height:1.1;letter-spacing:-.01em;font-weight:600}
+.rd.lang-zh .title{font-family:var(--disp-cn);font-weight:400;line-height:1.2;letter-spacing:.02em}
+.rd .meta{margin-top:18px;font-family:var(--util);font-size:13px;letter-spacing:.05em;color:var(--pencil);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.rd.lang-zh .meta{font-family:var(--util-cn);letter-spacing:.02em}.rd .meta .dot{color:var(--line)}
+.rd .article-intro{position:relative}
+.rd .article-intro.has-wash{width:100cqw;min-height:480px;margin-left:calc(50% - 50cqw)}
+.rd .article-intro-copy{position:relative;z-index:2}
+.rd .article-intro.has-wash .article-intro-copy{width:min(640px,calc(100cqw - 92px));margin:0 auto;padding-top:46px}
+.rd .post-wash{position:absolute;z-index:0;top:calc(-1 * var(--hero-nav-overlap));left:0;right:0;width:100%;height:calc(100% + var(--hero-nav-overlap));margin:0;overflow:hidden;opacity:.34;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 44%,rgba(0,0,0,.72) 66%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 44%,rgba(0,0,0,.72) 66%,transparent 100%)}
+.rd .post-wash img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.18);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
+
+/* ---- body: Reading.dc.html:76–116 ---- */
+.rd .post-body{position:relative}
+.rd .post-body p{font-size:18px;line-height:1.72;margin:0}
+.rd .post-body.zh p{font-size:17px;line-height:1.9}
+.rd .post-body strong{font-weight:600}.rd .post-body em{font-style:italic}.rd .post-body.zh em{font-style:normal}
+.rd .post-body a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--mark);text-decoration-thickness:1px;text-underline-offset:3px}
+.rd .sec{position:relative}
+.rd .sec-no{font:600 18px/1.72 var(--text);margin:93px 0 31px}
+.rd .post-body.zh .sec-no{font:600 17px/1.9 var(--text-cn);margin:97px 0 32px}
+.rd .post-body .sec:first-child .sec-no{margin-top:0}
+
+/* margin notes, readable (round-1 B): small upright serif, sources in ink, dates in utility mono */
+.rd .mn{float:right;clear:right;position:relative;width:210px;margin:4px -258px 22px 0;font:13px/1.6 var(--text);color:var(--soft)}
+.rd .post-body.zh .mn{font:13px/1.75 var(--text-cn)}
+.rd .mn .num{display:inline-block;margin-right:7px;font:500 11px/1.2 var(--util);color:var(--pencil)}
+.rd .mn em,.fn-t em{font-style:normal;color:var(--ink)}
+.rd .mn a{color:inherit;text-decoration:none}
+.rd .d{font:10.5px/1 var(--util);letter-spacing:.02em;color:var(--pencil);white-space:nowrap}
+.rd .reference-note{overflow-wrap:anywhere}.rd .ref-cite{white-space:nowrap}
+.rd .fnref{font-family:var(--util);font-size:.7em;position:relative;top:-.5em;vertical-align:baseline}
+.rd .fnref a{position:relative;display:inline-block;padding:0 2px;line-height:1.2;color:var(--ink);font-weight:500;text-decoration:none}
+.rd .fnref a:hover{color:var(--ink)}
+.rd .fnref a:focus-visible{outline:1.5px dashed var(--ink);outline-offset:2px}   /* the pen is the coral event */
+.fn-wire{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:5}
+
+.rd .appendix{clear:both;position:relative;margin-top:58px;padding-top:30px;border-top:1px solid var(--line);color:var(--soft)}
+.rd .appendix::before{content:"✦";position:absolute;top:0;left:50%;transform:translate(-50%,-50%);padding:0 12px;background:var(--paper);color:var(--pencil);font-size:12px}
+.rd .post-body .appendix-title{margin:0 0 18px;font-family:var(--util);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--pencil)}
+.rd .post-body .appendix-list{list-style:none;margin:0;padding:0}
+.rd .post-body .appendix-item{display:grid;grid-template-columns:24px minmax(0,1fr);gap:9px;margin:0 0 12px;font-size:14px;line-height:1.62;color:var(--soft);overflow-wrap:anywhere;scroll-margin-top:92px}
+.rd .post-body.zh .appendix-item{line-height:1.75}
+.rd .post-body .appendix-item a{text-decoration:none;color:var(--ink)}
+.rd .appendix-number{padding-top:2px;font-family:var(--util);font-size:11px;color:var(--pencil)}
+.rd .post-body .appendix-postscript{margin-top:16px;font-size:13px}
+
+/* ---- ending: Reading.dc.html:117–123 ---- */
+.rd .pn{display:flex;margin:14px 0 8px}
+.rd .pn a{flex:1;border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--paper2);box-shadow:var(--card-shadow)}
+.rd .pn .lab{font-family:var(--util);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
+.rd .pn .t{margin-top:6px;font-size:16px}
+.rd footer{padding:26px 0 60px}
+.rd footer .row{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:20px;font-family:var(--util);font-size:12.5px;color:var(--pencil)}
+
+/* ---- responsive: Reading.dc.html:124–125 as container queries ---- */
+@container rd (max-width:1080px){.rd .mn{display:none}}
+@container rd (max-width:640px){
+  .rd-page{padding:0 22px}
+  .rd .rnav{padding:16px 22px}
+  .rd article{padding:36px 0 30px}
+  .rd .brand-mark{width:30px;height:30px}.rd .back{font-size:12px}
+  .rd .article-intro.has-wash{min-height:380px}
+  .rd .article-intro.has-wash .article-intro-copy{width:calc(100cqw - 44px);padding-top:26px}
+  .rd .post-wash{opacity:.27}.rd .post-wash img{transform:scale(1.22)}
+  .rd .post-body p{font-size:17px}
+  .rd footer .row{flex-direction:column}
+  .rd .title{overflow-wrap:anywhere}
+}

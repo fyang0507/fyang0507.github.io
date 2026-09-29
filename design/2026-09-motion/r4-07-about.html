@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R4 · 07 · Out of the side — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r3-07-about-card.css"><link rel="stylesheet" href="r4-07-about.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 07 · ROUND 4</div><h1 class="board-title">Out of the side <span class="display-cn">从侧面抽出来</span></h1></div>
+    <div><p class="board-why">Round 3 gave the specimen card its shape (7:12) but kept round 2's direction: the sleeve stood up and the card came out of its bottom, toward you. For a long card that is the less likely way to store it. Card sleeves, tarot boxes and library pockets open on a short end, and you slide the card out <b>lengthwise</b>. Fred asked for exactly that: out of the right side.</p>
+      <p class="evidence">evidence: <code>r3-07-about.html</code> the sleeve stands on its mouth; the pull runs down the page, and the card in your hand has to share the column with the sleeve above it (390×668 at 1440×900) · <code>About.dc.html:47</code> the live card has no sleeve at all</p></div>
+  </header>
+
+  <section class="r4-changed" aria-label="What changed from round 3">
+    <div><div class="r4-k">FRED, ON ROUND 3</div><p class="r4-quote">“Instead of taking out from the bottom, can we take it out from the side (right side)? More realistic design with a long card.”</p></div>
+    <div><p class="r4-did"><b>The sleeve now lies on its side with its mouth on the right</b>, and the card lies inside along its long axis with its top deepest. You pull it out to the right. Friction eases as less card is inside, the edge catches on the lip, the lip bows, and it pops free with two frames of impact ticks. Its bottom rows come out first and the name <b>架桥者 · BUILDER</b> clears the lip last. Then it is lifted into your hand and <b>turned upright</b>: a quarter turn on the physics clock with one small overshoot. From there it is r3's A, unchanged: tilt, throw to flip, radar pen-drawn.</p>
+      <p class="r4-did">The card, the faces and the sleeve's print are r3's, the print re-laid for a side mouth. The sleeve sits left of centre and the card sits beside it rather than under it, so on a desktop the card in your hand grows to 432×740 (r3: 390×668) and the whole motion still fits one 900px screen. A drag to the <b>right</b> throws the card over; a drag to the <b>left</b>, toward the mouth, sets it down turned back to landscape and pushes it in. The pen follows Fred's board-02 call: the hover underline and focus 「 」 are coral, the chosen option is the wheat band, and the cue is r3-02's arrow glyph.</p></div>
+    <div class="r4-dir"><svg class="dir" viewBox="0 0 330 184" role="img" aria-label="Pull direction. Round 3: the sleeve stands upright and the card is pulled down out of it. Round 4: the sleeve lies on its side with its mouth on the right; the card is pulled out to the right along its long axis, then turned a quarter turn upright into the hand."><text class="dir-k" x="6" y="12">R3</text><rect x="20" y="58" width="40" height="68" rx="3" fill="none" stroke="#938979" stroke-width="1.2"/><rect x="14" y="24" width="52" height="70" rx="2" fill="none" stroke="#938979" stroke-width="1.2"/><path d="M80 92 L80 120" fill="none" stroke="#938979" stroke-width="1.6" stroke-linecap="round"/><path d="M77.1 114.2 L80 120 L82.7 114.6" fill="none" stroke="#938979" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><text x="6" y="150">pull down</text><text class="dir-k" x="118" y="12">R4</text><rect x="152" y="66" width="72" height="42" rx="3" fill="#FBF6EC" stroke="#33302B" stroke-width="1.4"/><rect x="118" y="62" width="72" height="50" rx="2" fill="#D5BB8F" stroke="#33302B" stroke-width="1.5"/><path d="M190 81 A6 6 0 0 0 190 93" fill="#FBF6EC" stroke="#33302B" stroke-width="1.2"/><path d="M232 87 L258 86" fill="none" stroke="#33302B" stroke-width="1.6" stroke-linecap="round"/><path d="M252.3 89.2 L258 86 L252.5 83.5" fill="none" stroke="#33302B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><rect x="276" y="48" width="42" height="72" rx="3" fill="#FBF6EC" stroke="#33302B" stroke-width="1.4"/><path d="M244 72 Q252 48 270 46" fill="none" stroke="#33302B" stroke-width="1.4" stroke-linecap="round"/><path d="M264.2 42.3 L270 46 L264.6 50.1" fill="none" stroke="#33302B" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><text x="118" y="150">pull right, then ¼ turn upright</text><text class="dir-dim" x="118" y="164">along the long axis</text><text class="dir-dim" x="118" y="178">the name clears the lip last</text></svg>
+      <p class="dir-cap">the new pull: along the card's long axis, out of the right side, then a quarter turn into the hand</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Out of the side, then upright <span class="display-cn">侧抽，再竖起来</span></span><span class="cand-mech">sideways friction pull · lip catch · lift + quarter turn · throw-flip · pen radar · physics + hand's clock</span></div>
+      <div class="stage hs-stage">
+        <div class="sc-kicker">FIELD GUIDE · SET 01 · SPECIMEN 001</div>
+        <div class="ctl-slot"></div>
+        <div class="rig">
+          <div class="sl sl-back" aria-hidden="true"><svg></svg></div>
+          <div class="card-pos">
+            <div class="a-card" id="r4-card" tabindex="-1" role="group" aria-roledescription="specimen card · 标本卡" aria-label="标本卡，日间形态。按回车或右箭头翻面，按左箭头或 Esc 放回卡套。Specimen card, day form. Enter or Arrow Right turns it over; Arrow Left or Escape puts it back in the sleeve.">
+              <article class="sc-face sc-day a-face a-day" aria-hidden="false"></article>
+              <article class="sc-face sc-night a-face a-night" aria-hidden="true"></article>
+            </div>
+            <div class="sc-fig" aria-hidden="true">fig.04</div>
+          </div>
+          <div class="sl sl-front">
+            <svg class="sl-kraft" aria-hidden="true"></svg>
+            <div class="sl-print" aria-hidden="true">
+              <div class="sl-k">FIELD GUIDE · 001</div>
+              <div class="sl-t"><span lang="zh">标本卡</span> <span class="sl-t-en">SPECIMEN CARD</span></div>
+              <div class="sl-rule"></div>
+              <ul class="sl-forms"><li><span class="sl-box"></span><span><span lang="zh">日间</span> DAY</span></li><li><span class="sl-box"></span><span><span lang="zh">夜间</span> NIGHT</span></li></ul>
+            </div>
+            <div class="sl-warn" aria-hidden="true"><span lang="zh">请勿折叠</span><span>DO NOT BEND</span></div>
+            <svg class="sl-impact" aria-hidden="true"></svg>
+            <div class="bird" aria-hidden="true"><div class="bird-sprite"></div></div>
+            <button type="button" class="sl-hit" tabindex="-1" aria-hidden="true" aria-controls="r4-card" aria-label="把标本卡收回卡套。Put the specimen card back in its sleeve."></button>
+          </div>
+          <div class="a-shadow" aria-hidden="true"></div>
+          <button type="button" class="grip" aria-controls="r4-card" aria-label="从卡套里抽出标本卡。按回车，或往右拖。Pull the specimen card out of its sleeve: press Enter, or drag right."></button>
+          <div class="cue" aria-hidden="true"><svg class="cue-arrow" viewBox="0 -12 40 24"></svg><span class="cue-t"><span class="hand-cn">抽出来</span> · pull</span></div>
+        </div>
+        <blockquote class="sc-statement"><span class="sc-zh" lang="zh">世如未竟天工卷，格物致知珞玉心。</span><span class="sc-en" lang="en">BY DAY, I MAKE THINGS HAPPEN. BY NIGHT, I KEEP THEM FROM DISAPPEARING.</span></blockquote>
+        <div class="soc-slot"></div>
+        <span class="hint hs-hint"></span>
+      </div>
+      <div class="cand-foot"><div>The sleeve lies on the desk on its side, the card's end showing at the mouth through a thumb notch. <b>Pull</b> it to the right. It holds, slips, then slides, and the hand holding the sleeve gives a little the other way. The field rows come out first and the name last, and the edge catches on the lip for a beat before it pops free. It is <b>lifted and turned upright</b> in one movement: it comes up to full size and tips toward you, and a beat later it swings a quarter turn to portrait and settles past upright once. In the hand it is round-1 A. Throw it to the right to turn it over. Drag it to the left and it is set back down on its side at the mouth, then pushed in.
+        <div class="tradeoff"><b>cost</b> as r3: one rAF loop that sleeps at rest · 9 flat plies · the lip is one path rewritten only while it moves · the quarter turn is one more spring · <b>fit</b> 1440×900: the whole motion, the pull and the upright card (432×740), fits one screen; the stage grows as the card is lifted, as in r2 and r3 · 390×844: the sleeve sits top left, the card comes out to its right (the sleeve gives 25px past the page edge) and turns upright into the centre, with nothing outside the page · <b>a11y</b> the sliver is a real button (Enter / Space / → pulls, then focus moves to the card; Enter / → turns it over, ← / Esc puts it back and focus returns to the sliver); coral 「 」 on focus; hidden face aria-hidden; radar keeps title/desc · <b>touch</b> every card gesture is sideways: the grip is <code>touch-action: pan-y</code> and so is the card, so vertical swipes always scroll; tap to pull or re-sleeve · <b>reduced motion</b> card presented upright out of the sleeve, flips and re-sleeving instant, radar already drawn</div></div>
+        <div class="foot-ctl"><div class="or-tog" role="group" aria-label="Sleeve orientation · 卡套方向"><span class="or-k">pull along <span lang="zh">抽出方向</span></span>
+          <button type="button" class="or-b" data-or="long" aria-pressed="true"><span class="or-t">long axis</span> <span class="or-n"><span lang="zh">长边 · 卡套横放</span> · pick</span></button>
+          <button type="button" class="or-b" data-or="short" aria-pressed="false"><span class="or-t">short axis</span> <span class="or-n"><span lang="zh">短边 · 卡套竖放</span></span></button></div>
+          <button class="replay" data-replay="replayR4">↻ replay</button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship A along the long axis.</b> This is the realistic version of Fred's note. A long card is stored in a sleeve that fits it end-on, so it comes out lengthwise: the pull is long (1.6 card widths), the name clears the lip last, and the quarter turn into your hand is a real beat, not decoration, because that is how you'd pick up a card that was lying on its side. It also fits better. With the sleeve beside the card instead of above it, the upright card gets the screen's whole height.</p>
+    <p>The <b>short-axis</b> alternative (the toggle under the stage) keeps the sleeve standing, with its mouth on the long right edge, and the card slides out sideways with no turn. It is cheaper and the pull is easy to fit on a phone, but the travel is half as long (0.9 card widths) and the catch has less to hold. A sleeve open along a long edge is also the one that lets a card fall out. It reads as a wallet slot, not a keepsake sleeve.</p>
+    <p>Watch: in the hand the card now shares its axis between two gestures. A drag to the right throws it over, a drag to the left (toward the sleeve) puts it back, and a throw to the left no longer flips it. A tap and Enter still flip. On a phone the sleeve gives about a sixth of its length (25px) past the left edge while you pull, which is what keeps the finger inside the screen, then springs back. The re-sleeve's first beat is autonomous: the card is set down on its side by the mouth (on a phone that is to the right of where it was held), and only then does the drag push it in.</p>
+    <div class="record">执行模式：精修（第四轮 · 改抽出方向，卡与卡面不变）
+表达锚点：长卡平放在卡套里，从右侧开口顺着长边抽出来，拿起来时再竖过来；像从书签袋、塔罗牌盒里抽出一张卡。
+动作时钟：物理时钟 —— 往右抽（先粘住、再打滑；摩擦随套里剩下的长度递减；握卡套的那只手往反方向让一点）、卡在卡套口（卡套口向右弯）、松脱（两只手各自一顿，卡套弹回并扭一下）、拿起（放大、前倾），稍后四分之一转竖起来（一次小回弹）、倾斜、往右甩翻面、半色调接触阴影；放回：往左拖 → 先放下并转回横向，再推进卡套；手的时钟 —— 两帧冲击线、小鸟的定格姿势、雷达逐笔画出、卡套清单上的钢笔勾。
+映射：手指往右拖 → 卡片从右侧滑出，套里剩得越多越慢；卡片末端碰到卡套口 → 卡住、卡套口被拉弯；拉力超过摩擦 → 卡片弹出；拿起 → 放大并竖起来，卡套整个露在左边；往右拖 → 翻面；往左拖（朝卡套口）→ 放下、转横、推进去；竖向滑动一律交给页面滚动。
+版式：桌面 —— 卡套在中线左边，卡在它右边同一条中线上，拿在手里的卡 432×740，整段动作一屏之内、不推动页面；手机 —— 卡套在左上，卡往右抽（卡套往左让出最多四分之一），竖起来落到中间。
+笔：悬停下划线与焦点「 」用珊瑚色（短暂）；选中用麦色色带；提示箭头用 r3-02 的箭头字形（短、近直、落点端正），珊瑚色，是本视图唯一的“指”，第一次抽出后本次会话不再出现。
+色彩计划：牛皮纸为结构色；静止时珊瑚色只在日面手写批注 / 夜面雷达（以及抽出前的一支提示箭头）；无高光、无流光、无光晕，接触阴影用网点。</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script><script src="r3-02-arrow.js"></script>
+<script src="r4-07-about-kit.js"></script><script src="r4-07-about-sleeve.js"></script><script src="r4-07-about-rig.js"></script><script src="r4-07-about-hands.js"></script>
+</body></html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3 · 05 · The corkboard's pick — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="r2-05-cards.css"><link rel="stylesheet" href="r2-05-board.css"><link rel="stylesheet" href="r3-05-board.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 05 · ROUND 3</div><h1 class="board-title">The corkboard's pick <span class="display-cn">主卡上的小红花</span></h1></div>
+    <div><p class="board-why">Fred liked <b>W4</b> — a small sticker someone stuck on at the end of “Fred Agent” — but an <b>asterisk says “see the sidenote”</b>, not “this is the one”. It was worse than the glyph: the sticker sat in superscript position and the label's dot became a second asterisk, so the pair read as a footnote and its mark. The lead card needs a mark people already give to <i>the pick</i>, in the same place, at the same size.</p>
+      <p class="evidence">evidence: round 2 <code>r2-05-wordmark.js:70</code> W4 asterisk · <code>r2-05-wordmark.css:8</code> label dot → “*” · <code>r2-05-cards.css:47</code> lead pin <code>--pin-color</code> · live <code>Building.dc.html:138</code> label dot in coral</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 2">
+    <div class="changed-k">WHAT CHANGED<br>FROM ROUND 2</div>
+    <ol>
+      <li><q>the asterisk means more “look at this sidenote” more than “this is what we want to highlight”</q><span class="arr">→</span><p><b>Four marks that mean “the pick”, in W4's exact place.</b> Same logic — stuck on at the end of “Agent”, at W4's size (scaled with the title), applied once — with the marks people award: the teacher's <b>小红花</b> (pick), the teacher's <b>star</b> in coral, a <b>荐 seal</b> that is stamped rather than stuck, and a prize <b>rosette</b>. The footnote's other end is gone: the label's dot is a plain dot again. All four sit beside W4 at real size below.</p></li>
+      <li><q>The pin can also change the color (W5), though the difference is nuance</q><span class="arr">→</span><p><b>Try it with the pin switch — and the pin stays ink.</b> A coral pin plus a coral mark on one card is two accents, not one: the eye has to travel between them. The mark rides with the paper when you unpin it; the pin is the board's hardware and stays behind.</p></li>
+      <li><q>I like 04</q><span class="arr">→</span><p><b>Kept: W4's form and the whole board.</b> The r2 corkboard loads unchanged (drag, pendulums, unpin to read, re-pin ripple). New is one moment: the first time the lead card is seen in a session, the mark is <b>applied</b> — pressed on, a tiny settle, one flap stays lifted; the seal is one press that leaves uneven ink. Then nothing moves.</p></li>
+    </ol>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">The pick, stuck on <span class="display-cn">贴上去的小红花</span></span><span class="cand-mech">round-2 board unchanged · the mark applied once per session: hand's clock (held frame) → physics clock (press, settle, flap)</span></div>
+      <div class="stage stage--cork">
+        <div class="stage-note"><span class="hand">the first time you see it, someone sticks it on<span class="zh">第一次看到时，贴上去</span></span>
+          <div class="r3-switches">
+            <div class="wm-switch" role="group" aria-label="Featured mark on the lead card" data-group="icon"><span class="wm-switch-k">mark</span></div>
+            <div class="wm-switch" role="group" aria-label="Lead card pin colour" data-group="pin"><span class="wm-switch-k">pin</span></div>
+            <button class="r3-apply" type="button" data-replay="replayApply">↻ apply again</button>
+          </div></div>
+        <div id="board-main"></div>
+      </div>
+      <div class="stage stage--phone">
+        <div class="phone" id="phone" aria-label="The same board on a 390px phone"><div class="phone-screen">
+          <div class="phone-title"><div class="k"><b>02</b>building</div><h3 lang="zh">在造。</h3></div>
+          <div id="board-phone"></div>
+        </div></div>
+        <div class="phone-notes">
+          <h3>On a phone · 390px <span class="display-cn">手机上</span></h3>
+          <ol>
+            <li><b>Real size:</b> the title is <span data-size="phone-title">65</span>px and the mark <span data-size="phone-mark">27</span>px across — about as small as it gets. The flower still reads at that size because it is five round petals and a centre, nothing finer.</li>
+            <li><b>Applied once per session,</b> the first time the lead card is actually on screen (60% of the word visible), a third of a second after it arrives — so it happens in front of you, not while you scroll past. The next visit in the same session finds it already there (<code>sessionStorage</code>, never <code>localStorage</code>).</li>
+            <li><b>Tap to unpin:</b> the mark is on the paper, so it comes with the card into your hand, lifted flap and all. The pin stays in the cork.</li>
+            <li><b>Coral on the first screen:</b> the mark is the one accent. The page title's full stop stays ink (from round 2) and the lead's pin stays ink.</li>
+            <li><b>Reduced motion:</b> the mark is already applied — flap lifted, ink dry. No press, no settle.</li>
+          </ol>
+          <span class="hand">it was given, not printed: someone had to decide this one.</span>
+        </div>
+      </div>
+      <div class="r3-pinq">
+        <div><h3>The pin: ink <span class="display-cn">图钉保持墨色</span></h3></div>
+        <p><b>A coral sticker and a coral pin on the same card are two spends, not one.</b> The rule counts what the eye has to reconcile, and here they are two small coral events ~145px apart on desktop and ~195px on a phone, with the wordmark between them — the glance goes pin → mark → pin. They also mean different things: the mark is on the paper and travels with it when you take the card down; the pin is the board's hardware, shared by every card in six muted colours, so a coral one reads as “a red pin”, not “the pick”. Keep the pin ink. W5's idea only works if it is the <i>only</i> coral on the card — i.e. instead of a mark, which is round 2's W5 and the weakest of its five.</p>
+      </div>
+      <div class="cand-foot"><div>The round-2 board, unchanged, with the lead card's wordmark carrying the chosen mark. Switch the mark and the pin colour above; each switch re-applies the mark so you see its motion. Take the lead card down (click “Fred Agent”) and the mark comes with it.
+        <div class="tradeoff"><b>cost</b> one SVG per mark (~1 KB), two WAAPI animations on first view, then static; the press is a kick to the card's existing scale spring, no new loop · <b>a11y</b> the mark is <code>aria-hidden</code>; the label already says HIGHLIGHTED, and the title's accessible name stays “Fred Agent” · <b>reduced motion</b> applied already · <b>memory</b> <code>sessionStorage</code> only</div></div>
+        <div class="replays"><button class="replay" data-replay="replayApply">↻ apply</button><button class="replay" data-replay="replayUnpin">↻ unpin the lead</button></div></div>
+    </article>
+
+    <article class="cand" id="cand-f">
+      <div class="cand-head"><span class="cand-letter">F</span><span class="cand-name">Four marks at real size <span class="display-cn">实际尺寸对比</span></span><span class="cand-mech">the real lead card, cropped · top: 1440 (title 89px) · bottom: 390 (title 65px)</span></div>
+      <div class="r3-strip">
+        <div class="r3-tile r3-tile--was" data-icon="asterisk">
+          <div class="r3-tile-head"><span class="r3-no">W4</span><span class="r3-name">Asterisk sticker <span class="display-cn">星号贴纸 · 第二轮</span></span><span class="r3-tag">was</span></div>
+          <div class="r3-crops"><div class="r3-crop r3-crop--d"></div><div class="r3-crop r3-crop--m"></div></div><p class="r3-size"></p>
+          <p class="r3-cap"><b>A footnote someone stuck on.</b> Radial strokes from a point, in superscript position, answered by an asterisk on the label: together they say “see below”.</p>
+          <ul class="r3-checks"><li><b>why it failed</b> · an asterisk points away from itself, to a note. That is the opposite of “this one”.</li></ul>
+          <div class="r3-tile-foot"><span></span><button class="r3-redo" type="button">↻ redraw</button></div>
+        </div>
+        <div class="r3-tile pick" data-icon="flower">
+          <div class="r3-tile-head"><span class="r3-no">F1</span><span class="r3-name">Little red flower <span class="display-cn">小红花</span></span><span class="r3-tag">pick</span></div>
+          <div class="r3-crops"><div class="r3-crop r3-crop--d"></div><div class="r3-crop r3-crop--m"></div></div><p class="r3-size"></p>
+          <p class="r3-cap"><b>What a teacher sticks beside the best work in the class.</b> A coral paper flower on a cream die-cut; the ink line is the scissors. One petal didn't take the glue.</p>
+          <ul class="r3-checks"><li><b>not an asterisk</b> · a closed shape with a centre, not strokes from a point</li><li><b>not a sale badge</b> · five round petals, no burst, no word</li><li><b>not an emoji</b> · flat coral, cut edge, one lifted petal; no gloss, no face</li></ul>
+          <div class="r3-tile-foot"><button class="r3-try" type="button">try on the board ↑</button><button class="r3-redo" type="button">↻ apply</button></div>
+        </div>
+        <div class="r3-tile" data-icon="star">
+          <div class="r3-tile-head"><span class="r3-no">F2</span><span class="r3-name">Teacher's star <span class="display-cn">老师的星星</span></span><span class="r3-tag">stuck on</span></div>
+          <div class="r3-crops"><div class="r3-crop r3-crop--d"></div><div class="r3-crop r3-crop--m"></div></div><p class="r3-size"></p>
+          <p class="r3-cap"><b>The gold star, in coral.</b> A gummed paper star, blunt corners, one point lifted. The most universal “featured” — and the most generic: it is every favourites button too.</p>
+          <ul class="r3-checks"><li><b>not an asterisk</b> · filled, no strokes crossing</li><li><b>not a sale badge</b> · five points, not a burst</li><li><b>risk</b> · reads as ★ “favourite / rating”, a UI icon</li></ul>
+          <div class="r3-tile-foot"><button class="r3-try" type="button">try on the board ↑</button><button class="r3-redo" type="button">↻ apply</button></div>
+        </div>
+        <div class="r3-tile" data-icon="seal">
+          <div class="r3-tile-head"><span class="r3-no">F3</span><span class="r3-name">Seal <span class="display-cn">荐 · 印章</span></span><span class="r3-tag">stamped</span></div>
+          <div class="r3-crops"><div class="r3-crop r3-crop--d"></div><div class="r3-crop r3-crop--m"></div></div><p class="r3-size"></p>
+          <p class="r3-cap"><b>Stamped, not stuck.</b> 荐, “recommended” — the bookseller's and editor's mark for the one to read. It lands on its left edge, rocks flat, and the ink goes into the paper unevenly.</p>
+          <ul class="r3-checks"><li><b>not an asterisk</b> · a square with a character</li><li><b>risk</b> · red square + one character is also the 🈹 emoji; tilt, chipped edge and uneven ink keep it an impression</li><li><b>cost</b> · 荐 is Chinese text: paired by HIGHLIGHTED, needs the font subset</li></ul>
+          <div class="r3-tile-foot"><button class="r3-try" type="button">try on the board ↑</button><button class="r3-redo" type="button">↻ stamp</button></div>
+        </div>
+        <div class="r3-tile" data-icon="rosette">
+          <div class="r3-tile-head"><span class="r3-no">F4</span><span class="r3-name">Prize rosette <span class="display-cn">奖章花结</span></span><span class="r3-tag">stuck on</span></div>
+          <div class="r3-crops"><div class="r3-crop r3-crop--d"></div><div class="r3-crop r3-crop--m"></div></div><p class="r3-size"></p>
+          <p class="r3-cap"><b>The first-prize rosette</b> — the West's 大红花. Pleated coral disc, two tails; one tail end curls off the card.</p>
+          <ul class="r3-checks"><li><b>not an asterisk</b> · a disc with tails</li><li><b>risk</b> · at 27px the pleats blur toward a price burst, and 🏵️ is close</li><li><b>tone</b> · “first prize” is a competition; the others are praise</li></ul>
+          <div class="r3-tile-foot"><button class="r3-try" type="button">try on the board ↑</button><button class="r3-redo" type="button">↻ apply</button></div>
+        </div>
+      </div>
+      <div class="cand-foot"><div>Each crop is the real lead card — same renderer, markup and CSS as the board — at the container width it has on a 1440 screen and inside a 390 phone, cropped round the end of the word. Nothing is scaled: this is how big the mark is.
+        <div class="tradeoff"><b>colour</b> each mark is the card's only coral; the label dot, meta slashes and link underlines stay ink, as in round 2 · <b>seeded</b> every mark is cut from a fixed seed, so every visit gets the same flower</div></div>
+        <button class="replay" data-replay="replayStrip">↻ apply all</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>F1, the little red flower, with an ink pin.</b> It keeps everything Fred liked about W4 — a small thing a person stuck on, in the same place at the same size — and swaps the meaning from “see the note” to “this one was picked”. A 小红花 is given, not earned by default: a teacher chose it for the best work of the day. Stuck on your own project by your own hand, it is also a dry self-deprecating joke — a 小红花 you gave yourself — which keeps it 萌 rather than 媚. It needs no text, so no language is left out, and it survives the phone size because it is only five round petals and a centre.</p>
+    <p>The real alternative is <b>F3, the 荐 seal</b>, if Fred wants “recommended” said outright and prefers a press to a sticker: it is the most precise meaning and the crispest motion, but it adds a Chinese glyph to the card (paired by the English label, and it needs 荐 in the font subset) and sits closest to the red-square emoji. The star is the safe universal and therefore generic; the rosette is the busiest at 27px and says “first prize”, which is competition rather than praise.</p>
+    <div class="record">执行模式：多阶段第三轮（受控迭代 → 等待 Fred 选择）
+来源：r2-05 的 W4 星号贴纸（Fred 喜欢其形式）＋ Fred 批注“星号是‘看旁注’，不是‘这是重点’”
+事实：W4 的问题不只在字形——右上角上标位置＋标签圆点改成星号，两者合起来就是“注释符号＋注释”。
+取 / 舍：取 W4 的贴纸形式、位置与尺寸（随标题字号缩放，约 0.42–0.46 倍）、一次性出现；舍 星号、标签上的第二个星号、上标式的悬空感（新标记略压在 t 的肩上，像是被按上去的）。
+候选：F1 小红花（推荐）· F2 老师的星星 · F3 荐字白文印章（按上去，不是贴上去）· F4 奖章花结。
+表达锚点：老师把小红花贴在最好的那份作业旁边——有人挑过，才有这一朵。
+源形距离：低（可辨认的真实物件：纸花贴纸 / 印章印迹）
+主载体：线条主导＋一块平涂珊瑚色（贴纸的剪刀线为墨线，花瓣为平涂色块，花心为纸色加墨圈）
+渲染分辨率：低（五个圆瓣＋花心，27px 仍可辨）
+动作时钟：手的时钟（贴纸在指间停一帧；印章先落左边一帧、压平湿墨一帧、抬起）→ 物理时钟（按下时卡片在软木上微微一沉、贴纸小幅回正一次、没粘住的花瓣翘起并停住）。之后完全静止。
+映射：拇指按压 → 卡片沿原有缩放弹簧轻沉一下；胶水抓住 → 一次小的回转过冲；一瓣没粘住 → 沿折痕翘起、变短，阴影只落在朝光的一侧（与板上纸片的阴影同向）；印章受力不均 → 右上角露纸的斑点、缺角。
+线条计划：墨线只做剪刀线（24 单位中 1.1，略轻于 W4 的 1.3，贴纸属重笔区 ≈1:24）；折痕不画线，翘起只靠变短的花瓣和其下的接触阴影；印章无墨线，白文由纸色让出。其余沿用 r2 卡片。
+色彩计划：珊瑚色唯一持有者 = 主卡上的标记；主卡图钉、标签圆点、分隔斜线、链接下划线、页面标题句号一律墨色。珊瑚图钉＋珊瑚标记算两次花费，不采用。
+记忆：每次会话只贴一次（sessionStorage），不跨访问记忆。
+需要 Fred 决定：小红花（被挑中的那一份）还是 荐 印章（直接说“推荐”）？</div></div></section>
+</main>
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-05-cards.js"></script><script src="r2-05-physics.js"></script><script src="r2-05-unpin.js"></script><script src="r2-05-wordmark.js"></script>
+<script src="r3-05-icons.js"></script><script src="r3-05-sticker.js"></script><script src="r3-05-board.js"></script>
+</body></html>

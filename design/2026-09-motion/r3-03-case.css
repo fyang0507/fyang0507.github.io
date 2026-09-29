@@ -1,0 +1,69 @@
+/* r3-03-case.css — the bookcase at rest: r2-04 A's paper boxes (r2-04-shelf.css), copied and grown to planks.
+   Book boxes, ghost book, planks with a front lip, contact stipple, invisible hit links, the bird. The cover /
+   obi / title page / reading page come from r2-04-book.css, loaded unchanged. Flat tones, ink edges, no light.
+   --sk scales the spine furniture (title, badge, bands) with the book width: 1 on r2-04's shelf. */
+
+.sh-view{position:absolute;inset:0;overflow:hidden}
+.sh-view.strip{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.sh-view.strip::-webkit-scrollbar{display:none}
+.sh-world{position:absolute;left:0;top:0;height:100%;transform-style:preserve-3d;pointer-events:none}
+.b3{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+.f{position:absolute;left:0;top:0;transform-origin:0 0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+/* A leaving book fades face by face: opacity on the box itself would flatten its 3D. */
+.b3.book .f{opacity:var(--o,1)}
+.b3.book.is-out,.stip.is-out{display:none}
+
+/* ---- a book: five paper faces ---- */
+.book{--bw:1.5px}
+.f-spine > .bk-spine{position:absolute;inset:0;background:var(--tone);border:var(--bw) solid var(--ink);overflow:hidden}
+.bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);max-height:85%;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--disp-cn);font-size:calc(var(--fs) * var(--sk,1));line-height:1.25;letter-spacing:.03em;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+.series .bk-title{color:#efe5d3;max-height:70%}
+/* Series number as a paper library label, not a coral chip: coral stays on 写. */
+.bk-badge{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font:500 calc(9px * var(--sk,1))/1 var(--util);padding:3px 3px 2px;border-radius:1px;letter-spacing:.02em}
+.bk-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid rgba(51,48,43,.26)}
+.bk-band.b1{top:calc(5px * var(--sk,1))}.bk-band.b2{top:calc(8.5px * var(--sk,1))}.bk-band.b3{bottom:calc(6px * var(--sk,1))}
+.series .bk-band{border-color:rgba(239,229,211,.26)}
+.f-top{background:var(--page) repeating-linear-gradient(90deg,transparent 0 3.2px,rgba(51,48,43,.2) 3.2px 4px);border:var(--bw) solid var(--ink);border-bottom:0}
+.f-fore{background:var(--page) repeating-linear-gradient(90deg,transparent 0 3.2px,rgba(51,48,43,.2) 3.2px 4px);border:var(--bw) solid var(--ink)}
+.f-back{background:var(--tone);border:var(--bw) solid var(--ink);border-right-width:0}
+.f-cov{transform-style:preserve-3d;backface-visibility:visible;-webkit-backface-visibility:visible}
+/* the pen under a held book's obi title: board 02's thin edge, not coral (coral is 写's) */
+.obi-zh > svg path{stroke:var(--hl-ink)}
+
+/* ---- the ghost of the next essay ---- */
+.g-front{border:1.5px dashed var(--pencil);border-bottom:0;display:grid;place-items:center}
+.g-front span{font:calc(15px * var(--sk,1))/1 var(--hand-cn);color:var(--pencil);writing-mode:vertical-rl}
+.g-top{border:1.5px dashed var(--pencil);border-bottom:0}
+
+/* ---- planks ---- */
+.pl-top{background:var(--plank);border:1.5px solid var(--ink);border-bottom:0}
+.pl-lip{background:var(--lip);border:1.5px solid var(--ink)}
+/* the shelf label: a printed paper slip on the lip, pencil ink; a plank with nothing matching dims a step */
+.pl-lab{position:absolute;left:18px;top:50%;transform:translateY(-50%);padding:1.5px 6px 1px;background:var(--page);border:1px solid rgba(51,48,43,.42);
+  font:500 10.5px/1.05 var(--util);letter-spacing:.08em;color:var(--pencil);white-space:nowrap;transition:color .2s linear,border-color .2s linear}
+.pl-lab.is-none{color:rgba(147,137,121,.58);border-color:rgba(51,48,43,.2)}
+.stip{background-repeat:repeat-x;background-position:0 0;transition:opacity .12s linear}
+/* the one empty span (2020): a pencilled note lying on the top plank */
+.case-empty{position:absolute;left:0;top:0;font:21px/1.25 var(--hand),var(--hand-cn);color:var(--pencil);white-space:nowrap;transform-origin:0 100%;opacity:0;transition:opacity .2s linear}
+.case-empty span{display:block;font:17px/1.3 var(--hand-cn)}
+.case-empty.on{opacity:1}
+
+/* ---- hit targets: flat links laid exactly over the spines (z = +1px); the boxes never take the pointer ---- */
+.hits{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.bk-hit{position:absolute;display:block;transform:translateZ(1px);pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;scroll-snap-align:center}
+.bk-hit.is-out{display:none}
+.bk-hit:focus,.bk-hit:focus-visible{outline:none}
+.book.held .f-spine,.book.held .leaf-front,.book.held .leaf-back,.book.held .p1{pointer-events:auto;cursor:pointer}
+
+/* ---- the bird (hand's clock: stepped frames; its sprite ground line is clipped so the book is the ground) ---- */
+.bird{position:absolute;left:0;top:0;pointer-events:none}
+.bird-f{position:absolute;inset:0;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat;clip-path:inset(0 0 18% 0)}
+
+/* ---- phone: the cue above the strip ---- */
+.case-cue{position:absolute;left:0;right:0;top:4px;text-align:center;font:19px/1.2 var(--hand);color:var(--pencil);transform:rotate(-2deg);pointer-events:none;transition:opacity .2s;z-index:2}
+.case-cue span{margin-left:8px;font:15px/1.2 var(--hand-cn)}
+.case-cue.off{opacity:0}
+.wr.is-phone .rd-title{font-size:30px}
+.wr.is-phone .rd-col{width:calc(100% - 36px);padding-top:30px}
+.wr.is-phone .rd-meta{white-space:normal}
+.wr.is-phone .rd-body{font-size:15.5px}

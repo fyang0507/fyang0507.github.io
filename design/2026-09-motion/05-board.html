@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 · The corkboard, with weight — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="05-cards.css"><link rel="stylesheet" href="05-board.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 05</div><h1 class="board-title">The corkboard, with weight <span class="display-cn">软木板</span></h1></div>
+    <div><p class="board-why">The corkboard is the right metaphor, but it behaves like a carousel: an <b>overflow strip with ←/→ buttons</b>, cards that ignore being moved, a <b>heavy drop shadow under the board</b>, and a hover that slides each card — and its pin — 4px up the cork. The lead card's “Fred Agent” wordmark runs an <b>orbiting three-hue gradient</b> on a 7-second loop: gradient plus motion with no cause, the most off-taste thing on the site. Pinned paper should hang: trail the board, settle when it stops, lift off its pin when touched, and otherwise hold perfectly still.</p>
+      <p class="evidence">evidence: <code>Building.dc.html:66</code> overflow-x strip · <code>:569–575</code> scrollBy buttons · <code>:58</code> board shadow 0 18px 42px · <code>:91,105,120</code> hover translateY(−4px) carries the pin · <code>:141–143</code> highlightGradientOrbit · <code>:168,176</code> detail note blurs in from 11px</p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Pinned paper physics <span class="display-cn">图钉物理</span></span><span class="cand-mech">drag momentum + damped pendulum on the pin · physics clock</span></div>
+      <div class="stage stage--cork">
+        <div class="stage-note"><span class="hand">grab the board and throw it — or trackpad, or ← →<span class="zh">拖一下</span></span><span>idle = perfectly still · loop sleeps at rest</span></div>
+        <div id="board-a"></div>
+      </div>
+      <div class="stage stage--phone">
+        <div class="phone" aria-label="Candidate A on a 390px phone"><div class="phone-screen">
+          <div class="phone-title"><div class="k"><b>02</b>building</div><h3 lang="zh">在<span>造</span>。</h3></div>
+          <div id="board-phone"></div>
+        </div></div>
+        <div class="phone-notes">
+          <h3>On a phone · 390px <span class="display-cn">手机上</span></h3>
+          <ol>
+            <li><b>Swipe sideways:</b> the board follows the thumb 1:1, then coasts on the release velocity. The slips trail your swipe, swing past once when the board stops, and go still.</li>
+            <li><b>Swipe up or down:</b> the page scrolls as it always has — the board only claims horizontal gestures (<code>touch-action: pan-y</code>). No scroll-jacking.</li>
+            <li><b>Past the last card:</b> the cork gives a little (rubber-band resistance) and springs back; the paper takes that bump too.</li>
+            <li><b>Tap:</b> links and “+” work as today; a touch that ended a drag never follows a link.</li>
+            <li><b>Reduced motion:</b> the board still pans under the thumb, but never coasts or springs, and the paper never swings.</li>
+          </ol>
+          <span class="hand">paper, not rubber: one overshoot, then nothing.</span>
+        </div>
+      </div>
+      <div class="cand-foot"><div>Drag, swipe or trackpad the board: it carries momentum and meets soft resistance at the ends. Each slip hangs from its pin as a damped pendulum — it trails while the board moves, swings past once when it stops, then goes perfectly still. Taped cards (Fred Agent, NJJoe) only flex; the tape is why. Hover or focus lifts a card toward you around its pin, which never moves.
+        <div class="tradeoff"><b>cost</b> one rAF loop per board, asleep at rest (~250 lines) · <b>a11y</b> ←/→ and Home/End step card to card on the focused board; buttons kept; Tab brings a card into view; reduced motion = 1:1 panning, jumps, no swing · <b>support</b> pointer events, <code>overflow: clip</code>, container queries</div></div>
+        <button class="replay" data-replay="replayA">↻ fling</button></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Red string <span class="display-cn">红线</span></span><span class="cand-mech">catenary thread, pen-drawn + sag spring · hand's clock / physics clock</span></div>
+      <div class="stage stage--cork">
+        <div class="stage-note"><span class="hand">scroll along — the string follows; hover a card<span class="zh">看线</span></span><span>pins + dots go ink: the string holds the accent</span></div>
+        <div id="board-b"></div>
+      </div>
+      <div class="cand-foot"><div>A coral thread runs pin to pin along the timeline, drawing itself one span at a time as the cards come into view. Hovering a card pulls its two spans taut and quietly dims everything it isn't tied to. A dated ruler along the bottom edge gives each project's start — and admits that the lead is pinned out of order.
+        <div class="tradeoff"><b>cost</b> the thread is the view's only accent, so pins, label dots and meta slashes all go ink — the instruments lose their pin-hue match · <b>a11y</b> focus = hover; the layer is aria-hidden · <b>risk</b> the investigation-board register reads “conspiracy wall”, heavier than the work it connects</div></div>
+        <button class="replay" data-replay="replayB">↻ redraw</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">Unpin to read <span class="display-cn">取下来看</span></span><span class="cand-mech">pin pop (stepped) → FLIP fly → paper hinge · both clocks</span></div>
+      <div class="stage stage--cork">
+        <div class="stage-note"><span class="hand">click a card (or “+”) to take it off the board<span class="zh">取下来</span></span><span>Esc / click outside to pin it back</span></div>
+        <div id="board-c"></div>
+      </div>
+      <div class="cand-foot"><div>Click or Enter: the pin pops out on the hand's clock (two held frames of pen ticks), the card drops off, flies toward you to the centre while straightening, and a folded field note hinges open beneath it with the real copy and the way in. Esc or click outside: the note folds, the card flies home, and the pin is pushed back in with a small squash that nudges the card.
+        <div class="tradeoff"><b>cost</b> replaces the live blur-in popover (<code>:168</code>) · <b>a11y</b> modal dialog, focus trapped, Esc, focus returns to the card; reduced motion = the note simply appears · <b>risk</b> the lead already shows its note — C earns its keep on the slips</div></div>
+        <button class="replay" data-replay="replayC">↻ unpin a slip</button></div>
+    </article>
+  </section>
+
+  <section class="wm-strip" aria-labelledby="wm-title">
+    <div class="cand-head"><span class="cand-letter">W</span><span class="cand-name" id="wm-title">Lead wordmark, before / after <span class="display-cn">主卡字标</span></span><span class="cand-mech">static ink · one coral mark</span></div>
+    <div class="wm-tiles">
+      <div class="wm-tile"><div class="wm-tag">now · 现在</div><div class="wm-card"><div class="project-label"><span class="project-label-dot"></span><strong>highlighted</strong><span>system</span></div><div class="wm-title wm-title--now">Fred Agent</div></div>
+        <p class="wm-cap"><b>Orbiting three-hue gradient,</b> 7 s loop. Gradient plus motion without a cause; reads as a SaaS hero, not a card someone pinned up.</p></div>
+      <div class="wm-tile"><div class="wm-tag">flat ink + coral full stop</div><div class="wm-card"><div class="project-label"><span class="project-label-dot" style="background:var(--ink);box-shadow:none"></span><strong>highlighted</strong><span>system</span></div><div class="wm-title">Fred Agent<span class="stop">.</span></div></div>
+        <p class="wm-cap"><b>Static, cheapest.</b> Rhymes with the page title 在造。 — but a full stop turns a name into a sentence.</p></div>
+      <div class="wm-tile pick"><div class="wm-tag">flat ink + pen underline · pick</div><div class="wm-card"><div class="project-label"><span class="project-label-dot" style="background:var(--ink);box-shadow:none"></span><strong>highlighted</strong><span>system</span></div><div class="wm-title">Fred <span class="wm-mark" id="wm-demo">Agent</span></div></div>
+        <p class="wm-cap"><b>One confident coral pass</b> under “Agent”, drawn once when the card arrives, then still. “Highlighted” said by the pen, not a gradient — and it rhymes with the underline under Fred's name in the site header.</p></div>
+    </div>
+    <div class="cand-foot"><div>Recommend the pen underline. With it, the lead card's label dot turns ink (shown here) so the underline is the card's only coral.</div><button class="replay" data-replay="replayW">↻ redraw</button></div>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Pick A.</b> It answers the actual complaint: the board stops being a carousel and becomes paper on cork — it has weight when you move it, every movement has a cause (your hand, the board's edge, the tape), and at rest it is completely still. Every card, link and layout stays exactly as Fred has it; no new UI is added, and the heavy board shadow goes.</p>
+    <p>Combine it with the flat-ink wordmark and coral pen underline (then the lead card's label dot and meta slashes go ink). Keep C for later as the replacement for the “+” popover, which today blurs in from 11px; if C lands, its flight should start from A's live swing angle. Skip B: the thread spends the accent on decoration and turns a portfolio into an evidence wall. Watch the tuning: the swing is soft-limited to ~8.6° and damped to one overshoot — any looser and it reads as rubber, not paper.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：钉在软木板上的纸——有重量，会被板带着晃，也会自己停下；不碰它，它就一动不动。
+动作时钟：物理时钟（板的动量与边缘软阻力；纸片以图钉为轴的阻尼摆；悬停时绕图钉抬起）。手的时钟只留给 C 的图钉弹出刻痕（两帧定格）。
+映射：拖动/滑动的速度 → 纸片被空气拖在后面；加速度 → 起步滞后、停下时向前多摆一次再静止；卡片高度 → 摆动周期（大卡慢，小纸条快）；胶带 → Fred Agent 与 NJJoe 几乎不动；到达边缘 → 软阻力、回弹，纸片随之一晃；悬停/聚焦 → 绕图钉抬起、阴影加深、倾角回正三成，图钉不动；静止 → 完全静止，循环休眠。
+线条计划：卡片、图钉、胶带、撕边原样保留；主卡标题去掉渐变，改为平墨色字标，“Agent”下一笔珊瑚色钢笔下划线（按元素种子固定，只画一次）。
+色彩计划：去掉软木板的大阴影；珊瑚色唯一持有者 = 主卡字标下划线（A/C）；B 中珊瑚色让给红线，图钉、标签圆点、分隔斜线一律改墨色。</div></div></section>
+</main>
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="05-cards.js"></script><script src="05-physics.js"></script><script src="05-string.js"></script><script src="05-unpin.js"></script><script src="05-board.js"></script>
+</body></html>

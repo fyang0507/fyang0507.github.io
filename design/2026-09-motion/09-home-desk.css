@@ -1,0 +1,77 @@
+/* 09 · faithful reproduction of the home desk (index.html:128–209), scoped to .desk.
+   Same image, same overlay percentages, same hover sprites. Candidates layer on top of this. */
+.desk-wrap{display:flex;justify-content:center;padding:34px clamp(12px,3vw,40px) 64px}
+.desk{position:relative;width:min(880px,100%);container-type:inline-size;touch-action:manipulation}
+.desk .scene-img{display:block;width:100%;position:relative;z-index:1;animation:dkFade .9s ease .15s both;user-select:none;-webkit-user-drag:none}
+.desk svg .stroke{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+.desk .bookhold{position:absolute;z-index:2;pointer-events:none;left:36.04%;top:61.5%;width:21.34%;aspect-ratio:462/355;animation:dkFade .9s ease .15s both}
+.desk .bookface{position:absolute;inset:0;background:url("../../assets/book-flip2-light.png") 0 0/600% 100% no-repeat}
+.desk:has(.bookwrap:hover) .bookface,.desk:has(.nav-write:hover) .bookface{animation:dkBook 1.15s steps(1,end) infinite}
+.desk .frameface{position:absolute;z-index:2;pointer-events:none;left:55.23%;top:33.03%;width:15.54%;aspect-ratio:616/577;animation:dkFade .9s ease .15s both}
+.desk .fframe{position:absolute;inset:0;background:url("../../assets/frame-exp3-light.png") 0 0/400% 100% no-repeat}
+.desk:has(.framewrap:hover) .fframe,.desk:has(.nav-about:hover) .fframe{animation:dkExp 2.8s steps(1,end) infinite}
+
+.desk .arrows{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none}
+.desk.drawn .arrows .stroke{stroke-dasharray:1200;stroke-dashoffset:1200;animation:dkDraw .9s ease-out both}
+.desk.drawn .d2 .stroke{animation-delay:.25s}.desk.drawn .d3 .stroke{animation-delay:.32s}
+.desk.drawn .d4 .stroke{animation-delay:.4s}.desk.drawn .d5 .stroke{animation-delay:.48s}
+
+.desk .navnote{position:absolute;z-index:5;cursor:pointer}
+.desk .navnote .lbl{display:inline-block;white-space:nowrap;font-family:var(--hand-cn),var(--hand);font-size:clamp(15px,3cqw,36px);color:var(--ink)}
+.desk .navnote:hover .lbl{color:var(--mark)}
+.desk .rise{animation:dkRise .8s cubic-bezier(.2,.7,.2,1) both}
+
+.desk .steam{position:absolute;left:26.3%;top:46.5%;width:6.8%;z-index:2;overflow:visible;transform-origin:50% 100%}
+.desk .steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;opacity:0;animation:dkOnsen 3.1s ease-in-out infinite}
+.desk .steam .st2{animation-delay:1.05s}.desk .steam .st3{animation-delay:2.1s}
+
+.desk .hot{position:absolute;z-index:5;cursor:pointer}
+.desk .hot:focus-visible{outline:2px solid var(--mark);outline-offset:3px}
+.desk .lap{left:20%;top:23%;width:31%;height:32%}
+.desk .bookwrap{left:36%;top:62%;width:21%;height:22%}
+.desk .framewrap{left:56.5%;top:33%;width:12.5%;height:19%}
+.desk .camwrap{left:68.5%;top:63%;width:18%;height:18%}
+
+.desk .screen{position:absolute;left:25.8%;top:28%;width:23%;z-index:2;pointer-events:none;font-family:var(--util);letter-spacing:.02em;font-size:1.75cqw;line-height:1.7;color:var(--soft);white-space:pre-line;animation:dkFade .5s ease .35s both}
+.desk .caret{display:inline-block;width:.55em;height:1.05em;background:var(--mark);vertical-align:-.15em;margin-left:2px;animation:dkCaret 1.15s infinite}
+
+.desk .bird{position:absolute;left:14%;top:67.5%;width:7%;aspect-ratio:308/317;z-index:3;transition:left .1s linear;transform-origin:50% 88%;animation:dkRise .5s cubic-bezier(.2,.7,.2,1) .35s backwards}
+.desk .bframe{position:absolute;inset:0;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat}
+
+.desk .cstar{position:absolute;left:34%;top:43%;width:24%;opacity:0;pointer-events:none}
+.desk .camwrap:hover .cstar,.desk:has(.nav-shoot:hover) .cstar{animation:dkStar .7s ease-out both}
+.desk .sceneflash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:6;background:radial-gradient(circle at 76.8% 71%,rgba(255,255,255,1) 0%,rgba(255,255,255,.7) 20%,rgba(255,255,255,0) 58%)}
+.desk:has(.camwrap:hover) .sceneflash,.desk:has(.nav-shoot:hover) .sceneflash{animation:dkFlash .9s linear both}
+.desk .kacha{position:absolute;left:79%;top:54.5%;font-size:2.7cqw;color:var(--mark);z-index:7;pointer-events:none;opacity:0;white-space:nowrap;font-family:var(--hand-cn),var(--hand)}
+.desk:has(.camwrap:hover) .kacha,.desk:has(.nav-shoot:hover) .kacha{animation:dkKacha 1s cubic-bezier(.2,.7,.2,1) both}
+.desk .spark{position:absolute;left:56%;top:12%;color:var(--mark);font-size:clamp(12px,1.7cqw,20px);z-index:2;opacity:0;animation:dkFade .5s ease .55s both}
+.desk .fig{position:absolute;left:0;top:calc(100% + 34px);font:12.5px/1 var(--util);color:var(--pencil)}
+
+@keyframes dkDraw{to{stroke-dashoffset:0}}
+@keyframes dkFade{from{opacity:0}to{opacity:1}}
+@keyframes dkRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dkOnsen{0%{transform:translateY(12px);opacity:0}28%{opacity:.4}60%{opacity:.22}100%{transform:translateY(-24px);opacity:0}}
+@keyframes dkExp{0%{background-position:0% 0}25%{background-position:33.3333% 0}50%{background-position:66.6667% 0}75%,100%{background-position:100% 0}}
+@keyframes dkBook{0%{background-position:0% 0}16.6%{background-position:20% 0}33.3%{background-position:40% 0}50%{background-position:60% 0}66.6%{background-position:80% 0}83.3%,100%{background-position:100% 0}}
+@keyframes dkFlash{0%{opacity:0}5%{opacity:1}12%{opacity:.12}18%{opacity:.85}45%,100%{opacity:0}}
+@keyframes dkKacha{0%{opacity:0;transform:translateY(8px) scale(.55) rotate(-5deg)}14%{opacity:1;transform:translateY(0) scale(1.08) rotate(-2deg)}30%{transform:scale(1) rotate(-2deg)}62%{opacity:1}100%{opacity:0;transform:translateY(-16px) rotate(-2deg)}}
+@keyframes dkStar{0%{opacity:0;transform:scale(.3)}18%{opacity:1}100%{opacity:0;transform:scale(1.5)}}
+@keyframes dkCaret{0%,45%{opacity:1}50%,95%{opacity:0}}
+
+@media (hover:none){
+  .desk .bookface{animation:dkBookM 7s steps(1,end) 2.5s infinite}
+  .desk .sceneflash{animation:dkFlashM 9s linear 4s infinite}
+}
+@keyframes dkBookM{0%{background-position:0% 0}9%{background-position:20% 0}15%{background-position:40% 0}21%{background-position:60% 0}27%{background-position:80% 0}33%{background-position:100% 0}40%,100%{background-position:0% 0}}
+@keyframes dkFlashM{0%,40%{opacity:0}42%{opacity:1}44%{opacity:.15}46%{opacity:.8}55%,100%{opacity:0}}
+
+/* Reduced motion: the static desk. mock.css collapses durations; this removes the loops outright. */
+html.rm .desk .steam path,html.rm .desk .bookface,html.rm .desk .fframe,html.rm .desk .sceneflash,html.rm .desk .cstar,html.rm .desk .kacha{animation:none!important}
+html.rm .desk.drawn .arrows .stroke{animation:none!important;stroke-dashoffset:0}
+html.rm .desk .steam .st2{opacity:.28}
+@media (prefers-reduced-motion:reduce){
+  .desk .steam path,.desk .bookface,.desk .fframe,.desk .sceneflash,.desk .cstar,.desk .kacha{animation:none!important}
+  .desk.drawn .arrows .stroke{animation:none!important;stroke-dashoffset:0}
+  .desk .steam .st2{opacity:.28}
+}

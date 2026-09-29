@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3 · 10 · The opener: OP, then the desk falls in — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="r2-10-opener.css">
+<link rel="stylesheet" href="r3-10-opener.css">
+</head>
+<body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD R3 · 10 · ALLOWED TO BREAK THE RULES ONCE</div><h1 class="board-title">The opener: OP, then the desk falls in <span class="display-cn">开场：OP，然后东西落下</span></h1></div>
+    <div>
+      <p class="board-why">Round 2’s opener with the gag taken out. The OP is untouched, name beat <b>a</b>, 一字一切. The hard cut still lands on the same bird, standing on the empty cream desk. After that there is no loading line, no peck and no snap: the desk’s objects <b>just fall in</b>, straight away, and each one fires only its own reaction. Nothing on the desk causes anything else, and the bird never moves. If you come back in the same session, you skip the OP and the eyecatch and get only the fall.</p>
+      <p class="evidence">first visit <b>3.26 s</b> (round 2: 3.68) · returning <b>0.68 s</b> (round 2: 0.68) · ≤ <b>2.5</b> flashes/s at 1440, ≤ <b>2.0</b> at 390, <b>0</b> returning (limit 3), on both audit readings · the fall waits on the real bytes, and the opener is over by 6.5 s on any network · any click / key / wheel fades it off in 250 ms · reduced motion = no opener · sessionStorage only</p>
+    </div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 2">
+    <div class="changed-k">WHAT CHANGED FROM ROUND 2</div>
+    <div class="changed-row"><q>I actually love A better…</q><span class="arrow">→</span><p><b>Name beat a, 一字一切, is the only one left.</b> b (对撞) and c (书脊) are gone from the page and from this board. The OP is round 2’s frame for frame: 18 ticks at 12 fps, 1.5 s, the same flash profile.</p></div>
+    <div class="changed-row"><q>…but we should remove the “chain reaction” of bird cutting the line and things fall. Just let the objects fall after the opening…</q><span class="arrow">→</span><p><b>No line, no stare, no peck, no snap.</b> The cut lands on the bird on the empty desk. 0.4 s later the laptop hits and the drum fill runs: laptop, mug, book, portrait, camera, plant, 160 → 70 ms apart. Each landing fires only its own reaction. In round 2 the plant’s landing knocked the portrait upright. Now the portrait lands face-down and <b>pops itself up</b>, surprised, a beat after everything else: that’s its own take. The bird doesn’t flinch.</p></div>
+    <div class="changed-row"><q>…and when return, just show the objects falling without the opening animation.</q><span class="arrow">→</span><p><b>Returning = only the fall.</b> No OP and no eyecatch. The page opens on the empty desk with the objects already on their way down into the page’s own layout, tighter: back row, then front row, all in 0.41 s. Then it dissolves into the live desk.</p></div>
+    <div class="changed-row"><q class="nq">(but the line was also the honest loader)</q><span class="arrow">→</span><p><b>Loading is still honest, just silent.</b> The OP runs while the desk loads. If the bytes aren’t in by the cut, the empty desk holds, still, and after 1.5 s it says only “tap to skip · 点按跳过”. The objects falling <i>is</i> the ready signal. By 6.5 s it’s over whatever the network is doing: a late desk gets the short fall, and a very late one arrives as a plain page.</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-op">
+      <div class="cand-head"><span class="cand-letter">✓</span><span class="cand-name">OP → the fall <span class="display-cn">OP → 落下</span></span><span class="cand-mech">12 fps hard cuts → 60 fps physics · one clock · 3.26 s / 0.68 s</span></div>
+      <div class="screen" id="screen"><div class="poster"><span>▶ play · 播放</span></div></div>
+      <div class="opts">
+        <button data-v="desk" aria-pressed="true">1440</button><button data-v="phone" aria-pressed="false">390</button>
+        <span class="gap"></span>
+        <button data-m="first" aria-pressed="true">first visit</button><button data-m="returning" aria-pressed="false">returning</button>
+        <span class="sp"></span><button data-play>↻ replay</button><a id="full" href="r3-10-opener-page.html" target="_blank" rel="noopener">full screen ↗</a>
+      </div>
+      <div class="cand-foot"><div>
+        <ol class="beats" id="beats"></ol>
+        <div class="breaks"><b>breaks</b> one accent per view and low chroma (1.5 s of four flat fields); the calm-desk economy (a drum fill of falling objects); the two-clock split (the objects fall on 60 fps physics, while every reaction stays on held frames) · <b>keeps</b> Fred’s own art, the bird’s identity and the pen; the hand clock for everything drawn; honest loading, now silent; 萌 not 媚 (Fred’s portrait is surprised and the bird isn’t)</div>
+        <div class="tradeoff"><b>weight</b> round 1’s WebP cut-outs (≈ 160 KB) and masks (34 KB), plus ≈ 29 KB gzipped code (84 KB raw; round 2 was 32 KB gzipped); the OP’s CJK face is the site’s existing JinBuTi subset · <b>runtime</b> one rAF loop that stops at the hand-off, no GL · <b>honest</b> measured with no cache, throttled: 12 Mbps → the desk holds 1.8 s and the full fall plays, done at 5.1 s; 8 Mbps → the short fall, done at 5.9 s; 5 Mbps → the plain page at 6.1 s · <b>ep.NN</b> the mockup reads <code>FY_POSTS.length</code>; production would read a tiny generated count</div>
+      </div></div>
+    </article>
+  </section>
+
+  <section class="audit" aria-label="Flash audit">
+    <div class="audit-k">FLASH AUDIT · WCAG 2.3.1 <span>tools/r2-10-flash.py over every 20 ms of the seek-rendered run · limit 3 flashes in any 1 s</span></div>
+    <table>
+      <thead><tr><th></th><th>A · area (WCAG)</th><th>B · tile mean (stricter)</th><th>red flashes</th><th>worst window</th></tr></thead>
+      <tbody>
+        <tr><th>first visit · 1440</th><td data-k="A · area"><b>2.5</b> / s</td><td data-k="B · tile mean"><b>2.5</b> / s</td><td data-k="red">0</td><td data-k="worst">the OP (弗 → 雷 → 德 → FRED → 关于), as in round 2</td></tr>
+        <tr><th>first visit · 390</th><td data-k="A · area"><b>2.0</b> / s</td><td data-k="B · tile mean"><b>2.0</b> / s</td><td data-k="red">0</td><td data-k="worst">the OP</td></tr>
+        <tr><th>returning · 1440</th><td data-k="A · area"><b>0</b></td><td data-k="B · tile mean"><b>0</b></td><td data-k="red">0</td><td data-k="worst">none: the camera’s flash is local to the lens</td></tr>
+        <tr><th>returning · 390</th><td data-k="A · area"><b>0</b></td><td data-k="B · tile mean"><b>0</b></td><td data-k="red">0</td><td data-k="worst">none</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <h2 class="sub">Frame by frame <span class="display-cn">逐帧</span></h2>
+  <section class="strips">
+    <figure><img src="assets-gen/r3-10-strip-first.webp" alt="First visit after the OP, at 1440: the cut to the bird on the empty desk, the laptop landing, the fill, the camera's flash with the portrait face-down, the portrait upright and surprised, the eyecatch; then the fill at 390" loading="lazy"><figcaption><b>first visit, after the OP</b> 1.52 the cut · 1.92 laptop down · 2.20 the fill · 2.38 咔嚓, the portrait face-down · 2.70 its take · 2.98 日常 · ep.27 · <i>390: the fill in the phone’s wide</i></figcaption></figure>
+    <figure><img src="assets-gen/r3-10-strip-returning.webp" alt="Returning, at 1440: the empty desk with the objects already falling, the back row landing, the front row landing, the portrait popping up, the live desk; then mid-fall at 390" loading="lazy"><figcaption><b>returning</b> 0.00 already falling · 0.16 · 0.28 the back row is down · 0.40 the front row, the pop · 0.66 live · <i>390: 0.28</i></figcaption></figure>
+    <figure><img src="assets-gen/r3-10-strip-cold.webp" alt="A cold load at 12 Mbps: the bird on the still desk after the cut, still holding, the skip hint, the fall starting, the live desk" loading="lazy"><figcaption><b>a real cold load</b> (no cache, 12 Mbps) 1.57 the cut · 2.41 holding, nothing moves · 3.11 “tap to skip · 点按跳过” · 3.58 the bytes are in, the fall starts · live at 5.09</figcaption></figure>
+    <figure><img src="assets-gen/r2-10-strip-a.webp" alt="Round 2's name beat a, unchanged: 弗, 雷, 德, FRED at 1440 and at 390" loading="lazy"><figcaption><b>the OP’s name beat, a · 一字一切</b> round 2’s filmstrip, reference only: this round doesn’t touch it</figcaption></figure>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship this one.</b> It changes exactly what Fred asked and nothing he accepted. The OP, name beat a, the hard cut and the eyecatch are all round 2’s. The gag between them is gone. It’s shorter too: 3.26 s against 3.68, back under the original brief’s 3.5 s cap.</p>
+    <p><b>The bird.</b> I kept it on the desk from the cut instead of having it hop in last. The OP’s final shot is its close-up and its “…”, so the cut lands on the same bird, small and alone on the empty desk. Then it stands there, unflinching, while the desk crashes down around it. That gets the deadpan out of doing nothing: no entrance and no reaction, so nothing to chain. It also gives the cold-load hold a subject that isn’t a spinner. Hopping in after the plant would cost about 0.4 s and turn the bird back into an event. The portrait is the one that reacts, surprised, and the bird isn’t: that’s 萌 not 媚.</p>
+    <p><b>Watch-outs.</b> The eyecatch (日常 · ep.NN) can be removed. It’s 0.4 s and is also what hides the camera’s return to the page layout; without it, the first visit would end like the returning run, dissolving in the page’s own framing. On a cold connection the wait is real: the mockup’s sprites weigh 2.9 MB, and production derivatives would shorten the hold a lot. The returning hand-off is near-identical, not pixel-identical, so it dissolves over 120 ms instead of cutting.</p>
+    <div class="record">执行模式：单一推荐（Fred 选 a，去掉连锁反应 → 一版可发布）
+表达锚点：狂躁 OP（硬切、平涂色块、巨字、物件英雄镜头）→ 硬切到安静的空桌 → 物件鼓点般落下 → 相框自己翻起、惊讶 → 过场卡 → 桌面
+动作时钟：手的时钟 — OP 12 fps 定格、所有反应（尘线、翻页、相框弹起、眨眼）；物理时钟 — 物件下落与弹跳
+映射：真实字节 → 何时开始落下（落下即“已就绪”）· 每件落地 → 只触发它自己的反应 · 书架上的篇数 → ep.NN · 回访 → 只剩落下
+小鸟：从切镜起就站在空桌上，一动不动；不登场、不反应，所以不因果
+线条计划：Fred 的原画不重画；OP 的标记（集中线、速度线、tick、闪星）一笔一稿、按种子固定；等待时只有一行 “tap to skip · 点按跳过”
+色彩计划：OP 1.5 秒内四个平涂色场（破例）；珊瑚色只给相框里的 Fred；之后回到米色纸面与唯一强调色
+破例：一次、1.5 秒、每秒闪烁 ≤ 2.5 次（两种读法）· 6.5 秒内必定结束 · 不存任何访客记录</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script>
+<script src="shared/mock.js"></script>
+<script src="r3-10-opener.js"></script>
+</body>
+</html>

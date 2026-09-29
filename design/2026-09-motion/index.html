@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign audit · motion &amp; interaction — fyang0507.github.io</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<style>
+  .lede{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(28px,6vw,90px);align-items:end;padding:10px 0 34px;border-bottom:1.5px solid var(--ink)}
+  .lede h1{font:500 clamp(40px,5.6vw,74px)/.98 var(--disp);letter-spacing:-.015em}
+  .lede h1 .display-cn{display:block;margin-top:12px;font-size:.62em;color:var(--soft)}
+  .lede h1 em{font-style:normal;color:var(--mark)}
+  .lede p{font-size:19px;line-height:1.55;color:var(--soft)}
+  .lede p b{color:var(--ink);font-weight:500}
+  .lede .meta-row{margin-top:14px;font:12px/1.6 var(--util);color:var(--pencil)}
+  h2.sec{display:flex;align-items:baseline;gap:14px;margin:56px 0 18px;font:500 28px/1.1 var(--disp)}
+  h2.sec .n{font:500 11px/1 var(--util);color:var(--mark);letter-spacing:.1em}
+  h2.sec .display-cn{font-size:.8em;color:var(--soft)}
+  .gaps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;border-top:1px solid var(--line)}
+  .gap{padding:18px 22px 20px 0;border-bottom:1px solid var(--line)}
+  .gap h3{font:500 19px/1.25 var(--disp)} .gap h3 span{display:block;font:400 14px/1.4 var(--text-cn);color:var(--soft);margin-top:3px}
+  .gap p{margin-top:8px;font-size:15px;line-height:1.55;color:var(--soft)}
+  .thesis{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px 34px;counter-reset:t}
+  .thesis div{counter-increment:t;padding-left:34px;position:relative;font-size:15.5px;line-height:1.55;color:var(--soft)}
+  .thesis div::before{content:counter(t,decimal-leading-zero);position:absolute;left:0;top:3px;font:500 11px/1 var(--util);color:var(--pencil)}
+  .thesis b{display:block;color:var(--ink);font:500 17px/1.3 var(--disp);margin-bottom:3px}
+  table.find{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.5}
+  table.find th{text-align:left;font:500 11px/1.4 var(--util);letter-spacing:.08em;color:var(--pencil);padding:8px 12px 8px 0;border-bottom:1.5px solid var(--ink)}
+  table.find td{vertical-align:top;padding:11px 12px 11px 0;border-bottom:1px solid var(--line);color:var(--soft)}
+  table.find td:first-child{white-space:nowrap}
+  table.find td b{color:var(--ink);font-weight:500}
+  table.find code{font:12px var(--util);color:var(--ink)}
+  .sev{display:inline-block;min-width:74px;font:500 10.5px/1 var(--util);letter-spacing:.06em;padding:5px 0}
+  .sev.t{color:var(--mark)} .sev.b{color:var(--ink)} .sev.a{color:var(--soft)} .sev.p{color:var(--pencil)}
+  .boards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  @media (max-width:980px){.boards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:620px){.boards{grid-template-columns:1fr}}
+  .bcard{position:relative;display:flex;flex-direction:column;gap:8px;padding:18px 18px 16px;border:1.5px solid var(--ink);border-radius:10px;background:var(--paper);transition:transform .35s var(--ease-settle)}
+  .bcard:hover{transform:translateY(-3px) rotate(-.4deg)}
+  .bcard .no{font:500 11px/1 var(--util);color:var(--mark);letter-spacing:.1em}
+  .bcard h3{font:500 21px/1.15 var(--disp)} .bcard h3 span{font:400 .8em var(--disp-cn);color:var(--soft);margin-left:6px}
+  .bcard p{font-size:14.5px;line-height:1.5;color:var(--soft)}
+  .bcard .decide{margin-top:auto;padding-top:8px;border-top:1px dashed var(--line);font:11.5px/1.55 var(--util);color:var(--pencil)}
+  .bcard .decide b{color:var(--ink);font-weight:500}
+  .layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;border-top:1.5px solid var(--ink)}
+  .layers div{padding:16px 20px 18px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.55;color:var(--soft)}
+  .layers b{display:block;font:500 11px/1.4 var(--util);letter-spacing:.08em;color:var(--ink);margin-bottom:6px}
+  .ask{margin-top:48px;padding:22px 24px;border:1.5px solid var(--ink);border-radius:10px;font-size:17px;line-height:1.6}
+  .ask .hand{font-size:24px;color:var(--mark)}
+  @media (max-width:760px){.lede{grid-template-columns:1fr} table.find td:first-child{white-space:normal}
+    table.find,table.find tbody,table.find tr,table.find td{display:block;width:100%} table.find thead{display:none}
+    table.find tr{padding:10px 0;border-bottom:1px solid var(--line)} table.find td{border:0;padding:2px 0} table.find code{overflow-wrap:anywhere}
+    .lede h1 em svg{max-width:100%}}
+  html,body{overflow-x:clip}
+</style>
+</head>
+<body>
+<main class="board">
+  <header class="lede">
+    <div>
+      <div class="board-no">FYANG0507.GITHUB.IO · FRONT-END DESIGN AUDIT · 2026-09-27</div>
+      <h1 style="margin-top:14px">The drawings are alive. <em>The page</em> isn’t yet.<span class="display-cn">画是活的，页面还没活。</span></h1>
+    </div>
+    <div>
+      <p>The identity is strong and coherent: a desk whose objects are doors, a bookshelf of essays, a corkboard of projects, polaroids on a line, a specimen card. The drawings already move on a hand’s clock (the book flips, the portrait blinks, the camera goes 咔嚓). <b>What’s missing is everything in between</b>: between pages, between states, between the paper objects and your hand, and between the site and the person visiting it.</p>
+      <p class="meta-row">method: every page walked at 1440 and 390 · hover / click / flip states captured · source read · judged against <code>fred-visual-design-guide/aesthetic.md</code></p>
+    </div>
+  </header>
+
+  <h2 class="sec"><span class="n">01</span>Four gaps <span class="display-cn">四个缺口</span></h2>
+  <div class="gaps">
+    <div class="gap"><h3>No continuity<span>没有连续性</span></h3><p>Every click is a hard cut followed by the same generic fade-and-rise. The laptop you click disappears instead of <i>arriving</i>, even though every subpage’s tab nav shows that same laptop.</p></div>
+    <div class="gap"><h3>States are colour swaps<span>状态只是换颜色</span></h3><p>Hover turns text coral. Filters are SaaS pills. Focus is a browser outline. Your signature mark, the coral hand underline, never responds to anything.</p></div>
+    <div class="gap"><h3>Paper without weight<span>纸没有重量</span></h3><p>Pinned cards, hanging polaroids and shelved books are drawn as physical things but scroll like a carousel. Nothing swings, leans or settles.</p></div>
+    <div class="gap"><h3>The site doesn’t notice you<span>网站没注意到你</span></h3><p>The bird hops at random. The laptop types a canned line forever, when it could type what Fred actually made last. On a personal site, that noticing is the warmth.</p></div>
+  </div>
+
+  <h2 class="sec"><span class="n">02</span>The motion thesis <span class="display-cn">会动的手</span></h2>
+  <div class="thesis">
+    <div><b>Two clocks.</b>Drawings move on the hand’s clock: held poses and stepped frames, like Nichijou. Paper and chrome move on the physics clock: mass, momentum, one small overshoot, then settle. A plain 300 ms fade is never the main event.</div>
+    <div><b>The pen is the only highlighter.</b>Hover, focus, selected and current are all hand-drawn marks (loop, underline, tick, bracket) in one confident pass. Each mark is seeded to its element, so the same word always gets the same circle.</div>
+    <div><b>What you touch is what arrives.</b>Objects keep their identity across states and pages, through shared elements, FLIP and View Transitions.</div>
+    <div><b>Every motion has a cause.</b>A pin pivot, wind, photographic development, page weight, a bird noticing you. If a motion has no cause, it’s decoration, and ambient loops without a subject get cut.</div>
+    <div><b>One sharp edge.</b>Coral is spent once per view. The quiet around the one moment is what makes it land.</div>
+    <div><b>Lean away.</b>Gradients, glossy glare, shimmer sweeps, glass blur, blur-to-focus, parallax for its own sake, cursor trails, scroll-jacking, staggered fade-ups.</div>
+  </div>
+
+  <h2 class="sec"><span class="n">03</span>Findings <span class="display-cn">逐项问题</span></h2>
+  <table class="find">
+    <thead><tr><th>SEVERITY</th><th>WHERE</th><th>FINDING</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sev t">TASTE</span></td><td><code>Building.dc.html:141</code></td><td><b>“Fred Agent” uses an orbiting three-hue animated gradient.</b> It’s gradient plus motion with no cause, and it’s the least Fred thing on the site. → board 05</td></tr>
+      <tr><td><span class="sev t">TASTE</span></td><td><code>About.dc.html:53</code></td><td><b>The specimen card’s pointer tilt paints a glossy radial white glare.</b> Your guide explicitly rules out specular gloss. → board 07</td></tr>
+      <tr><td><span class="sev t">TASTE</span></td><td><code>About.dc.html:107–111</code></td><td><b>The FLIP button runs an endless gradient shimmer sweep</b>, the “AI product” button cliché. → board 07</td></tr>
+      <tr><td><span class="sev t">TASTE</span></td><td><code>Writing.dc.html:46,51,180</code></td><td><b>Pure white (<code>#fff</code>) shows up in the preview card, active chip and tab pill.</b> The field is never pure white, and those white surfaces read as UI stuck onto the paper. → boards 03, 04</td></tr>
+      <tr><td><span class="sev t">TASTE</span></td><td>all gateway pages</td><td><b>Every page makes the same entrance:</b> <code>fyRise / wRise / gRise / bRise / aRise</code>, which all fade in and rise 14–20px. That’s authorless polish, a system deciding. → board 01</td></tr>
+      <tr><td><span class="sev b">BUG</span></td><td><code>Reading.dc.html</code> <code>.rnav</code></td><td><b>On posts with a hero wash, the sticky nav is transparent</b>, so body text scrolls under “← 全部文章” and the EN/◐ buttons and collides with them. → board 08</td></tr>
+      <tr><td><span class="sev b">BUG</span></td><td><code>Reading.dc.html</code> <code>.mn</code></td><td><b>Citations in the margin are set in Caveat / Muyao handwriting.</b> Bibliographic data in a hand font is hard to read and breaks the “hand is rationed” rule. → board 08</td></tr>
+      <tr><td><span class="sev a">A11Y</span></td><td><code>site-nav.css</code></td><td><b>Nav labels are 8.5px mono at .62 opacity</b>, and spine titles, card meta and the identity tagline are 8.5–10px. They’re effectively unreadable. → board 02</td></tr>
+      <tr><td><span class="sev a">A11Y</span></td><td>tokens</td><td><b><code>--pencil #938979</code> on paper is 3.2:1</b> and carries dates, captions and meta at 10–12.5px, which fails AA. Coral text is 3.19:1, so it can only be used large. Proposal: darken pencil to <code>#7A7063</code> (4.5:1) and keep coral for marks, not small text.</td></tr>
+      <tr><td><span class="sev a">A11Y</span></td><td>home, About</td><td><b>Home and About have no <code>h1</code></b>, and Writing, Gallery and About have an empty <code>lang</code>. Home forces <code>lang="zh"</code> on a bilingual interface.</td></tr>
+      <tr><td><span class="sev p">DETAIL</span></td><td>home</td><td><b>The opener’s “loading…” is a fixed 3.4 s fake load</b> once per session. It’s charming the first time and a tax on every new tab after that. → board 09</td></tr>
+      <tr><td><span class="sev p">DETAIL</span></td><td>home · mobile</td><td><b>On mobile the desk is small, with about half the screen blank</b> below four underlined links. → board 09</td></tr>
+      <tr><td><span class="sev p">DETAIL</span></td><td>Writing / Gallery · mobile</td><td><b>The filter chips wrap into about 7 rows</b> before any content appears, and Gallery collapses into a single 6,500px column. → boards 03, 06</td></tr>
+      <tr><td><span class="sev p">DETAIL</span></td><td>home · mobile</td><td><b>The portrait sprite aliases into a dashed-looking frame at phone size.</b> A 2464px strip is downsampled through <code>background-size:400%</code>, and the browser doesn’t mip-map it. Fix with size-appropriate sprite derivatives (board 11’s generator can emit them) or vector line art.</td></tr>
+      <tr><td><span class="sev p">DETAIL</span></td><td>figure labels</td><td><b>Figure numbers don’t match the section numbers.</b> Home is fig.01, Gallery fig.02, Writing fig.03, About fig.04 and Building has none, while the sections are Writing 01, Building 02, Shooting 03, About 04. Pick one scheme: fig = section number, with home as fig.00.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec"><span class="n">04</span>Mockup boards <span class="display-cn">候选方案</span></h2>
+  <p style="max-width:780px;color:var(--soft);font-size:16px;margin-bottom:22px">Every board is live and interactive, built on your real assets and data. Each one sets 3–4 structurally different candidates side by side, with trade-offs and a recommendation. Use the “preview reduced motion” switch in the top bar to see each fallback.</p>
+  <div class="boards" id="boards"></div>
+
+  <h2 class="sec"><span class="n">05</span>Cross-board calls <span class="display-cn">跨方案的统一决定</span></h2>
+  <table class="find">
+    <thead><tr><th>CONFLICT</th><th>BOARDS</th><th>MY CALL</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sev b">CURRENT PAGE</span></td><td>01 · 02</td><td><b>Board 02 retires the folder-tab outline and the coral dot, while board 01’s morph depends on the folder tab.</b> Keep the folder tab in ink (drawn by the pen on arrival) as the object’s slot. Replace the coral dot with board 02’s coral scribble under the label, so the accent is still spent once.</td></tr>
+      <tr><td><span class="sev b">CORAL BUDGET</span></td><td>03 · 04 · 05 · 08</td><td><b>Coral belongs to the pen only.</b> Series badges become paper labels and つづく goes pencil (as on board 04). The Reading progress bar goes graphite (board 08). The lead card’s label dot and meta slashes go ink once the wordmark gets its underline (board 05).</td></tr>
+      <tr><td><span class="sev b">ONE PHYSICS</span></td><td>03 · 04 · 05 · 06 · 07</td><td><b>Five boards each wrote a spring, and they should ship as one.</b> Consolidate them into one tiny <code>motion.js</code> (spring, damped pendulum, FLIP, sleeping rAF loop) next to <code>pen.js</code>. Each page tunes mass and damping and never writes its own integrator.</td></tr>
+      <tr><td><span class="sev b">BIRD</span></td><td>03 · 04 · 09</td><td><b>The bird follows one rule everywhere:</b> it notices after a beat, moves on the hand’s clock and never chases. It’s at most one bird per view, and it reacts to what you do rather than looping.</td></tr>
+      <tr><td><span class="sev b">DATA</span></td><td>08 · 09</td><td><b>The home page must not load <code>posts.js</code> (every essay’s full text) just to show “latest”.</b> <code>generate-content.py</code> emits a tiny <code>latest.js</code>, and section headings are split at build time rather than in the browser.</td></tr>
+      <tr><td><span class="sev b">OPENER</span></td><td>01 · 09</td><td><b>Make the opener honest.</b> The full iris plays on the first-ever visit only, with no fake “loading…”. It opens when the desk image has actually loaded, between 1.1 and 2.4 s. Later visits get a 450 ms iris, and the “日常 · ep.NN” tag counts your real visits.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec" id="round2"><span class="n">R2</span>Round 2: your picks, refined <span class="display-cn">第二轮 · 按你的选择精修</span></h2>
+  <p style="max-width:820px;color:var(--soft);font-size:16px;margin-bottom:22px">Each board opens with a strip quoting your note and what changed. Round-1 boards are untouched, for comparison. Nothing remembers visitors across visits; the opener and the tier-3 arrow remember only the current browser session.</p>
+  <div class="boards" id="boards2"></div>
+  <table class="find" style="margin-top:22px">
+    <thead><tr><th>BOARD</th><th>YOUR CALL</th><th>STATUS</th></tr></thead>
+    <tbody>
+      <tr><td><b>09 · home</b></td><td>Ship D (the mobile desk). No returning-visitor note.</td><td>Round-1 D stands as built. No new board.</td></tr>
+      <tr><td><b>11 · themes</b></td><td>Stay light; you like riso.</td><td>Dark mode is parked in <a href="https://github.com/fyang0507/fyang0507.github.io/issues/16" style="text-decoration:underline">issue #16</a>. Riso is a light theme, so it can ship with the role-layer work without solving the portrait problem.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec" id="round3"><span class="n">R3</span>Round 3: your round-2 notes, closed out <span class="display-cn">第三轮 · 收尾</span></h2>
+  <p style="max-width:820px;color:var(--soft);font-size:16px;margin-bottom:22px">One build per board, each opening with your round-2 note and what changed. Round-1 and round-2 boards are untouched, for comparison.</p>
+  <div class="boards" id="boards3"></div>
+  <table class="find" style="margin-top:22px">
+    <thead><tr><th>BOARD</th><th>YOUR CALL</th><th>STATUS</th></tr></thead>
+    <tbody>
+      <tr><td><b>01 · transitions</b></td><td>A: the desk becomes the nav.</td><td>Settled on <a href="r2-01-transitions.html" style="text-decoration:underline">R2 · 01</a>.</td></tr>
+      <tr><td><b>04 · shelf</b></td><td>A: pull the book, read the obi, open.</td><td>Settled; now built into the R3 · 03 bookcase.</td></tr>
+      <tr><td><b>06 · gallery</b></td><td>Agree.</td><td>Settled on <a href="r2-06-gallery.html" style="text-decoration:underline">R2 · 06</a>.</td></tr>
+      <tr><td><b>09 · home</b></td><td>Ship D (the mobile desk).</td><td>Round-1 D stands as built.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="sec" id="round4"><span class="n">R4</span>Round 4: your round-3 notes <span class="display-cn">第四轮</span></h2>
+  <p style="max-width:820px;color:var(--soft);font-size:16px;margin-bottom:22px">08a and 08b ship as built in round 3. Hover and focus are now coral too; chosen states stay the wheat band.</p>
+  <div class="boards" id="boards4"></div>
+
+  <h2 class="sec" id="round5"><span class="n">R5</span>Round 5: the about card, once more <span class="display-cn">第五轮</span></h2>
+  <p style="max-width:820px;color:var(--soft);font-size:16px;margin-bottom:22px">02, 03 and 05 are accepted as built in round 4. Only 07 changed.</p>
+  <div class="boards" id="boards5"></div>
+
+  <h2 class="sec" id="round6"><span class="n">R6</span>Round 6: dragging onto the sleeve is the only way back <span class="display-cn">第六轮</span></h2>
+  <p style="max-width:820px;color:var(--soft);font-size:16px;margin-bottom:22px">Your note on round 5: a flick was hard to trigger, so drag onto the sleeve should be the only put-back.</p>
+  <div class="boards" id="boards6"></div>
+
+  <h2 class="sec" id="round7"><span class="n">R7</span>Round 7: the card flips where it is <span class="display-cn">第七轮</span></h2>
+  <p style="max-width:820px;color:var(--soft);font-size:16px;margin-bottom:22px">Your note on round 6: the card moved away from its place and flipped. Now it only ever travels into the sleeve.</p>
+  <div class="boards" id="boards7"></div>
+
+  <h2 class="sec"><span class="n">06</span>How it would ship <span class="display-cn">分层交付</span></h2>
+  <div class="layers">
+    <div><b>L0 · HYGIENE (one PR)</b>Remove the gradient title, glare, shimmer and <code>#fff</code>. Fix the Reading nav overlap, the handwritten citations, contrast, the <code>h1</code>/<code>lang</code> gaps and fig numbering. Small and safe, and it pays off right away.</div>
+    <div><b>L1 · SYSTEM (stacked PRs)</b>Ship <code>pen.js</code> as the site-wide state language, plus cross-document View Transitions and the object→tab continuity. Every page improves at once.</div>
+    <div><b>L2 · OBJECTS (one PR per page)</b>Shelf, corkboard, darkroom/line, specimen card and reading margin, each built on the physics clock and verified on its own.</div>
+    <div><b>L3 · NOTICING</b>The living desk and the truthful laptop (no per-visitor memory: Fred’s call). They come last because they depend on L1’s continuity to feel right.</div>
+  </div>
+
+  <div class="ask">
+    <span class="hand">your move →</span> Go through the boards and pick per board: one letter, several to combine (“A + C’s bird”), or “none, go further.” Once you’ve chosen, I’ll refine the picks as controlled siblings and then ship them in the layers above.
+  </div>
+
+  <div class="record" style="margin-top:28px">设计记录 · 执行模式：多阶段（渲染候选 → 暂停等 Fred 选择 → 精修 → 分层交付）
+来源：现有站点（index / Writing / Building / Gallery / About / Reading），1440 与 390 宽度实测
+事实：插画已在“手的时钟”上运动（翻书、眨眼、咔嚓）；页面之间硬切；状态靠换色；纸质物件无重量；网站不认得回访者
+取 / 舍：取 Nichijou 的定格节奏与日常物件的关注；舍 渐变、高光、流光、玻璃模糊、泛用的淡入上浮
+表达锚点：一笔成形的手绘标注（按元素播种的抖动，不是逐帧噪声）＋ 纸的重量（钉子支点、晾衣夹、书脊）
+动作时钟：插画 = 手的时钟（定格、停顿）；纸与界面 = 物理时钟（质量、惯性、一次轻微回弹）
+色彩计划：奶油纸为场，墨色为主，珊瑚色每屏只花一次（笔迹 / 当前状态）；wash 色只作标记底色，永远在线条之后
+线条计划：同一支笔：圈、划线、勾、括号、箭头；悬停画出、离开收回；当前页常驻</div>
+</main>
+<script src="shared/pen.js"></script>
+<script src="shared/mock.js"></script>
+<script>
+  var BOARDS = [
+    ['01-transitions.html', '01', 'Page transitions', '转场', 'The object you click becomes the page you land on.', 'object→tab morph · dolly into the object · Nichijou iris cut', 'A · object becomes tab'],
+    ['02-pen.html', '02', 'The pen', '笔', 'One hand-drawn state language for hover, focus, selected and current.', 'circle · underline & tick · pointing arrow · highlighter wash', 'B · underline & tick'],
+    ['03-filters.html', '03', 'Filters', '筛选', 'Retire the pill rows. Filtering reshelves the books physically.', 'sentence filter · index tabs + shelf ruler · timeline scrub', 'A · sentence filter + the reflow engine'],
+    ['04-shelf.html', '04', 'The bookshelf', '书架', 'Spines that behave like books, and a bird that cares.', 'pull the book · lean and slip · open on the desk · phone strip', 'B · lean and slip, plus A’s leaning neighbours'],
+    ['05-board.html', '05', 'The corkboard', '软木板', 'Cards hang from pins and have weight. The gradient title goes.', 'pin physics · red string · unpin to read', 'A · pin physics + flat ink wordmark'],
+    ['06-gallery.html', '06', 'Darkroom & line', '暗房与晾衣绳', 'Photos develop, lines sway, and a polaroid can be unclipped.', 'develop · clothesline wind · unclip to view · one line, one swipe', 'A + C + D (swing only with a cause)'],
+    ['07-about.html', '07', 'The specimen card', '标本卡', 'A card you can hold, flip or peel, with no gloss.', 'hold & throw · peel day to night · the sleeve', 'A · hold the card (B is the bold one)'],
+    ['08-reading.html', '08', 'Reading', '阅读', 'Cover settles, footnotes point, a pencil in the margin.', 'pencil margin · pointing footnotes · marker · hero settles', 'D + B now, A as a second step'],
+    ['09-home.html', '09', 'The living desk', '有人住的桌子', 'The desk notices you, the laptop tells the truth, mobile gets a real desk.', 'desk notices · truthful laptop · returning note · mobile desk', 'ship D (mobile desk); C dropped, no per-visitor memory'],
+    ['10-opener.html', '10', 'The opener', '开场', 'Replace the black loading screen with a real Nichijou-grade opening, allowed to break the rules once.', 'desk draws itself · ink bloom · OP → eyecatch · chain-reaction gag', 'C · the OP, then the eyecatch (or C → A)'],
+    ['11-themes.html', '11', 'One drawing, any light', '一张画，任何光线', 'Decouple drawings from colour: role-layered assets and one token file make any theme cheap.', 'answer to the dark-mode / asset lock-in question', 'do it now, whether or not dark mode ships']
+  ];
+  var host = document.getElementById('boards');
+  BOARDS.forEach(function (b) {
+    var a = document.createElement('a');
+    a.className = 'bcard'; a.href = b[0];
+    a.innerHTML = '<span class="no">BOARD ' + b[1] + '</span><h3>' + b[2] + '<span>' + b[3] + '</span></h3><p>' + b[4] + '</p><div class="decide"><b>decide between</b> ' + b[5] + '<br><b style="color:var(--mark)">recommended</b> ' + b[6] + '</div>';
+    host.appendChild(a);
+    var pen = Pen.annotate(a.querySelector('h3'), 'underline', { gap: 2, seed: b[2], manual: true });
+    a.addEventListener('pointerenter', pen.show); a.addEventListener('pointerleave', pen.hide);
+    a.addEventListener('focus', pen.show); a.addEventListener('blur', pen.hide);
+  });
+  var R2 = [
+    ['r2-01-transitions.html', '01', 'The desk becomes the nav', '桌子变成导航', 'The table folds into its front edge, which rises into the header rule while all four objects fly into their tab slots. Reverses on “home”.', '“sleek but ordinary, WOW me” · A was your pick', 'A · desk → nav (B adds the portal window)'],
+    ['r2-02-pen.html', '02', 'Three tiers, one hand', '三层，一支笔', 'The underline on hover grows into a highlighter band when chosen (one return stroke). The arrow points at the one call to action per session.', 'blend B + C + D as tiers', 'one system · coral only on the tier-3 arrow'],
+    ['r2-03-filters.html', '03', 'Tags and years, both first-class', '类别与年份', 'Labelled index tabs over the shelf, a labelled year ruler with 正 tallies under it, drag for a range, and a one-line readout. Also shown on Gallery.', 'B, but show tag + year together', 'A · drag a span (B · circle any years)'],
+    ['r2-04-shelf.html', '04', 'A 3D shelf and the obi', '立体书架与腰封', 'Paper-craft 3D from the first frame. Hover pulls the book and turns its cover to you under a paper obi with the preview. Click continues into the open.', '3D felt abrupt · hover lacked physical logic', 'A · pull it, read the band (B · crack it open)'],
+    ['r2-05-board.html', '05', 'Corkboard A + C, and the wordmark', '软木板与字标', 'Drag with pendulum cards and unpin to read, all in one physics loop. Re-pinning ripples the cork. Five wordmarks without the smile.', 'A + C + W, but W looked like Amazon', 'W2 · level pen rule under “Agent”'],
+    ['r2-06-gallery.html', '06', 'The whole darkroom', '完整的暗房', 'Develop, rope physics, unclip and phone swipe together. The peg travels with the print into the viewer, and the rope springs up when the print leaves.', 'all apply · keep the clip in the zoom', 'one integrated prototype'],
+    ['r2-07-about.html', '07', 'Sleeve, then hand', '先抽出，再翻面', 'Pull the card down out of its sleeve. The top edge catches on the lip, pops free, and the card lifts into your hand for throw-to-flip.', 'C first, then A', 'one integrated interaction'],
+    ['r2-08a-reading.html', '08', 'Margin + hero, fixed and salient', '页边与题图', 'The cover dissolves as big colour halftone into paper. The title flies into the header, and the pen continues into a margin rail that works for any essay. End-of-scroll bug fixed.', 'A: not all essays have 1.0 · end bug · D not obvious', 'AD together'],
+    ['r2-08b-footnotes.html', '08', 'Footnotes, WOW', '会指的脚注', 'One pen gesture brackets the claim, loops the number and flings an arrow. The note flips up as a library catalogue card. Repeat hovers are quick.', '“looks dull, WOW me”', 'C · the annotator’s hand (B for phones)'],
+    ['r2-10-opener.html', '10', 'The OP, then the gag', 'OP，然后连锁反应', 'Manic OP, then a hard cut to the empty desk: the bird pecks the honest loading line and the objects drum-fill in. Then 日常 · ep.NN (essays on the shelf). 3.68 s.', 'C + D · the FRED split was weird', 'name beat a · one character per cut'],
+  ];
+  var host2 = document.getElementById('boards2');
+  R2.forEach(function (b) {
+    var a = document.createElement('a');
+    a.className = 'bcard'; a.href = b[0];
+    a.innerHTML = '<span class="no">R2 · ' + b[1] + '</span><h3>' + b[2] + '<span>' + b[3] + '</span></h3><p>' + b[4] + '</p><div class="decide"><b>your note</b> ' + b[5] + '<br><b style="color:var(--mark)">recommended</b> ' + b[6] + '</div>';
+    host2.appendChild(a);
+    var pen = Pen.annotate(a.querySelector('h3'), 'underline', { gap: 2, seed: b[2], manual: true });
+    a.addEventListener('pointerenter', pen.show); a.addEventListener('pointerleave', pen.hide);
+    a.addEventListener('focus', pen.show); a.addEventListener('blur', pen.hide);
+  });
+  var R3 = [
+    ['r3-02-pen.html', '02', 'Two tiers, and an arrow drawn by rule', '两级强调，按规则画的箭头', 'The hover underline grows into the highlighter band when chosen, with no tick. The arrow is a short, nearly straight glyph placed by rule: a specimen sheet, a drag playground and a 400-placement audit show it can’t be drawn badly.', 'no tick · “start here” was long and curved', 'one build'],
+    ['r3-03-writing.html', '03', 'A bookcase with a fore-edge index', '书架与书口索引', 'Both filters in one side index: paper tabs out of a closed index book, the 正 year ledger under them. The bookcase is about 2.5× the live shelf, with 04 A’s pull and obi on it. r3-03-page.html shows it under the real site header.', 'split filters felt unintuitive · tabs belong on the side · bigger books', 'A · drag a span of years'],
+    ['r3-05-board.html', '05', 'The pick, stuck on', '贴上去的小红花', 'W4’s sticker keeps its form; the asterisk becomes a mark that means “featured”: 小红花, a coral star, a 荐 seal or a rosette, each with an ink / coral pin switch.', 'asterisk reads as “see the sidenote” · pin colour', 'F1 小红花 · pin stays ink'],
+    ['r3-07-about.html', '07', 'A longer card, a slimmer sleeve', '卡更修长，套更窄', 'The card is 7:12 (was 1:1.31) and the sleeve 1:1.52 (was 1:1.05). Both faces are re-laid for portrait and the pull is re-tuned; the whole card now fits one screen. 5:8 is on a toggle.', 'it looks “fat”', '7:12'],
+    ['r3-08a-reading.html', '08', 'No dots until you scroll', '滚动才出现网点', 'The halftone band had a fixed depth, so it was printed at load. Its depth now grows from zero with scroll: the cover is clean at the top and clean again when you scroll back.', 'the dissolve showed at load (bug)', 'fixed at the cause'],
+    ['r3-08b-footnotes.html', '08', 'The annotator’s hand, pulling A’s slip', '批注一笔，拽来纸条', 'C’s pen gesture (bracket, loop, arrow) lands on A’s slip, which is jerked by its eyelet, swings and squares up. The arrow takes the thread’s place; the pen is the only coral.', 'C, with A’s note design', 'C · A'],
+    ['r3-10-opener.html', '10', 'The OP, then everything falls', 'OP，然后东西掉下来', 'Name beat a, then a hard cut to the empty desk and the objects drum-fill in: no line, no peck. Then 日常 · ep.27 and the desk, 3.26 s. Returning in the same session: only the fall, 0.68 s.', 'love a · no chain reaction · returning = just the fall', 'one build'],
+  ];
+  var host3 = document.getElementById('boards3');
+  R3.forEach(function (b) {
+    var a = document.createElement('a');
+    a.className = 'bcard'; a.href = b[0];
+    a.innerHTML = '<span class="no">R3 · ' + b[1] + '</span><h3>' + b[2] + '<span>' + b[3] + '</span></h3><p>' + b[4] + '</p><div class="decide"><b>your note</b> ' + b[5] + '<br><b style="color:var(--mark)">recommended</b> ' + b[6] + '</div>';
+    host3.appendChild(a);
+    var pen = Pen.annotate(a.querySelector('h3'), 'underline', { gap: 2, seed: b[2], manual: true });
+    a.addEventListener('pointerenter', pen.show); a.addEventListener('pointerleave', pen.hide);
+    a.addEventListener('focus', pen.show); a.addEventListener('blur', pen.hide);
+  });
+  var R4 = [
+    ['r4-02-pen.html', '02', 'One coral for the pen’s attention', '留意、焦点、指向同一珊瑚色', 'The hover underline and 「 」 now use the arrow’s coral; choosing absorbs the coral into the wheat band. The crowded line was a bug (rotated boxes); every underline now keeps 10 px of air, checked live.', 'notice, focus, point in one coral · “projects” line too close', 'one build'],
+    ['r4-03-writing.html', '03', 'A bookcase that grows, a book that stays in your hand', '会长高的书架', 'A 27 / 60 / 120 essay switch: adding planks holds (9 planks at 120, sticky index), while flat stacks need more room. The pulled book now stays under the pointer, and clicking it opens it.', 'does it hold with many more? · the pulled book leaves the cursor', '(a) add planks'],
+    ['r4-05-board.html', '05', 'The flower answers you', '小红花会回应', 'The 小红花 presses on first view, on hover and focus of the lead card, when it comes back into view, and when it’s pinned back. One cooldown, never a loop.', 'ship it · keep the pop as a hover effect or more', 'ships'],
+    ['r4-07-about.html', '07', 'Out of the side, then upright', '从侧面抽出，再立起来', 'The sleeve lies on its side with its mouth on the right. The long card slides out along its length, catches on the lip, then turns upright in your hand.', 'take it out from the right side', 'long axis (short axis on a toggle)'],
+  ];
+  var host4 = document.getElementById('boards4');
+  R4.forEach(function (b) {
+    var a = document.createElement('a');
+    a.className = 'bcard'; a.href = b[0];
+    a.innerHTML = '<span class="no">R4 · ' + b[1] + '</span><h3>' + b[2] + '<span>' + b[3] + '</span></h3><p>' + b[4] + '</p><div class="decide"><b>your note</b> ' + b[5] + '<br><b style="color:var(--mark)">recommended</b> ' + b[6] + '</div>';
+    host4.appendChild(a);
+    var pen = Pen.annotate(a.querySelector('h3'), 'underline', { gap: 2, seed: b[2], manual: true });
+    a.addEventListener('pointerenter', pen.show); a.addEventListener('pointerleave', pen.hide);
+    a.addEventListener('focus', pen.show); a.addEventListener('blur', pen.hide);
+  });
+  var R5 = [
+    ['r5-07-about.html', '07', 'Flip on the card, put back on the sleeve', '在卡上翻，往套里放', 'The sleeve stands upright; the card slides out of its right side with no turn. A tap or a flick either way flips the card. Carry it onto the sleeve to put it back; the sleeve answers before you let go. Anything else settles in your hand.', 'flip kept putting the card back · the sleeve can stay vertical', 'one build'],
+  ];
+  var R6 = [
+    ['r6-07-about.html', '07', 'Let go on the sleeve to put it back; anywhere else flips', '放进卡套才放回，其余都翻面', 'Where you let go decides: over the sleeve it goes back in, anywhere else it flips toward your drag, at any speed or length. While you drag, the card turns toward the flip, or the sleeve takes it half in. On a phone the sleeve steps aside to the left edge, within a sideways drag.', 'flip was hard to trigger · only drag-to-sleeve puts back', 'one build'],
+  ];
+  var R7 = [
+    ['r7-07-about.html', '07', 'Flip in place, back in by the sleeve', '原地翻面，卡套收回', 'A drag turns the card inside its own footprint, and letting go completes the flip right there. The card only travels when your pointer reaches the sleeve: then the sleeve takes it half in, and letting go there puts it back.', 'the card moved away and flipped', 'one build'],
+  ];
+  [[R5, 'boards5', 'R5'], [R6, 'boards6', 'R6'], [R7, 'boards7', 'R7']].forEach(function (r) { var host = document.getElementById(r[1]); r[0].forEach(function (b) {
+    var a = document.createElement('a');
+    a.className = 'bcard'; a.href = b[0];
+    a.innerHTML = '<span class="no">' + r[2] + ' · ' + b[1] + '</span><h3>' + b[2] + '<span>' + b[3] + '</span></h3><p>' + b[4] + '</p><div class="decide"><b>your note</b> ' + b[5] + '<br><b style="color:var(--mark)">recommended</b> ' + b[6] + '</div>';
+    host.appendChild(a);
+    var pen = Pen.annotate(a.querySelector('h3'), 'underline', { gap: 2, seed: b[2], manual: true });
+    a.addEventListener('pointerenter', pen.show); a.addEventListener('pointerleave', pen.hide);
+    a.addEventListener('focus', pen.show); a.addEventListener('blur', pen.hide);
+  }); });
+  Pen.annotate(document.querySelector('.lede h1 em'), 'scribble', { on: true, gap: 0, width: 2.4 });
+</script>
+</body>
+</html>
