@@ -1,6 +1,6 @@
 # Before/after video
 
-`fyang0507-redesign-before-after.mp4` puts the site as it was (`origin/main`) beside the motion redesign (`redesign/motion-revamp`): same viewport, same input, same moment on both sides. `poster.png` is a frame from it for the PR.
+`fyang0507-redesign-before-after.mp4` puts the site as it was (commit `6237120`, `main` before the redesign) beside the motion redesign (`redesign/motion-revamp`): same viewport, same input, same moment on both sides. `poster.png` is a frame from it for the PR.
 
 Every interaction is real input, driven headless: eased `page.mouse` paths on desk, CDP touch on phones. Both sides are recorded through a CDP screencast with real frame timestamps. Text is rendered as HTML (`chrome.html`) because the system ffmpeg has no `drawtext`.
 
@@ -10,7 +10,7 @@ Every interaction is real input, driven headless: eased `page.mouse` paths on de
 
 ## Regenerate
 
-Needs both servers (the branch on :4173 and a read-only checkout of `origin/main` on :4174), the headless runner from `HANDOFF.md` §9 (`/tmp/fyshot` with `playwright-core`, Chromium `chromium-1234`), and ffmpeg.
+Needs both servers (the redesign on :4173, and on :4174 a read-only copy of the site before it: `git archive 6237120 | tar -x -C /tmp/fymain`, served from there), the headless runner from `HANDOFF.md` §9 (`/tmp/fyshot` with `playwright-core`, Chromium `chromium-1234`), and ffmpeg.
 
 ```sh
 cd design/2026-09-motion/video
