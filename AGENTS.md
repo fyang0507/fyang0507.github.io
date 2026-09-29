@@ -10,7 +10,7 @@ This is a dependency-free static personal website exported as standalone `.dc.ht
 - Shared header and object-tab nav: `site-nav.css` (the `building/` sub-sites load it too)
 - Shared motion and pen modules: `motion.js` (`window.Motion`: the two clocks, springs, sleeping loops, reduced motion), `pen.js` (`window.Pen`: seeded hand strokes and the point arrow), `pen-tier.js` (`TierMark`, `FocusMark`, `Tier.wire`: the pen's states), `pen.css`
 - Shared page glue: `site.js` (`FY.mount`, the nav's pen marks)
-- Cross-document view transitions: `transitions.js`, `transitions.css`
+- Cross-document view transitions: `transitions.js` (home ↔ page, and the shared plumbing), `transitions-tab.js` (page → page), `transitions.css`
 - Page code: `lib/<page>/` (`home`, `writing`, `building`, `gallery`, `about`, `reading`), each with its own `<page>.css`
 - Vendored `<image-slot>` component that no page currently loads: `image-slot.js`
 - Local fonts: `fonts/`
@@ -61,7 +61,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   1. `support.js`, first, so React's fetch from unpkg starts before the stylesheets claim the connections (the page's largest paint waits for React). Don't preload React: arriving before parsing ends makes support.js wait for DOMContentLoaded.
   2. `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/<page>/<page>.css`
   3. the `expect` link
-  4. `motion.js` and `transitions.js` as `defer blocking="render"`: they don't block the parser, but first render waits for them, so `pagereveal` is still heard
+  4. `motion.js`, `transitions-tab.js` and `transitions.js` as `defer blocking="render"`: they don't block the parser, but first render waits for them, so `pagereveal` is still heard
   5. deferred: `pen.js`, `pen-tier.js`, `site.js`, `content/*`, then the page's modules
 - Page CSS lives in the head, never in `<helmet>`, so it applies at first paint.
 - `index.html` differs:

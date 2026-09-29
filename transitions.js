@@ -10,7 +10,7 @@
        enter  home → page: every door object is carried on its own arc by a spring tuned to its mass; the table
               folds into its front edge and that edge rises, sagging, into the nav rule; the props fall.
        leave  page → home: the rule drops, the table springs open from it, the objects are thrown back on gravity.
-       tab    page → page: the folder tab slides on a spring while a hop is passed along the row.
+       tab    page → page: transitions-tab.js (the folder tab slides on a spring, a hop is passed along the row).
    Same-tab moves (Writing ↔ Reading), other pages and reduced motion get no transition. A click mid-flight
    skips the running transition to its end; engines without cross-document transitions keep a hard cut. */
 (function () {
@@ -35,8 +35,6 @@
   };
   var PROPS = { mug: { spin: -38, w: 150 }, plant: { spin: 16, w: 210 }, bird: { spin: 0, w: 270 } };   // drop back in 60 ms apart
   var EDGE_RGB = [96, 87, 78];     // the desk's drawn front edge (FY_DESK.edgeLine.rgb wins); the rule it becomes is --ink
-  // held poses at 12 fps (the hand's clock): lift px, lean deg × the direction the tab is going
-  var HOP = [[0, 0], [-4, 2], [-8, 3], [-5, 1], [0, 0]], HOP_BIG = [[0, 0], [-6, -2], [-13, 2], [-8, 3], [0, 0]];
   var EZ = { lin: M.EASE.lin, in: function (t) { return t * t; }, out: function (t) { return 1 - Math.pow(1 - t, 3); },
     inout: M.cubic(0.45, 0, 0.55, 1), pick: M.cubic(0.25, 0.1, 0.25, 1), pen: M.EASE.pen };
 
@@ -435,36 +433,9 @@
     drive(svg, G, run, hold('new', 'desk-edge', run.dur * 1000));
     propsIn(A, run.ev.fold == null ? 0.2 : run.ev.fold);
   }
-  function tab(A, from) {
-    var dur = M.springEase.duration(150, 21), ease = M.springEase(150, 21), h = ends(A, 'site-head');
-    var ride = function (name) {
-      var g = ends(A, name);
-      if (!g) return;
-      kill(A, name, ['group']);
-      pa('group', name, [{ transform: css(g.m0), width: g.w0 + 'px', height: g.h0 + 'px' }, { transform: css(g.m1), width: g.w1 + 'px', height: g.h1 + 'px' }], { duration: dur, delay: 40, easing: ease });
-    };
-    // Left from a scrolled page, the header starts higher than it lands: then the whole strip rides the tab's
-    // spring down together (left to the browser, each part would slide on its own curve and the hops would jump)
-    if (h && Math.abs(h.m1[5] - h.m0[5]) > 0.5) ['site-head', 'identity', 'site-rule'].concat(ORDER.map(function (k) { return 'obj-' + OBJ[k]; })).forEach(ride);
-    ride('tabmark');
-    setTimeout(function () { land(true); }, 40 + dur);
-    var a = ORDER.indexOf(TAB[from]), b = ORDER.indexOf(TAB[HERE]), dir = b > a ? 1 : -1;
-    for (var i = a, n = 0; ; i += dir, n++) { hop(A, OBJ[ORDER[i]], n * 65, i === b, dir); if (i === b) break; }
-  }
-  // the relay: each object hops on held frames at 12 fps, leaning the way the tab is going. The poses are added
-  // to wherever the group is (composite add), so an object still riding the header down carries its hop with it.
-  // That base keeps the group's own origin, its centre, so the pivot (the drawing's foot) is measured from there.
-  function hop(A, o, t0, big, dir) {
-    var name = 'obj-' + o, g = ends(A, name);
-    if (!g) return;
-    var K = big ? HOP_BIG : HOP, F = 83, D = t0 + F * K.length, ax = 0, ay = g.h1 / 2;
-    var kf = [{ offset: 0, transform: 'none' }];
-    K.forEach(function (p, i) { kf.push({ offset: (t0 + i * F) / D, transform: css(mul(tr(ax, ay + p[0]), mul(rot(p[1] * dir), tr(-ax, -ay)))) }); });
-    kf.push({ offset: 1, transform: 'none' });
-    pa('group', name, M.held(kf), { duration: D, composite: 'add' });
-  }
-
   /* ---- the events ---- */
+  // what transitions-tab.js works with: the matrices, the browser's boxes and animations, the row, the landing
+  var V = { M: M, ends: ends, box: box, kill: kill, pa: pa, css: css, mul: mul, tr: tr, rot: rot, sc: sc, f2: f2, ORDER: ORDER, OBJ: OBJ, TAB: TAB, here: HERE, land: land };
   var cur = null, lastHref = null, clickT = 0;
   // the band may go on: at once when nothing was carried in, else once the tab has landed (data-vt-landed stays)
   function land(vt) { if (!html.hasAttribute('data-vt-landed')) { html.setAttribute('data-vt-landed', ''); document.dispatchEvent(new CustomEvent('fy:landed', { detail: { vt: !!vt } })); } }
@@ -501,7 +472,7 @@
     var svg = kind === 'tab' ? null : liveLine();
     vt.finished.then(done, done);
     vt.ready.then(function () {
-      try { var A = uaAnims(); if (kind === 'tab') tab(A, from); else if (kind === 'enter') enter(A, rec, svg); else leave(A, from, svg); }
+      try { var A = uaAnims(); if (kind === 'tab') { if (window.FYTab) FYTab.run(V, A, from); else land(true); } else if (kind === 'enter') enter(A, rec, svg); else leave(A, from, svg); }
       catch (err) { vt.skipTransition(); setTimeout(function () { throw err; }); }
     }, done);
   }
