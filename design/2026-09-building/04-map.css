@@ -1,0 +1,82 @@
+/* design/2026-09-building · the system map, three ways (04-map.js). No coral at rest: a path is ink against pencil; the
+   pen's coral appears only on what the pointer is noticing (the underline, and in C the lines it draws); a locked module
+   is the wheat band. The rails that a path touches go from pencil to ink. */
+.pj-sec--map{row-gap:14px}
+.map-shell{grid-column:1/-1;margin-top:6px}
+.map-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px;color:var(--soft);font:12px/1.5 var(--util)}
+.map-clear{padding:6px 0;color:var(--ink);font:11.5px/1 var(--util)}
+.map{position:relative;margin-top:14px;padding:6px 0 4px}
+.map-lines{position:absolute;z-index:0;left:0;top:0;overflow:visible;pointer-events:none}
+.ml-base{fill:none;stroke:var(--line-strong);stroke-width:1.3;stroke-linecap:round;transition:stroke .2s var(--ease-out)}
+.ml-base.is-path{stroke:var(--ink);stroke-width:1.6}
+.ml-hot{fill:none;stroke:var(--pen);stroke-width:2.2;stroke-linecap:round}
+.ml-hot.cool{stroke:var(--hl-ink);stroke-width:2}
+.map-layer{position:relative;z-index:1;margin-top:38px}
+.map-layer:first-of-type{margin-top:8px}
+.map-layer-label{margin-bottom:12px;color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.09em;text-transform:uppercase}
+.map-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.map-layer--workflow .map-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.map-layer--handle .map-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+.map-node--cross{grid-column:1/-1}
+.map-node{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:74px;padding:12px 14px 14px;text-align:left;color:var(--ink);background:var(--slip);border:1px solid var(--line-strong);border-radius:4px;cursor:pointer;transition:opacity .2s var(--ease-out)}
+.mn-k{color:var(--pencil);font:500 9.5px/1.3 var(--util);letter-spacing:.06em;text-transform:uppercase}
+.map-node strong{font:500 16px/1.25 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.map-node--cross{min-height:56px}
+.map.is-tracing .map-node:not(.is-path){opacity:.4}
+.map-node:focus-visible{outline:none}
+.map-rails{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:30px}
+.map-rails span{padding:8px 10px;border:1px dashed var(--line-strong);border-radius:999px;color:var(--pencil);font:500 10.5px/1 var(--util);letter-spacing:.08em;text-align:center;text-transform:uppercase;transition:color .2s,border-color .2s}
+.map-rails span.is-path{border-style:solid;border-color:var(--ink);color:var(--ink)}
+.map-detail{display:grid;grid-template-columns:minmax(150px,210px) 1fr;gap:6px 30px;margin-top:22px;padding:18px 20px 20px;border:1px solid var(--line);border-radius:4px;background:var(--paper2)}
+.map-detail h3{grid-column:2;font:500 22px/1.2 "Fraunces",serif}
+.map-detail p{grid-column:2;margin:0!important;color:var(--soft);font-size:16px!important;line-height:1.55!important}
+.md-k{grid-row:span 3;color:var(--pencil);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.md-meta{grid-column:2;color:var(--pencil);font:11.5px/1.5 var(--util)}
+.map-detail.is-open{border-color:var(--line-strong);box-shadow:inset 3px 0 0 var(--ink)}
+
+/* A · cards on a table: the path's cards lift toward you */
+.c-a .map-node{transform:rotate(var(--r,0deg));transition:opacity .2s var(--ease-out),transform .5s var(--ease-settle),box-shadow .3s var(--ease-out)}
+.c-a .map-node:nth-child(3n+1){--r:-.5deg}.c-a .map-node:nth-child(3n+2){--r:.4deg}.c-a .map-node:nth-child(3n){--r:-.2deg}
+.c-a .map-node.is-path{transform:translateY(-4px) rotate(calc(var(--r,0deg) * .3));box-shadow:-4px 10px 16px rgba(60,50,35,.15)}
+
+/* B · pins and thread, on a cork panel inside the sheet */
+.c-b .map{padding:18px 18px 14px;border-radius:10px;background-color:var(--board);background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:24px 24px}
+.c-b .map-layer-label{color:var(--soft)}
+.c-b .map-node{margin-top:10px;border-radius:0;background:var(--paper);transform:rotate(var(--r,0deg));transform-origin:50% 0;box-shadow:-4px 8px 10px rgba(60,50,35,.12);transition:opacity .2s var(--ease-out),transform .5s var(--ease-settle)}
+.c-b .map-node:nth-child(3n+1){--r:-1.1deg}.c-b .map-node:nth-child(3n+2){--r:.9deg}.c-b .map-node:nth-child(3n){--r:-.4deg}
+.c-b .map-node::before{content:"";position:absolute;z-index:2;left:50%;top:-8px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--ink);box-shadow:0 2px 2px rgba(60,50,35,.25)}
+.c-b .map-node.is-path{transform:rotate(0deg)}
+.c-b .ml-base{stroke:var(--pencil);stroke-width:1.2;opacity:.55}
+.c-b .ml-base.is-path{stroke:var(--ink);stroke-width:1.5;opacity:1}
+.c-b .map-lines{z-index:2}
+.c-b .map-rails span{background:var(--paper)}
+
+/* C · the pen draws it: columns read left to right, handles → protocols → outcomes */
+@media (min-width:761px){
+  .c-c .map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(40px,6vw,90px);align-items:start}
+  .c-c .map-layer{margin-top:0}
+  .c-c .map-layer--handle{order:1}.c-c .map-layer--workflow{order:2}.c-c .map-layer--outcome{order:3}
+  .c-c .map-rails{order:4;grid-column:1/-1}
+  .c-c .map-grid,.c-c .map-layer--workflow .map-grid,.c-c .map-layer--handle .map-grid{grid-template-columns:1fr;gap:6px}
+}
+.c-c .map-layer--handle{order:1}.c-c .map-layer--workflow{order:2}.c-c .map-layer--outcome{order:3}.c-c .map-rails{order:4}
+.c-c .map{display:flex;flex-direction:column}
+@media (min-width:761px){.c-c .map{display:grid}}
+.c-c .map-node{min-height:0;padding:6px 0 8px 12px;border:0;border-left:1.5px solid var(--ink);border-radius:0;background:var(--paper)}
+.c-c .map-node--policy{border-left-style:dashed}
+.c-c .map-node--cross{border-left-width:3px}
+.c-c .map-node strong{font-size:15.5px}
+.c-c .ml-base{stroke:var(--line);stroke-width:1.1}
+.c-c .ml-base.is-path{stroke:var(--line-strong);stroke-width:1.1}
+.c-c .map-rails span{border-radius:3px}
+
+@media (max-width:760px){
+  .map-grid,.map-layer--handle .map-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .map-layer--workflow .map-grid{grid-template-columns:1fr}
+  .map-rails{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .map-detail{grid-template-columns:1fr}
+  .map-detail h3,.map-detail p,.md-meta{grid-column:1}
+  .md-k{grid-row:auto}
+  .c-c .map-grid{grid-template-columns:1fr;gap:6px}
+  .c-c .map-layer{margin-top:26px}
+}

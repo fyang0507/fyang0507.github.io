@@ -1,0 +1,32 @@
+/* design/2026-09-building · the names the board ↔ project moves add, as transitions.css would carry them (production
+   assigns every name there). One element per name per document: on the board a name goes only on the one card or
+   dossier in play, through a class 00-vt.js or 01-board.js sets just before the capture. The header's names
+   (identity, site-head, obj-*, site-rule, tabmark) come from transitions.css itself, so the site header stays put. */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+/* A · the card in hand, or in its slot on the way back ↔ the card taped to the project page */
+.vt-card,.c-a .pj-cover-card{view-transition-name:pj-card}
+/* A · the chapter strip stays put while the in-place chapter swap prints the next chapter under it; the head above it
+   (the chapter's title beside the card) crosses over on its own during that same-document swap only */
+.c-a.bd-swap .pj-strip{view-transition-name:pj-strip}
+.c-a.bd-swap .pj-sheethead{view-transition-name:pj-head}
+.c-a.bd-swap .pj-back{view-transition-name:pj-backlink}
+/* the board chrome (not part of any candidate) holds still through every move */
+.bd-bar{view-transition-name:bd-bar}
+::view-transition-group(bd-bar){z-index:9;animation:none}
+::view-transition-old(bd-bar){animation:none;opacity:0}
+::view-transition-new(bd-bar){animation:none}
+/* C · the index tabs: the dossier's (in hand) or the ones peeking from behind the card (on the way back) ↔ the page's fore-edge */
+.vt-tabs>:nth-child(1),.c-c .pj-tabs>a:nth-child(1){view-transition-name:pj-tab-1}
+.vt-tabs>:nth-child(2),.c-c .pj-tabs>a:nth-child(2){view-transition-name:pj-tab-2}
+.vt-tabs>:nth-child(3),.c-c .pj-tabs>a:nth-child(3){view-transition-name:pj-tab-3}
+.vt-tabs>:nth-child(4),.c-c .pj-tabs>a:nth-child(4){view-transition-name:pj-tab-4}
+.vt-tabs>:nth-child(5),.c-c .pj-tabs>a:nth-child(5){view-transition-name:pj-tab-5}
+
+/* the card and the tabs fly over the page; the tabs stretch to their group (00-vt.js scales the group, never sizes it) */
+::view-transition-group(pj-card),::view-transition-group(pj-strip){z-index:3}
+::view-transition-group(pj-tab-1),::view-transition-group(pj-tab-2),::view-transition-group(pj-tab-3),::view-transition-group(pj-tab-4),::view-transition-group(pj-tab-5){z-index:4}
+::view-transition-old(pj-tab-1),::view-transition-new(pj-tab-1),::view-transition-old(pj-tab-2),::view-transition-new(pj-tab-2),::view-transition-old(pj-tab-3),::view-transition-new(pj-tab-3),
+::view-transition-old(pj-tab-4),::view-transition-new(pj-tab-4),::view-transition-old(pj-tab-5),::view-transition-new(pj-tab-5){height:100%}
+::view-transition-old(pj-card),::view-transition-new(pj-card){backface-visibility:hidden;-webkit-backface-visibility:hidden}

@@ -1,0 +1,51 @@
+/* design/2026-09-building · C · 档案 · the project page is the dossier, open: one long sheet with a file label, the card
+   clipped to its corner, and the index tabs down its fore-edge (the same tabs that peeked from behind the card on the
+   board; Writing's side index is the precedent). Line-led: ruled lines, typed labels, stamped outlines and the pen's
+   tab outline carry it; colour is the kraft of the tabs and the wheat band on the current one. Phone: the tabs are a
+   strip above the sheet, as Writing's index is on phones. */
+.c-c{--dos-kraft:#D8C29A;--dos-kraft-ink:#6E5A3A}
+.c-c .pj-frame{display:grid;grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"head tabs" "main tabs";column-gap:0;padding-top:30px}
+.c-c .pj-head,.c-c .pj-main{position:relative;background:var(--paper);border:1px solid var(--line-strong);border-right-width:1.5px}
+.c-c .pj-head{grid-area:head;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;padding:28px clamp(26px,4vw,60px) 30px;border-bottom:0}
+.c-c .pj-head::before{content:"";position:absolute;left:-1px;right:-1.5px;top:-9px;height:9px;border:1px solid var(--dos-kraft-ink);border-bottom:0;border-radius:6px 26px 0 0;background:var(--dos-kraft);clip-path:polygon(0 0,34% 0,37% 100%,0 100%)}
+.c-c .pj-main{grid-area:main;padding:0 clamp(26px,4vw,60px) 30px;border-top:0}
+.c-c .pj-sheethead{grid-column:1;grid-row:1}
+.c-c .pj-cover{grid-column:2;grid-row:1;align-self:start;margin:-6px 6px 0 0;transform:rotate(2.4deg)}
+.c-c .pj-cover .board-pin{display:none}
+.c-c .pj-cover::after{content:"";position:absolute;z-index:3;left:26%;top:-11px;width:12px;height:34px;border:1.6px solid var(--pencil);border-radius:7px;border-bottom-color:transparent}
+.c-c .pj-label{padding-bottom:10px;border-bottom:1px solid var(--ink);color:var(--ink)}
+.c-c .pj-label .pj-n{display:none}
+.c-c .pj-label .pj-file{letter-spacing:.12em}
+.c-c .pj-eyebrow{margin-top:14px}
+.c-c .pj-meta{gap:8px}
+.c-c .pj-meta span{padding:3px 8px 4px;border:1.2px solid var(--soft);border-radius:3px;color:var(--soft)}
+.c-c .pj-meta span+span::before{display:none}
+.c-c .pj-meta span:first-child{transform:rotate(-1.2deg);border-color:var(--ink);color:var(--ink)}
+.c-c .pj-back{grid-area:tabs;align-self:end;margin:0 0 30px 16px;font-size:10.5px}
+/* the fore-edge: index tabs off the sheet's right edge, sticky while you read; the current one pulled out further */
+.c-c .pj-tabs{grid-area:tabs;position:sticky;top:26px;align-self:start;display:flex;flex-direction:column;gap:7px;margin-top:58px}
+.c-c .pj-tabs a{min-width:118px;height:31px;margin-left:-1px;padding:0 12px 0 14px;align-items:center;border:1px solid var(--dos-kraft-ink);border-left:0;border-radius:0 9px 9px 0;background:var(--dos-kraft);color:var(--ink);transition:transform .38s var(--ease-settle)}
+.c-c .pj-tabs a .pn{color:var(--dos-kraft-ink);font-weight:600}
+.c-c .pj-tabs a[aria-current="page"]{transform:translateX(10px)}
+.c-c .pj-tabs a:hover{transform:translateX(4px)}
+.c-c .pj-tabs a[aria-current="page"]:hover{transform:translateX(10px)}
+.c-c .pj-tabs .plive{margin-left:auto}
+/* line-led body: ruled, typed, no boxes */
+.c-c .pj-sec{border-top:1px dashed var(--line-strong)}
+.c-c .pj-sec:first-of-type{border-top:1px solid var(--ink)}
+.c-c .pj-card{padding:16px 0 18px 18px;border-left:1.5px solid var(--ink)}
+.c-c .pj-card:nth-child(n+3){border-left-color:var(--line-strong)}
+.c-c .pj-line li{padding:14px 0 16px 16px;border-left:1.5px solid var(--ink)}
+.c-c .pj-note{border-left-style:dashed}
+@media (max-width:760px){
+  .c-c .pj-frame{grid-template-columns:1fr;grid-template-areas:"tabs" "head" "main" "back";padding-top:18px}
+  .c-c .pj-tabs{z-index:30;top:0;flex-direction:row;overflow-x:auto;scrollbar-width:none;gap:5px;margin:0 -4vw;padding:10px 4vw 0;background:var(--paper)}
+  .c-c .pj-tabs::-webkit-scrollbar{display:none}
+  .c-c .pj-tabs a{flex:none;min-width:0;height:30px;margin:0;padding:0 10px;border:1px solid var(--dos-kraft-ink);border-bottom:0;border-radius:8px 8px 0 0}
+  .c-c .pj-tabs a[aria-current="page"],.c-c .pj-tabs a[aria-current="page"]:hover{transform:translateY(-4px)}
+  .c-c .pj-tabs a:hover{transform:none}
+  .c-c .pj-head{grid-template-columns:1fr;padding:22px 18px 22px}
+  .c-c .pj-cover{grid-column:1;grid-row:auto;justify-self:end;margin:-4px 4px 0 0}
+  .c-c .pj-main{padding:0 18px 24px}
+  .c-c .pj-back{margin:16px 0 0}
+}
