@@ -427,26 +427,31 @@
     propsIn(A, run.ev.fold == null ? 0.2 : run.ev.fold);
   }
   function tab(A, from) {
-    var t = ends(A, 'tabmark'), dur = M.springEase.duration(150, 21);
-    if (t) {
-      kill(A, 'tabmark', ['group']);
-      pa('group', 'tabmark', [{ transform: css(t.m0), width: t.w0 + 'px', height: t.h0 + 'px' }, { transform: css(t.m1), width: t.w1 + 'px', height: t.h1 + 'px' }], { duration: dur, delay: 40, easing: M.springEase(150, 21) });
-    }
+    var dur = M.springEase.duration(150, 21), ease = M.springEase(150, 21), h = ends(A, 'site-head');
+    var ride = function (name) {
+      var g = ends(A, name);
+      if (!g) return;
+      kill(A, name, ['group']);
+      pa('group', name, [{ transform: css(g.m0), width: g.w0 + 'px', height: g.h0 + 'px' }, { transform: css(g.m1), width: g.w1 + 'px', height: g.h1 + 'px' }], { duration: dur, delay: 40, easing: ease });
+    };
+    // Left from a scrolled page, the header starts higher than it lands: then the whole strip rides the tab's
+    // spring down together (left to the browser, each part would slide on its own curve and the hops would jump)
+    if (h && Math.abs(h.m1[5] - h.m0[5]) > 0.5) ['site-head', 'identity', 'site-rule'].concat(ORDER.map(function (k) { return 'obj-' + OBJ[k]; })).forEach(ride);
+    ride('tabmark');
     setTimeout(function () { land(true); }, 40 + dur);
     var a = ORDER.indexOf(TAB[from]), b = ORDER.indexOf(TAB[HERE]), dir = b > a ? 1 : -1;
     for (var i = a, n = 0; ; i += dir, n++) { hop(A, OBJ[ORDER[i]], n * 65, i === b, dir); if (i === b) break; }
   }
-  // the relay: each object hops on held frames at 12 fps, leaning the way the tab is going
+  // the relay: each object hops on held frames at 12 fps, leaning the way the tab is going. The poses are added
+  // to wherever the group is (composite add), so an object still riding the header down carries its hop with it.
   function hop(A, o, t0, big, dir) {
     var name = 'obj-' + o, g = ends(A, name);
     if (!g) return;
     var K = big ? HOP_BIG : HOP, F = 83, D = t0 + F * K.length, ax = g.w1 / 2, ay = g.h1;
-    var kf = [{ offset: 0, transform: css(g.m0), easing: 'ease-out' }];
-    K.forEach(function (p, i) { kf.push({ offset: (t0 + i * F) / D, transform: css(mul(g.m1, mul(tr(ax, ay + p[0]), mul(rot(p[1] * dir), tr(-ax, -ay))))), easing: 'steps(1, end)' }); });
-    kf.push({ offset: 1, transform: css(g.m1) });
-    kf.forEach(function (k) { k.width = g.w1 + 'px'; k.height = g.h1 + 'px'; });
-    kill(A, name, ['group']);
-    pa('group', name, kf, { duration: D });
+    var kf = [{ offset: 0, transform: 'none' }];
+    K.forEach(function (p, i) { kf.push({ offset: (t0 + i * F) / D, transform: css(mul(tr(ax, ay + p[0]), mul(rot(p[1] * dir), tr(-ax, -ay)))) }); });
+    kf.push({ offset: 1, transform: 'none' });
+    pa('group', name, M.held(kf), { duration: D, composite: 'add' });
   }
 
   /* ---- the events ---- */

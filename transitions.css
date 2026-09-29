@@ -7,6 +7,9 @@
 
 /* ---- names: one rendered element per name per document ---- */
 .site-identity{view-transition-name:identity}
+/* the header strip itself: its labels, status line and home link travel with the named parts in it, instead of
+   crossing over inside the page (from a scrolled page that crossover showed two navs, one above the other) */
+.site-shell-header{view-transition-name:site-head}
 .site-index .site-nav-laptop,.desk-laptop{view-transition-name:obj-laptop}
 .site-index .site-nav-book,.desk-book{view-transition-name:obj-book}
 .site-index .site-nav-frame,.desk-frame{view-transition-name:obj-frame}
@@ -32,9 +35,14 @@
 ::view-transition-group(obj-laptop),::view-transition-group(obj-book),::view-transition-group(obj-frame),::view-transition-group(obj-camera){z-index:3}
 ::view-transition-group(rule-live){z-index:2}
 
-/* ---- the page itself: the paper stays put while the rest crosses over (plus-lighter keeps it solid) ---- */
-html[data-vt=enter]::view-transition-old(root),html[data-vt=enter]::view-transition-new(root){animation-duration:.3s;animation-delay:.16s;animation-timing-function:ease-in-out;animation-fill-mode:both}
-html[data-vt=leave]::view-transition-old(root),html[data-vt=leave]::view-transition-new(root){animation-duration:.2s;animation-timing-function:ease-in;animation-fill-mode:both}
+/* ---- the page itself: the paper stays put while the rest crosses over (plus-lighter keeps it solid).
+   The header strip exists on one side only here, so it keeps the page's timing ---- */
+html[data-vt=enter]::view-transition-old(root),html[data-vt=enter]::view-transition-new(root),html[data-vt=enter]::view-transition-new(site-head){animation-duration:.3s;animation-delay:.16s;animation-timing-function:ease-in-out;animation-fill-mode:both}
+html[data-vt=leave]::view-transition-old(root),html[data-vt=leave]::view-transition-new(root),html[data-vt=leave]::view-transition-old(site-head){animation-duration:.2s;animation-timing-function:ease-in;animation-fill-mode:both}
+/* page → page: the sheet you leave is nearly gone before the next one comes up, so two layouts never share the
+   screen at half strength (on a phone that double exposure fills the screen); what shows between is the paper */
+html[data-vt=tab]::view-transition-old(root),html[data-vt=tab]::view-transition-old(site-head){animation-duration:.12s;animation-timing-function:cubic-bezier(.4,0,1,1);animation-fill-mode:both}
+html[data-vt=tab]::view-transition-new(root),html[data-vt=tab]::view-transition-new(site-head){animation-duration:.2s;animation-delay:.07s;animation-timing-function:cubic-bezier(0,0,.2,1);animation-fill-mode:both}
 
 /* ---- home → page: the props have no slot, so a held beat and then gravity (g 7000, 3600 on phones) ---- */
 html[data-vt=enter]::view-transition-old(desk-mug){--w:50ms;--spin:-13deg}

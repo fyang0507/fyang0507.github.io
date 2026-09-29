@@ -73,6 +73,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - Keep mount hosts out of any `sc-if` that can flip. A re-render replaces the host, and the module mounts again from scratch.
 - `transitions.css` assigns every view-transition name. Set `view-transition-name` nowhere else, and render one element per name per document:
   - `identity` → `.site-identity`
+  - `site-head` → `.site-shell-header`, the header strip, so its labels, status line and home link travel with the named parts in it
   - `obj-laptop|book|frame|camera` → `.site-nav-*` in the nav, `.desk-*` on home
   - `site-rule` and `tabmark`
   - home's old/new-only groups: `desk-table` (`.desk-plate`), `desk-edge`, `desk-mug`, `desk-plant`, `desk-bird`, `desk-notes`

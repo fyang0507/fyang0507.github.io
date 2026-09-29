@@ -6,7 +6,8 @@
 //        above the chord; settled ≤ 1.0 s; header readable at 0.75 s (every label ≥ 0.9 opaque, the tab drawn, the
 //        line within 2.5 px of the rule: it may still be in its one small overshoot)
 // leave  Gallery → home: every object ends lower than it starts (gravity); settled ≤ 1.1 s
-// tab    Writing → Gallery: the tabmark rides a spring from tab to tab; the relay hops book, laptop, camera
+// tab    Writing → Gallery: the tabmark rides a spring from tab to tab; the relay hops book, laptop, camera; from a
+//        page scrolled 40 px, the header strip, identity and rule ride down together and no object jumps
 // none   reduced motion, same tab (Writing ↔ Reading), 404, direct load and reload get no transition; fy-vt is
 //        consumed every time. Plus: no console errors, no horizontal overflow after each move.
 import { ORIGIN, hook, seek, xy, check } from './vt-lib.mjs';
@@ -35,7 +36,7 @@ export default async (page, ctx) => {
   const useReal = process.env.VT_HOME === 'real' || (process.env.VT_HOME !== 'harness' && /desk-geo\.js|class="desk-in"/.test(idx));
   const B = ORIGIN + (useReal ? '/' : '/scripts/verify/vt-harness/');
   ctx.log('pages: ' + B);
-  await hook(page.context(), OBJS.concat(['tabmark']));
+  await hook(page.context(), OBJS.concat(['tabmark', 'site-head', 'identity', 'site-rule']));
 
   for (const w of (process.env.VT_W || '1440,390').split(',').map(Number)) {
     await page.setViewportSize({ width: w, height: w > 500 ? 900 : 844 });
@@ -92,6 +93,16 @@ export default async (page, ctx) => {
     check(res, T('tab · the relay hops book → laptop → camera, not the frame'), hops.every((a) => a && a.n >= 6) && !custom(r, '::view-transition-group(obj-frame)').length, hops.map((a) => a && a.n));
     check(res, T('tab · settles ≤ 0.8 s'), r.fin && r.finAt - r.readyAt <= 800, Math.round(r.finAt - r.readyAt) + ' ms');
     check(res, T('tab · the wheat band waits for the landed tab'), r.tier2At - r.revealAt >= 250 && r.landedVt && r.tier2At >= r.landedAt - 1, band(r));
+    // the same move from a scrolled page: the header starts higher than it lands, and travels as one strip
+    await page.goto(B + 'Writing.dc.html'); await page.waitForTimeout(900);
+    await page.evaluate(() => scrollTo(0, 40)); await page.waitForTimeout(200);
+    r = await arrive(page, await clickVisible(page, '.site-tab--shooting'));
+    const ys = (n) => r.samples.map((s) => xy(s[n])).filter(Boolean).map((p) => p.y);
+    const lag = ['site-head', 'identity', 'site-rule'].map((n) => { const y = ys(n); return y.map((v) => v - y[y.length - 1]); });
+    const apart = Math.max(...lag[0].map((_, i) => Math.max(...lag.map((l) => l[i])) - Math.min(...lag.map((l) => l[i]))));
+    const jump = Math.max(...OBJS.map((n) => { const y = ys(n); return Math.max(0, ...y.slice(1).map((v, i) => Math.abs(v - y[i]))); }));
+    check(res, T('tab · from a scrolled page the header rides down as one strip, no object jumps'), r.kind === 'tab' && lag.every((l) => l.length > 2) && lag[0][0] < -30 && apart < 1.5 && jump < 12,
+      { start: lag[0].length ? +lag[0][0].toFixed(1) : null, apart: +apart.toFixed(2), jump: +jump.toFixed(1) });
 
     // no transition: same tab, 404, direct load, reload
     await page.goto(B + 'Writing.dc.html'); await page.waitForTimeout(500);
