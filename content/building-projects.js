@@ -6,7 +6,7 @@ window.BUILDING_PROJECTS = Object.freeze([
     prominence: "highlighted",
     boardLead: true,
     lifecycle: "active",
-    period: "2026—now",
+    period: "2025—now",
     note: "An operating environment that gives swappable general-purpose agents durable handles into time, communication, shared state, personal context, and visible recovery.",
     href: "./building/fred-agent/",
     repo: "https://github.com/fyang0507/fred-agent",
