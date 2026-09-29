@@ -44,16 +44,18 @@ async function still(G, params, png) {
   await page.close();
   return png;
 }
-// The pen's layer as a frame sequence: every frame until the last stroke lands (then the sequence's last frame holds).
-async function drawn(G, params, stem) {
+// The pen's layer as a frame sequence in its own folder: every frame until the last stroke lands (then the sequence's
+// last frame holds). The folder starts empty: frames left from a longer earlier sequence would play on after this one.
+async function drawn(G, params, dir) {
+  fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true });
   const page = await layerPage(G, params), end = await page.evaluate(() => window.at(0));
   const n = Math.ceil(end / 1000 * FPS) + 1;
   for (let i = 0; i <= n; i++) {
     await page.evaluate((ms) => window.at(ms), i * 1000 / FPS);
-    await page.screenshot({ path: `${stem}-${String(i).padStart(3, '0')}.png`, omitBackground: params.layer !== 'end' });
+    await page.screenshot({ path: `${dir}/${String(i).padStart(3, '0')}.png`, omitBackground: params.layer !== 'end' });
   }
   await page.close();
-  return `${stem}-%03d.png`;
+  return `${dir}/%03d.png`;
 }
 
 // Both sides of every beat, cut once and shared by the layouts.

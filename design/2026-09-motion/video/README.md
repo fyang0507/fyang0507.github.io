@@ -6,7 +6,7 @@ Every interaction is real input, driven headless: eased `page.mouse` paths on de
 
 ## The 30 s cut
 
-`fyang0507-redesign-30s-16x9.mp4` and `fyang0507-redesign-30s-9x16.mp4` are one montage from one spec (`spec-30.json`) in two layouts: wide puts the sides next to each other, tall puts one above the other with the headline between them (phones stay side by side in both). Eight beats in the order a visit meets them, on hard cuts, then the end card. Each beat's headline has one phrase underlined by the site's own pen (`pen.js`, seeded by its text, drawn on the pen's easing); slowed pieces say their speed. The labels credit both sides: before, Claude Design (Fable 5) + GPT-5.6-sol; after, Claude Opus 5.5.
+`fyang0507-redesign-30s-16x9.mp4` and `fyang0507-redesign-30s-9x16.mp4` are one montage from one spec (`spec-30.json`) in two layouts: wide puts the sides next to each other, tall puts one above the other with the headline between them (phones stay side by side in both). Nine beats on hard cuts, then the end card: the first six are one visit (home → Writing → Shooting → home), then Reading, About and the phone. Each beat's headline has one phrase underlined by the site's own pen (`pen.js`, seeded by its text, drawn on the pen's easing); slowed pieces say their speed. The labels credit both sides: before, Claude Design (Fable 5) + GPT-5.6-sol; after, Claude Opus 5.5.
 
 ## Regenerate
 
