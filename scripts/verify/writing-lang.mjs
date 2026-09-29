@@ -10,10 +10,13 @@
 // in both languages (nothing spills out, clear of a series badge; Chinese upright, Latin turned to read top to
 // bottom); the book in your hand shows both titles, the chosen language first, each in its lang, on the obi and
 // the title page, and a switch while it is held retitles it there; the book links carry &lang=; the choice survives
-// a reload (fy-lang); no horizontal overflow. Once: the essay opens in the chosen language, a choice made on Reading
-// is the one Writing shows next time (its back link, history back, a bfcache pageshow); ?lang= wins over fy-lang, as
-// on Reading, and is not stored; a post with one title shows it in either language; reduced motion leaves nothing
-// running after a switch; an idle page makes no rAF calls after one; 0 console errors. Exit code 1 on any failure.
+// a reload (fy-lang); no horizontal overflow. At 1440 and 390, both ways (en → 中, zh → EN): the essay opens in the
+// language chosen on Writing (&lang=), Reading's switch sets ?lang= in place (post kept, no new history entry) and
+// fy-lang, a reload of Reading keeps it, and history back shows it chosen on Writing; so does Reading's back link.
+// Once: a bfcache pageshow takes up a choice made meanwhile; Reading's switch keeps every other parameter, their order
+// and the hash, and adds a missing lang; ?lang= wins over fy-lang, as on Reading, and is not stored; a post with one
+// title shows it in either language; reduced motion leaves nothing running after a switch; an idle page makes no rAF
+// calls after one; 0 console errors. Exit code 1 on any failure.
 const BASE = process.env.WRITING_BASE || 'http://127.0.0.1:4173/';
 const URL = BASE + 'Writing.dc.html', SHOTS = process.env.WRITING_SHOTS;
 const CORAL = 'rgb(217, 105, 90)';
@@ -203,32 +206,49 @@ export default async (page, ctx) => {
   }
 
   ctx.log('— to Reading and back');
+  const reading = () => page.evaluate(() => ({ search: location.search + location.hash, lang: document.documentElement.classList.contains('lang-en') ? 'en' : 'zh', stored: localStorage.getItem('fy-lang'), n: history.length }));
+  const readingReady = () => page.waitForSelector('[data-mount="reading"][data-ready]', { timeout: 20000 });
   for (const [w, h] of [[1440, 900], [390, 844]]) {
-    await page.evaluate(() => localStorage.clear());
-    await open(page, w, h);
-    await page.click('.lang-b[data-lang=en]'); await sleep(page, 300);
-    const id = await openByKeys();
-    const r1 = await page.evaluate(() => ({ url: location.search, en: document.documentElement.classList.contains('lang-en') }));
-    check(ctx, `the essay opens in the language chosen on Writing: ?post=<id>&lang=en, Reading in English (${w})`, r1.url === '?post=' + encodeURIComponent(id) + '&lang=en' && r1.en, JSON.stringify(r1));
-    await page.click('[data-act="lang"]'); await sleep(page, 300);
-    const r2 = await page.evaluate(() => ({ zh: document.documentElement.classList.contains('lang-zh'), stored: localStorage.getItem('fy-lang') }));
-    await Promise.all([page.waitForURL(/Writing\.dc\.html/, { timeout: 8000 }).catch(() => {}), page.evaluate(() => document.querySelector('a.back').click())]);
-    await ready(page);
-    let s = await state(page);
-    check(ctx, `a choice made on Reading (中) is the one Writing shows next: its back link (${w})`, r2.zh && r2.stored === 'zh' && s.lang === 'zh' && s.pressed === 'zh' && !badSpines(await spines(page), 'zh').length, JSON.stringify({ r2, s }));
-    // history back after Reading changed it again
-    await page.click('.lang-b[data-lang=en]'); await sleep(page, 300);
+    // Writing in a, the essay, Reading switched to b, a reload, history back to Writing: b throughout
+    for (const [a, b] of [['en', 'zh'], ['zh', 'en']]) {
+      await page.evaluate(() => localStorage.clear());
+      await open(page, w, h);
+      await page.click(`.lang-b[data-lang=${a}]`); await sleep(page, 300);
+      const q = '?post=' + encodeURIComponent(await openByKeys());
+      const r1 = await reading();
+      await page.click('[data-act="lang"]'); await sleep(page, 300);
+      const r2 = await reading();
+      await page.reload({ waitUntil: 'networkidle' }); await readingReady();
+      const r3 = await reading();
+      await page.goBack({ waitUntil: 'load' }); await ready(page);
+      const s = await state(page);
+      check(ctx, `Writing in ${a} opens the essay at ?post=<id>&lang=${a}, in ${a} (${w})`, r1.search === q + '&lang=' + a && r1.lang === a, JSON.stringify(r1));
+      check(ctx, `Reading's switch to ${b} sets ?lang=${b} in place: post kept, no new history entry, fy-lang=${b} (${w})`, r2.search === q + '&lang=' + b && r2.lang === b && r2.stored === b && r2.n === r1.n, JSON.stringify(r2));
+      check(ctx, `a reload of Reading stays ${b}, ?lang=${b} (${w})`, r3.search === q + '&lang=' + b && r3.lang === b, JSON.stringify(r3));
+      check(ctx, `history back to Writing: ${b === 'zh' ? '中文' : 'EN'} chosen, spines in ${b} (${w})`, s.lang === b && s.pressed === b && !badSpines(await spines(page), b).length, JSON.stringify(s));
+    }
+    // Reading's back link: a fresh load of Writing takes up the choice made on Reading
     await openByKeys();
     await page.click('[data-act="lang"]'); await sleep(page, 300);
-    await page.goBack({ waitUntil: 'load' }); await ready(page);
-    s = await state(page);
-    check(ctx, `history back from Reading shows Reading's choice too (${w})`, s.lang === 'zh' && s.pressed === 'zh' && !badSpines(await spines(page), 'zh').length, JSON.stringify(s));
+    await Promise.all([page.waitForURL(/Writing\.dc\.html/, { timeout: 8000 }).catch(() => {}), page.evaluate(() => document.querySelector('a.back').click())]);
+    await ready(page);
+    const s = await state(page);
+    check(ctx, `Reading's back link: Writing shows the choice made on Reading (中) (${w})`, s.lang === 'zh' && s.pressed === 'zh' && !badSpines(await spines(page), 'zh').length, JSON.stringify(s));
   }
   // Headless Chromium may not restore from the bfcache: change fy-lang as Reading would and fire the pageshow a restore would.
   await page.evaluate(() => { localStorage.setItem('fy-lang', 'en'); window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })); });
   await sleep(page, 400);
   let s = await state(page);
   check(ctx, 'a bfcache restore (pageshow.persisted) takes up the language chosen meanwhile', s.lang === 'en' && s.pressed === 'en' && !badSpines(await spines(page), 'en').length && (await links(page, 'en')), JSON.stringify(s));
+  // Reading's switch rewrites only lang: every other parameter, their order and the hash stay; a missing lang is added.
+  const post = '2019-01-09_he-and-his-cat', kept = [];
+  for (const [from, to] of [[`?theme=light&post=${post}&lang=en#x`, `?theme=light&post=${post}&lang=zh#x`], [`?post=${post}&theme=light#x`, `?post=${post}&theme=light&lang=en#x`]]) {
+    await page.evaluate(() => localStorage.clear());
+    await page.goto(BASE + 'Reading.dc.html' + from, { waitUntil: 'networkidle' }); await readingReady();
+    await page.click('[data-act="lang"]'); await sleep(page, 300);
+    const got = (await reading()).search; kept.push(got === to ? 'ok' : '✗ ' + got);
+  }
+  check(ctx, "Reading's switch keeps the other parameters, their order and the hash; a missing lang is added", kept.every((k) => k === 'ok'), kept.join(' · '));
 
   ctx.log('— ?lang=, one-title posts, reduced motion, idle');
   await page.evaluate(() => localStorage.setItem('fy-lang', 'zh'));

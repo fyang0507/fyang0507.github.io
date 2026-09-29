@@ -141,7 +141,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - Preserve relative URLs so the site works from a simple local server and static hosting.
 - Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not.
 - `Writing.dc.html` and `Reading.dc.html` have a CN/EN switch. Both resolve the language as `?lang=`, else `fy-lang` in `localStorage`, else `zh`, and a switch writes `fy-lang`, so a choice made on either page is the one the other shows.
-  - Reading swaps its `.en` / `.zh` variants.
+  - Reading swaps its `.en` / `.zh` variants, and its switch also sets `?lang=` in place (`history.replaceState`, keeping `post`, the other parameters and the hash), so a reload or a shared link keeps the language on screen. Writing's switch leaves its own address alone: a `?lang=` in Writing's history entry would outvote a choice made later on Reading.
   - Writing (`lib/writing/lang.js`) titles its spines in the chosen language, each fitted to its spine; a book's size and place never depend on the language. The book in your hand shows both titles, the chosen one first, and every book link carries `&lang=`.
 - Treat newlines in `content/posts/*.md` literally: one source newline becomes one rendered line break and repeated newlines remain repeated line breaks. Do not use Markdown trailing spaces as a separate hard-break convention.
 - Gateway pages are light-only. `Reading.dc.html` is the only page with dark mode, which drops its hero's halftone, and it may use paired light/dark navigation artwork; do not add theme switching or dark artwork to other pages.
