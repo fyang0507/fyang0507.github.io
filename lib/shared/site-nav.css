@@ -61,16 +61,16 @@
 .site-home:hover .site-nav-label,.site-home:focus-visible .site-nav-label,.site-tab:hover .site-nav-label,.site-tab:focus-visible .site-nav-label,.site-tab[aria-current="page"] .site-nav-label{color:var(--ink)}
 
 .site-nav-object{--nav-lift:0px;--nav-tilt:0deg;--nav-scale:1;--nav-art-x:0px;--nav-art-y:0px;position:absolute;left:50%;bottom:calc(var(--label-bottom) + var(--label-height) + var(--object-gap));display:block;width:60px;height:60px;pointer-events:none;transform:translateX(-50%) translateY(var(--nav-lift)) rotate(var(--nav-tilt)) scale(var(--nav-scale));transform-origin:bottom center;background-repeat:no-repeat;background-position:calc(50% + var(--nav-art-x)) calc(50% + var(--nav-art-y));background-size:100% 100%;transition:transform .16s cubic-bezier(.2,.7,.2,1)}
-.site-nav-book{--nav-art-x:-2px;background-image:url("./assets/nav-book-light.png");background-image:image-set(url("./assets/nav-book-light.png") 1x,url("./assets/nav-book-light@2x.png") 2x)}
-.site-nav-laptop{--nav-art-x:3px;--nav-art-y:-2px;background-image:url("./assets/nav-laptop-light.png");background-image:image-set(url("./assets/nav-laptop-light.png") 1x,url("./assets/nav-laptop-light@2x.png") 2x)}
-.site-nav-camera{--nav-art-x:1px;--nav-art-y:9px;background-image:url("./assets/nav-camera-light.png");background-image:image-set(url("./assets/nav-camera-light.png") 1x,url("./assets/nav-camera-light@2x.png") 2x)}
-.site-nav-frame{--nav-art-x:2px;--nav-art-y:8px;background-image:url("./assets/nav-frame-light.png");background-image:image-set(url("./assets/nav-frame-light.png") 1x,url("./assets/nav-frame-light@2x.png") 2x)}
+.site-nav-book{--nav-art-x:-2px;background-image:url("../../assets/nav-book-light.png");background-image:image-set(url("../../assets/nav-book-light.png") 1x,url("../../assets/nav-book-light@2x.png") 2x)}
+.site-nav-laptop{--nav-art-x:3px;--nav-art-y:-2px;background-image:url("../../assets/nav-laptop-light.png");background-image:image-set(url("../../assets/nav-laptop-light.png") 1x,url("../../assets/nav-laptop-light@2x.png") 2x)}
+.site-nav-camera{--nav-art-x:1px;--nav-art-y:9px;background-image:url("../../assets/nav-camera-light.png");background-image:image-set(url("../../assets/nav-camera-light.png") 1x,url("../../assets/nav-camera-light@2x.png") 2x)}
+.site-nav-frame{--nav-art-x:2px;--nav-art-y:8px;background-image:url("../../assets/nav-frame-light.png");background-image:image-set(url("../../assets/nav-frame-light.png") 1x,url("../../assets/nav-frame-light@2x.png") 2x)}
 
 html.dark .site-home-object{filter:invert(1) sepia(.18) saturate(.55) brightness(1.08)}
-html.dark .site-nav-book{background-image:url("./assets/nav-book-dark.png");background-image:image-set(url("./assets/nav-book-dark.png") 1x,url("./assets/nav-book-dark@2x.png") 2x)}
-html.dark .site-nav-laptop{background-image:url("./assets/nav-laptop-dark.png");background-image:image-set(url("./assets/nav-laptop-dark.png") 1x,url("./assets/nav-laptop-dark@2x.png") 2x)}
-html.dark .site-nav-camera{background-image:url("./assets/nav-camera-dark.png");background-image:image-set(url("./assets/nav-camera-dark.png") 1x,url("./assets/nav-camera-dark@2x.png") 2x)}
-html.dark .site-nav-frame{background-image:url("./assets/nav-frame-dark.png");background-image:image-set(url("./assets/nav-frame-dark.png") 1x,url("./assets/nav-frame-dark@2x.png") 2x)}
+html.dark .site-nav-book{background-image:url("../../assets/nav-book-dark.png");background-image:image-set(url("../../assets/nav-book-dark.png") 1x,url("../../assets/nav-book-dark@2x.png") 2x)}
+html.dark .site-nav-laptop{background-image:url("../../assets/nav-laptop-dark.png");background-image:image-set(url("../../assets/nav-laptop-dark.png") 1x,url("../../assets/nav-laptop-dark@2x.png") 2x)}
+html.dark .site-nav-camera{background-image:url("../../assets/nav-camera-dark.png");background-image:image-set(url("../../assets/nav-camera-dark.png") 1x,url("../../assets/nav-camera-dark@2x.png") 2x)}
+html.dark .site-nav-frame{background-image:url("../../assets/nav-frame-dark.png");background-image:image-set(url("../../assets/nav-frame-dark.png") 1x,url("../../assets/nav-frame-dark@2x.png") 2x)}
 @media (hover:hover){
   .site-tab--writing:hover .site-nav-book,.site-tab--writing:focus-visible .site-nav-book{--nav-lift:-2px;--nav-tilt:-3deg}
   .site-tab--building:hover .site-nav-laptop,.site-tab--building:focus-visible .site-nav-laptop{--nav-lift:-2px}

@@ -21,3 +21,4 @@ python3 -m http.server 4173 --bind 127.0.0.1
 - Boards are named by round: `NN-*` for round 1 and `rN-NN-*` for later rounds. A later round never edits an earlier round's files, so every comparison Fred made stays reproducible.
 - `HANDOFF.md` is the record of decisions; the boards are the record of how each idea looks and moves.
 - Boards load some production files (`site-nav.css`, `content/`, `assets/`). As the live site changes, an old board's "current site" frames show the site as it is now, not as it was then.
+- The shared code moved from the root to `lib/shared/` after `5983c8b`, so boards from before then load it from paths that no longer exist, such as `../../site-nav.css`. To view one as it was, check out that commit and serve it: `git worktree add ../fy-lineage 5983c8b`.

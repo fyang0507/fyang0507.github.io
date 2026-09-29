@@ -1,9 +1,9 @@
 /* Site-wide tokens and first-paint base. Linked first on every page, so the static
    header outside <x-dc> paints on paper, in its own faces, before support.js renders.
    Page-specific tokens live in each page's own CSS; this file is frozen after L0. */
-@font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-@font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
-@font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"MuyaoPleased";src:url("../../fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"DingTalk JinBuTi";src:url("../../fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Noto Sans SC";src:url("../../fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
 /* Noto Serif SC is declared per page: Reading loads the -text tier, every other page the -ui tier. */
 
 :root{

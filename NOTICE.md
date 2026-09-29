@@ -6,7 +6,7 @@ This file records third-party material and clarifies the scope of the repository
 
 The MIT License applies to Fred Yang's original HTML, CSS, JavaScript, Python, and documentation in this repository. It does not replace the terms for third-party material, nor does it grant rights to the personal essays, photography, illustration assets, profile material, or local font files. Those materials remain subject to their respective copyright and permission status.
 
-`support.js` is generated runtime code and `image-slot.js` is a vendored runtime component; neither is relicensed by the top-level MIT license. Their upstream source and license should be confirmed before either file is reused outside this site.
+`lib/shared/support.js` is generated runtime code and is not relicensed by the top-level MIT license. Its upstream source and license should be confirmed before the file is reused outside this site.
 
 ## Sticker Forge and Three.js
 
