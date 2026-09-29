@@ -6,17 +6,24 @@
 // lang="zh" / lang="en"; a first visit (no fy-lang) reads Chinese; the chosen language is the wheat band with no
 // coral at rest, hover draws the coral line, keyboard focus the coral 「 」; Tab reaches both buttons and Enter /
 // Space choose; a switch retitles every spine in the same task, runs no animation on the shelf and moves no book
-// (every spine's drawn box, the hit links, the planks and the case height are unchanged); every title fits its spine
-// in both languages (nothing spills out, clear of a series badge; Chinese upright, Latin turned to read top to
-// bottom); the book in your hand shows both titles, the chosen language first, each in its lang, on the obi and
-// the title page, and a switch while it is held retitles it there; the book links carry &lang=; the choice survives
-// a reload (fy-lang); no horizontal overflow. At 1440 and 390, both ways (en → 中, zh → EN): the essay opens in the
-// language chosen on Writing (&lang=), Reading's switch sets ?lang= in place (post kept, no new history entry) and
-// fy-lang, a reload of Reading keeps it, and history back shows it chosen on Writing; so does Reading's back link.
-// Once: a bfcache pageshow takes up a choice made meanwhile; Reading's switch keeps every other parameter, their order
-// and the hash, and adds a missing lang; ?lang= wins over fy-lang, as on Reading, and is not stored; a post with one
-// title shows it in either language; reduced motion leaves nothing running after a switch; an idle page makes no rAF
-// calls after one; 0 console errors. Exit code 1 on any failure.
+// (every spine's drawn box, the hit links, the planks and the case height are unchanged); every title keeps the fit's
+// rule in both languages (nothing cut, at most 85% of the spine's inside or 70% under a series badge and clear of it,
+// 4 px clear of each edge, never under 8.4 px; one that can't keep it even at 8.4 px may only be cut there; Chinese
+// upright, Latin turned to read top to bottom); the book in your hand shows both titles, the chosen language first,
+// each in its lang, on the obi and the title page, and a switch while it is held retitles it there; the book links
+// carry &lang=; the choice survives a reload (fy-lang); no horizontal overflow. At 1440 and 390, both ways (en → 中,
+// zh → EN): the essay opens in the language chosen on Writing (&lang=), Reading's switch sets ?lang= in place (post
+// kept, no new history entry) and fy-lang, a reload of Reading keeps it, and history back shows it chosen on Writing;
+// so does Reading's back link. Once: a bfcache pageshow takes up a choice made meanwhile; Reading's switch keeps every
+// other parameter, their order and the hash, and adds a missing lang; ?lang= wins over fy-lang, as on Reading, and is
+// not stored, and a switch on Writing deletes it in place so a reload follows the switch; a post with one title shows
+// it in either language; a switch while a filter hides books fits each one when the filter is cleared; re-mounts
+// across 760 px keep the language and hand back their lang subscriptions; reduced motion leaves nothing running after
+// a switch; an idle page makes no rAF calls after one; 0 console errors. WebKit, at 1440 and 390: a cold load with
+// fy-lang=en fits every English title (expected to fail until mounting waits for the stylesheets), both switches
+// retitle and fit every spine, the book in your hand carries both titles, 0 console errors. Exit code 1 on any failure.
+import { createRequire } from 'module';
+
 const BASE = process.env.WRITING_BASE || 'http://127.0.0.1:4173/';
 const URL = BASE + 'Writing.dc.html', SHOTS = process.env.WRITING_SHOTS;
 const CORAL = 'rgb(217, 105, 90)';
@@ -49,20 +56,29 @@ const geometry = (page) => page.evaluate(() => {
   const r = (e) => { const b = e.getBoundingClientRect(); return [b.left, b.top, b.width, b.height].map((v) => v.toFixed(1)).join(','); }, c = document.querySelector('.wr-case');
   return JSON.stringify({ planks: c.dataset.planks, h: c.style.height, spines: [...document.querySelectorAll('.book .f-spine')].map(r), hits: [...document.querySelectorAll('.bk-hit')].map((a) => a.style.cssText) });
 });
-// Each spine's title against the index, and whether it fits its spine (layout px: the camera's transforms don't count).
-const spines = (page) => page.evaluate(() => {
+// Each spine's title against the index, and the fit's rule (case.js) in layout px (the camera's transforms don't
+// count): nothing cut, at most 85% of the spine's inside (70% under a series badge, and clear of it), 4 px clear of
+// each edge, never under the 8.4 px floor. A title that can't keep the rule even at the floor is cut by writing.css:
+// that is let through as floorCut, and only at the floor.
+const FLOOR = 8.4;
+const spines = (page) => page.evaluate((FLOOR) => {
   const idx = new Map(window.FY_POST_INDEX.map((p) => [p.id, p])), hits = [...document.querySelectorAll('.bk-hit')];
   return [...document.querySelectorAll('.book')].map((b, i) => {
-    const s = b.querySelector('.bk-spine'), t = b.querySelector('.bk-title'), badge = b.querySelector('.bk-badge'), p = idx.get(hits[i].dataset.post), cs = getComputedStyle(t);
-    return { id: p.id, zh: p.titleZh || '', en: p.title || '', lang: t.lang, text: t.textContent, mode: cs.writingMode, orient: cs.textOrientation, fs: parseFloat(cs.fontSize), wrap: cs.whiteSpace !== 'nowrap',
-      fits: t.scrollWidth <= t.clientWidth + 1 && t.scrollHeight <= t.clientHeight + 1 && t.offsetWidth <= s.clientWidth && t.offsetTop >= 0 && t.offsetTop + t.offsetHeight <= (badge ? badge.offsetTop : s.clientHeight) };
+    const s = b.querySelector('.bk-spine'), t = b.querySelector('.bk-title'), badge = b.querySelector('.bk-badge'), p = idx.get(hits[i].dataset.post), cs = getComputedStyle(t), fs = parseFloat(cs.fontSize);
+    const cut = t.scrollHeight > t.clientHeight + 1 || t.scrollWidth > t.clientWidth + 1;
+    const rule = t.offsetTop >= 0 && t.offsetHeight <= s.clientHeight * (badge ? 0.7 : 0.85) + 0.5 && t.offsetWidth <= s.offsetWidth - 8 && (!badge || t.offsetTop + t.offsetHeight <= badge.offsetTop);
+    return { id: p.id, zh: p.titleZh || '', en: p.title || '', lang: t.lang, text: t.textContent, mode: cs.writingMode, orient: cs.textOrientation || cs.webkitTextOrientation, fs, wrap: cs.whiteSpace !== 'nowrap',
+      fits: rule && !cut && fs >= FLOOR - 0.01, floorCut: rule && cut && Math.abs(fs - FLOOR) < 0.01 };
   });
-});
+}, FLOOR);
 const first = (p, l) => (l === 'en' ? (p.en ? 'en' : 'zh') : (p.zh ? 'zh' : 'en'));
 function badSpines(list, l) {
-  return list.filter((s) => { const f = first(s, l); return s.lang !== f || s.text !== s[f] || s.mode !== 'vertical-rl' || s.orient !== (f === 'en' ? 'sideways' : 'mixed') || !s.fits; });
+  return list.filter((s) => { const f = first(s, l); return s.lang !== f || s.text !== s[f] || s.mode !== 'vertical-rl' || s.orient !== (f === 'en' ? 'sideways' : 'mixed') || !(s.fits || s.floorCut); });
 }
-const sizes = (list) => { const f = list.map((s) => s.fs); return `sizes ${Math.min(...f).toFixed(1)}–${Math.max(...f).toFixed(1)}px, ${list.filter((s) => s.wrap).length} on two lines`; };
+const sizes = (list) => {
+  const f = list.map((s) => s.fs), cut = list.filter((s) => s.floorCut);
+  return `sizes ${Math.min(...f).toFixed(1)}–${Math.max(...f).toFixed(1)}px, ${list.filter((s) => s.wrap).length} on two lines` + (cut.length ? `; cut at the ${FLOOR} px floor: ${cut.map((s) => s.text).join(', ')}` : '');
+};
 const links = (page, l) => page.evaluate((l) => [...document.querySelectorAll('.bk-hit, a.book')].every((a) => a.getAttribute('href').endsWith('&lang=' + l)), l);
 // The switch's pen: tier, band, the coral line and the 「 」 per button, and every coral stroke left on the page body.
 const pen = (page) => page.evaluate((CORAL) => {
@@ -103,12 +119,17 @@ export default async (page, ctx) => {
     await toCase(page, 120); const p = await spine(page, n);
     await tap(p.x, p.y); await sleep(page, 1600);
   }
-  // Put the book back: the pointer leaves the shelf; on a phone, a tap on the bare top of the shelf.
+  // Put the book back: the pointer leaves the shelf; on a phone, a tap on the bare top of the shelf. Then wait for
+  // the page's loops to sleep (no rAF for 300 ms), so every book is back at rest.
   async function letGo(w) {
-    if (w >= 760) { await page.mouse.move(2, 2); await sleep(page, 900); return; }
-    await toCase(page, 120);
-    const r = await page.evaluate(() => { const b = document.querySelector('.wr-case').getBoundingClientRect(); return { x: b.left + 8, y: b.top + 8 }; });
-    await tap(r.x, r.y); await sleep(page, 900);
+    if (w >= 760) await page.mouse.move(2, 2);
+    else {
+      await toCase(page, 120);
+      const r = await page.evaluate(() => { const b = document.querySelector('.wr-case').getBoundingClientRect(); return { x: b.left + 8, y: b.top + 8 }; });
+      await tap(r.x, r.y);
+    }
+    await sleep(page, 400);
+    for (let i = 0, n = -1; i < 20; i++) { const m = await page.evaluate(() => window.__raf); if (m === n) break; n = m; await sleep(page, 300); }
   }
   // Open a book from the keyboard: walk onto it (so the focus is the keyboard's), wait for it in the hand, Enter
   // (a phone's first Enter is its first tap: it pulls the book, the second opens it).
@@ -133,12 +154,17 @@ export default async (page, ctx) => {
     check(ctx, 'the switch: a group named in English and Chinese, two buttons with aria-pressed and lang', roles.role === 'group' && /Language/.test(roles.name) && /语言/.test(roles.name) && /^zh:true:zh:中文 · Chinese \| en:false:en:EN · English$/.test(roles.buttons), JSON.stringify(roles));
     let s = await state(page), list = await spines(page), bad = badSpines(list, 'zh');
     check(ctx, 'a first visit (no fy-lang) reads Chinese: spines, the pressed button, the links (&lang=zh)', s.lang === 'zh' && s.stored === null && s.pressed === 'zh' && !bad.length && (await links(page, 'zh')), JSON.stringify(s));
-    check(ctx, 'every Chinese title fits its spine, upright (' + sizes(list) + ')', !bad.length, bad.map((b) => b.id).join(' · '));
+    check(ctx, 'every Chinese title keeps the fit\'s rule (85% / 4 px, ≥ 8.4 px) or is cut at the floor, upright (' + sizes(list) + ')', !bad.length, bad.map((b) => b.id + ' ' + JSON.stringify(b)).join(' · '));
     await page.mouse.move(2, 2); await sleep(page, 400);
     let p = await pen(page);
     check(ctx, 'at rest: 中文 is the wheat band, EN unmarked, no coral stroke on the page body', p.zh.tier === '2' && p.zh.band && p.en.tier === '0' && !p.en.band && p.coral === 0, JSON.stringify(p));
-    const row = await page.evaluate(() => { const r = document.querySelector('.wr-lang').getBoundingClientRect(), g = document.querySelector('.lang-sw').getBoundingClientRect(); return { right: Math.round(r.right), h: Math.round(g.height), vw: innerWidth, over: document.documentElement.scrollWidth - innerWidth }; });
-    check(ctx, 'the switch fits on one line inside the page, and nothing overflows', row.right <= row.vw && row.h <= 26 && row.over <= 0, JSON.stringify(row));
+    const row = await page.evaluate(() => {
+      const r = document.querySelector('.wr-lang').getBoundingClientRect(), g = document.querySelector('.lang-sw').getBoundingClientRect(), box = (e) => e.getBoundingClientRect();
+      return { right: Math.round(r.right), h: Math.round(g.height), vw: innerWidth, over: document.documentElement.scrollWidth - innerWidth,
+        buttons: [...document.querySelectorAll('.lang-b')].map((e) => Math.round(box(e).width) + '×' + Math.round(box(e).height)).join(' '), all: Math.round(box(document.querySelector('.lg-all')).height) };
+    });
+    check(ctx, 'the switch fits on one line inside the page, its buttons as tall as the ledger\'s "all" (the phone\'s bump too), nothing overflows',
+      row.right <= row.vw && row.h <= 30 && row.buttons.split(' ').every((x) => +x.split('×')[1] === row.all) && row.over <= 0, JSON.stringify(row));
     await shot(ctx, page, `${w}-zh`, { fullPage: true });
     // hover draws the coral line on the other language
     await page.hover('.lang-b[data-lang=en]'); await sleep(page, 700);
@@ -158,7 +184,7 @@ export default async (page, ctx) => {
     check(ctx, 'a switch retitles every spine in the same task and animates nothing on the shelf', swap.en && swap.anims === 0, JSON.stringify(swap));
     check(ctx, 'a switch moves no book: every spine box, hit link, the planks and the case height unchanged', g0 === g1, g0 === g1 ? '' : 'geometry changed');
     list = await spines(page); bad = badSpines(list, 'en'); s = await state(page);
-    check(ctx, 'every English title fits its spine, turned to read top to bottom (' + sizes(list) + ')', !bad.length, bad.map((b) => b.id + ' ' + JSON.stringify(b)).join(' · '));
+    check(ctx, 'every English title keeps the fit\'s rule or is cut at the floor, turned to read top to bottom (' + sizes(list) + ')', !bad.length, bad.map((b) => b.id + ' ' + JSON.stringify(b)).join(' · '));
     check(ctx, 'EN is stored in fy-lang, pressed, and every book link carries &lang=en', s.lang === 'en' && s.stored === 'en' && s.pressed === 'en' && (await links(page, 'en')), JSON.stringify(s));
     await page.mouse.move(2, 2); await sleep(page, 900);
     p = await pen(page);
@@ -186,6 +212,12 @@ export default async (page, ctx) => {
     c = await cover(page);
     check(ctx, 'held (zh): Chinese first, English under it; the book leads to &lang=zh', coverOk(c, 'zh', idx), JSON.stringify(c));
     await shot(ctx, page, `${w}-zh-held`);
+    await letGo(w);
+    // the first book was dressed in English: the switch left it be, and it catches up as it comes out again
+    const lazy = await page.evaluate(() => [...document.querySelectorAll('.book')].filter((b) => b.querySelector('.obi-t') && b.querySelector('.obi-t').lang === 'en').length);
+    await hold(w, 1);
+    c = await cover(page);
+    check(ctx, 'a switch retitles only the books out of the shelf; one dressed in English earlier comes out again Chinese first', lazy >= 1 && coverOk(c, 'zh', idx), JSON.stringify({ stillEnglishAtRest: lazy, c }));
     await letGo(w);
     // keyboard: Tab reaches both buttons, Enter and Space choose, focus is the coral 「 」
     await page.evaluate(() => window.scrollTo(0, 0));
@@ -255,6 +287,13 @@ export default async (page, ctx) => {
   await open(page, 1440, 900, '?lang=en');
   s = await state(page);
   check(ctx, '?lang=en wins over fy-lang=zh (as on Reading) and is not stored', s.lang === 'en' && s.stored === 'zh' && (await links(page, 'en')), JSON.stringify(s));
+  // a switch on Writing deletes its own ?lang= (in place), so a reload follows the switch
+  const hn = await page.evaluate(() => history.length);
+  await page.click('.lang-b[data-lang=zh]'); await sleep(page, 300);
+  const qz = await page.evaluate(() => ({ search: location.search, n: history.length }));
+  await page.reload({ waitUntil: 'networkidle' }); await ready(page);
+  s = await state(page);
+  check(ctx, '?lang=en, then 中文 on Writing: lang leaves the address in place (no new history entry) and a reload stays 中文', qz.search === '' && qz.n === hn && s.lang === 'zh' && s.pressed === 'zh' && s.stored === 'zh' && !badSpines(await spines(page), 'zh').length, JSON.stringify({ qz, s }));
   // a post with only one title: it shows that one, in either language, and once on the cover
   const ONLY_ZH = '2019-01-09_he-and-his-cat', ONLY_EN = '2024-04-23_hong-kong-forest';
   await page.route('**/content/posts-index.js', async (route) => {
@@ -275,6 +314,29 @@ export default async (page, ctx) => {
   const c = await cover(page), idx1 = { ...idx, [ONLY_ZH]: { ...idx[ONLY_ZH], title: '' } };
   await page.unroute('**/content/posts-index.js');
   check(ctx, 'a post with one title shows it on its spine in either language, and once on its cover', !one.includes('✗') && coverOk(c, 'en', idx1), one.join(' · ') + ' · cover ' + JSON.stringify(c && [c.t, c.s]));
+  // a switch while a filter hides books (display:none, no size to fit): each is retitled and fitted when it comes back
+  await page.evaluate(() => localStorage.clear());
+  await open(page, 1440, 900);
+  await page.click('.tb[data-cat="poem"]'); await sleep(page, 1800);
+  const hidden = await page.evaluate(() => document.querySelectorAll('.book.is-out').length);
+  await page.click('.lang-b[data-lang=en]'); await sleep(page, 500);
+  await page.click('.tb[data-cat="all"]'); await sleep(page, 2500);
+  let list = await spines(page), bad = badSpines(list, 'en');
+  const back = await page.evaluate(() => document.querySelectorAll('.book:not(.is-out)').length);
+  check(ctx, `a switch while a filter hides ${hidden} books: with the filter cleared, all ${back} are in English, each fitted`, hidden >= 20 && back === list.length && !bad.length, bad.map((b) => b.id + ' ' + JSON.stringify(b)).join(' · '));
+  // re-mounts across 760 px keep the language, and each instance hands back its lang subscriptions (lang.js's list,
+  // exposed by serving it with one line changed)
+  await page.route('**/lib/writing/lang.js', async (route) => { const res = await route.fetch(); await route.fulfill({ response: res, body: (await res.text()).replace('subs = [];', 'subs = window.__langSubs = [];') }); });
+  await open(page, 1440, 900);
+  const subs0 = await page.evaluate(() => window.__langSubs && window.__langSubs.length), seen = [];
+  for (const w of [700, 1440, 390, 1024]) {
+    await page.setViewportSize({ width: w, height: 900 }); await sleep(page, 900);
+    const st = await state(page), phone = await page.evaluate(() => document.querySelector('[data-mount=writing]').classList.contains('is-phone'));
+    seen.push(w + (phone ? ' phone ' : ' desk ') + st.lang + '/' + st.pressed + (badSpines(await spines(page), 'en').length ? ' ✗' : ''));
+  }
+  const subs1 = await page.evaluate(() => window.__langSubs && window.__langSubs.length);
+  await page.unroute('**/lib/writing/lang.js');
+  check(ctx, `re-mounts across 760 px (1440 → 700 → 1440 → 390 → 1024) keep English on every spine, and the lang subscribers stay at ${subs0}`, subs0 > 0 && subs1 === subs0 && seen.every((x) => / en\/en$/.test(x)), JSON.stringify({ seen, subs0, subs1 }));
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await open(page, 1440, 900);
   await page.click('.lang-b[data-lang=zh]'); await sleep(page, 50);
@@ -287,6 +349,43 @@ export default async (page, ctx) => {
   const r1 = await page.evaluate(() => window.__raf);
   check(ctx, 'idle after a switch: 0 requestAnimationFrame calls over 2 s', r1 === r0, `${r1 - r0} calls`);
   await page.evaluate(() => localStorage.clear());
+
+  // WebKit (Playwright's build of the Safari engine), as reading-webkit.mjs runs it: a returning English reader's
+  // cold load in a fresh context, then both switches and a book in the hand. The book is taken by keyboard: headless
+  // WebKit with touch reports (and draws) the 3D shelf's boxes some 25,000 px off, on main too, so no spine can be
+  // aimed at by its box.
+  ctx.log('— WebKit');
+  const req = createRequire(process.argv[1]), pw = await import(req.resolve('playwright-core'));
+  const wk = await (pw.webkit || pw.default.webkit).launch({ headless: true });
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    // the mount can run before writing.css applies (a race): two cold loads, each in a fresh context, must both fit
+    const werr = [], cold = [];
+    let wc, wp;
+    for (let run = 0; run < 2; run++) {
+      if (wc) await wc.close();
+      wc = await wk.newContext({ viewport: { width: w, height: h }, hasTouch: w < 760 }); wp = await wc.newPage();
+      await wc.addInitScript(() => { try { if (!sessionStorage.getItem('seeded')) { localStorage.setItem('fy-lang', 'en'); sessionStorage.setItem('seeded', '1'); } } catch (e) { /* storage off */ } });
+      wp.on('pageerror', (e) => werr.push(e.message)); wp.on('console', (m) => { if (m.type() === 'error') werr.push(m.text()); });
+      await wp.goto(URL, { waitUntil: 'networkidle' }); await ready(wp);
+      const wb = badSpines(await spines(wp), 'en'), lg = (await state(wp)).lang;
+      cold.push(lg !== 'en' ? 'lang ' + lg : wb.length ? wb.map((b) => b.text.slice(0, 20) + ' @' + b.fs.toFixed(1)).join(' · ') : 'ok');
+    }
+    check(ctx, `WebKit ${w}: two cold loads with fy-lang=en fit every English title (EXPECTED TO FAIL, as a race, until mounting waits for the stylesheets)`, cold.every((x) => x === 'ok'), cold.join(' | '));
+    let wl, wb;
+    await wp.click('.lang-b[data-lang=zh]'); await sleep(wp, 500);
+    wl = await spines(wp); wb = badSpines(wl, 'zh');
+    check(ctx, `WebKit ${w}: 中文 retitles every spine and each keeps the fit's rule (${sizes(wl)})`, (await state(wp)).lang === 'zh' && !wb.length, wb.map((b) => b.id + ' ' + JSON.stringify(b)).join(' · '));
+    await wp.click('.lang-b[data-lang=en]'); await sleep(wp, 500);
+    wl = await spines(wp); wb = badSpines(wl, 'en');
+    check(ctx, `WebKit ${w}: EN retitles every spine and each keeps the rule or is cut at the floor (${sizes(wl)})`, (await state(wp)).lang === 'en' && !wb.length, wb.map((b) => b.id + ' ' + JSON.stringify(b)).join(' · '));
+    await wp.evaluate(() => document.querySelector('.bk-hit').focus());
+    await wp.keyboard.press('ArrowRight'); await sleep(wp, 1600);
+    const wcv = await cover(wp);
+    check(ctx, `WebKit ${w}: the book in your hand carries both titles, English first`, coverOk(wcv, 'en', idx), JSON.stringify(wcv));
+    check(ctx, `WebKit ${w}: 0 console errors`, !werr.length, werr.slice(0, 3).join(' · '));
+    await wc.close();
+  }
+  await wk.close();
 
   check(ctx, '0 console errors, every request 200', !errors.length, errors.slice(0, 3).join(' · '));
   ctx.log(`writing-lang: ${fails ? fails + ' FAILED' : 'all passed'}`);

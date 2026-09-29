@@ -56,10 +56,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .book{--bw:1.5px}
 .f-spine > .bk-spine{position:absolute;inset:0;background:var(--tone);border:var(--bw) solid var(--ink);overflow:hidden}
 /* the title in the shelf's language: Chinese upright in a column, Latin turned to read top to bottom, as a spine
-   is set; case.js fits each one to its spine (size, and one line or two) */
-.bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);white-space:nowrap;text-wrap:balance;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi",serif;font-size:calc(11px * var(--sk));line-height:1.25;letter-spacing:.03em;color:var(--ink)}
+   is set; case.js fits each one to its spine (size, and one line or two), and the clip cuts one it couldn't fit */
+.bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);max-height:85%;white-space:nowrap;text-wrap:balance;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi",serif;font-size:calc(11px * var(--sk));line-height:1.25;letter-spacing:.03em;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
 .bk-title[lang=en]{text-orientation:sideways;font-family:"Fraunces",serif;font-weight:500;line-height:1.15;letter-spacing:.01em}
-.series .bk-title{color:var(--tone-s-ink)}
+.series .bk-title{color:var(--tone-s-ink);max-height:70%}
 /* the series number is a paper library label; coral stays on 写 */
 .bk-badge{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font:500 calc(9px * var(--sk))/1 "IBM Plex Mono",monospace;padding:3px 3px 2px;border-radius:1px;letter-spacing:.02em}
 .bk-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid color-mix(in srgb,var(--ink) 26%,transparent)}
@@ -113,11 +113,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .cv-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
 .obi{position:absolute;left:0;right:0;bottom:0;min-height:47%;display:flex;flex-direction:column;align-items:flex-start;background:var(--slip);border-top:1.4px solid var(--ink);padding:14px 13px 11px 14px;text-align:left}
 .obi::after{content:"";position:absolute;right:5px;top:0;bottom:0;border-right:1px solid color-mix(in srgb,var(--ink) 22%,transparent)}
-/* both titles: the shelf's language first (-t), the other under it (-s); Chinese titles only ever in DingTalk,
-   whose subset carries every post title (scripts/generate-fonts.py) */
+/* both titles: the shelf's language first (-t), the other under it (-s, two lines at most: it is whole on the title
+   page); Chinese titles only ever in DingTalk, whose subset carries every post title (scripts/generate-fonts.py) */
 .obi-t{position:relative;display:inline-block;max-width:100%;font:400 17px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
 .obi-t[lang=en]{font-family:"Fraunces",serif;font-weight:500;line-height:1.2;letter-spacing:0}
-.obi-s{margin-top:3px;font:12px/1.25 var(--text);color:var(--soft)}
+.obi-s{margin-top:3px;font:12px/1.25 var(--text);color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .obi-s[lang=zh]{font:12.5px/1.35 "DingTalk JinBuTi",serif;letter-spacing:.02em}
 .obi-s[hidden],.p1-s[hidden]{display:none}
 .obi-meta{margin-top:9px;font:9.5px/1.6 var(--util);letter-spacing:.03em;color:var(--pencil)}
@@ -238,7 +238,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .wr.is-phone .tb-label{margin-bottom:0}
 .wr.is-phone .ix-years{margin-top:10px;padding-top:0}
 .wr.is-phone .lg-head{margin-bottom:2px}
-.wr.is-phone .lg-all{padding:8px 4px}
+.wr.is-phone .lg-all,.wr.is-phone .lang-b{padding:8px 4px}
 
 /* ---- reduced motion: nothing fades or slides; states land at once (the springs and the pen snap in JS) ---- */
 @media (prefers-reduced-motion:reduce){ .wr *,.wr *::before,.wr *::after{transition:none!important} }
