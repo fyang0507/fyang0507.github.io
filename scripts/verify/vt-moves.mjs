@@ -4,13 +4,15 @@
 //        else the stub pages in scripts/verify/vt-harness/) · VT_W (default 1440,390)
 // enter  home → Writing via the book: four obj-* groups with ≥ 10 sampled keyframes; the book's mid-flight y is
 //        above the chord; settled ≤ 1.0 s; header readable at 0.75 s (every label ≥ 0.9 opaque, the tab drawn, the
-//        line within 2.5 px of the rule: it may still be in its one small overshoot)
-// leave  Gallery → home: every object ends lower than it starts (gravity); settled ≤ 1.1 s
+//        line within 2.5 px of the rule: it may still be in its one small overshoot); frozen at 0 ms, each object is
+//        drawn where the desk drew it (≤ 1 px)
+// leave  Gallery → home: every object ends lower than it starts (gravity); settled ≤ 1.1 s; frozen at its end, each
+//        object is drawn where the desk lays it out (≤ 1 px), so nothing jumps when the transition hands over
 // tab    Writing → Gallery: the tabmark rides a spring from tab to tab; the relay hops book, laptop, camera; from a
 //        page scrolled 40 px, the header strip, identity and rule ride down together and no object jumps
 // none   reduced motion, same tab (Writing ↔ Reading), 404, direct load and reload get no transition; fy-vt is
 //        consumed every time. Plus: no console errors, no horizontal overflow after each move.
-import { ORIGIN, hook, seek, xy, check } from './vt-lib.mjs';
+import { ORIGIN, hook, seek, xy, check, drawn, deskBoxes, gap } from './vt-lib.mjs';
 
 const OBJS = ['obj-book', 'obj-laptop', 'obj-camera', 'obj-frame'];
 
@@ -61,8 +63,12 @@ export default async (page, ctx) => {
 
     // enter, frozen at 0.75 s: is the header readable?
     await page.goto(B + 'index.html?opx=1&opener=none'); await page.waitForTimeout(700);
+    const onDesk = await deskBoxes(page);
     await page.evaluate(() => sessionStorage.setItem('vt-freeze', '1'));
     r = await arrive(page, await clickVisible(page, 'a[href="Writing.dc.html"][aria-label]'));
+    await seek(page, 0);
+    const lift = gap(await drawn(page, OBJS, 'old'), onDesk);
+    check(res, T('enter · each object starts where the desk drew it (≤ 1 px)'), lift <= 1, +lift.toFixed(2) + ' px');
     await seek(page, 750);
     const at = await page.evaluate(() => {
       const labs = [...document.querySelectorAll('.site-index .site-nav-label')].map((l) => +getComputedStyle(l).opacity);
@@ -82,6 +88,14 @@ export default async (page, ctx) => {
     check(res, T('leave · every object ends lower than it starts'), falls.every((d) => d > 0), falls);
     check(res, T('leave · settles ≤ 1.1 s'), r.fin && r.finAt - r.readyAt <= 1100, Math.round(r.finAt - r.readyAt) + ' ms');
     check(res, T('leave · fy-vt consumed'), await page.evaluate(() => sessionStorage.getItem('fy-vt') === null));
+    // leave, frozen at its end: every object is drawn where the desk lays it out
+    await page.goto(B + 'Gallery.dc.html'); await page.waitForTimeout(900);
+    await page.evaluate(() => sessionStorage.setItem('vt-freeze', '1'));
+    r = await arrive(page, await clickVisible(page, '.site-home'));
+    await seek(page, Math.max(...r.anims.map((a) => a.dur || 0)));
+    const land = gap(await drawn(page, OBJS, 'new'), await deskBoxes(page));
+    check(res, T('leave · each object lands where the desk lays it out (≤ 1 px)'), land <= 1, +land.toFixed(2) + ' px');
+    await page.evaluate(() => document.getAnimations().forEach((a) => { if (a.effect && a.effect.pseudoElement) a.finish(); }));   // the desk's own loops never finish
 
     // tab
     await page.goto(B + 'Writing.dc.html'); await page.waitForTimeout(900);

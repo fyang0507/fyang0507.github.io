@@ -211,16 +211,24 @@
   }
   function kill(A, name, parts) { parts.forEach(function (p) { (A['::view-transition-' + p + '(' + name + ')'] || []).forEach(function (a) { a.cancel(); }); }); }
   function pa(part, name, kf, o) { o.fill = 'both'; o.pseudoElement = '::view-transition-' + part + '(' + name + ')'; return html.animate(kf, o); }
-  // a shared part's old and new box, from the browser's own group keyframes (or, for one-sided parts, its style)
+  // The browser writes each group's matrix for the group's own transform-origin, its centre. z() folds that origin in,
+  // so the matrix maps the box's (0, 0)-based coordinates straight to the viewport, which is what every anchor, table
+  // and line below is measured in. Unscaled nav sprites never showed the difference; the desk, drawn at ×0.61, was
+  // off by (1 − scale) × half its box: the objects jumped as a move began or ended.
+  function z(m, w, h) { var ox = w / 2, oy = h / 2; return [m[0], m[1], m[2], m[3], m[4] + ox - m[0] * ox - m[2] * oy, m[5] + oy - m[1] * ox - m[3] * oy]; }
+  // a shared part's old and new box, from the browser's own group keyframes (or, for one-sided parts, its style):
+  // m as the browser wrote it (for keyframes that keep the group's origin), z with the origin folded in
   function ends(A, name) {
     var g = (A['::view-transition-group(' + name + ')'] || [])[0];
     if (!g) return null;
     var k = g.effect.getKeyframes(), a = k[0], b = k[k.length - 1];
-    return { m0: mat(a.transform), w0: parseFloat(a.width), h0: parseFloat(a.height), m1: mat(b.transform), w1: parseFloat(b.width), h1: parseFloat(b.height) };
+    var r = { m0: mat(a.transform), w0: parseFloat(a.width), h0: parseFloat(a.height), m1: mat(b.transform), w1: parseFloat(b.width), h1: parseFloat(b.height) };
+    r.z0 = z(r.m0, r.w0, r.h0); r.z1 = z(r.m1, r.w1, r.h1);
+    return r;
   }
   function box(name) {
-    var cs = getComputedStyle(html, '::view-transition-group(' + name + ')'), w = parseFloat(cs.width);
-    return w > 0 ? { m: mat(cs.transform), w: w, h: parseFloat(cs.height) } : null;
+    var cs = getComputedStyle(html, '::view-transition-group(' + name + ')'), w = parseFloat(cs.width), h = parseFloat(cs.height);
+    return w > 0 ? { m: z(mat(cs.transform), w, h), w: w, h: h } : null;
   }
   // the ink box's bottom-centre: the point a drawing stands on. A = element-local, P = viewport, s = ink width on screen
   function anchor(m, ib) {
@@ -228,13 +236,14 @@
     return { A: A, P: P, s: ib[2] * k, hs: ib[3] * k };
   }
   function inkOf(el) { var d = el && el.getAttribute('data-ink'); return d ? d.trim().split(/\s+/).map(Number) : null; }
-  // one carried object: the group rides the arc (translate + lean); each snapshot is laid out around its own
-  // ink anchor and scaled relative to its own rest, so at either end it is exactly what that page draws
+  // one carried object: the group rides the arc (translate + lean, about its own (0, 0): the anchor, where the
+  // drawing stands); each snapshot is laid out around its own ink anchor and scaled relative to its own rest, so at
+  // either end it is exactly what that page draws
   function carryKeys(A, name, g, a0, a1, run) {
     var N = run.k.length - 1, L0 = mul(lin(g.m0), tr(-a0.A.x, -a0.A.y)), L1 = mul(lin(g.m1), tr(-a1.A.x, -a1.A.y)), G = [], O = [], W = [];
     run.k.forEach(function (r, i) {
       var off = i / N, x = a0.s === a1.s ? 1 : clamp((a0.s - r.s) / (a0.s - a1.s), 0, 1), n = smooth(0.48, 0.64, x);
-      G.push({ offset: off, transform: 'translate(' + f2(r.x) + 'px,' + f2(r.y) + 'px) rotate(' + f2(r.th) + 'deg)', width: g.w1 + 'px', height: g.h1 + 'px' });
+      G.push({ offset: off, transform: 'translate(' + f2(r.x) + 'px,' + f2(r.y) + 'px) rotate(' + f2(r.th) + 'deg)', transformOrigin: '0 0', width: g.w1 + 'px', height: g.h1 + 'px' });
       O.push({ offset: off, transform: css(mul(sc(r.s / a0.s), L0)), width: g.w0 + 'px', height: g.h0 + 'px', opacity: f2(1 - n) });
       W.push({ offset: off, transform: css(mul(sc(r.s / a1.s), L1)), width: g.w1 + 'px', height: g.h1 + 'px', opacity: f2(n) });
     });
@@ -365,7 +374,7 @@
       var o = OBJ[t], g = ends(A, 'obj-' + o);
       if (!g) return;
       var i0 = inkOld(o, g.w0, g.h0), i1 = inkNew(o, g.w1, g.h1);
-      list.push({ o: o, ti: ti, g: g, a0: anchor(g.m0, [i0[0] * g.w0, i0[1] * g.h0, i0[2] * g.w0, i0[3] * g.h0]), a1: anchor(g.m1, [i1[0] * g.w1, i1[1] * g.h1, i1[2] * g.w1, i1[3] * g.h1]) });
+      list.push({ o: o, ti: ti, g: g, a0: anchor(g.z0, [i0[0] * g.w0, i0[1] * g.h0, i0[2] * g.w0, i0[3] * g.h0]), a1: anchor(g.z1, [i1[0] * g.w1, i1[1] * g.h1, i1[2] * g.w1, i1[3] * g.h1]) });
     });
     return list;
   }
@@ -444,10 +453,11 @@
   }
   // the relay: each object hops on held frames at 12 fps, leaning the way the tab is going. The poses are added
   // to wherever the group is (composite add), so an object still riding the header down carries its hop with it.
+  // That base keeps the group's own origin, its centre, so the pivot (the drawing's foot) is measured from there.
   function hop(A, o, t0, big, dir) {
     var name = 'obj-' + o, g = ends(A, name);
     if (!g) return;
-    var K = big ? HOP_BIG : HOP, F = 83, D = t0 + F * K.length, ax = g.w1 / 2, ay = g.h1;
+    var K = big ? HOP_BIG : HOP, F = 83, D = t0 + F * K.length, ax = 0, ay = g.h1 / 2;
     var kf = [{ offset: 0, transform: 'none' }];
     K.forEach(function (p, i) { kf.push({ offset: (t0 + i * F) / D, transform: css(mul(tr(ax, ay + p[0]), mul(rot(p[1] * dir), tr(-ax, -ay)))) }); });
     kf.push({ offset: 1, transform: 'none' });
