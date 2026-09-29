@@ -206,6 +206,7 @@ A visible legibility fix to show Fred, not to ask:
 - `building/njjoe/email-demo/buyer.html`: stays the email artifact (its inline styles are the email). Checked to request nothing external.
 - `lib/njjoe/njjoe.css`: the cases and their before/after, the common pattern, Joe's words, the APA funnel and batch table, the archive capture as an exhibit. No page script: casebook.js's reveals are out, its folder rename goes with `<base>`, and its WIP code is gone already.
 - Delete `assets/njjoe/casebook.css`, `casebook.js` and `apa-demo.css` (what `chore/remove-wip` leaves of them).
+- Fonts: `assets/njjoe/casebook.css` line 1 points an `@font-face` ("MuyaoPleased") at the full `fonts/MuyaoSuixin.woff2` master. No page requests it today, but whatever NJJoe face the port keeps must come from the `fonts/derived/` subset, never the master.
 - The microsite's captures (5.9 MB and 4.6 MB PNGs) become archived originals with derived ladders, lazy (PR 2's evidence ladder).
 - `scripts/verify/`: `project-pages.mjs`, `vt-project.mjs` and `pen-spacing.mjs` extended to NJJoe. `AGENTS.md`.
 
