@@ -93,7 +93,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - point: one short coral arrow per view, spent for the session (`Pen.pointOnce` / `Pen.spend`).
 - **Pen spacing.** Whatever follows an underline sits at least 10 px below it and at least twice its drop (`scripts/verify/pen-spacing.mjs`).
 - **Seeds.** Strokes are seeded by their text, or by `data-pen-seed`, so the same word always gets the same stroke.
-- **Coral at rest** is only the point arrow and fixed identity. Never set small text in coral; use `--pencil` (4.5:1 on paper). On tinted paper, mark the surface `data-paper="cork"` (or `wheat`, `cream`), so `--pen` becomes the coral multiplied by that paper.
+- **Coral at rest** is only the point arrow and fixed identity. Never set small text in coral; use `--pencil` (4.5:1 on paper and paper2; on plank, board or wheat use `--soft`). On tinted paper, mark the surface `data-paper="cork"` (or `wheat`, `cream`), so `--pen` becomes the coral multiplied by that paper.
 - **Tokens.** Shared tokens live only in `site-tokens.css`. Page-only tokens live in the page's own CSS; do not redeclare shared ones there. The one exception is Reading's `html.dark` palette in `lib/reading/reading.css`.
 - **Storage.** The site keeps session memory only. sessionStorage keys:
   - `fy-opener`: the full opener plays once per session;

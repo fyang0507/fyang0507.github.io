@@ -10,7 +10,7 @@
   color-scheme:light;
   /* paper and ink */
   --paper:#FBF6EC;--paper2:#F3ECDD;--page:#FEFAEE;--slip:#FCF8EF;
-  --ink:#33302B;--soft:#6D6559;--pencil:#7A7063;   /* pencil is 4.5:1 on paper */
+  --ink:#33302B;--soft:#6D6559;--pencil:#736A5D;   /* pencil is 4.5:1 on paper and paper2; on plank, board or wheat use --soft for text */
   --line:#E4DAC7;--line-strong:#CFC1A9;
   /* coral: identity and the pen's attention only, never small text. The pen is coral
      multiplied by its paper; pen.css switches --pen per [data-paper]. */
