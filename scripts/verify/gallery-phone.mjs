@@ -29,6 +29,21 @@ export default async (page, ctx) => {
     const snap = await p.evaluate(() => [...document.querySelectorAll('.mscroll')].map((s) => getComputedStyle(s).scrollSnapType));
     R.ok('every line is scroll-snap-type: x mandatory', snap.length >= 3 && snap.every((s) => s === 'x mandatory'), snap.join(', '));
 
+    // tap the next print, peeking in at the right edge of line 1 (never seen): it develops in the hand
+    await p.evaluate(() => window.scrollTo(0, document.querySelector('.mline').getBoundingClientRect().top + scrollY - 40));
+    await p.waitForTimeout(300);
+    const pk = await p.evaluate(() => { const b = document.querySelector('.mline').querySelectorAll('.print')[1], r = b.getBoundingClientRect();
+      return { x: (r.left + innerWidth) / 2, y: r.top + r.height * 0.45, undev: b.classList.contains('undev'), vis: +((innerWidth - r.left) / r.width).toFixed(2) }; });
+    await p.touchscreen.tap(pk.x, pk.y);
+    await p.waitForTimeout(4500);
+    const pd = await p.evaluate(() => ({ chem: getComputedStyle(document.querySelector('.vw .fly-chem')).opacity, hi: document.querySelector('.vw .fly-hi').classList.contains('on') }));
+    const pb = await rafOver(p, 1000);
+    R.ok('the peeking, unseen print develops in the viewer and the loop sleeps', pk.undev && pd.chem === '0' && pd.hi && pb === 0, (pk.vis * 100).toFixed(0) + '% visible · chemical ' + pd.chem + ', 2560 on ' + pd.hi + ', ' + pb + ' rAF in 1 s');
+    await p.touchscreen.tap(W / 2, H / 2);
+    await p.waitForFunction(() => document.querySelector('.vw').hidden, null, { timeout: 6000 }).catch(() => {});
+    await settle(p);
+    const big0 = requests.filter((u) => /-2560\.jpg$/.test(u)).length;
+
     // bring the first line up, then swipe it sideways
     await p.evaluate(() => window.scrollTo(0, document.querySelector('.mline').getBoundingClientRect().top + scrollY - 40));
     await p.waitForTimeout(300);
@@ -52,6 +67,8 @@ export default async (page, ctx) => {
     const v = await p.evaluate(() => ({ y: scrollY, sl: document.querySelectorAll('.mscroll')[1].scrollLeft }));
     R.ok('a vertical swipe on a line still scrolls the page', v.y - after.y > 150 && v.sl === L.sl, 'page ' + Math.round(after.y) + ' → ' + Math.round(v.y) + ', line scrollLeft ' + v.sl);
     R.ok('settles after swiping', await settle(p));
+    const big1 = requests.filter((u) => /-2560\.jpg$/.test(u)).length;
+    R.ok('swipes and scrolls that start on prints fetch no 2560 file', big1 === big0, (big1 - big0) + ' fetched');
     const idle = await rafOver(p, 2000); R.ok('0 rAF callbacks at idle', idle === 0, idle + ' in 2 s');
 
     // tap unclips into the viewer; swipe for the next; tap puts it back

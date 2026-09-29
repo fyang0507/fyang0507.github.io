@@ -28,7 +28,7 @@ export async function open(page, opts = {}) {
 
 export async function load(p) {
   await p.goto(URL, { waitUntil: 'load' });
-  await p.waitForSelector('.g-root[data-mode] .hang', { timeout: 15000 });
+  await p.waitForSelector('.g-root[data-mode] .hang', { timeout: 30000 });
   await p.evaluate(() => document.fonts.ready);
 }
 

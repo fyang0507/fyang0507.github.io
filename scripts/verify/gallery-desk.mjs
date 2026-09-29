@@ -37,6 +37,24 @@ export default async (page, ctx) => {
   R.ok('developed prints are kept in fy-gallery-dev', seen.length >= 6, seen.length + ' ids');
   let o = await overflow(p); R.ok('no horizontal overflow', o.sw <= o.iw, o.sw + ' ≤ ' + o.iw);
 
+  // ---- opening a print that hasn't been seen develops it in the hand ----
+  const peek = await p.evaluate(() => {
+    const b = [...document.querySelectorAll('.print.undev')].find((x) => x.getBoundingClientRect().top > innerHeight * 0.5);
+    if (!b) return null;
+    const h = b.getBoundingClientRect().height; window.scrollBy(0, b.getBoundingClientRect().top - (innerHeight - h * 0.3));
+    const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: (r.top + innerHeight) / 2, id: b.closest('.hang').dataset.id, vis: +((innerHeight - r.top) / r.height).toFixed(2) };
+  });
+  if (peek) {
+    await p.waitForTimeout(700);
+    await p.mouse.click(peek.x, peek.y);
+    await p.waitForTimeout(4500);
+    const dev = await p.evaluate(() => ({ chem: getComputedStyle(document.querySelector('.vw .fly-chem')).opacity, hi: document.querySelector('.vw .fly-hi').classList.contains('on') }));
+    const busy = await rafOver(p, 1000);
+    R.ok('an unseen print opened from the edge develops in the viewer and the loop sleeps', dev.chem === '0' && dev.hi && busy === 0, (peek.vis * 100) + '% visible · chemical ' + dev.chem + ', 2560 on ' + dev.hi + ', ' + busy + ' rAF in 1 s');
+    await p.keyboard.press('Escape'); await settle(p); await p.evaluate(() => window.scrollTo(0, 0));
+  } else R.ok('found an unseen print below the fold to open', false);
+
+
   // ---- a flick swings the line; an aimed approach doesn't ----
   const box = await p.evaluate(() => { const r = document.querySelector('.line-host').getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width }; });
   await p.evaluate((y) => window.scrollBy(0, y - 120), box.y);
@@ -83,6 +101,10 @@ export default async (page, ctx) => {
   await p.screenshot({ path: '/tmp/fyshot/gallery-desk-viewer.png' });
   const shown = () => p.evaluate(() => { const v = document.querySelector('.vw'); return { id: v.dataset.id, loc: v.getAttribute('aria-label').split(': ')[1].split('.')[0] }; });
   const lab0 = await shown();
+  const sy0 = await p.evaluate(() => scrollY);
+  for (const k of ['PageDown', 'End', 'ArrowDown', 'Space']) await p.keyboard.press(k);
+  await p.waitForTimeout(300);
+  R.ok('keys do not scroll the page behind the viewer', await p.evaluate((y) => scrollY === y && !document.querySelector('.vw').hidden, sy0));
   await p.keyboard.press('ArrowRight'); await p.waitForTimeout(500);
   const lab1 = await shown();
   await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(500);
@@ -129,6 +151,8 @@ export default async (page, ctx) => {
       same: [...document.querySelectorAll('.line-host')].every((l) => l.hasAttribute('data-was')) };
   });
   R.ok('a chip restrings to the filtered count', st.filtered === '14' && st.n === 14 && st.allStreet && /Showing 14 \/ 14/.test(st.count), st.count);
+  const live = await p.evaluate(() => ({ count: document.querySelector('.g-count').hasAttribute('aria-live'), said: document.querySelector('.g-root [aria-live]').textContent }));
+  R.ok('only a filter is announced (live region), not the growing count', !live.count && /^14 photos/.test(live.said), '"' + live.said + '"');
   R.ok('the prints are re-pegged on the same ropes', st.same);
   R.ok('the chosen chip is the wheat band, no coral at rest', st.tier === '2' && st.pressed === 'true' && st.band === 'visible' && st.hot === 'hidden', 'band ' + st.fill + ', coral line ' + st.hot);
   await p.screenshot({ path: '/tmp/fyshot/gallery-desk-street.png' });
@@ -153,6 +177,21 @@ export default async (page, ctx) => {
   await p.screenshot({ path: '/tmp/fyshot/gallery-desk-end.png' });
   o = await overflow(p); R.ok('no overflow with every line strung', o.sw <= o.iw);
   await settle(p);
+
+  // ---- a width change while a print is open waits for it to come home, and keeps focus ----
+  await p.evaluate(() => window.scrollTo(0, 0));
+  await p.evaluate(() => document.querySelector('.line-host .print').focus());
+  await p.keyboard.press('Shift+Tab'); await p.keyboard.press('Tab');
+  const rid = await p.evaluate(() => document.activeElement.closest('.hang').dataset.id);
+  await p.keyboard.press('Enter'); await p.waitForTimeout(700);
+  await p.setViewportSize({ width: 1000, height: 900 }); await p.waitForTimeout(600);
+  const during = await p.evaluate(() => ({ open: !document.querySelector('.vw').hidden, inside: document.activeElement === document.querySelector('.vw') }));
+  await p.keyboard.press('Escape');
+  await p.waitForFunction(() => document.querySelector('.vw').hidden, null, { timeout: 6000 }).catch(() => {});
+  await p.waitForTimeout(300);
+  const after = await p.evaluate(() => ({ id: document.activeElement.closest && document.activeElement.closest('.hang') && document.activeElement.closest('.hang').dataset.id, per: document.querySelector('.line-host').querySelectorAll('.hang').length }));
+  R.ok('resizing with a print open keeps the viewer; the lines re-lay after it lands, focus kept', during.open && during.inside && after.id === rid && after.per === 5, JSON.stringify({ during, after }));
+  await p.setViewportSize({ width: 1440, height: 900 }); await p.waitForTimeout(600); await settle(p);
 
   // ---- a reload in the same session: developed prints stay developed ----
   const kept = await p.evaluate(() => JSON.parse(sessionStorage.getItem('fy-gallery-dev') || '[]'));
