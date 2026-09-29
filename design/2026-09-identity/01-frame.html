@@ -10,13 +10,14 @@
      or the lockup alone. ?c=now|A|B|C · view=header|solo · page=writing|building|gallery|about · state=rest|hover|focus|press
      · play=1 (the arrival) · rm=1 (reduced motion preview).
      LIVE FILES: this page and the home iframes in index.html are the only places the board reaches production.
-     When the shared CSS/JS move (lib/shared/), repoint the six ../../ references below. -->
+     Repointed to lib/shared/ after #19. site-nav.css and the stickers are frozen copies (00-*) of the versions this
+     round compared, because the identity port rewrites the one and deletes the other. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../site-tokens.css">
-<link rel="stylesheet" href="../../site-nav.css">
-<link rel="stylesheet" href="../../pen.css">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="00-site-nav.css">
+<link rel="stylesheet" href="../../lib/shared/pen.css">
 <link rel="stylesheet" href="01-identity.css">
 <style>
   html,body{background:var(--paper)}
@@ -27,10 +28,10 @@
   .st-cell{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
   .st-cell b{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--pencil)}
 </style>
-<script src="../../motion.js"></script>
-<script src="../../pen.js"></script>
-<script src="../../pen-tier.js"></script>
-<script src="../../site.js" defer></script>
+<script src="../../lib/shared/motion.js"></script>
+<script src="../../lib/shared/pen.js"></script>
+<script src="../../lib/shared/pen-tier.js"></script>
+<script src="../../lib/shared/site.js" defer></script>
 <script src="01-kit.js"></script>
 <script src="01-glyphs.js"></script>
 <script src="01-a-sign.js"></script>
@@ -42,7 +43,7 @@
 <div class="site-top">
   <header class="site-shell-header" id="site-nav">
     <div class="site-header-row">
-      <a class="site-identity" href="../../index.html" aria-label="Fred Yang — home"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="../../assets/identity-sticker-ghost.png" srcset="../../assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="../../assets/identity-sticker-blob.png" srcset="../../assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <a class="site-identity" href="../../index.html" aria-label="Fred Yang — home"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="00-identity-sticker-ghost.png" srcset="00-identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="00-identity-sticker-blob.png" srcset="00-identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
       <div class="site-header-status"></div>
     </div>
     <nav class="site-index" aria-label="Primary navigation">
