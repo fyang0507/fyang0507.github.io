@@ -82,7 +82,7 @@ NOTO_SOURCES = {
 # opener's 点按跳过, Gallery's hand notes), so they count as pages.
 PAGES = [
     "index.html", "Gallery.dc.html", "Writing.dc.html", "Reading.dc.html",
-    "About.dc.html", "Building.dc.html", "404.html", "UnderConstruction.dc.html",
+    "About.dc.html", "Building.dc.html", "404.html",
     "lib/**/*.js", "lib/**/*.css", "assets/fred-agent/fred-agent.css",
 ]
 
