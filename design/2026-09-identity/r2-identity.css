@@ -1,0 +1,18 @@
+/* r2-identity.css — the identity lockup's rules as round 2 ships them (lib/shared/site-nav.css carries the same block).
+   The board loads this copy so its record stays as designed when production changes. Scoped to override the frozen
+   round-1 rules in 00-site-nav.css, which the board's frames load for the nav. */
+.site-identity{position:relative;z-index:1;display:inline-block;padding:4px 10px 8px 2px;color:var(--ink,#33302B);line-height:0;transform:none}
+.site-identity:hover{color:var(--ink,#33302B)}
+.site-identity-name{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.site-identity-mark{display:block;line-height:0;font-size:24px}
+.site-identity-art{display:inline;vertical-align:baseline;width:168px;height:68px;overflow:visible}
+.site-identity-tag path{fill:none;stroke:var(--ink,#33302B);stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}
+.site-identity-seal .seal-body{fill:var(--mark,#D9695A)}
+.site-identity-seal .seal-cut{fill:none;stroke:var(--paper,#FBF6EC);stroke-linecap:square;stroke-linejoin:miter}
+.site-identity-seal .seal-line{fill:none;stroke:var(--mark,#D9695A);stroke-linecap:square;stroke-linejoin:miter}
+.site-identity-ticks path{fill:none;stroke:var(--ink,#33302B);stroke-width:1.6;stroke-linecap:round}
+@media (max-width:640px){.site-identity{padding-right:8px}.site-identity-art{width:147px;height:59.5px}}
+@media (forced-colors:active){
+  .site-identity-tag path,.site-identity-seal .seal-line{stroke:CanvasText}
+  .site-identity-seal .seal-body{fill:CanvasText}.site-identity-seal .seal-cut{stroke:Canvas}
+}
