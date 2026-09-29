@@ -41,6 +41,8 @@ for w in (1440,):
     for r in ([799.7, 358.7, 225, 210.8], [521.9, 667.9, 309, 237.4]):
         x0, y0, x1, y1 = [int(round(v * S)) for v in (r[0], r[1], r[0] + r[2], r[1] + r[3])]
         fix[y0:y1, x0:x1] = True
-    print(f'   without the sprite-aliasing fix (portrait, book): aligned {(aligned & ~fix).sum() / aligned.size * 100:.3f} %, strict {(strict & ~fix).sum() / strict.size * 100:.3f} %')
+    rest = (aligned & ~fix).mean()
+    print(f'   without the sprite-aliasing fix (portrait, book): aligned {rest * 100:.3f} %, strict {(strict & ~fix).sum() / strict.size * 100:.3f} %')
+    # The gate covers everything except the two re-sampled strips, which change on purpose (and carry lossy WebP edges).
     print(w, 'desk', box['after'], f'strict {strict.mean() * 100:.3f} %', f'· aligned {aligned.mean() * 100:.3f} %', f'· mean abs {np.abs(ca - cb).mean():.2f}/255',
-          'PASS' if aligned.mean() <= .005 else 'FAIL', '(limit 0.5 %)')
+          'PASS' if rest <= .005 else 'FAIL', '(limit 0.5 % outside the portrait and book)')
