@@ -1,7 +1,8 @@
 /* Home: the desk and its page. Every desk layer is an absolutely positioned box whose inline % geometry is its
    box in the 1448 × 1086 drawing (assets/derived/desk-geo.js holds the same numbers for scripts). The desk is one
-   DOM for both layouts: in the page flow here, and inside the phone camera rig in mobile.css.
-   The opener's states (html.opening, set in the <head>) live in opener.css. */
+   DOM for both layouts: in the page flow here, and inside the phone camera rig (the phone section below).
+   The opener's states (html.opening, set in the <head>) close the file. One stylesheet on purpose: each render-blocking
+   request costs a round trip on a slow link, and the opener's first frame waits for all of them. */
 @font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}   /* the -ui tier (gateway page) */
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Fraunces",Georgia,"Noto Serif SC",serif;-webkit-font-smoothing:antialiased}
@@ -117,4 +118,210 @@ html:not(.opening) .desk-arrows .d5 path{animation-delay:.23s}
   .desk-steam path,.desk .desk-strip img,.desk-flash,.desk-cstar,.desk-kacha,.desk-caret{animation:none!important}
   .desk-steam .st2{stroke-opacity:.28;stroke-dasharray:none}
   .desk-bird{transition:none}
+}
+
+/* ---- the phone (≤760px) ----
+   The same desk DOM becomes the layer under one camera (lib/home/mobile.js). A horizontal, natively snapped strip of
+   five shots drives it: the whole desk, then the laptop, the portrait, the camera, the book. The desk is never cut
+   into cards; the finger is the only thing that moves the camera. */
+@media (max-width:760px){
+  html,body{height:100%;overflow:hidden}
+  .home{height:100svh;min-height:0;padding:0;align-items:stretch;overflow:hidden}
+  .home-head{flex:none;width:auto;height:auto;padding:18px 12px 0}
+  .ep{padding:5px 8px 6px}.ep-cn{font-size:17px}.ep-no{font-size:14px}.ep-sub{display:none}
+  .rig{display:block;position:relative;flex:1 1 auto;min-height:0;--vh:clamp(280px,calc(100svh - 340px),540px)}
+  .view{display:block;position:absolute;left:0;right:0;top:0;height:var(--vh);overflow:hidden;pointer-events:none}
+  /* shot 0 (the whole desk), in CSS so the first paint and a view transition's capture are framed before mobile.js
+     runs; mobile.js then drives the same numbers: s = min(W / (vw · 1000), H / (vw · 750 · 0.9)), vw = .70, centre
+     (.52, .575). The layer is 1000 × 750 px. */
+  .desk{position:absolute;left:0;top:0;width:1000px;margin:0;transform-origin:0 0;will-change:transform;
+    --s0:min(tan(atan2(100vw,700px)),tan(atan2(var(--vh),472.5px)));
+    transform:translate(calc(50vw - 520px * var(--s0)),calc(var(--vh) / 2 - 431.25px * var(--s0))) scale(var(--s0))}
+  .desk-notes,.hot,.fig{display:none}
+  .desk-screen{font-size:18.8px;line-height:1.55;letter-spacing:.01em;white-space:pre-wrap}   /* 13 px of the phone's 1000 px layer */
+  .desk-screen .o{color:var(--ink)}
+  .vf{display:block;position:absolute;inset:10px 12px;width:calc(100% - 24px);height:calc(100% - 20px);overflow:visible}
+
+  .track{display:flex;position:relative;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .track::-webkit-scrollbar{display:none}
+  .track:focus-visible{outline:none}   /* the pen draws 「 」 round the camera's frame instead (mobile.js) */
+  .panel{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column}
+  .win{display:block;flex:none;height:var(--vh);position:relative}
+  .ov-hot{position:absolute;display:block}
+  .ov-hot>span{position:absolute;left:50%;white-space:nowrap;font:19px/1 "MuyaoPleased",cursive;color:var(--ink);transform:translateX(var(--ax,-50%)) rotate(-2deg);opacity:var(--ov,1)}
+  .ov-hot[data-lbl="top"]>span{bottom:calc(100% + 4px)}
+  .ov-hot[data-lbl="bottom"]>span{top:calc(100% + 6px)}
+  .ov-hot[data-lbl="in"]>span{top:22%}
+
+  .copy{flex:1;padding:14px 24px 0}
+  .copy .k{font:500 10.5px/1 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.08em;color:var(--pencil)}
+  .copy .lbl{display:inline-block;margin-top:10px;font:34px/1 "MuyaoPleased",cursive;color:var(--ink);transform:rotate(-1.5deg);transform-origin:0 50%}
+  .copy .lbl::after{content:" →";font-size:.8em;color:var(--soft)}
+  .copy .fact{margin-top:14px;max-width:330px;font:12.5px/1.6 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.02em;color:var(--soft)}
+  .copy .fact b{font-weight:500;color:var(--ink)}
+  .copy .fact .nw{white-space:nowrap}
+  .copy .lede{margin-top:10px;font-size:16px;line-height:1.45;color:var(--ink)}
+  .copy .lede.zh{margin-top:4px;font-family:"Noto Serif SC",serif;font-size:14.5px;line-height:1.6;color:var(--soft)}
+
+  .idx{display:flex;flex:none;justify-content:space-between;padding:4px 10px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+  .idx button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;min-height:66px;padding:8px 0 6px;border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+  .idx-obj{display:block;width:46px;height:38px;background-repeat:no-repeat;background-size:contain;background-position:center bottom}
+  .idx-obj--desk{background-image:url("../../assets/sticker-peek.png")}   /* the subpages' home tab object */
+  .idx-obj--laptop{background-image:image-set(url("../../assets/nav-laptop-light.png") 1x,url("../../assets/nav-laptop-light@2x.png") 2x)}
+  .idx-obj--frame{background-image:image-set(url("../../assets/nav-frame-light.png") 1x,url("../../assets/nav-frame-light@2x.png") 2x)}
+  .idx-obj--camera{background-image:image-set(url("../../assets/nav-camera-light.png") 1x,url("../../assets/nav-camera-light@2x.png") 2x)}
+  .idx-obj--book{background-image:image-set(url("../../assets/nav-book-light.png") 1x,url("../../assets/nav-book-light@2x.png") 2x)}
+  .idx .t{position:relative;font:500 10.5px/1 "IBM Plex Mono",monospace;letter-spacing:.04em;color:var(--soft)}
+  .idx button[aria-current="true"] .t{color:var(--ink)}
+
+  /* no ambient loops here (home.css gives touch screens some): the objects react only when the camera arrives */
+  .desk .desk-book .desk-strip img,.desk .desk-frame .desk-strip img,.desk .desk-flash,.desk .desk-cstar,.desk .desk-kacha{animation:none}
+  /* arrival reactions, once, when the camera settles on an object */
+  .desk.flip .desk-book .desk-strip img{animation:dkBookOnce 1.15s steps(1,end) 1 both}
+  .desk.snap .desk-flash{animation:dkFlash .9s linear both}
+  .desk.snap .desk-kacha{animation:dkKacha 1s cubic-bezier(.2,.7,.2,1) both}
+}
+/* a phone on its side: too short for the one-screen layout, so the page scrolls, the camera's view is shorter, and each
+   shot fits its height as well as its width (mobile.js frameOf) */
+@media (max-width:760px) and (max-height:520px){
+  html,body{height:auto;overflow-x:hidden;overflow-y:auto}
+  .home{height:auto;min-height:100svh;overflow:visible}
+  .rig{flex:none;--vh:clamp(200px,62svh,320px);height:calc(var(--vh) + 230px)}
+}
+/* the narrowest phones have no room beside the identity for the episode label; the eyecatch still shows its card */
+@media (max-width:380px){.ep{display:none}}
+@keyframes dkBookOnce{0%{--cell:0}16.6%{--cell:1}33.3%{--cell:2}50%{--cell:3}66.6%{--cell:4}83.3%,100%{--cell:0}}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){
+  .desk.flip .desk-book .desk-strip img,.desk.snap .desk-flash,.desk.snap .desk-kacha{animation:none!important}
+}
+
+/* ---- the opener ----
+   The OP's posters, the fall's states on the live desk, the eyecatch and the skip hint. Every OP
+   shot is a poster: flat field, one giant thing, one bilingual label, one mark family, ≤ 3 colours. Landscape is
+   composed for 1440 × 900; portrait (≤ 5:6) is recomposed, not squashed. The OP's type is the site's own JinBuTi
+   subset and Fraunces italic 500, so it adds no font weight. */
+
+/* The OP's palette, the one register break: four loud flat fields and a deeper ink; coral and cream are the site's own.
+   The bird's two colours serve the traced close-up and the eyecatch's blink alike. opener-op.js paints only with
+   these names. */
+:root{--op-yolk:#FFC629;--op-pool:#22B8E6;--op-gum:#FF78B4;--op-coral:var(--mark);--op-ink:#1F1B17;--op-cream:var(--paper);
+  --op-bird:#FDEFA8;--op-bird-line:#866E4C}
+
+/* ---- the first paint is derived from the <head>'s class alone, so it is right before any module runs ---- */
+html.opening,html.opening body{overflow:hidden}
+/* the whole page is inert under the opener: a tap or click only skips (opener.js listens on window) */
+html.opening .home{pointer-events:none}
+/* opacity, not visibility: the pen's marks set their own strokes visible, so only opacity hides them with their hosts */
+html.opening .home-head,html.opening .fig,html.opening .desk-notes,html.opening .vf,html.opening .track .copy,html.opening .ov-hot,html.opening .idx{opacity:0}
+html.opening .view{overflow:visible}
+html.opening .desk-steam path,html.opening .desk .desk-strip img,html.opening .desk-flash,html.opening .desk-cstar,html.opening .desk-kacha{animation:none}
+html.opening .desk-steam path{stroke-opacity:0}
+html.opening .desk-caret{animation:none;visibility:hidden}
+/* the empty desk: the objects wait out of frame until they fall (.in), their contact tone until they land, and the
+   back edge they hide is drawn in until they settle (.gone). A first visit shows plain paper until the OP starts. */
+html.opening .desk-body:not(.desk-bird):not(.in),html.opening .desk-tone:not(.in){visibility:hidden}
+html.opening .desk-backedge:not(.gone){display:block}
+html.opening:not(.ret):not([data-opener-live]) .desk-in{visibility:hidden}
+
+.desk-slab{display:none;position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
+.desk-slab path{fill:var(--paper);stroke:var(--ink);stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.desk-slab .kick{fill:none;stroke-width:4}
+.desk-frame.flat .desk-slab{display:block}
+.desk-frame.flat .desk-strip{visibility:hidden}
+.desk-fx{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:15}
+.desk-fx .tk{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round}
+
+/* a long hold says one thing, after 1.5 s: that you can skip it. No spinner, no percentage. */
+.skip-hint{position:fixed;left:50%;bottom:max(18px,3.4vh);z-index:40;transform:translateX(-50%);font:12px/1 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.05em;color:var(--pencil);white-space:nowrap;pointer-events:none;visibility:hidden}
+.skip-hint.on{visibility:visible}
+
+/* the eyecatch: a hard cut to the bird alone on cream over 日常 · ep.NN, the deadpan register */
+.eye{position:fixed;inset:0;z-index:900;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,3vh,26px);padding-bottom:4vh}
+.eye-bird{position:relative;width:min(40vw,33vh);aspect-ratio:308/317;transform:scaleX(-1)}
+.eye-bird .desk-strip{--n:6}
+.eye-bird .desk-strip img{width:600%}
+.eye-blink{position:absolute;inset:0;width:100%;height:100%;display:none}
+.eye-blink circle{fill:var(--op-bird)}
+.eye-blink path{fill:none;stroke:var(--op-bird-line);stroke-width:4.2;stroke-linecap:round}
+.eye-bird.blink .eye-blink{display:block}
+.eye .ep{display:grid;visibility:visible;transform:rotate(-2deg) scale(1.35)}   /* the card shows here even on phones ≤ 380 px, where the corner label is hidden */
+.eye .ep-sub{display:block}
+
+/* ---- the OP ---- */
+.oc-stage{position:fixed;inset:0;z-index:300;overflow:hidden;display:none;background:var(--op-yolk);cursor:pointer}
+html.opening[data-opener-live]:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* only once opener.js runs it; .fading: a skip fades it off */
+.oc-stage.off{display:none!important}
+.sh{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--f);color:var(--op-ink);contain:strict}
+.sh.on{visibility:visible}
+.sh .fx{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.sh .p{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));white-space:nowrap;line-height:1;font-style:normal;font-weight:400}
+.sh .ob{width:var(--w);display:block;user-select:none}
+.sh-lap0 .ob,.sh-lap .ob{aspect-ratio:487/352}     /* the boxes exist before the bytes: the marks aim at them */
+.sh-cam .ob{aspect-ratio:640/439}
+/* per-tick states inside a shot (data-f = tick index within the shot) */
+.sh:not([data-f="0"]) .only0{visibility:hidden}
+.sh[data-f="0"] .from1{visibility:hidden}
+/* the slam: two held poses, labels only (scaling full-frame type flips enough area to count as a flash) */
+.sh[data-f="0"] .lb-cn,.sh[data-f="0"] .lb-en{scale:1.16}
+.sh-me[data-f="0"] .lb-cn,.sh-me[data-f="0"] .lb-en{scale:none}
+.sh .gl,.sh .lb-cn,.sh .sfx{font-family:"DingTalk JinBuTi",serif}
+.sh .word,.sh .lb-en{font-family:"Fraunces",serif;font-style:italic;font-weight:500;letter-spacing:-.01em;line-height:.8}
+.sh .lb-cn{font-size:12vw;letter-spacing:.02em}
+.sh .lb-en{font-size:6.4vw}
+.sh .sfx i{font-family:"Fraunces",serif;font-style:italic;font-weight:500}
+
+/* name beat a · 一字一切: each character alone, full-bleed, then FRED */
+.sh-a-fu .gl{--x:43%;--y:52%;--r:-6deg;font-size:100vh}
+.sh-a-lei .gl{--x:57%;--y:50%;--r:5deg;font-size:114vh}
+.sh-a-de .gl{--x:50%;--y:52%;--r:-3deg;font-size:100vh}
+.sh-a-fred{color:var(--op-cream)}
+.sh-a-fred .word{--x:50%;--y:50%;--r:-5deg;font-size:40vw}
+
+/* the objects (landscape); the whip-in smear ends about where the laptop lands (flash plan) */
+.sh-lap0 .sil{--x:31%;--y:54%;--w:44vw;transform:translate(-50%,-50%) rotate(-4deg) skewX(-20deg) scaleX(1.32)}
+.sh-lap .ob{--x:35%;--y:54%;--r:-4deg;--w:44vw}
+.sh-lap .lb-cn{--x:79%;--y:40%;--r:4deg}
+.sh-lap .lb-en{--x:80%;--y:62%;--r:4deg}
+.sh-book .ob{--x:37%;--y:55%;--r:-3deg;--w:47vw;aspect-ratio:462/355;background:0 0/300% 100% no-repeat}
+.sh-book[data-f="1"] .ob{background-position:50% 0}
+.sh-book[data-f="2"] .ob{background-position:100% 0}
+.sh-book .lb-cn{--x:80%;--y:40%;--r:4deg}
+.sh-book .lb-en{--x:81%;--y:62%;--r:4deg}
+.sh-cam .ob{--x:64%;--y:56%;--r:5deg;--w:41vw}
+.sh-cam .lb-cn{--x:20%;--y:42%;--r:-4deg}
+.sh-cam .lb-en{--x:21%;--y:64%;--r:-4deg}
+.sh-cam .sfx{--x:52%;--y:14%;--r:-7deg;font-size:5.4vw}
+.sh-me{color:var(--op-cream)}
+.sh-me .ob{--x:63%;--y:52%;--r:3deg;--w:30vw;aspect-ratio:362/401;background:0 0/200% 100% no-repeat}
+.sh-me[data-f="1"] .ob{background-position:100% 0}
+.sh-me .lb-cn{--x:23%;--y:40%;--r:-4deg}
+.sh-me .lb-en{--x:24%;--y:62%;--r:-4deg}
+
+/* ---- portrait: recomposed for 390 × 844 ---- */
+@media (max-aspect-ratio:5/6){
+  .sh .lb-cn{font-size:21vw}
+  .sh .lb-en{font-size:13vw}
+  .sh-a-fu .gl{--x:47%;--y:43%;--r:-6deg;font-size:104vw}
+  .sh-a-lei .gl{--x:53%;--y:53%;--r:5deg;font-size:120vw}
+  .sh-a-de .gl{--x:50%;--y:46%;--r:-3deg;font-size:106vw}
+  .sh-a-fred .word{--x:50%;--y:50%;--r:-90deg;font-size:36vh}
+  .sh-lap0 .sil{--x:50%;--y:43%;--w:86vw;transform:translate(-50%,-50%) rotate(-4deg) skewY(-12deg) scaleY(1.4)}
+  .sh-lap .ob{--x:50%;--y:48%;--r:-4deg;--w:86vw}
+  .sh-lap .lb-cn{--x:46%;--y:17%;--r:-3deg}
+  .sh-lap .lb-en{--x:54%;--y:79%;--r:-3deg}
+  .sh-book .ob{--x:50%;--y:49%;--r:3deg;--w:90vw}
+  .sh-book .lb-cn{--x:48%;--y:18%;--r:-3deg}
+  .sh-book .lb-en{--x:54%;--y:80%;--r:-3deg}
+  .sh-cam .ob{--x:50%;--y:50%;--r:-6deg;--w:84vw}
+  .sh-cam .lb-cn{--x:52%;--y:18%;--r:3deg}
+  .sh-cam .lb-en{--x:50%;--y:81%;--r:3deg}
+  .sh-cam .sfx{--x:30%;--y:33%;--r:-8deg;font-size:9vw}
+  .sh-me .ob{--x:50%;--y:49%;--r:3deg;--w:64vw}
+  .sh-me .lb-cn{--x:48%;--y:18%;--r:-3deg}
+  .sh-me .lb-en{--x:52%;--y:80%;--r:-3deg}
+}
+/* portrait tablets: 德 sits lower, so the 雷 → 德 cut changes the lower field's luminance by less than WCAG's 0.10 and
+   the fast drum (雷, 德, FRED within 170 ms) reads as one darkening, not two flashes (scripts/verify/flash-audit.py) */
+@media (max-aspect-ratio:5/6) and (min-width:600px){
+  .sh-a-de .gl{--y:52%}
 }

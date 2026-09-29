@@ -17,8 +17,6 @@
 <link rel="stylesheet" href="./pen.css">
 <link rel="stylesheet" href="./transitions.css">
 <link rel="stylesheet" href="./lib/home/home.css">
-<link rel="stylesheet" href="./lib/home/mobile.css">
-<link rel="stylesheet" href="./lib/home/opener.css">
 <link rel="expect" href="#desk" blocking="render">
 <script>
   /* Before first paint: does this landing play the opener? The OP plays only when home is the session's first page
@@ -57,8 +55,8 @@
 <script src="./transitions.js" defer blocking="render"></script>
 <script defer fetchpriority="high" src="./pen.js"></script>
 <script defer fetchpriority="high" src="./pen-tier.js"></script>
-<script defer fetchpriority="high" src="./content/home.js"></script>
-<script defer fetchpriority="high" src="./content/building-projects.js"></script>
+<script async src="./content/home.js"></script>
+<script async src="./content/building-projects.js"></script>
 <script defer fetchpriority="high" src="./assets/derived/desk-geo.js"></script>
 <link rel="modulepreload" href="./lib/home/desk.js">
 <link rel="modulepreload" href="./lib/home/mobile.js">
