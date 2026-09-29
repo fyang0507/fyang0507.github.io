@@ -1,7 +1,7 @@
-/* design/2026-09-building · the live site's shared stylesheets, imported in one place so a rebase repoints them in
-   one pass (the root files are moving into lib/shared/). Every board page links this file and nothing else from the
+/* design/2026-09-building · the live site's shared stylesheets (lib/shared/), imported in one place so a move
+   repoints them in one pass. Every board page links this file and nothing else from the
    root. The other live references are listed in README.md § "Live references". */
-@import url("../../site-tokens.css");
-@import url("../../site-nav.css");
-@import url("../../pen.css");
-@import url("../../transitions.css");
+@import url("../../lib/shared/site-tokens.css");
+@import url("../../lib/shared/site-nav.css");
+@import url("../../lib/shared/pen.css");
+@import url("../../lib/shared/transitions.css");
