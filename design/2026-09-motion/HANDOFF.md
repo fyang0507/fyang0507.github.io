@@ -4,7 +4,7 @@ Last updated 2026-09-28. Read this first after a context compaction or in a new 
 
 ## 1. Status in one paragraph
 
-A full FE design audit of the site was done, then live mockup boards in seven rounds (01–11, then `r2-*` … `r7-*`); Fred triaged each round (§3). On 2026-09-28 he accepted r7-07, closing every board, and asked for the port: pin down every decision, revamp the site and end with one PR (branch `redesign/motion-revamp`). He also asked to **keep the boards** as a documented design lineage (they now live in `design/2026-09-motion/`, excluded from the Pages deploy; `design/README.md` indexes iterations) and for a **before/after marketing video** of the added motion, graphics, transitions and polish.
+A full FE design audit of the site was done, then live mockup boards in seven rounds (01–11, then `r2-*` … `r7-*`); Fred triaged each round (§3). On 2026-09-28 he accepted r7-07, closing every board, and asked for the port: pin down every decision, revamp the site and end with one PR. That PR (branch `redesign/motion-revamp`) ports every board to production (plan and as-built notes in `PORT-PLAN.md`), keeps this folder as the design lineage (excluded from the Pages deploy; `design/README.md` indexes iterations), and includes a before/after marketing video in `video/`.
 
 ## 2. How to look at it
 
@@ -186,4 +186,7 @@ It uses the Chromium at `~/Library/Caches/ms-playwright/chromium-1234/`; WebKit 
 
 ## 11. Next actions
 
-1. Port (branch `redesign/motion-revamp`): plan → L0 hygiene + L1 system → L2 pages + L3 home in parallel → verify + code review → marketing video → PR.
+1. **Shipped in the `redesign/motion-revamp` PR** (2026-09-29): every board's decision ported to production, reviewed by three independent code reviews, and verified by the `scripts/verify/` suites. `PORT-PLAN.md` is the file-level plan with the lead's decisions and the as-built notes; the before/after video and its tooling are in `video/`.
+2. Before merge: a real-device pass (phones, Safari, Firefox), which headless checks can't replace.
+3. Follow-ups listed in the PR: a small derived favicon, a full-frame phone rung for the Gallery viewer, applying `design-guide-motion.patch` in the fred-agent repo, removing the unused `image-slot.js`, Writing's decade jump past ~200 essays.
+4. The next design iteration gets a sibling folder `design/YYYY-MM-topic/`; don't edit this one after the fact.
