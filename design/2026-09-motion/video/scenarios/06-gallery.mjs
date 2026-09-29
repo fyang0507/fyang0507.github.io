@@ -1,7 +1,10 @@
 // Gallery. Before: a static grid of prints, a dark lightbox. After: prints develop on first view (fresh
 // session), a fast pass swings the line, the clicked print is unclipped into the viewer with its peg (the rope
 // springs up where the weight left), and a click flies it home onto the rope, which sags again.
+// Both sides are seeded (seed.mjs), so they open the same print.
+import { seedRandom, GALLERY_SEED } from '../seed.mjs';
 export default async (page, ctx) => {
+  await ctx.context.addInitScript(seedRandom, GALLERY_SEED);
   await ctx.move(1150, 330, 10);
   await page.goto(ctx.base + '/Gallery.dc.html', { waitUntil: 'domcontentloaded' });
   // 1 · first view: the after side develops its prints (they mount blank), the before side just shows them

@@ -4,6 +4,10 @@
 
 Every interaction is real input, driven headless: eased `page.mouse` paths on desk, CDP touch on phones. Both sides are recorded through a CDP screencast with real frame timestamps. Text is rendered as HTML (`chrome.html`) because the system ffmpeg has no `drawtext`.
 
+## The 30 s cut
+
+`fyang0507-redesign-30s-16x9.mp4` and `fyang0507-redesign-30s-9x16.mp4` are one montage from one spec (`spec-30.json`) in two layouts: wide puts the sides next to each other, tall puts one above the other with the headline between them (phones stay side by side in both). Eight beats in the order a visit meets them, on hard cuts, then the end card. Each beat's headline has one phrase underlined by the site's own pen (`pen.js`, seeded by its text, drawn on the pen's easing); slowed pieces say their speed. The labels credit both sides: before, Claude Design (Fable 5) + GPT-5.6-sol; after, Claude Opus 5.5.
+
 ## Regenerate
 
 Needs both servers (the branch on :4173 and a read-only checkout of `origin/main` on :4174), the headless runner from `HANDOFF.md` §9 (`/tmp/fyshot` with `playwright-core`, Chromium `chromium-1234`), and ffmpeg.
@@ -14,6 +18,7 @@ cd design/2026-09-motion/video
 uv run --with pillow python check.py spec.json    # marks, late beats, errors, equal sides, old opener timing
 node compose.mjs spec.json fyang0507-redesign-before-after.mp4    # scratch in /tmp/fyvideo/work
 ffmpeg -ss 29.8 -i fyang0507-redesign-before-after.mp4 -frames:v 1 poster.png
+node montage.mjs spec-30.json fyang0507-redesign-30s      # both layouts from the same recordings; LAYS=wide for one
 ```
 
 `./record.sh 04 07` re-records only the scenarios whose names start with those prefixes. `ONLY=3,5 node compose.mjs …` rebuilds only those spec segments and reuses the rest from the work dir. Recordings run sequentially on purpose: two browsers recording at once compete for CPU and drop animation frames.
@@ -33,6 +38,11 @@ To check a segment before composing: `uv run --with pillow python sheet.py /tmp/
 | `spec.json` | The cut: segment order, titles, per-beat captions, replays |
 | `check.py` | Validates the recordings a spec uses; names any side to re-record |
 | `sheet.py` | Contact sheet of both sides of a segment, for checking sync |
+| `cut.mjs` | Shared by both composers: ffmpeg, colour tags, and cutting windows of a screencast to constant fps |
+| `montage.mjs` | The 30 s cut: pieces `[t0, t1, rate]` per beat, both layouts, the pen's layers, the end card |
+| `montage.html` | The 30 s cut's chrome (brand row, labels, headlines with the pen, speed tags, end card) |
+| `spec-30.json` | The 30 s cut: beats, headlines, pieces, credits |
+| `seed.mjs` | Recording-only seeded `Math.random`, so both Gallery pages hang the same prints and open the same one |
 
 ## Scenario conventions
 
@@ -40,4 +50,4 @@ To check a segment before composing: `uv run --with pillow python sheet.py /tmp/
 - Settle, then `ctx.mark('start')`, then `await ctx.at(t)` before every beat with the same `t` on both sides, then `ctx.mark('end')`. The spec's beat times are the same `t`s, so captions change when the action does. `marks.json` records any beat that ran late.
 - Pace for a person: eased moves, roughly 0.6–1 s after each effect lands.
 - A spec `replay` repeats a window slowed down (optionally zoomed with `crop`) right after its segment, for moments that are too quick at full speed.
-- The redesigned Gallery shuffles its prints on every load, so each recording shows different photos.
+- Both Gallery pages shuffle their prints on every load. `06-gallery` and `09-between` seed `Math.random` (`seed.mjs`), so both sides hang the same prints in the same order, open the same one, and the Gallery `09-between` leaves from is the one `06-gallery` shows.

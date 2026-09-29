@@ -15,6 +15,7 @@ import { chromium } from '/tmp/fyshot/node_modules/playwright-core/index.mjs';
 import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import { ff, YUV, TAGS, loopPng as loop, clip as cut } from './cut.mjs';
 const [specPath, outPath] = process.argv.slice(2);
 const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 const here = path.dirname(new URL(import.meta.url).pathname);
@@ -23,11 +24,6 @@ const work = path.resolve(process.env.VIDEO_WORK || '/tmp/fyvideo/work'); fs.mkd
 const only = process.env.ONLY ? new Set(process.env.ONLY.split(',').map(Number)) : null;
 const FPS = spec.fps || 60;
 const PAPER = '0xFBF6EC', DIP = 0.25;
-const ff = (args) => execFileSync('ffmpeg', ['-v', 'error', '-y', ...args], { stdio: 'inherit' });
-// Every encode leaves as limited-range BT.709 and says so. The screencast JPEGs are full-range BT.601 and
-// the chrome is RGB; mixing them untagged made the concat misread the cards' range.
-const YUV = 'scale=out_color_matrix=bt709:out_range=tv,format=yuv420p,setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv';
-const TAGS = ['-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv'];
 const GEO = {
   desk: { mode: 'desk', panes: [{ x: 36, y: 150, w: 912, h: 712 }, { x: 972, y: 150, w: 912, h: 712 }], cap: { y: 894 } },
   phone: { mode: 'phone', panes: [{ x: 530, y: 180, w: 390, h: 844 }, { x: 1000, y: 180, w: 390, h: 844 }], cap: { y: 440 } },
@@ -41,30 +37,8 @@ async function chrome(params, png) {
   await page.screenshot({ path: png, omitBackground: params.layer === 'top' || params.layer === 'cap' });
   return png;
 }
-function frames(rec) {
-  const m = JSON.parse(fs.readFileSync(path.join(rec, 'marks.json'), 'utf8'));
-  const lines = fs.readFileSync(path.join(rec, 'list.txt'), 'utf8').split('\n');
-  const files = lines.filter(l => l.startsWith('file ')).map(l => l.slice(6, -1)).slice(0, -1);
-  const durs = lines.filter(l => l.startsWith('duration ')).map(l => +l.split(' ')[1]);
-  let t = m.first; const ts = durs.map(d => (t += d) - d);
-  return { m, files, ts };
-}
-function clip(rec, from, to, t0, t1, rate, out) { // a window of the raw screencast, retimed to constant fps
-  const { m, files, ts } = frames(rec);
-  if (m.marks[from] == null || m.marks[to] == null) throw new Error(`missing mark ${from}/${to} in ${rec}`);
-  const a = m.marks[from] + (t0 ?? 0), b = t1 == null ? m.marks[to] : m.marks[from] + t1;
-  let k = ts.findIndex(x => x > a) - 1; if (k < 0) k = 0;
-  let list = '', last = '';
-  for (; k < files.length && ts[k] < b; k++) {
-    const s0 = Math.max(ts[k], a), s1 = Math.min(ts[k + 1] ?? b, b);
-    list += `file '${files[k]}'\nduration ${((s1 - s0) / rate).toFixed(5)}\n`; last = files[k];
-  }
-  list += `file '${last}'\n`;
-  fs.writeFileSync(out + '.txt', list);
-  ff(['-f', 'concat', '-safe', '0', '-i', out + '.txt', '-vf', `fps=${FPS},${YUV}`, '-c:v', 'libx264', '-crf', '12', '-preset', 'fast', ...TAGS, out]);
-  return { mp4: out, t: (b - a) / rate };
-}
-const loopPng = (png, d) => ['-loop', '1', '-framerate', String(FPS), '-t', d.toFixed(3), '-i', png];
+const clip = (rec, from, to, t0, t1, rate, out) => cut(rec, from, to, t0, t1, rate, out, FPS);   // a window of the raw screencast, retimed to constant fps
+const loopPng = (png, d) => loop(png, d, FPS);
 const dips = (d, i = DIP, o = DIP) => `fade=t=in:st=0:d=${i}:color=${PAPER},fade=t=out:st=${(d - o).toFixed(3)}:d=${o}:color=${PAPER}`;
 // One side-by-side part: both recordings cut from `from`+t0 to `to` (or `from`+t1), played at `rate`.
 async function part(s, tag, { t0, t1, rate = 1, crop, lead, hold, beats, note, dipIn = DIP, dipOut = DIP }) {

@@ -1,5 +1,5 @@
 // A first visit to home in a fresh session. Before: the dark loading screen (a line of birds), then the iris.
-// After: the OP (弗 / 雷 / 德 / FRED), the desk objects fall into place, the 日常 · ep.NN card, then the desk.
+// After: the OP (弗 / 雷 / 德 / FRED), the desk objects fall into place, then the camera eases back to the page.
 export default async (page, ctx) => {
   await page.goto('about:blank');
   await page.evaluate(() => { document.documentElement.style.background = '#FBF6EC'; });

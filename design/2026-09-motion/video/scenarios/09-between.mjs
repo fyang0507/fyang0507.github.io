@@ -1,8 +1,11 @@
 // Writing → Gallery through the nav, then Gallery → home. Two segments cut at 'mid'.
 // Before: two hard cuts. After: the tab mark springs across and the objects hop (tab → tab),
 // then the nav falls back into a desk (gravity return).
+// Seeded like 06-gallery (seed.mjs), so the Gallery it leaves from is the one 06-gallery shows.
+import { seedRandom, GALLERY_SEED } from '../seed.mjs';
 export default async (page, ctx) => {
   await ctx.context.addInitScript(() => { try { sessionStorage.setItem('fy-opener', '1'); } catch {} });
+  await ctx.context.addInitScript(seedRandom, GALLERY_SEED);
   await page.goto(ctx.base + '/Writing.dc.html', { waitUntil: 'load' });
   await page.waitForTimeout(2600);
   await ctx.move(900, 560, 200);
