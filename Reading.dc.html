@@ -8,6 +8,7 @@
 <meta name="description" content="Bilingual essays by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
+<script>(function(){var p=new URLSearchParams(location.search).get('post');if(!/^[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9_-]+$/.test(p||''))return;var s=document.createElement('script');s.src='./content/bodies/'+p+'.js';s.fetchPriority='high';s.setAttribute('data-fy-body',p);s.onload=s.onerror=function(e){s.setAttribute('data-state',e.type)};document.head.appendChild(s);})();</script>
 <script src="./support.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -20,12 +21,13 @@
 <link rel="stylesheet" href="./lib/reading/notes.css">
 <link rel="expect" href="#site-nav" blocking="render">
 <script>(function(){var r=document.documentElement;var q=new URLSearchParams(location.search);var l=q.get('lang')||localStorage.getItem('fy-lang')||'zh';var saved=q.get('theme')||localStorage.getItem('fy-theme');var t=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.classList.add(l==='zh'?'lang-zh':'lang-en');r.classList.toggle('dark',t==='dark');r.setAttribute('data-theme',t);r.setAttribute('lang',l);})();</script>
+<script src="./content/posts-index.js" defer fetchpriority="high"></script>
+<script type="module" src="./lib/reading/essay.js"></script>
 <script src="./motion.js" defer blocking="render"></script>
 <script src="./transitions.js" defer blocking="render"></script>
 <script src="./pen.js" defer></script>
 <script src="./pen-tier.js" defer></script>
 <script src="./site.js" defer></script>
-<script src="./content/posts.js" defer fetchpriority="high"></script>
 <script type="module" src="./lib/reading/main.js"></script>
 </head>
 <body>
@@ -47,11 +49,11 @@
 <div class="site-top rd-top">
   <header class="site-shell-header site-shell-header--reading" id="site-nav">
     <nav class="site-index site-index--reading" aria-label="Primary navigation">
-      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
       <div class="site-rule" aria-hidden="true"></div>
       <span class="site-tabmark" aria-hidden="true"></span>
     </nav>
@@ -59,16 +61,16 @@
 </div>
 <x-dc>
 <main class="wrap rd-main" data-mount="reading">
+  <!-- lib/reading writes the essay into this skeleton (its text, both bodies, the neighbours), then the hero, the
+       margin rail and the notes attach to it. It carries no template values, so it is right whenever React renders. -->
   <article>
     <header class="article-intro">
       <div class="kick-row">
-        <span class="kicker"><span class="en">{{ tagsEn }}</span><span class="zh">{{ tagsZh }}</span></span>
-        <span class="meta"><time datetime="{{ date }}"><span class="en">{{ dateLabelEn }}</span><span class="zh">{{ dateLabelZh }}</span></time><span class="dot">·</span><span><span class="en">{{ readingMin }} min read</span><span class="zh">约 {{ readingMin }} 分钟</span></span><span class="dot">·</span><span>中 / EN</span></span>
+        <span class="kicker"><span class="en" data-f="tagsEn"></span><span class="zh" data-f="tagsZh"></span></span>
+        <span class="meta"><time><span class="en" data-f="dateEn"></span><span class="zh" data-f="dateZh"></span></time><span class="dot">·</span><span><span class="en" data-f="minEn"></span><span class="zh" data-f="minZh"></span></span><span class="dot">·</span><span>中 / EN</span></span>
       </div>
-      <h1 class="title"><span class="en">{{ title }}</span><span class="zh">{{ titleZh }}</span></h1>
-      <sc-if value="{{ hasSubtitle }}" hint-placeholder-val="{{ false }}">
-        <div class="eyebrow"><span class="en">{{ subtitle }}</span><span class="zh">{{ subtitleZh }}</span></div>
-      </sc-if>
+      <h1 class="title"><span class="en" data-f="title"></span><span class="zh" data-f="titleZh"></span></h1>
+      <div class="eyebrow"><span class="en" data-f="subtitle"></span><span class="zh" data-f="subtitleZh"></span></div>
     </header>
     <div class="body-col">
       <div class="rail-col"></div>
@@ -76,20 +78,7 @@
       <div class="post-body en" lang="en"></div>
     </div>
   </article>
-  <nav class="pn" aria-label="More essays · 更多文章">
-    <sc-if value="{{ previous }}" hint-placeholder-val="{{ false }}">
-      <a href="{{ previous.href }}">
-        <div class="lab"><span class="en">← previous</span><span class="zh">← 上一篇</span></div>
-        <div class="t"><span class="en">{{ previous.title }}</span><span class="zh">{{ previous.titleZh }}</span></div>
-      </a>
-    </sc-if>
-    <sc-if value="{{ next }}" hint-placeholder-val="{{ false }}">
-      <a class="next" href="{{ next.href }}">
-        <div class="lab"><span class="en">next →</span><span class="zh">下一篇 →</span></div>
-        <div class="t"><span class="en">{{ next.title }}</span><span class="zh">{{ next.titleZh }}</span></div>
-      </a>
-    </sc-if>
-  </nav>
+  <nav class="pn" aria-label="More essays · 更多文章"></nav>
   <footer>
     <div class="row">
       <span>© 2026 Fred Yang · 杨</span>
@@ -98,38 +87,5 @@
   </footer>
 </main>
 </x-dc>
-<script type="text/x-dc" data-dc-script>
-class Component extends DCLogic {
-  getPost() {
-    const posts = window.FY_POSTS || [];
-    const wanted = new URLSearchParams(window.location.search).get('post');
-    return posts.find(p => p.id === wanted) || posts[0] || {};
-  }
-  // Template text only. The essay bodies, the hero, the rail, the notes and both toggles are lib/reading/*,
-  // which never asks the template to re-render.
-  renderVals() {
-    const posts = window.FY_POSTS || [];
-    const post = this.getPost();
-    const chronological = posts.slice().reverse();
-    const index = chronological.findIndex(p => p.id === post.id);
-    const makeNav = p => p ? { title: p.title || p.titleZh || '', titleZh: p.titleZh || p.title || '', href: 'Reading.dc.html?post=' + encodeURIComponent(p.id) } : null;
-    const date = new Date(post.date + 'T00:00:00');
-    const validDate = !Number.isNaN(date.getTime());
-    return {
-      title: post.title || '', titleZh: post.titleZh || post.title || '',
-      subtitle: post.subtitle || post.subtitleZh || '', subtitleZh: post.subtitleZh || post.subtitle || '',
-      hasSubtitle: Boolean(post.subtitle || post.subtitleZh),
-      tagsEn: (post.tags || []).join(' · ') || 'essay',
-      tagsZh: (post.tagsZh || []).join(' · ') || '文章',
-      date: post.date || '',
-      dateLabelEn: validDate ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '',
-      dateLabelZh: validDate ? date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) : '',
-      readingMin: post.readingMin || 1,
-      previous: index > 0 ? makeNav(chronological[index - 1]) : null,
-      next: index >= 0 && index < chronological.length - 1 ? makeNav(chronological[index + 1]) : null
-    };
-  }
-}
-</script>
 </body>
 </html>

@@ -109,7 +109,7 @@ Emphasis uses `*italic*` and `**bold**` only — the renderer does not support u
 
 ## Manifest caching
 
-Load the manifests unversioned (`./content/posts.js`), the way `Gallery.dc.html`
+Load the manifests unversioned (`./content/posts-index.js`), the way `Gallery.dc.html`
 and `Building.dc.html` already do. Do not reintroduce a `?v=<stamp>`
 cache-buster: GitHub Pages serves every file, including the HTML that would
 carry the stamp, with `cache-control: max-age=600` and an ETag, so a regenerated

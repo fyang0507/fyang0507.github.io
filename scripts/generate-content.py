@@ -26,6 +26,7 @@ from content_markdown import markdown_to_html  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "content" / "posts"
+BODIES_DIR = ROOT / "content" / "bodies"
 PHOTOS_SOURCE = ROOT / "content" / "photos-source.ts"
 
 # Derived-image contract, shared by scripts/generate-derivatives.py (which writes
@@ -185,7 +186,6 @@ def load_posts() -> list[dict]:
                 "htmlZh": marked_zh["html"],
                 "landmarksEn": landmarks.manifest(marked_en),
                 "landmarksZh": landmarks.manifest(marked_zh),
-                "source": "./content/posts/" + path.name,
             }
         )
     posts.sort(key=lambda post: post["date"], reverse=True)
@@ -225,14 +225,26 @@ def load_photos() -> list[dict]:
     return photos
 
 
-# Fields only Reading.dc.html reads. Writing loads the index without them
-# (posts.js is ~900 KB, the index a few percent of that).
-READING_ONLY_FIELDS = ("subtitle", "subtitleZh", "excerpt", "excerptZh",
-                       "htmlEn", "htmlZh", "landmarksEn", "landmarksZh", "source")
+# Fields only Reading.dc.html reads, split into one body file per essay so a
+# reader downloads the essay they opened (all bodies together are ~900 KB).
+# The index is everything else: the list Writing shows and Reading's prev/next.
+BODY_FIELDS = ("subtitle", "subtitleZh", "excerpt", "excerptZh",
+               "htmlEn", "htmlZh", "landmarksEn", "landmarksZh")
 
 
 def post_index(posts: list[dict]) -> list[dict]:
-    return [{k: v for k, v in post.items() if k not in READING_ONLY_FIELDS} for post in posts]
+    return [{k: v for k, v in post.items() if k not in BODY_FIELDS} for post in posts]
+
+
+def post_body(post: dict) -> dict:
+    return {"id": post["id"], **{k: post[k] for k in BODY_FIELDS}}
+
+
+def body_path(post_id: str) -> Path:
+    """content/bodies/<id>.js. Ids are `YYYY-MM-DD_<slug>`, so they are safe file names and URL segments."""
+    if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9-]+", post_id):
+        raise ValueError(f"post id {post_id!r} is not a safe body file name")
+    return BODIES_DIR / f"{post_id}.js"
 
 
 def home_manifest(posts: list[dict], photos: list[dict]) -> dict:
@@ -261,8 +273,14 @@ def main() -> None:
     parser.parse_args()
     posts = load_posts()
     photos = load_photos()
-    write_js(ROOT / "content" / "posts.js", "FY_POSTS", posts)
     write_js(ROOT / "content" / "posts-index.js", "FY_POST_INDEX", post_index(posts))
+    BODIES_DIR.mkdir(exist_ok=True)
+    bodies = {body_path(post["id"]) for post in posts}
+    for post in posts:
+        write_js(body_path(post["id"]), "FY_BODY", post_body(post))
+    for stray in sorted({f for f in BODIES_DIR.iterdir() if f.is_file()} - bodies):   # a renamed or removed essay's
+        stray.unlink()
+        print(f"pruned {stray.relative_to(ROOT)}")
     write_js(ROOT / "content" / "photos.js", "FY_PHOTOS", photos)
     write_js(ROOT / "content" / "home.js", "FY_HOME", home_manifest(posts, photos))
     print(f"Generated {len(posts)} posts and {len(photos)} photos")

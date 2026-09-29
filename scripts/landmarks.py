@@ -28,7 +28,6 @@ English and Chinese bodies should get the same structure; check them with
 from __future__ import annotations
 
 import html as html_mod
-import json
 import math
 import re
 from pathlib import Path
@@ -314,7 +313,7 @@ def build(html: str, reading_min: int, pre: str) -> dict:
 
 
 def manifest(result: dict) -> dict:
-    """The landmarks as posts.js carries them: the rail's overall kind plus one entry per mark."""
+    """The landmarks as a body file carries them: the rail's overall kind plus one entry per mark."""
     fields = ("id", "kind", "label", "title", "peek", "minute")
     return {"kind": result["kind"], "marks": [{k: f[k] for k in fields} for f in result["marks"]]}
 
@@ -326,10 +325,15 @@ EXPLAINED = {
 }
 
 
-def check(posts_js: Path) -> int:
+def check() -> int:
     """Every essay's English and Chinese landmarks must agree in kind and in count per mark kind (minute
     ticks aside, since they follow each language's own text length), or be explained above."""
-    posts = json.loads(posts_js.read_text(encoding="utf-8").split("window.FY_POSTS=", 1)[1].strip().rstrip(";"))
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("generate_content", Path(__file__).with_name("generate-content.py"))
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    posts = generator.load_posts()
     unexplained = 0
     for p in posts:
         shape = {}
@@ -355,4 +359,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--check", action="store_true", required=True, help="compare each essay's EN and ZH landmarks")
     parser.parse_args()
-    raise SystemExit(check(Path(__file__).resolve().parents[1] / "content" / "posts.js"))
+    raise SystemExit(check())

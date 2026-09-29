@@ -26,15 +26,18 @@ time-to-final-render fix, not an LCP fix.
 Serif is tiered because the two audiences differ by 8x: a gateway page renders
 ~230 CJK characters of interface text, an essay renders ~2,900. Splitting means
 gateway pages get 147 KB instead of the full 1,085 KB, and stays a static
-`@font-face` the preload scanner can see - a per-post subset would have to be
-injected by JS after posts.js parses, which costs more than it saves.
+`@font-face` the preload scanner can see. The text tier covers every essay,
+although Reading loads one body file at a time: a per-essay subset would have
+to be injected by JS once the essay is known, which costs more than it saves
+and gives up the shared cache across essays.
 
 Pages load only `fonts/derived/`. Like `images/derived/`, that directory is a
 generated artifact - commit it. `.github/workflows/deploy-pages.yml` deletes
 `scripts/` before deploying, so it cannot be built in CI.
 
-Run it after generate-content.py, because the glyph set is read out of the
-*generated* post HTML rather than re-parsed from Markdown:
+The glyph set is read out of the rendered post HTML: it renders the essays
+through generate-content.py's own pipeline, landmarks and all, so it matches
+the body files exactly. Run it after generate-content.py:
 
     uv run scripts/generate-fonts.py
 
@@ -48,6 +51,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html as html_mod
+import importlib.util
 import json
 import re
 import shutil
@@ -147,11 +151,13 @@ def element_text(html: str, selector: str) -> str:
     return " ".join(strip_tags(m) for m in re.findall(rf"<{tag}\b{attrs}>(.*?)</{tag}>", html, flags=re.S))
 
 
-def load_manifest_js(path: Path, global_name: str):
-    source = path.read_text(encoding="utf-8")
-    marker = f"window.{global_name}="
-    payload = source.split(marker, 1)[1].strip()
-    return json.loads(payload.rstrip().rstrip(";"))
+def load_posts() -> list[dict]:
+    """Every essay as generate-content.py renders it (standard library only, so no extra dependency)."""
+    path = ROOT / "scripts" / "generate-content.py"
+    spec = importlib.util.spec_from_file_location("fred_website_generate_content", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.load_posts()
 
 
 def base_text() -> str:
@@ -270,11 +276,7 @@ def main() -> int:
         )
         return 1
 
-    posts_js = ROOT / "content" / "posts.js"
-    if not posts_js.is_file():
-        print("error: content/posts.js missing; run generate-content.py first", file=sys.stderr)
-        return 1
-    posts = load_manifest_js(posts_js, "FY_POSTS")
+    posts = load_posts()
     shared = base_text()
 
     previous = {}

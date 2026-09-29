@@ -1,7 +1,8 @@
 // reading-hero.mjs — the hero invariants: no halftone at scroll 0 (and never under reduced motion or in dark mode),
 // the nav lands at sL and is opaque at every scroll position, and the language and theme toggles re-render nothing.
 //   node /tmp/fyshot/run.mjs scripts/verify/reading-hero.mjs      (env: see reading-lib.mjs)
-import { POSTS, url, context, watch, ready, scroll, geo, paperOnly, report, sleep } from './reading-lib.mjs';
+import { BASE, POSTS, url, context, watch, ready, scroll, geo, paperOnly, report, sleep } from './reading-lib.mjs';
+const BASE_URL = BASE + 'Reading.dc.html';
 
 // The nav is opaque when its paper plate is shown, fills the bar and has an opaque background (reduced motion: the bar
 // itself turns to paper the moment anything is under it). Then the pixels: once landed, the bar's empty middle is
@@ -89,6 +90,30 @@ export default async (page, ctx) => {
       rows.push([w + ' ' + mode + ': no console errors', errors.length === 0, errors.slice(0, 3)]);
       await c.close();
     }
+  }
+  // a first visit on a slow link (Fast 4G, 165 ms RTT): React can render the skeleton long before the essay data
+  // arrives, and the page must still end up whole, with no layout shift from the late fill
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    const errors = [], c = await context(browser, w, h), p = await c.newPage(), cdp = await c.newCDPSession(p); watch(p, errors);
+    await cdp.send('Network.enable');
+    await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 165, downloadThroughput: 9e6 / 8, uploadThroughput: 1.5e6 / 8 });
+    await p.addInitScript(() => { window.__cls = 0; new PerformanceObserver((l) => l.getEntries().forEach((e) => { if (!e.hadRecentInput) window.__cls += e.value; })).observe({ type: 'layout-shift', buffered: true }); });
+    await p.goto(url(POSTS.multi), { waitUntil: 'load', timeout: 60000 }); await ready(p); await sleep(800);
+    const r = await p.evaluate(() => ({ title: document.querySelector('.article-intro .title').textContent.trim(), pn: document.querySelectorAll('.pn a').length, cls: +window.__cls.toFixed(3) }));
+    rows.push([w + ' slow first visit: title and neighbours filled', r.title.length > 0 && r.pn === 2, r]);
+    rows.push([w + ' slow first visit: no layout shift (CLS < 0.02)', r.cls < .02, r.cls]);
+    rows.push([w + ' slow first visit: no console errors', errors.length === 0, errors.slice(0, 3)]);
+    await c.close();
+  }
+  // ?post= resolution: missing or malformed → the newest essay with no extra error; a well-formed id the site does not
+  // have → one 404 for its body file, then the newest essay
+  for (const [q, want404] of [['', false], ['?post=../../etc', false], ['?post=2020-01-01_no-such-essay', true]]) {
+    const errors = [], c = await context(browser, 1440, 900), p = await c.newPage(); watch(p, errors);
+    await p.goto(BASE_URL + q); await ready(p);
+    const r = await p.evaluate(() => ({ title: document.querySelector('.article-intro .title .zh').textContent, cover: !!document.querySelector('.plate'), newest: window.FY_POST_INDEX[0].titleZh, marks: document.querySelectorAll('.rail-tick').length }));
+    const ok404 = want404 ? errors.length > 0 && errors.every((e) => /404/.test(e)) : errors.length === 0;   // the missing body's 404, nothing else
+    rows.push(['post ' + JSON.stringify(q) + ': the newest essay, whole', r.title === r.newest && r.cover && r.marks > 0 && ok404, { r, errors }]);
+    await c.close();
   }
   report(ctx.log, rows);
 };

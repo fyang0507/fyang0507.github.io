@@ -21,6 +21,8 @@ export default async (page, ctx) => {
         const fonts = reqs.filter((u) => /\.woff2/.test(u)).map((u) => u.replace(/^.*\/fonts\//, ''));
         const bad = reqs.filter((u) => /\/design\//.test(u) || (/\/fonts\/[^/]+\.woff2/.test(u) && !/\/fonts\/derived\//.test(u)) || /NotoSerifSC-ui/.test(u));
         rows.push([tag + ': no masters, no -ui serif, nothing from /design/', bad.length === 0, bad.length ? bad : fonts.filter((f) => /Serif/.test(f)).join(' ')]);
+        const data = reqs.filter((u) => /\/content\//.test(u)).map((u) => u.replace(/^.*\/content\//, ''));
+        rows.push([tag + ': data is the index and this one essay body, never posts.js', data.length === 2 && data.includes('posts-index.js') && data.includes('bodies/' + POSTS.cover + '.js'), data]);
         if (w === 1440 || w === 390) {   // small text ≥ 4.5:1 on whatever paper it sits on (the eyebrow is large text: ≥ 3:1)
           const cr = await p.evaluate(() => {
             // [r, g, b, a] from rgb()/rgba() or color(srgb r g b / a) (what color-mix() computes to)

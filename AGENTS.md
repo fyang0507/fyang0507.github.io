@@ -118,22 +118,22 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   ```
 
   Generated outputs:
-  - `content/posts.js` (Reading only)
-  - `content/posts-index.js` (Writing; posts without bodies)
+  - `content/posts-index.js` (the essay list without bodies: Writing, and Reading's prev/next)
+  - `content/bodies/<id>.js` (one per essay: both bodies, landmarks, subtitle and excerpt; Reading loads only the essay it shows, and the generator prunes stale files here)
   - `content/home.js` (home's counts and latest post and photo)
   - `content/photos.js`, `content/image-dimensions.json`, `content/font-subsets.json`
   - `images/derived/`, `fonts/derived/`, and `assets/derived/` (desk layers, sprite strips, opener cut-outs, `desk-geo.js`)
 
   The order matters: content reads image dimensions, and fonts read the rendered post HTML plus the whole text of every page, shared module and `lib/` file.
 - Reading's margin rail comes from build-time landmarks. `scripts/landmarks.py` runs inside `generate-content.py` and marks up every body:
-  - section markers on a line of their own (`1.0`, `（一）`, `序` / `后记`, a whole-line bold title) and real headings become `<h2 class="lm lm-sec|lm-head" id="…">` with `.lm-no` / `.lm-t`;
+  - section markers at the start of a paragraph (`1.0`, `（一）`, `(IV)`, `IV.`, `（序）` / `(Prologue)`, a bold `V — Title`, a lone `前言` / `Preface`), whole-line bold titles and real headings become `<h2 class="lm lm-sec|lm-head" id="…">` with `.lm-no` / `.lm-t`;
   - structureless essays get minute ticks as `<span class="lm-anchor">`;
-  - each post gains `landmarksZh` / `landmarksEn`.
-  Write section markers in the Markdown; never hand-write the `lm` markup.
+  - each body file carries `landmarksZh` / `landmarksEn`.
+  Write section markers in the Markdown, the same way in both languages, and never hand-write the `lm` markup. `python3 scripts/landmarks.py --check` fails when an essay's English and Chinese structure disagree without an explanation.
 - Pages load only subset fonts from `fonts/derived/`, never the masters in `fonts/`. The local masters are complete ~6,900-glyph typefaces; the site renders a few hundred of those glyphs. Shipping them made the font the slowest thing on the site — `Gallery.dc.html`'s LCP element is its `<h1 class="display">`, and because `font-display: swap` repaints that heading when the real face arrives, the 985 KB download *became* the LCP at ~2.9 s on Fast 4G. Adding Chinese to a heading, footnote, reference, image caption, page, shared module or `lib/` file changes the required glyph set, so rerun `generate-fonts.py`; the audit fails and names the missing characters if you forget.
-- Noto Serif SC and Noto Sans SC are self-hosted subsets too, not Google Fonts requests. Only Fraunces, Caveat and IBM Plex Mono still come from Google. Noto Serif SC ships in two sizes and **the split is the one thing to keep straight**: `lib/reading/reading.css` references `NotoSerifSC-text.woff2` (whole essay bodies, ~1,087 KB) and every other page's CSS references `NotoSerifSC-ui.woff2` (interface Chinese only, ~148 KB). A new page should use the `-ui` tier unless it renders essay bodies. Collapsing to one file would put 1,196 KB on every gateway page, a 3× regression against the ~391 KB they used to fetch from Google.
+- Noto Serif SC and Noto Sans SC are self-hosted subsets too, not Google Fonts requests. Only Fraunces, Caveat and IBM Plex Mono still come from Google. Noto Serif SC ships in two sizes and **the split is the one thing to keep straight**: `lib/reading/reading.css` references `NotoSerifSC-text.woff2` (every essay body, ~1,087 KB; one subset shared by all essays even though Reading loads one body file at a time) and every other page's CSS references `NotoSerifSC-ui.woff2` (interface Chinese only, ~148 KB). A new page should use the `-ui` tier unless it renders essay bodies. Collapsing to one file would put 1,196 KB on every gateway page, a 3× regression against the ~391 KB they used to fetch from Google.
 - Add photos and covers at full resolution and never hand-resize them. Pages load only `images/derived/`; serving the originals cost 51 MB and a 54-second load on the gallery before this split existed. Size ladders live in `scripts/generate-content.py`; changing one requires `generate-derivatives.py --force --prune`. Because the deploy deletes `scripts/`, derivatives and sprites are built locally and committed, never in CI.
-- Load generated manifests, stylesheets and modules unversioned (`./content/posts.js`, `./site-nav.css`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
+- Load generated manifests, stylesheets and modules unversioned (`./content/posts-index.js`, `./site-nav.css`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
 - Do not hand-edit `support.js`; it is generated runtime code. Treat `image-slot.js` as vendored runtime code unless the image-slot behavior itself is the task.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
 - Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not. `Reading.dc.html` is the only page with a CN/EN switch, using `.en` / `.zh` variants and the `fy-lang` preference in `localStorage`.

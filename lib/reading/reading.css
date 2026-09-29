@@ -19,8 +19,11 @@ html.dark{color-scheme:dark;--paper:#1E1913;--paper2:#282018;--ink:#EFE5D3;--sof
   --card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35)}
 
 html{scroll-padding-top:calc(var(--n1) + 28px)}
-body{font-family:var(--text);overflow-x:clip}
-html.lang-zh body{font-family:var(--text-cn)}
+/* The essay's serif is set on the article only, never on body: a line box anywhere in the static nav would otherwise
+   ask for the 1.1 MB Chinese serif during the first paint, where it competes with the cover for bandwidth */
+body{overflow-x:clip}
+.rd-main{font-family:var(--text)}
+html.lang-zh .rd-main{font-family:var(--text-cn)}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 html.dark body::before{mix-blend-mode:screen;opacity:.03}
 html.lang-zh .en,html.lang-en .zh{display:none!important}
@@ -79,6 +82,9 @@ html.dark .plate-img{opacity:.3;filter:saturate(.6) brightness(.92)}
 .site-shell-header--reading{width:100%}
 article{max-width:640px;margin:0 auto;padding:0 0 40px;position:relative}
 /* hero band = nav + tabs + intro + (gap + wedge + paper lead): the body starts exactly where the paper is solid */
+/* the skeleton is not laid out until the essay is written into it (bus.js sets data-ready): nothing shifts, and its
+   text asks for no font before there is text to set */
+.rd-main:not([data-ready]){display:none}
 .article-intro{position:relative;padding:46px 0 calc(var(--gap) + var(--z) + var(--pad))}
 html.no-cover .article-intro{padding-bottom:var(--pad)}
 .kick-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-bottom:18px}

@@ -364,12 +364,18 @@ def audit_fonts(root: Path, posts: list[dict], errors: list[str]) -> int:
 def audit_manifests(
     root: Path, generator: ModuleType, posts: list[dict], photos: list[dict], errors: list[str]
 ) -> None:
-    manifests = (
-        (root / "content" / "posts.js", "FY_POSTS", posts),
+    manifests = [
         (root / "content" / "posts-index.js", "FY_POST_INDEX", generator.post_index(posts)),
         (root / "content" / "photos.js", "FY_PHOTOS", photos),
         (root / "content" / "home.js", "FY_HOME", generator.home_manifest(posts, photos)),
-    )
+    ]
+    # One body file per essay in the index, and nothing else in content/bodies/.
+    bodies = [(generator.body_path(post["id"]), "FY_BODY", generator.post_body(post)) for post in posts]
+    manifests += bodies
+    names = {path.name for path, _, _ in bodies}
+    for path in sorted((root / "content" / "bodies").glob("*")):
+        if path.is_file() and path.name not in names:
+            errors.append(f"content/bodies/{path.name} has no essay; run python3 scripts/generate-content.py")
     for path, global_name, expected in manifests:
         try:
             actual = load_manifest(path, global_name)
