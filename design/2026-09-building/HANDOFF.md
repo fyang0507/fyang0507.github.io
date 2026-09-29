@@ -40,11 +40,12 @@ Fred, 2026-09-29: "There shouldn't be any WIP sticker in the live website, if th
 - No WIP appears anywhere in the port. The boards' Case 02 "campaign results" section with its sticker, and the sticker's static face in NJJoe's dossier row, are dropped.
 - The NJJoe restyle shows only finished sections, as the live site does today. There is no campaign-results section; Case 02 keeps its factual state, "active pilot".
 - The pusher question is moot.
-- A separate PR, `chore/remove-wip`, is removing the whole treatment: the WIP code in `assets/njjoe/casebook.js` and `casebook.css`, the vendored sticker-forge bundle, `assets/wip-pusher-mask.png`, the set-section-wip skill, the AGENTS.md rule and the NOTICE.md entries. The port assumes none of it exists.
+- A separate PR, #20 (`chore/remove-wip`), removes the whole treatment: the WIP code in `assets/njjoe/casebook.js` and `casebook.css`, the vendored sticker-forge bundle, `assets/wip-pusher-mask.png`, the set-section-wip skill, the AGENTS.md rule and the NOTICE.md entries. The port assumes none of it exists.
 
 ## 4. Awaiting Fred's confirmation (the plan's defaults)
 
-- **Unpinning stays (default).** A click lifts the card into your hand, the dossier slides out, and a chapter tab goes in. The card's direct link ("Enter the field notes →" on Fred Agent, "Open field studies →" on NJJoe) still goes straight in; its way in is the same tab flight, starting from the tabs peeking behind the card. If Fred wants a click to go straight into the project instead, `PORT-PLAN.md` § "If a click goes straight in" lists what changes.
+- **Unpinning stays (default).** A click lifts the card into your hand, the dossier slides out, and a chapter tab goes in. The card's direct link ("Enter the field notes →" on Fred Agent, "Open field studies →" on NJJoe) still goes straight in; its way in is the same tab flight, starting from the tabs peeking behind the card. If Fred wants a click to go straight into the project instead, `PORT-PLAN.md` § "If a click goes straight in" lists what changes. The orchestrator has given Fred three options and recommended keeping unpin plus the dossier; no answer yet.
+- **The Demos focus treatment (round 2).** `r2-02-demos-board.html` shows Demos in C with the real content and three blur-free focus treatments for the evidence viewers: F1 the pen's loop, F2 tracing paper, F3 an enlargement pulled out from under the capture (recommended; the only one that makes captures readable on a phone). The board ends with the question for Fred. Its known gaps are listed on the board.
 
 Decided on Fred's behalf in round 1, and carried into the port unless he says otherwise:
 
@@ -52,10 +53,10 @@ Decided on Fred's behalf in round 1, and carried into the port unless he says ot
 - Chapter numbers follow the live nav: Fred Agent 01–05; NJJoe 00–02, following its "Case 01 / Case 02".
 - The chapters the boards didn't mock (Components, Demos, NJJoe's microsite and APA pages, the email demo) are designed in C's language in the port. `PORT-PLAN.md` says which of them need Fred's eyes first.
 
-Content mismatches the audit found, which are Fred's words to fix, not the port's:
+Content mismatches the audit found, both resolved on main by Fred:
 
-- The card says `2026—now`; the field notes say `2025—now`.
-- The overview promises "honest placeholders for evidence still being prepared", but every demo is labelled "Recorded run" or "Controlled comparison".
+- **Resolved (`1e157d1`):** Fred Agent is `2025—now` everywhere. The Building card now reads `2025—now`, matching the field notes.
+- **Resolved (`583969b`):** the overview's "Watch it operate" card now reads "Five outcome-first scenarios, each with the evidence behind it.", wording Fred approved. The port carries this sentence, not the old promise of placeholders that the boards still show.
 
 ## 5. What the boards got wrong (fix in the port)
 
@@ -73,6 +74,7 @@ Content mismatches the audit found, which are Fred's words to fix, not the port'
 - `PORT-PLAN.md`: C's port, as a stack of PRs.
 - `index.html`, `01-*`–`05-*`: the boards (C's code is `01-dossier.js`, `02-c.css`, and the `c` branches of `00-vt.js`, `01-board.*`, `04-map.*`).
 - `shots/`: the audit (`now-*`) and every candidate's frames (`c-*` for the pick).
+- Round 2: `r2-02-demos-board.html` (the board and Fred's question), `r2-02-demos.html` with `r2-02-demos.css`, `r2-02-demos.js` and `r2-kit.js` (`?f=1|2|3`), and `shots/r2-*`.
 
 ## 7. Next actions
 
