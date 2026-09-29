@@ -1,0 +1,114 @@
+/* Home · the opener. The OP's posters (from r2-10-op.css and the name beat a), the fall's states on the live desk,
+   the eyecatch, and the skip hint. Every OP shot is a poster: flat field, one giant thing, one bilingual label, one
+   mark family, ≤ 3 colours. Landscape is composed for 1440 × 900; portrait (≤ 5:6) is recomposed, not squashed.
+   The OP's type is the site's own JinBuTi subset and Fraunces italic 500: it adds no font weight. */
+
+/* ---- while the opener runs, the page waits ---- */
+html.opening,html.opening body{overflow:hidden}
+/* opacity, not visibility: the pen's marks set their own strokes visible, so only opacity hides them with their hosts */
+html.opening .home-head,html.opening .fig,html.opening .desk-notes,html.opening .vf,html.opening .track .copy,html.opening .ov-hot,html.opening .idx{opacity:0}
+html.opening .hot{pointer-events:none}
+html.opening .view{overflow:visible}
+html.opening .desk-steam path,html.opening .desk .desk-strip img,html.opening .desk-flash,html.opening .desk-cstar,html.opening .desk-kacha{animation:none}
+html.opening .desk-steam path{stroke-opacity:0}
+html.opening .desk-caret{animation:none;visibility:hidden}
+
+/* the fall's states on the live desk (lib/home/fall.js) */
+.desk.fall:not(.set) .desk-in{visibility:hidden}
+.desk.fall .desk-body:not(.in):not(.desk-bird),.desk.fall .desk-tone:not(.in){visibility:hidden}
+.desk.fall .desk-backedge:not(.gone){display:block}
+.desk-slab{display:none;position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
+.desk-slab path{fill:var(--paper);stroke:#3a342d;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.desk-slab .kick{fill:none;stroke-width:4}
+.desk-frame.flat .desk-slab{display:block}
+.desk-frame.flat .desk-strip{visibility:hidden}
+.desk-fx{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:15}
+.desk-fx .tk{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round}
+
+/* a long hold says one thing, after 1.5 s: that you can skip it. No spinner, no percentage. */
+.skip-hint{position:fixed;left:50%;bottom:max(18px,3.4vh);z-index:40;transform:translateX(-50%);font:12px/1 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.05em;color:var(--pencil);white-space:nowrap;pointer-events:none;visibility:hidden}
+.skip-hint.on{visibility:visible}
+
+/* the eyecatch: a hard cut to the bird alone on cream over 日常 · ep.NN, the deadpan register */
+.eye{position:fixed;inset:0;z-index:900;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,3vh,26px);padding-bottom:4vh}
+.eye-bird{position:relative;width:min(40vw,33vh);aspect-ratio:308/317;transform:scaleX(-1)}
+.eye-bird .desk-strip{--n:6}
+.eye-bird .desk-strip img{width:600%}
+.eye-blink{position:absolute;inset:0;width:100%;height:100%;display:none}
+.eye-bird.blink .eye-blink{display:block}
+.eye .ep{visibility:visible;transform:rotate(-2deg) scale(1.35)}
+.eye .ep-sub{display:block}
+
+/* ---- the OP ---- */
+.oc-stage{position:fixed;inset:0;z-index:300;overflow:hidden;display:none;background:#FFC629;cursor:pointer}
+html.opening:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* .fading: a skip fades the OP off, not a jump cut */
+.oc-stage.off{display:none!important}
+.sh{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--f);color:#1F1B17;contain:strict}
+.sh.on{visibility:visible}
+.sh .fx{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.sh .p{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));white-space:nowrap;line-height:1;font-style:normal;font-weight:400}
+.sh .ob{width:var(--w);display:block;user-select:none}
+.sh-lap0 .ob,.sh-lap .ob{aspect-ratio:487/352}     /* the boxes exist before the bytes: the marks aim at them */
+.sh-cam .ob{aspect-ratio:640/439}
+/* per-tick states inside a shot (data-f = tick index within the shot) */
+.sh:not([data-f="0"]) .only0{visibility:hidden}
+.sh[data-f="0"] .from1{visibility:hidden}
+/* the slam: two held poses, labels only (scaling full-frame type flips enough area to count as a flash) */
+.sh[data-f="0"] .lb-cn,.sh[data-f="0"] .lb-en{scale:1.16}
+.sh-me[data-f="0"] .lb-cn,.sh-me[data-f="0"] .lb-en{scale:none}
+.sh .gl,.sh .lb-cn,.sh .sfx{font-family:"DingTalk JinBuTi",serif}
+.sh .word,.sh .lb-en{font-family:"Fraunces",serif;font-style:italic;font-weight:500;letter-spacing:-.01em;line-height:.8}
+.sh .lb-cn{font-size:12vw;letter-spacing:.02em}
+.sh .lb-en{font-size:6.4vw}
+.sh .sfx i{font-family:"Fraunces",serif;font-style:italic;font-weight:500}
+
+/* name beat a · 一字一切: each character alone, full-bleed, then FRED */
+.sh-a-fu .gl{--x:43%;--y:52%;--r:-6deg;font-size:100vh}
+.sh-a-lei .gl{--x:57%;--y:50%;--r:5deg;font-size:114vh}
+.sh-a-de .gl{--x:50%;--y:52%;--r:-3deg;font-size:100vh}
+.sh-a-fred{color:#FBF6EC}
+.sh-a-fred .word{--x:50%;--y:50%;--r:-5deg;font-size:40vw}
+
+/* the objects (landscape); the whip-in smear ends about where the laptop lands (flash plan) */
+.sh-lap0 .sil{--x:31%;--y:54%;--w:44vw;transform:translate(-50%,-50%) rotate(-4deg) skewX(-20deg) scaleX(1.32)}
+.sh-lap .ob{--x:35%;--y:54%;--r:-4deg;--w:44vw}
+.sh-lap .lb-cn{--x:79%;--y:40%;--r:4deg}
+.sh-lap .lb-en{--x:80%;--y:62%;--r:4deg}
+.sh-book .ob{--x:37%;--y:55%;--r:-3deg;--w:47vw;aspect-ratio:462/355;background:0 0/300% 100% no-repeat}
+.sh-book[data-f="1"] .ob{background-position:50% 0}
+.sh-book[data-f="2"] .ob{background-position:100% 0}
+.sh-book .lb-cn{--x:80%;--y:40%;--r:4deg}
+.sh-book .lb-en{--x:81%;--y:62%;--r:4deg}
+.sh-cam .ob{--x:64%;--y:56%;--r:5deg;--w:41vw}
+.sh-cam .lb-cn{--x:20%;--y:42%;--r:-4deg}
+.sh-cam .lb-en{--x:21%;--y:64%;--r:-4deg}
+.sh-cam .sfx{--x:52%;--y:14%;--r:-7deg;font-size:5.4vw}
+.sh-me{color:#FBF6EC}
+.sh-me .ob{--x:63%;--y:52%;--r:3deg;--w:30vw;aspect-ratio:362/401;background:0 0/200% 100% no-repeat}
+.sh-me[data-f="1"] .ob{background-position:100% 0}
+.sh-me .lb-cn{--x:23%;--y:40%;--r:-4deg}
+.sh-me .lb-en{--x:24%;--y:62%;--r:-4deg}
+
+/* ---- portrait: recomposed for 390 × 844 ---- */
+@media (max-aspect-ratio:5/6){
+  .sh .lb-cn{font-size:21vw}
+  .sh .lb-en{font-size:13vw}
+  .sh-a-fu .gl{--x:47%;--y:43%;--r:-6deg;font-size:104vw}
+  .sh-a-lei .gl{--x:53%;--y:53%;--r:5deg;font-size:120vw}
+  .sh-a-de .gl{--x:50%;--y:46%;--r:-3deg;font-size:106vw}
+  .sh-a-fred .word{--x:50%;--y:50%;--r:-90deg;font-size:36vh}
+  .sh-lap0 .sil{--x:50%;--y:43%;--w:86vw;transform:translate(-50%,-50%) rotate(-4deg) skewY(-12deg) scaleY(1.4)}
+  .sh-lap .ob{--x:50%;--y:48%;--r:-4deg;--w:86vw}
+  .sh-lap .lb-cn{--x:46%;--y:17%;--r:-3deg}
+  .sh-lap .lb-en{--x:54%;--y:79%;--r:-3deg}
+  .sh-book .ob{--x:50%;--y:49%;--r:3deg;--w:90vw}
+  .sh-book .lb-cn{--x:48%;--y:18%;--r:-3deg}
+  .sh-book .lb-en{--x:54%;--y:80%;--r:-3deg}
+  .sh-cam .ob{--x:50%;--y:50%;--r:-6deg;--w:84vw}
+  .sh-cam .lb-cn{--x:52%;--y:18%;--r:3deg}
+  .sh-cam .lb-en{--x:50%;--y:81%;--r:3deg}
+  .sh-cam .sfx{--x:30%;--y:33%;--r:-8deg;font-size:9vw}
+  .sh-me .ob{--x:50%;--y:49%;--r:3deg;--w:64vw}
+  .sh-me .lb-cn{--x:48%;--y:18%;--r:-3deg}
+  .sh-me .lb-en{--x:52%;--y:80%;--r:-3deg}
+}
