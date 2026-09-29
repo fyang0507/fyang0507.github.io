@@ -38,7 +38,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .ctl-put{margin-left:14px}
 
 /* ---------- the rig: sleeve panels, the card between them, the shadow, the grip ---------- */
-.rig{position:relative;z-index:2;width:100%;height:420px}
+/* Until the rig has laid it out (data-ready), nothing in it paints: before that the sleeve has no kraft and the card
+   sits at its natural size, a broken frame. The height reserved here is the tucked rig's: 447px at 1440×900, and on a
+   phone 22px + 96vw exactly (rig.js: 74 + 0.96·(width − 54) while the desk scale is clamped at .56, below ~537px). */
+.rig{position:relative;z-index:2;width:100%;height:447px}
+.rig:not([data-ready]) > *{visibility:hidden}
 .rig > .sl,.rig > .card-pos,.rig > .a-shadow{position:absolute;left:0;top:0}
 /* The eye sits a little below the card, as if it lies on the desk: the near edge of the stock shows at rest. */
 .card-pos{z-index:2;transform-origin:50% 50%;perspective:2100px;perspective-origin:50% 110%}
@@ -46,7 +50,9 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .a-card:active{cursor:grabbing}
 .a-face{grid-area:1/1;height:100%;min-height:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .a-day{transform:translateZ(6px)}
-.a-night{transform:rotateY(180deg) translateZ(6px)}
+/* The night face paints only while it faces you (the rig flips visibility at 90°): hidden behind the day face it
+   would still count as painted, and its figure would be the page's largest paint. */
+.a-night{transform:rotateY(180deg) translateZ(6px);visibility:hidden}
 .a-edge{position:absolute;inset:0;border-radius:14px;background:var(--ply);pointer-events:none}
 .a-edge.core{background:var(--ply-core)}
 .a-edge.outer{background:var(--ply-outer);border:1.3px solid var(--ply-line)}
@@ -75,7 +81,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .sl-warn{position:absolute;left:1.5em;bottom:1.15em;color:var(--kraft-ink);font:.8em/1.35 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.08em;opacity:.56;pointer-events:none;white-space:nowrap}
 .sl-warn span{display:block}
 .bird{position:absolute;right:14px;top:-41px;width:46px;height:44px;pointer-events:none}
-.bird-sprite{width:100%;height:100%;background:url("../../assets/bird-strip-light.png") 0 0/200% 100% no-repeat}
+.bird-sprite{width:100%;height:100%;background:image-set(url("../../assets/derived/strip/bird2-85.webp") 1x,url("../../assets/derived/strip/bird2-170.webp") 2x) 0 0/200% 100% no-repeat}
 .bird.up{transform:translateY(-6px)}
 .bird.up .bird-sprite{background-position:100% 0}
 /* the hand-note beside the card on its first lifts: pencil, hand fonts; a line greys once it has been done */
@@ -194,7 +200,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 @media (max-width:680px){
   .about-page{padding:0 0 60px}
   .about-stage{margin-top:18px;padding:0 18px}
-  .rig{margin:0 -18px;width:calc(100% + 36px)}   /* the rig takes the page edge to edge, for the sleeve set aside there */
+  .rig{margin:0 -18px;width:calc(100% + 36px);height:calc(22px + 96vw)}   /* the rig takes the page edge to edge, for the sleeve set aside there */
   .sc-statement{text-align:left;margin-top:36px}
   .soc-row{justify-content:flex-start;gap:2px 20px}
   .bird{top:-36px;width:40px;height:38px}
