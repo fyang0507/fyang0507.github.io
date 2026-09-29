@@ -1,4 +1,4 @@
-/* lib/writing/writing.css — the Writing page (design/2026-09-motion boards r2-04 A, r3-03, r4-03): the intro
+/* lib/writing/writing.css — the Writing page: the intro
    statement, the bookcase (paper boxes under one camera, planks with lips, contact stipple, the held book's
    cover, obi and title page), and the index beside it (readout, fore-edge tabs, year ledger).
    Flat tones and ink edges, no light source; the pen (pen.css) is the only highlighter, and nothing chosen is
@@ -6,7 +6,7 @@
 
 @font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
 /* The spine tones are this file's one colour exception: the four tans and the series' dark cloth the shelf
-   has always used (the old Writing.dc.html decorate()), kept exact so the books keep their colours. */
+   has always used, kept exact so the books keep their colours. */
 .wr{--tone-0:#C9BDA3;--tone-1:#D8CBB0;--tone-2:#B7AB8F;--tone-3:#E4DAC7;--tone-s:#3D362A;--tone-s-ink:#EFE5D3}
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -31,12 +31,12 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .wr-index{position:relative;display:flex;flex-direction:column;min-width:0}
 .wr:not(.is-phone) .wr-index{position:sticky;top:var(--stick);align-self:start}
 .wr.is-phone .wr-body{display:flex;flex-direction:column;gap:0}
-.wr.is-phone .wr-index{order:-1}
 .wr.is-phone .wr-case{margin-top:4px}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* ---- the camera and its world ---- */
 .sh-view{position:absolute;inset:0;overflow:clip}
-.sh-view.strip{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.sh-view.strip{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain}
 .sh-view.strip::-webkit-scrollbar{display:none}
 .sh-world{position:absolute;left:0;top:0;height:100%;transform-style:preserve-3d;pointer-events:none}
 .b3{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
@@ -45,16 +45,15 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .b3.book .f{opacity:var(--o,1)}
 .b3.book.is-out,.stip.is-out{display:none}
 
-/* ---- a book: five paper faces ---- */
-.book{--bw:1.5px;--sk:1}
-.sh-view{--sk:1}
+/* ---- a book: five paper faces (--sk, the spine type scale, is set on .sh-view by case.js) ---- */
+.book{--bw:1.5px}
 .f-spine > .bk-spine{position:absolute;inset:0;background:var(--tone);border:var(--bw) solid var(--ink);overflow:hidden}
 .bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);max-height:85%;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi",serif;font-size:calc(var(--fs) * var(--sk));line-height:1.25;letter-spacing:.03em;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
 .series .bk-title{color:var(--tone-s-ink);max-height:70%}
 /* the series number is a paper library label; coral stays on 写 */
 .bk-badge{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font:500 calc(9px * var(--sk))/1 "IBM Plex Mono",monospace;padding:3px 3px 2px;border-radius:1px;letter-spacing:.02em}
 .bk-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid color-mix(in srgb,var(--ink) 26%,transparent)}
-.bk-band.b1{top:calc(5px * var(--sk))}.bk-band.b2{top:calc(8.5px * var(--sk))}.bk-band.b3{bottom:calc(6px * var(--sk))}
+.bk-band.bb1{top:calc(5px * var(--sk))}.bk-band.bb2{top:calc(8.5px * var(--sk))}.bk-band.bb3{bottom:calc(6px * var(--sk))}
 .series .bk-band{border-color:color-mix(in srgb,var(--tone-s-ink) 26%,transparent)}
 .f-top,.f-fore{background:var(--page) repeating-linear-gradient(90deg,transparent 0 3.2px,color-mix(in srgb,var(--ink) 20%,transparent) 3.2px 4px);border:var(--bw) solid var(--ink)}
 .f-top{border-bottom:0}
@@ -80,8 +79,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 
 /* ---- hit targets: flat links over the spines (z = +1px); a held book takes the pointer on every face ---- */
 .hits{position:absolute;left:0;top:0;transform-style:preserve-3d}
-.bk-hit{position:absolute;display:block;transform:translateZ(1px);pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;scroll-snap-align:center}
+.bk-hit{position:absolute;display:block;transform:translateZ(1px);pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .bk-hit.is-out{display:none}
+/* a spine's name wraps inside its own spine (clipped to nothing), so it never lays out across the index */
+.bk-hit .sr-only{inset:0;width:auto;height:auto;margin:0;white-space:normal;clip:auto;clip-path:inset(50%)}
 .bk-hit:focus,.bk-hit:focus-visible{outline:none}
 .book.held .f,.book.held .leaf-front,.book.held .leaf-back,.book.held .p1{pointer-events:auto;cursor:pointer}
 
@@ -194,7 +195,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .lg-row{position:relative;display:flex;min-width:0}
 .lg-row:focus-visible,.wr button:focus-visible{outline:none}
 .lg-y{position:relative;font:12.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);white-space:nowrap}
-.lg-row.is-dim .lg-y{color:var(--pencil);opacity:.6}
+/* a year with nothing for the chosen tag: pencil (still ≥ 4.5:1, still pressable), and its line has no tally */
+.lg-row.is-dim .lg-y{color:var(--pencil)}
 .lg.narrowed .lg-row:not(.is-in) .lg-y{color:var(--pencil)}
 .lg-row.is-sel .lg-y{color:var(--ink);font-weight:500;opacity:1}
 .lg-rows .lg-track{display:flex;flex-direction:column;height:calc(var(--ny,12) * var(--rh,30px));touch-action:none}

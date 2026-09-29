@@ -71,6 +71,13 @@ export default async (page, ctx) => {
   const errors = [], reqs = [], bad = [];
   if (DRAFT) { const html = fs.readFileSync(DRAFT, 'utf8'); await page.route('**/Writing.dc.html', (r) => r.fulfill({ body: html, contentType: 'text/html; charset=utf-8' })); }
   await page.addInitScript(() => { const raf = window.requestAnimationFrame; window.__raf = 0; window.requestAnimationFrame = function (f) { window.__raf++; return raf.call(window, f); }; });
+  // Live Motion.onReduced subscriptions: a re-mount must hand back every one the old instance took.
+  await page.addInitScript(() => {
+    let M; window.__subs = 0;
+    Object.defineProperty(window, 'Motion', { configurable: true, get: () => M, set: (v) => {
+      const on = v.onReduced; v.onReduced = (fn) => { window.__subs++; const off = on(fn); let live = true; return () => { if (live) { live = false; window.__subs--; } off(); }; }; M = v;
+    } });
+  });
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('request', (r) => { let from = ''; try { from = r.frame().url(); } catch (e) { /* detached */ } if (/Writing\.dc\.html/.test(from) || /Writing\.dc\.html/.test(r.url())) reqs.push(r.url()); });
@@ -149,6 +156,63 @@ export default async (page, ctx) => {
   await page.focus('.tb[aria-checked="true"]'); await page.keyboard.press('ArrowDown'); await page.waitForTimeout(500);
   const focus = await page.evaluate((CORAL) => { const t = document.activeElement, ps = [...t.querySelectorAll('.fm-c')]; return { radio: t.getAttribute('role'), corners: ps.length === 2 && ps.every((p) => getComputedStyle(p).visibility === 'visible' && getComputedStyle(p).stroke === CORAL) }; }, CORAL);
   check(ctx, 'keyboard focus draws coral 「 」', focus.radio === 'radio' && focus.corners, JSON.stringify(focus));
+
+  ctx.log('— review fixes');
+  // the spine type scale applies (titles ×1.45 on the desk)
+  await open(page, 1440, 900);
+  const fs = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('.bk-title')).fontSize));
+  check(ctx, 'spine titles use the case type scale (≥ 15 px at 1440)', fs >= 15, fs + 'px');
+  // the books are drawings; the links name them, the Chinese in lang="zh"
+  const aria = await page.evaluate(() => ({ faces: [...document.querySelectorAll('.sh-world > .b3')].every((b) => b.getAttribute('aria-hidden') === 'true'),
+    zh: [...document.querySelectorAll('.bk-hit')].every((a) => a.querySelector('[lang="zh"]') && !a.hasAttribute('aria-label')) }));
+  check(ctx, 'book faces are aria-hidden; each spine link carries its Chinese title in lang="zh"', aria.faces && aria.zh, JSON.stringify(aria));
+  // a dimmed (empty) year stays ≥ 4.5:1 while it can still be pressed
+  await page.click('.tb[data-cat="commentary"]'); await page.waitForTimeout(900);
+  const dim = await page.evaluate(() => {
+    const L = (c) => { const v = c.match(/[\d.]+/g).slice(0, 3).map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const y = document.querySelector('.lg-row.is-dim .lg-y'), cs = getComputedStyle(y), a = L(cs.color), b = L(getComputedStyle(document.body).backgroundColor);
+    return { ratio: +((Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)).toFixed(2), opacity: cs.opacity };
+  });
+  check(ctx, 'a dimmed year is ≥ 4.5:1 and fully opaque', dim.ratio >= 4.5 && dim.opacity === '1', JSON.stringify(dim));
+  // clear gives focus to the tab that is now chosen
+  await page.focus('.ro-clear'); await page.keyboard.press('Enter'); await page.waitForTimeout(400);
+  const focused = await page.evaluate(() => { const a = document.activeElement; return a.classList.contains('tb') && a.getAttribute('aria-checked') === 'true' ? a.dataset.cat : a.tagName; });
+  check(ctx, 'clear moves focus to the chosen tab (all)', focused === 'all', focused);
+  // a modifier-click on the held book opens the essay in a new tab and leaves this page alone
+  await toCase(page);
+  const m = await spine(page, 6);
+  await page.mouse.move(m.x, m.y + 60); await page.mouse.move(m.x, m.y, { steps: 6 }); await page.waitForTimeout(1400);
+  const link = await page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y), a = e && e.closest('a.book.held'); return a ? a.getAttribute('href') : null; }, m);
+  const popup = page.context().waitForEvent('page', { timeout: 4000 }).catch(() => null);
+  await page.keyboard.down('Meta'); await page.mouse.click(m.x, m.y); await page.keyboard.up('Meta');
+  const tab = await popup; await page.waitForTimeout(300);
+  const tabUrl = tab ? tab.url() : ''; if (tab) await tab.close();
+  check(ctx, 'the held book is a link; ⌘-click opens the essay in a new tab', link === 'Reading.dc.html?post=' + encodeURIComponent(m.id) && /Reading\.dc\.html\?post=/.test(tabUrl) && /Writing\.dc\.html/.test(page.url()) && !(await page.evaluate(() => document.querySelector('[data-mount=writing]').hasAttribute('data-opening'))), `href ${link} · new tab ${tabUrl.split('/').pop()}`);
+  // the keyboard's book is kept in view, obi included
+  for (const [w, h] of [[1280, 800], [1024, 700]]) {
+    await open(page, w, h);
+    await page.focus('.site-tab--about'); await page.keyboard.press('Tab'); await page.waitForTimeout(1500);
+    const first = await page.evaluate(() => { const b = document.querySelector('.book.held'), o = b && b.querySelector('.obi'); if (!o) return null; const r = o.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight }; });
+    await page.keyboard.press('End'); await page.waitForTimeout(1600);
+    const end = await page.evaluate(() => { const b = document.querySelector('.book.held'), o = b && b.querySelector('.obi'); if (!o) return null; const r = o.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, y: Math.round(scrollY) }; });
+    const inView = (r) => r && r.top >= 0 && r.bottom <= r.vh;
+    check(ctx, `keyboard: the held book's obi is in view on Tab and after End (${w}×${h})`, inView(first) && inView(end), JSON.stringify({ first, end }));
+  }
+  // a re-layout keeps the filter and disposes the old instance
+  await open(page, 1440, 900);
+  const subs0 = await page.evaluate(() => window.__subs);
+  await page.click('.tb[data-cat="travel log"]'); await page.waitForTimeout(1200);
+  const kept = [];
+  for (const w of [1100, 600, 1440]) {
+    await page.setViewportSize({ width: w, height: 900 }); await page.waitForTimeout(900);
+    kept.push(await page.evaluate(() => { const h = document.querySelector('[data-mount=writing]'); return h.dataset.cat + '/' + h.dataset.count + '/' + document.querySelector('.tb[aria-checked="true"]').dataset.cat + '/' + document.querySelectorAll('.wr-body').length; }));
+  }
+  const subs1 = await page.evaluate(() => window.__subs);
+  check(ctx, 're-layouts (1440 → 1100 → 600 → 1440) keep travel log and leak no subscriptions', kept.every((k) => k === 'travel log/15/travel log/1') && subs1 === subs0, JSON.stringify({ kept, subs0, subs1 }));
+  // on a phone the index comes before the shelf in the DOM, as on screen
+  await open(page, 390, 844);
+  const orderOk = await page.evaluate(() => !!(document.querySelector('.wr-index').compareDocumentPosition(document.querySelector('.wr-case')) & Node.DOCUMENT_POSITION_FOLLOWING));
+  check(ctx, 'phone: the index precedes the shelf in the DOM (Tab order = visual order)', orderOk);
 
   ctx.log('— idle and reduced motion');
   await open(page, 1440, 900);
