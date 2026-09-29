@@ -5,9 +5,10 @@
      count. The watch stays on for the page's life, checking only added subtrees: a host that appears later, or
      a re-render that replaces it, is mounted once too.
    · The nav's pen marks: every nav link gets the pen's tiers (Tier.wire): a coral underline under its label on
-     hover and coral 「 」 on keyboard focus. The current tab's label is chosen, drawn as the wheat band. After
-     a view transition the band waits until the folder tab has landed (transitions.js drops html[data-vt-wait]
-     and fires fy:landed), so the pen marks the tab first and the label second. */
+     hover and coral 「 」 on keyboard focus. The current tab's label is chosen, drawn as the wheat band. This
+     script runs before pagereveal, so where transitions.js is on (html[data-vt-on]) the band waits for its
+     fy:landed: at once and instant on a plain load, drawn by the pen once the folder tab has landed after a
+     view transition (the pen marks the tab first and the label second). html[data-vt-landed] means it's past. */
 (function () {
   'use strict';
   var html = document.documentElement, FY = window.FY = window.FY || {};
@@ -33,12 +34,12 @@
   };
 
   function wireNav() {
-    if (!window.Tier) return;
+    if (!window.Tier || !window.Pen) return;
     document.querySelectorAll('.site-index .site-home, .site-index .site-tab').forEach(function (a) {
       if (a.hasAttribute('data-pen-tier') || !a.querySelector('.site-nav-label .en')) return;
-      var current = a.getAttribute('aria-current') === 'page', wait = current && html.hasAttribute('data-vt-wait');
+      var current = a.getAttribute('aria-current') === 'page', wait = current && html.hasAttribute('data-vt-on') && !html.hasAttribute('data-vt-landed');
       var mark = Tier.wire(a, { target: '.site-nav-label .en', chosen: current && !wait });
-      if (wait) document.addEventListener('fy:landed', function () { mark.set(true); }, { once: true });
+      if (wait) document.addEventListener('fy:landed', function (e) { mark.set(true, e.detail && e.detail.vt ? 'hover' : 'instant'); }, { once: true });
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireNav); else wireNav();

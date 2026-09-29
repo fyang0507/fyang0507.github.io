@@ -162,6 +162,9 @@
     return u.origin === location.origin && p.slice(0, i + 1) === DIR ? FILE[p.slice(i + 1)] || null : null;
   }
   var HERE = kindOf(location.href);
+  html.setAttribute('data-vt-on', '');   // site.js holds the current tab's wheat band until land()
+  // the opener plays only when home is the session's first page, so any other page marks the session as begun
+  if (HERE && HERE !== 'home') try { if (!sessionStorage.getItem('fy-opener')) sessionStorage.setItem('fy-opener', '1'); } catch (e) { /* storage off */ }
   function move(from, to) {
     if (!from || !to) return null;
     if (from === 'home') return TAB[to] ? 'enter' : null;
@@ -390,7 +393,7 @@
       var Lp = f2(p.getTotalLength() + 3), da = Lp + ' ' + (Lp + 4);
       p.animate([{ strokeDasharray: da, strokeDashoffset: Lp }, { strokeDasharray: da, strokeDashoffset: 0 }], { duration: 260, delay: penAt * 1000, easing: M.EASE.css.pen, fill: 'backwards' });
     }
-    setTimeout(land, (penAt + 0.26) * 1000);
+    setTimeout(function () { land(true); }, (penAt + 0.26) * 1000);
     // the table folds into its front edge and the edge rises into the rule
     var eb = box('desk-edge'), rb = document.querySelector('.site-rule'), tb = tm && tm.getBoundingClientRect();
     if (!svg || !eb || !rb) return;                    // no desk edge to lift: the browser's own crossfade
@@ -429,7 +432,7 @@
       kill(A, 'tabmark', ['group']);
       pa('group', 'tabmark', [{ transform: css(t.m0), width: t.w0 + 'px', height: t.h0 + 'px' }, { transform: css(t.m1), width: t.w1 + 'px', height: t.h1 + 'px' }], { duration: dur, delay: 40, easing: M.springEase(150, 21) });
     }
-    setTimeout(land, 40 + dur);
+    setTimeout(function () { land(true); }, 40 + dur);
     var a = ORDER.indexOf(TAB[from]), b = ORDER.indexOf(TAB[HERE]), dir = b > a ? 1 : -1;
     for (var i = a, n = 0; ; i += dir, n++) { hop(A, OBJ[ORDER[i]], n * 65, i === b, dir); if (i === b) break; }
   }
@@ -448,8 +451,9 @@
 
   /* ---- the events ---- */
   var cur = null, lastHref = null, clickT = 0;
-  function land() { if (html.hasAttribute('data-vt-wait')) { html.removeAttribute('data-vt-wait'); document.dispatchEvent(new Event('fy:landed')); } }
-  function done() { html.removeAttribute('data-vt'); land(); var s = document.querySelector('.fy-rule-live'); if (s) s.remove(); cur = null; }
+  // the band may go on: at once when nothing was carried in, else once the tab has landed (data-vt-landed stays)
+  function land(vt) { if (!html.hasAttribute('data-vt-landed')) { html.setAttribute('data-vt-landed', ''); document.dispatchEvent(new CustomEvent('fy:landed', { detail: { vt: !!vt } })); } }
+  function done() { html.removeAttribute('data-vt'); land(true); var s = document.querySelector('.fy-rule-live'); if (s) s.remove(); cur = null; }
   function liveLine() {
     if (!document.body) return null;
     var NS = 'http://www.w3.org/2000/svg', s = document.createElementNS(NS, 'svg');
@@ -476,10 +480,9 @@
   function reveal(e) {
     var rec = take(), vt = e && e.viewTransition, from = cameFrom(rec), kind = M.reduced() ? null : move(from, HERE);
     ink();
-    if (!vt) return;
-    if (!kind) { vt.skipTransition(); return; }
+    if (!vt || !kind) { if (vt) vt.skipTransition(); land(false); return; }
     cur = vt; html.setAttribute('data-vt', kind);
-    if (kind !== 'leave') html.setAttribute('data-vt-wait', '');
+    if (kind === 'leave') land(false);
     var svg = kind === 'tab' ? null : liveLine();
     vt.finished.then(done, done);
     vt.ready.then(function () {

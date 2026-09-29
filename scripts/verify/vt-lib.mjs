@@ -11,8 +11,15 @@ export const H = ORIGIN + (process.env.VT_HARNESS === '0' ? '/' : '/scripts/veri
 export async function hook(context, names = []) {
   await context.addInitScript((names) => {
     const rec = window.__vt = { vt: null, ready: false, fin: false, samples: [], anims: [], freeze: false };
+    // when the current tab's label is chosen (tier 2) against pagereveal and fy:landed (the wheat band's wait)
+    new MutationObserver(() => {
+      const c = document.querySelector('.site-tab[aria-current="page"]');
+      if (rec.tier2At == null && c && c.getAttribute('data-pen-tier') === '2') rec.tier2At = performance.now();
+    }).observe(document, { attributes: true, subtree: true, attributeFilter: ['data-pen-tier'] });
+    document.addEventListener('fy:landed', (e) => { rec.landedAt = performance.now(); rec.landedVt = !!(e.detail && e.detail.vt); });
     addEventListener('pagereveal', (e) => {
       const vt = e.viewTransition, html = document.documentElement;
+      if (rec.revealAt == null) rec.revealAt = performance.now();
       rec.vt = !!vt; rec.fy = sessionStorage.getItem('fy-vt');
       rec.freeze = sessionStorage.getItem('vt-freeze') === '1'; sessionStorage.removeItem('vt-freeze');
       if (!vt) return;

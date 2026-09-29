@@ -16,7 +16,7 @@ export default async (_page, ctx) => {
       p.on('pageerror', (e) => errs.push(label + ' ' + w + ' pageerror ' + e.message));
       p.on('console', (m) => { if (m.type() === 'error') errs.push(label + ' ' + w + ' ' + p.url() + ' ' + m.text()); });
       await hook(c, []);
-      await p.goto(B + 'index.html?opener=none'); await p.waitForTimeout(900);
+      await p.goto(B + 'index.html?opx=1&opener=none'); await p.waitForTimeout(900);
       const seen = [];
       for (const [sel, url] of [['a[href="Writing.dc.html"][aria-label]', /Writing/], ['.site-tab--shooting', /Gallery/], ['.site-tab--about', /About/], ['.site-home', /index\.html/]]) {
         await p.locator(sel).filter({ visible: true }).first().click();

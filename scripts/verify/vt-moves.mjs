@@ -25,6 +25,7 @@ async function clickVisible(page, sel) {
   return () => loc.click();
 }
 const custom = (r, pe) => r.anims.filter((a) => a.pe === pe && !a.ua);
+const band = (r) => ({ tier2: r.tier2At == null ? null : Math.round(r.tier2At - r.revealAt), landed: r.landedAt == null ? null : Math.round(r.landedAt - r.revealAt), vt: r.landedVt });
 
 export default async (page, ctx) => {
   const res = [], errs = [];
@@ -41,7 +42,7 @@ export default async (page, ctx) => {
     const T = (n) => w + ' ' + n;
 
     // enter, sampled every frame
-    await page.goto(B + 'index.html?opener=none'); await page.waitForTimeout(900);
+    await page.goto(B + 'index.html?opx=1&opener=none'); await page.waitForTimeout(900);
     let r = await arrive(page, await clickVisible(page, 'a[href="Writing.dc.html"][aria-label]'));
     check(res, T('enter · a transition, kind enter'), r.vt && r.kind === 'enter', r.kind);
     const obj = OBJS.map((n) => custom(r, '::view-transition-group(' + n + ')')[0]);
@@ -54,10 +55,11 @@ export default async (page, ctx) => {
     } else check(res, T('enter · the book flies above its chord'), false, 'no samples');
     check(res, T('enter · settles ≤ 1.0 s'), r.fin && r.finAt - r.readyAt <= 1000, Math.round(r.finAt - r.readyAt) + ' ms');
     check(res, T('enter · fy-vt consumed'), await page.evaluate(() => sessionStorage.getItem('fy-vt') === null));
+    check(res, T('enter · the wheat band waits for the landed tab'), r.tier2At - r.revealAt >= 250 && r.landedVt && r.tier2At >= r.landedAt - 1, band(r));
     check(res, T('enter · no overflow after'), await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
 
     // enter, frozen at 0.75 s: is the header readable?
-    await page.goto(B + 'index.html?opener=none'); await page.waitForTimeout(700);
+    await page.goto(B + 'index.html?opx=1&opener=none'); await page.waitForTimeout(700);
     await page.evaluate(() => sessionStorage.setItem('vt-freeze', '1'));
     r = await arrive(page, await clickVisible(page, 'a[href="Writing.dc.html"][aria-label]'));
     await seek(page, 750);
@@ -89,6 +91,7 @@ export default async (page, ctx) => {
       tm.length ? { from: tm[0].x, to: tm[tm.length - 1].x, max: Math.max(...tm.map((p) => p.x)) } : null);
     check(res, T('tab · the relay hops book → laptop → camera, not the frame'), hops.every((a) => a && a.n >= 6) && !custom(r, '::view-transition-group(obj-frame)').length, hops.map((a) => a && a.n));
     check(res, T('tab · settles ≤ 0.8 s'), r.fin && r.finAt - r.readyAt <= 800, Math.round(r.finAt - r.readyAt) + ' ms');
+    check(res, T('tab · the wheat band waits for the landed tab'), r.tier2At - r.revealAt >= 250 && r.landedVt && r.tier2At >= r.landedAt - 1, band(r));
 
     // no transition: same tab, 404, direct load, reload
     await page.goto(B + 'Writing.dc.html'); await page.waitForTimeout(500);
@@ -100,15 +103,25 @@ export default async (page, ctx) => {
     check(res, T('404 page: none'), r.vt === false);
     r = await arrive(page, () => page.goto(B + 'About.dc.html'));
     check(res, T('direct load: none, fy-vt clear'), r.vt === false && await page.evaluate(() => sessionStorage.getItem('fy-vt') === null));
+    check(res, T('direct load: the band is there at first paint'), r.tier2At != null && r.tier2At - r.revealAt < 60 && r.landedVt === false, band(r));
     r = await arrive(page, () => page.reload());
     check(res, T('reload: none, fy-vt clear'), r.vt === false && await page.evaluate(() => sessionStorage.getItem('fy-vt') === null));
   }
+
+  // the opener is home-first only: a session begun on a subpage gets no OP on a later typed-URL home landing
+  const fresh = await page.context().browser().newContext({ viewport: { width: 1440, height: 900 } }), p3 = await fresh.newPage(); watch(p3);
+  await p3.goto(B + 'Writing.dc.html'); await p3.waitForTimeout(400);
+  const mark = await p3.evaluate(() => sessionStorage.getItem('fy-opener'));
+  await p3.goto(B + 'index.html'); await p3.waitForTimeout(300);
+  const mode = await p3.evaluate(() => document.documentElement.dataset.opener || null);
+  check(res, 'session begun on Writing: fy-opener=1, and a typed home landing plays no OP', mark === '1' && (useReal ? mode !== 'first' && mode != null : true), { fyOpener: mark, homeMode: mode });
+  await fresh.close();
 
   // reduced motion: no view transition at all
   const rm = await page.context().browser().newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
   const p2 = await rm.newPage(); watch(p2);
   await hook(rm, []);
-  await p2.goto(B + 'index.html?opener=none'); await p2.waitForTimeout(700);
+  await p2.goto(B + 'index.html?opx=1&opener=none'); await p2.waitForTimeout(700);
   let r2 = await arrive(p2, await clickVisible(p2, 'a[href="Writing.dc.html"][aria-label]'));
   check(res, 'reduced motion · home → Writing: none', r2.vt === false);
   r2 = await arrive(p2, await clickVisible(p2, '.site-tab--shooting'));

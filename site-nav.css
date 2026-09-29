@@ -25,7 +25,7 @@
 .subpage-intro--solo{grid-template-columns:1fr}
 .subpage-title-group{min-width:0}
 .subpage-title-kicker{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
-.subpage-title-number{color:var(--mark);font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;line-height:1;letter-spacing:.08em}
+.subpage-title-number{color:var(--pencil);font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;line-height:1;letter-spacing:.08em}
 .subpage-title-en{color:var(--soft);font-family:"Fraunces",serif;font-size:clamp(17px,1.8vw,21px);font-weight:500;line-height:1;letter-spacing:.01em}
 .subpage-title{font-size:clamp(50px,6vw,72px);line-height:.96;white-space:nowrap}
 .subpage-title-mark{color:var(--mark)}

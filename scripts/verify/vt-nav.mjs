@@ -36,6 +36,8 @@ async function state(page) {
       rule: rule && { h: r(rule).height, bg: cs(rule).backgroundColor, y: r(rule).top },
       tab: tab && [r(tab).left, r(tab).right], tm: tm && { inked: tm.classList.contains('is-inked'), path: !!tm.querySelector('svg path'), box: [r(tm).left, r(tm).right] },
       hw: q('.site-shell-header') ? r(q('.site-shell-header')).width : innerWidth,
+      names: [...document.querySelectorAll('.site-identity, .site-index a')].map((a) => (a.getAttribute('aria-label') || a.textContent).replace(/\s+/g, ' ').trim()),
+      cjkLabel: [...document.querySelectorAll('.site-identity[aria-label], .site-index a[aria-label]')].some((a) => /[\u3000-\u9fff]/.test(a.getAttribute('aria-label'))),
       overflow: document.documentElement.scrollWidth - innerWidth
     };
   });
@@ -88,6 +90,7 @@ export default async (page, ctx) => {
       check(res, tag + ' real .site-rule, no ::after', s.rule && Math.abs(s.rule.h - 1.5) < 0.01 && (s.after === 'none' || s.after === 'normal'), s.rule);
       check(res, tag + ' current tab = tabmark, no CSS border or dot', s.tm && s.tabBorder === 0 && (s.dot === 'none' || s.dot === 'normal') && (!gw || (s.tm.inked && s.tm.path)) &&
         Math.abs(s.tm.box[0] - s.tab[0]) < 0.5 && Math.abs(s.tm.box[1] - s.tab[1]) < 0.5, s.tm);
+      check(res, tag + ' header names: every link named, no Chinese aria-label under lang=en', s.names.every((n) => n.length > 1) && !s.cjkLabel, s.names.join(' | '));
       check(res, tag + ' no horizontal overflow', s.overflow <= 0, s.overflow);
       if (gw) {
         const now = await gap(page);
