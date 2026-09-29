@@ -16,6 +16,12 @@ These override the plan below where they differ. The plan was written by the por
 9. **Servers:** http://127.0.0.1:4173/ serves this working tree (the branch). http://127.0.0.1:4174/ serves `origin/main` read-only as the "before" site; never edit that tree. Don't start or stop servers.
 10. **Runner:** `node /tmp/fyshot/run.mjs <steps.mjs>` (HANDOFF §9). Screenshots go to `/tmp/fyshot/<pkg>-*`. Never use the MCP browser tools.
 11. **Report back** when done: files created or edited (with line counts), each success criterion with its result, deviations from the plan and why, and known limitations. Report only after your final run has finished, and don't leave background shells running.
+12. **As built (supersedes §1–§4 where they differ):**
+   - Landmark data is `{kind, marks:[…]}`; reference and footnote ids are prefixed per language at build time (`zh-ref-1`, `en-fn-x`) and each `.mn` has `data-ref`; English and Chinese landmarks are checked for equivalence by `landmarks.py --check` (board parity retired).
+   - `frame-rest` is its own desk layer; every strip rung is lossy and strictly lighter than the next size up.
+   - `content/posts.js` is gone: Reading loads `posts-index.js` plus one `content/bodies/<id>.js`.
+   - Head order: `support.js` first; `motion.js` and `transitions.js` load `defer blocking="render"` (not parser-blocking).
+   - `FY.mount` ignores support.js's unrendered `<x-dc>` template and keeps watching for the rendered host.
 
 ---
 
