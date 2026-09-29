@@ -42,6 +42,8 @@ export default async (page, ctx) => {
     rows.push([w + ' 1px of scroll: depth > 0', one > 0, one]);
     await scroll(p, 180, 250);
     const mid = await paperOnly(p);
+    const h1 = await p.evaluate(() => { const t = document.querySelector('.article-intro .title'), cs = getComputedStyle(t); return { vis: cs.visibility, op: cs.opacity, flying: getComputedStyle(document.querySelector('.fly')).visibility }; });
+    rows.push([w + ' mid-flight: the h1 is only transparent, still in the accessibility tree', h1.flying === 'visible' && h1.vis === 'visible' && h1.op === '0', h1]);
     rows.push([w + ' 180px: the halftone prints (dots present)', !mid.ok && mid.bad > 200, { bad: mid.bad, depth: mid.depth }]);
     await p.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' })); await sleep(1200);
     const back = await paperOnly(p);

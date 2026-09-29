@@ -19,7 +19,8 @@ html.lang-zh .mn{font:13px/1.75 var(--text-cn)}
 .mn.on{z-index:4}   /* above the other slips, under the pen (.fn-wire, z 5) */
 .mn.on .mn-in{color:var(--ink);filter:drop-shadow(0 2px 1.5px rgba(60,50,35,.12)) drop-shadow(0 12px 14px rgba(60,50,35,.12))}
 .mn.on .num{color:var(--ink)}
-@media (max-width:1080px){.mn{display:none}}
+/* the note needs 262px right of the text column: below 1164px there is no room, and the slip takes over */
+@media (max-width:1163px){.mn{display:none}}
 
 /* ---- refs: the pen is the coral event, so the number stays ink ---- */
 .fnref{font-family:var(--util);font-size:.7em;position:relative;top:-.5em;vertical-align:baseline}

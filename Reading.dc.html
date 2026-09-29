@@ -8,6 +8,7 @@
 <meta name="description" content="Bilingual essays by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
+<script src="./support.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
@@ -19,9 +20,8 @@
 <link rel="stylesheet" href="./lib/reading/notes.css">
 <link rel="expect" href="#site-nav" blocking="render">
 <script>(function(){var r=document.documentElement;var q=new URLSearchParams(location.search);var l=q.get('lang')||localStorage.getItem('fy-lang')||'zh';var saved=q.get('theme')||localStorage.getItem('fy-theme');var t=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.classList.add(l==='zh'?'lang-zh':'lang-en');r.classList.toggle('dark',t==='dark');r.setAttribute('data-theme',t);r.setAttribute('lang',l);})();</script>
-<script src="./motion.js"></script>
-<script src="./transitions.js"></script>
-<script src="./support.js"></script>
+<script src="./motion.js" defer blocking="render"></script>
+<script src="./transitions.js" defer blocking="render"></script>
 <script src="./pen.js" defer></script>
 <script src="./pen-tier.js" defer></script>
 <script src="./site.js" defer></script>
@@ -39,7 +39,7 @@
     </div>
     <div class="right">
       <button class="btn" type="button" data-act="lang" aria-label="Switch language · 切换语言"><span class="en">中</span><span class="zh">EN</span></button>
-      <button class="btn" type="button" data-act="theme" aria-label="Theme · 主题" aria-pressed="false">◐</button>
+      <button class="btn" type="button" data-act="theme" aria-label="Dark mode · 深色" aria-pressed="false">◐</button>
     </div>
   </div>
 </nav>

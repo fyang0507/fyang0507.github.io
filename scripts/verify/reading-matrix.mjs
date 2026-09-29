@@ -4,7 +4,7 @@
 //   node /tmp/fyshot/run.mjs scripts/verify/reading-matrix.mjs      (env: see reading-lib.mjs)
 import { POSTS, url, context, watch, ready, scroll, geo, report, sleep } from './reading-lib.mjs';
 
-const SIZES = [[1440, 900], [1080, 800], [390, 844], [360, 780]];
+const SIZES = [[1440, 900], [1163, 800], [1100, 800], [1080, 800], [390, 844], [360, 780]];   // 1163/1100: no room for margin notes
 
 export default async (page, ctx) => {
   const browser = page.context().browser(), rows = [];
@@ -21,6 +21,28 @@ export default async (page, ctx) => {
         const fonts = reqs.filter((u) => /\.woff2/.test(u)).map((u) => u.replace(/^.*\/fonts\//, ''));
         const bad = reqs.filter((u) => /\/design\//.test(u) || (/\/fonts\/[^/]+\.woff2/.test(u) && !/\/fonts\/derived\//.test(u)) || /NotoSerifSC-ui/.test(u));
         rows.push([tag + ': no masters, no -ui serif, nothing from /design/', bad.length === 0, bad.length ? bad : fonts.filter((f) => /Serif/.test(f)).join(' ')]);
+        if (w === 1440 || w === 390) {   // small text ≥ 4.5:1 on whatever paper it sits on (the eyebrow is large text: ≥ 3:1)
+          const cr = await p.evaluate(() => {
+            // [r, g, b, a] from rgb()/rgba() or color(srgb r g b / a) (what color-mix() computes to)
+            const rgba = (s) => { const n = s.match(/[\d.]+/g).map(Number), srgb = /^color\(srgb/.test(s); const c = n.slice(0, 3).map((x) => (srgb ? x * 255 : x)); return c.concat([n[3] == null ? 1 : n[3]]); };
+            const rgb = (s) => rgba(s).slice(0, 3);
+            const lum = (c) => { const v = c.map((x) => x / 255).map((x) => (x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4))); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
+            const ratio = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); };
+            // a label of paper at ≥ 80% (the kicker and meta over the cover) is taken as that paper over the page's paper
+            const paper = rgb(getComputedStyle(document.body).backgroundColor);
+            const solid = (c) => { if (!c || c === 'transparent') return null; const v = rgba(c); if (v[3] < .8) return null; return 'rgb(' + v.slice(0, 3).map((x, i) => x * v[3] + paper[i] * (1 - v[3])).join(',') + ')'; };
+            const bg = (el) => { for (let e = el; e; e = e.parentElement) { const b = solid(getComputedStyle(e).backgroundColor), bf = getComputedStyle(e, '::before'); if (b) return b; if (bf.content !== 'none' && bf.position === 'absolute' && solid(bf.backgroundColor)) return solid(bf.backgroundColor); } return getComputedStyle(document.body).backgroundColor; };
+            const out = {}; let ok = true;
+            [['.pn .lab', 4.5], ['.mn .num', 4.5], ['.mn .d', 4.5], ['.fs-lab', 4.5], ['.fs-foot span', 4.5], ['.rail-lab', 4.5], ['.appendix-number', 4.5], ['footer .row', 4.5], ['.meta', 4.5], ['.kicker', 4.5], ['.eyebrow', 3]].forEach(([sel, min]) => {
+              const el = document.querySelector(sel); if (!el) return;
+              const r = ratio(rgb(getComputedStyle(el).color), rgb(bg(el))); out[sel] = +r.toFixed(2); if (r < min) ok = false;
+            });
+            return { ok, out };
+          });
+          rows.push([tag + ': text contrast', cr.ok, cr.out]);
+          const tb = await p.evaluate(() => { const b = document.querySelector('[data-act="theme"]'); return { label: b.getAttribute('aria-label'), pressed: b.getAttribute('aria-pressed') }; });
+          rows.push([tag + ': theme button: fixed label, pressed = dark', tb.label === 'Dark mode · 深色' && tb.pressed === String(theme === 'dark'), tb]);
+        }
         rows.push([tag + ': 0 console errors', errors.length === 0, errors.slice(0, 3)]);
         await c.close();
       }

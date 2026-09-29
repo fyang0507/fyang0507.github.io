@@ -7,7 +7,8 @@ export const POSTS = {
   cover: '2026-08-29_google-just-wants-to-coast-to-a-win',   // sections 1.0…10.0, 9 refs (three double)
   multi: '2025-12-06_the-stories-we-live-05',                // a [1, 2] citation, subtitle
   minutes: '2019-01-09_he-and-his-cat',                      // no structure: minute ticks
-  headings: '2024-04-23_hong-kong-forest'                    // headings + minute ticks
+  headings: '2026-05-02_the-god-in-the-edit',                // headings + minute ticks
+  figures: '2024-10-23_the-seemingly-innocent'               // (en) figures + minute ticks
 };
 export const url = (post, q = '') => BASE + 'Reading.dc.html?post=' + encodeURIComponent(post) + q;
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -98,6 +98,25 @@ export default async (page, ctx) => {
         if (w === 390 && i === idx[0]) await p.screenshot({ path: '/tmp/fyshot/p2r-slip-' + key + '.png' });
       }
       rows.push([w + ' ' + key + ': margin hidden, a tap pulls the right slip (coral loop on the ref)', hidden && got.every(Boolean), { hidden, got }]);
+      if (key === 'cover') {
+        // keyboard: Tab cycles inside the open slip; Esc from outside it still closes it and hands focus to the ref
+        const cyc = [];
+        for (let i = 0; i < 5; i++) { await p.keyboard.press('Tab'); cyc.push(await p.evaluate(() => !!document.activeElement.closest('.fs-slip'))); }
+        rows.push([w + ' ' + key + ': Tab stays inside the open slip', cyc.every(Boolean), cyc]);
+        await p.evaluate(() => { document.activeElement.blur(); document.body.focus(); });
+        await p.keyboard.press('Escape'); await sleep(700);
+        const esc = await p.evaluate(() => ({ open: document.querySelector('.fs-root').classList.contains('open'), ref: document.activeElement.matches('.fnref a[data-ref]') }));
+        rows.push([w + ' ' + key + ': Esc from anywhere closes it and focus returns to the ref', !esc.open && esc.ref, esc]);
+        // "all references ↓": the reference gets the focus, so the next Tab continues from there
+        const r2 = await refBox(p, 2); await sleep(200);
+        await p.touchscreen.tap(r2.x, r2.y); await sleep(900);
+        await p.evaluate(() => document.querySelector('.fs-all').click()); await sleep(1400);
+        const all = await p.evaluate(() => ({ id: document.activeElement.id, item: document.activeElement.matches('.appendix-item'), open: document.querySelector('.fs-root').classList.contains('open') }));
+        rows.push([w + ' ' + key + ': "all references" moves focus to the reference', all.item && !all.open && all.id === r2.ref, all]);
+        await p.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight / 3)); await sleep(400);
+        const r3 = await refBox(p, 2); await sleep(200);
+        await p.touchscreen.tap(r3.x, r3.y); await sleep(900);
+      }
       // swipe the slip back in with a finger
       const s = await p.evaluate(() => { const b = document.querySelector('.fs-head').getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; });
       const cdp = await c.newCDPSession(p), tp = (type, y) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x: s[0], y }] });
