@@ -10,6 +10,8 @@
   ]);
   var pageCache=new Map();
   var activeRequest=null;
+  if(!chapterFile(window.location))history.replaceState(history.state,'',window.location.pathname+'index.html'+window.location.search+window.location.hash);
+  var renderedPath=window.location.pathname;
   var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   var revealObserver=null;
   var evidenceScopeObserver=window.ResizeObserver?new ResizeObserver(function(entries){
@@ -149,6 +151,9 @@
     var currentStatus=currentPage.querySelector('.site-header-status');
     var nextStatus=nextPage.querySelector('.site-header-status');
     if(currentStatus&&nextStatus)currentStatus.textContent=nextStatus.textContent;
+    var currentSkip=document.querySelector('.skip-link');
+    var nextSkip=doc.querySelector('.skip-link');
+    if(currentSkip&&nextSkip)currentSkip.setAttribute('href',nextSkip.getAttribute('href'));
 
     var activeFile=chapterFile(url);
     Array.prototype.forEach.call(currentPage.querySelectorAll('.fa-project-nav a'),function(link){
@@ -217,6 +222,7 @@
           updateShell(doc,url);
 
           if(options.history!=='pop')history.pushState({fredAgentChapter:true},'',url.href);
+          renderedPath=url.pathname;
           scrollToStage(importedStage,url.hash);
           initSystemMaps();
           initEvidenceScopes();
@@ -267,7 +273,7 @@
 
   window.addEventListener('popstate',function(){
     var url=new URL(window.location.href);
-    if(isChapterUrl(url))navigate(url,{history:'pop'});
+    if(isChapterUrl(url)&&url.pathname!==renderedPath)navigate(url,{history:'pop'});
   });
 
   function initSystemMap(shell){

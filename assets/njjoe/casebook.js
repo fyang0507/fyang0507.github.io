@@ -1,6 +1,8 @@
 (function(){
   'use strict';
 
+  // The Building board links this folder; name its index.html, as the page's own links do, so its skip link stays on it.
+  if(/\/$/.test(window.location.pathname))history.replaceState(history.state,'',window.location.pathname+'index.html'+window.location.search+window.location.hash);
   var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   var scriptBase=document.currentScript&&document.currentScript.src
     ?new URL('.',document.currentScript.src)
