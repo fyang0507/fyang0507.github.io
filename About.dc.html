@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,31 +8,52 @@
 <meta name="description" content="Fred Yang is an Applied AI engineer, writer, and photographer in New York.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./site-tokens.css">
+<link rel="stylesheet" href="./site-nav.css">
+<link rel="stylesheet" href="./pen.css">
+<link rel="stylesheet" href="./transitions.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="./motion.js"></script>
+<script src="./transitions.js"></script>
+<script src="./support.js"></script>
+<script src="./pen.js" defer></script>
+<script src="./pen-tier.js" defer></script>
+<script src="./site.js" defer></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status">field guide · vol. 01</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于" aria-current="page"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+    <div class="site-rule" aria-hidden="true"></div>
+  </header>
+</div>
+<x-dc>
+<helmet>
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;--tilt-perspective:1100px;--tilt-return:700ms;--tilt-follow:90ms;--tilt-glare-opacity:.18}
+  :root{--tilt-perspective:1100px;--tilt-return:700ms;--tilt-follow:90ms}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
   a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
   .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
   .hand{font-family:"MuyaoPleased","Caveat",cursive}
   .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @keyframes aRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  .ar{animation:aRise .5s cubic-bezier(.2,.7,.2,1) both}
   @keyframes birdFly{0%,50%{transform:translateX(-180px) scaleX(-1);opacity:0}55%{opacity:1}59%,80%{transform:translateX(0) scaleX(-1);opacity:1}85%{transform:translateX(0) scaleX(1);opacity:1}95%,100%{transform:translateX(-180px) scaleX(1);opacity:0}}
   @keyframes birdFlap{0%,49%{background-position:0 0}50%,100%{background-position:100% 0}}
   @keyframes cardBump{0%,56%,70%,100%{transform:translate(0,0) rotate(0)}58%{transform:translate(-7px,1px) rotate(-2.2deg)}60%{transform:translate(6px,-1px) rotate(1.7deg)}62%{transform:translate(-4px,1px) rotate(-1.1deg)}64%{transform:translate(3px,0) rotate(.6deg)}67%{transform:translate(-1px,0) rotate(-.2deg)}}
@@ -50,8 +71,6 @@
   .card-bump-layer{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:cardBump 6s ease-in-out infinite}
   .figure-number{position:absolute;right:4px;bottom:-25px;color:var(--pencil);font-size:11px;line-height:1;pointer-events:none}
   .card-face{position:absolute;inset:0;border-radius:16px;padding:28px;overflow:hidden;backface-visibility:hidden;transition:transform .58s cubic-bezier(.2,.72,.25,1),opacity .36s ease}
-  .tilt-glare{position:absolute;inset:0;z-index:5;border-radius:16px;pointer-events:none;opacity:0;mix-blend-mode:screen;background:radial-gradient(circle 100px at var(--tilt-gx,50%) var(--tilt-gy,50%),rgba(255,255,255,.42),rgba(255,255,255,.05) 54%,rgba(255,255,255,0) 84%),radial-gradient(circle 240px at var(--tilt-gx,50%) var(--tilt-gy,50%),rgba(255,255,255,.16),rgba(255,255,255,.025) 60%,rgba(255,255,255,0) 82%);transition:opacity 260ms cubic-bezier(.22,1,.36,1)}
-  .field-card-wrap.is-hover .tilt-glare{opacity:var(--tilt-glare-opacity)}
   .card-front{border:2.4px solid #33302B;background:#FBF6EC;color:#33302B;box-shadow:0 2px 0 rgba(255,255,255,.65) inset}
   .card-back{border:2.4px solid #55483A;background:#16120F;color:#F3E9D8;box-shadow:0 2px 0 rgba(255,255,255,.045) inset}
   .card-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;font-size:11px;line-height:1.4;letter-spacing:.09em}
@@ -104,12 +123,8 @@
   .special-name{margin-top:6px;color:#F3E9D8;font-size:17px;line-height:1.45}
   .special-name .en-copy{color:#EE8E72;font-size:12px}
   .flip-actions{margin:0 0 24px;text-align:center}
-  .flip-control{--shimmer-dur:1200ms;--shimmer-base:var(--soft);--shimmer-flare:var(--mark);--shimmer-highlight:var(--ink);--button-shimmer-flare:rgba(217,105,90,.18);--button-shimmer-core:rgba(228,218,199,.55);--shimmer-band:400%;--shimmer-ease:linear;position:relative;isolation:isolate;overflow:hidden;min-width:150px;border:1.5px solid var(--ink);border-radius:999px;padding:10px 20px;background:var(--paper2);color:var(--ink);font-family:"IBM Plex Mono","Noto Sans SC",sans-serif;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:background .15s ease,color .15s ease,transform .15s ease}
-  .flip-control:hover,.flip-control:focus-visible{--shimmer-base:var(--line);--shimmer-highlight:var(--paper);--button-shimmer-flare:rgba(217,105,90,.24);--button-shimmer-core:rgba(109,101,89,.48);background:var(--ink);color:var(--paper);transform:translateY(-1px);outline:none}
-  .flip-control::before{content:"";position:absolute;inset:-1.5px;z-index:0;border-radius:inherit;pointer-events:none;background-image:linear-gradient(90deg,transparent 0%,transparent 34%,var(--button-shimmer-flare) 44%,var(--button-shimmer-core) 50%,var(--button-shimmer-flare) 56%,transparent 66%,transparent 100%);background-size:var(--shimmer-band) 100%;background-repeat:no-repeat;animation:tShimmer var(--shimmer-dur) var(--shimmer-ease) infinite}
-  .t-shimmer{position:relative;z-index:1;display:inline-block;color:var(--shimmer-base)}
-  .t-shimmer::before{content:attr(data-text);position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(90deg,transparent 0%,transparent 34%,var(--shimmer-flare) 44%,var(--shimmer-highlight) 50%,var(--shimmer-flare) 56%,transparent 66%,transparent 100%);background-size:var(--shimmer-band) 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:tShimmer var(--shimmer-dur) var(--shimmer-ease) infinite}
-  @keyframes tShimmer{0%{background-position:100% 0}100%{background-position:0% 0}}
+  .flip-control{min-width:150px;border:1.5px solid var(--ink);border-radius:999px;padding:10px 20px;background:var(--paper2);color:var(--ink);font-family:"IBM Plex Mono","Noto Sans SC",sans-serif;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:background .15s ease,color .15s ease,transform .15s ease}
+  .flip-control:hover,.flip-control:focus-visible{background:var(--ink);color:var(--paper);transform:translateY(-1px);outline:none}
   .personal-statement{width:min(700px,92vw);margin-top:28px;padding-top:18px;border-top:1.5px solid var(--line);text-align:center}
   .personal-statement .zh-copy{font-size:clamp(18px,2.6vw,25px);line-height:1.5}
   .personal-statement .en-copy{margin-top:7px;color:var(--soft);font-size:11px;letter-spacing:.035em;white-space:nowrap}
@@ -167,42 +182,25 @@
   }
   @media (max-width:350px){.field-card{height:900px}}
   @media (prefers-reduced-motion:reduce){
-    .ar{animation:none!important;opacity:1!important}
-    .card-face,.field-card,.flip-control,.tilt-glare{transition:none!important}
+    .card-face,.field-card,.flip-control{transition:none!important}
     .field-card{transform:none!important}
     .card-bump-layer{animation:none!important}
-    .tilt-glare{display:none!important}
     .card-bird{animation:none!important;transform:translateX(0) scaleX(-1);opacity:1}
     .card-bird-sprite{animation:none!important}
-    .flip-control::before,.t-shimmer::before{animation:none!important;opacity:0}
   }
 </style>
 </helmet>
 
-<div data-screen-label="about" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
-
-  <header class="site-shell-header">
-    <div class="site-header-row ar">
-      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status">field guide · vol. 01</div>
-    </div>
-    <nav class="site-index ar" aria-label="Primary navigation" style="animation-delay:.08s">
-      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于" aria-current="page"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
-    </nav>
-  </header>
-
+<div data-screen-label="about" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px">
   <div class="about-stage">
-    <header class="guide-heading ar" aria-labelledby="about-title">
+    <header class="guide-heading" aria-labelledby="about-title">
+      <h1 id="about-title" class="sr-only">About Fred Yang · <span lang="zh">关于弗雷德</span></h1>
       <div class="util guide-kicker">FIELD GUIDE · SET 01 · SPECIMEN 001</div>
     </header>
 
-    <div class="card-stage ar" style="animation-delay:.14s">
+    <div class="card-stage">
       <div class="flip-actions">
-        <button type="button" class="flip-control" onClick="{{ toggleCard }}" aria-controls="fred-field-card" aria-label="{{ cardAriaLabel }}" aria-pressed="{{ cardFlipped }}"><span class="t-shimmer" data-text="翻面 / FLIP">翻面 / FLIP</span></button>
+        <button type="button" class="flip-control" onClick="{{ toggleCard }}" aria-controls="fred-field-card" aria-label="{{ cardAriaLabel }}" aria-pressed="{{ cardFlipped }}">翻面 / FLIP</button>
       </div>
 
       <div class="field-card-wrap" onPointerEnter="{{ onTiltEnter }}" onPointerMove="{{ onTiltMove }}" onPointerLeave="{{ onTiltLeave }}">
@@ -319,7 +317,6 @@
               <div class="special-name"><span class="zh-copy" lang="zh">遗声回响 HEAR THE UNHEARD</span></div>
             </section>
           </article>
-          <div class="tilt-glare" aria-hidden="true"></div>
           </div>
         </div>
         <div class="util figure-number" aria-hidden="true">fig.04</div>
@@ -372,8 +369,6 @@ class Component extends DCLogic {
       hitArea.classList.remove('is-hover','is-tilting');
       hitArea.style.setProperty('--tilt-rx','0deg');
       hitArea.style.setProperty('--tilt-ry','0deg');
-      hitArea.style.setProperty('--tilt-gx','50%');
-      hitArea.style.setProperty('--tilt-gy','50%');
     };
     return {
       toggleCard,
@@ -389,8 +384,6 @@ class Component extends DCLogic {
         const maxTilt = 5.5;
         hitArea.style.setProperty('--tilt-rx',`${(0.5-y)*maxTilt*2}deg`);
         hitArea.style.setProperty('--tilt-ry',`${(x-0.5)*maxTilt*2}deg`);
-        hitArea.style.setProperty('--tilt-gx',`${x*100}%`);
-        hitArea.style.setProperty('--tilt-gy',`${y*100}%`);
         hitArea.classList.add('is-hover','is-tilting');
       },
       onTiltLeave: (event) => resetTilt(event.currentTarget),

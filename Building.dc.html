@@ -7,36 +7,44 @@
 <meta name="description" content="Projects, systems, and experiments by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<script src="./support.js"></script>
-<script src="./content/building-projects.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./site-tokens.css">
+<link rel="stylesheet" href="./site-nav.css">
+<link rel="stylesheet" href="./pen.css">
+<link rel="stylesheet" href="./transitions.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="./motion.js"></script>
+<script src="./transitions.js"></script>
+<script src="./support.js"></script>
+<script src="./pen.js" defer></script>
+<script src="./pen-tier.js" defer></script>
+<script src="./site.js" defer></script>
+<script src="./content/building-projects.js" defer></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status" data-project-count>on the board</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+    <div class="site-rule" aria-hidden="true"></div>
+  </header>
+</div>
+<x-dc>
+<helmet>
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
   :root{
-    --paper:#FBF6EC;
-    --paper-2:#F3ECDD;
-    --paper-3:#EDE4D2;
-    --ink:#33302B;
-    --soft:#6D6559;
-    --pencil:#7C7468;
-    --mark:#D9695A;
-    --mark-deep:#A5453A;
-    --line:#E4DAC7;
-    --line-strong:#CFC1A9;
-    --wash-blue:#DCE8E7;
-    --wash-peach:#F0D9CD;
-    --wash-wheat:#E9DFC5;
-    --board:#EEE4CE;
     --shadow:0 1px 2px rgba(60,50,35,.05),0 18px 42px rgba(60,50,35,.09);
     --ease-open:cubic-bezier(.2,.85,.28,1.18);
     --ease-close:cubic-bezier(.3,0,.2,1);
@@ -52,7 +60,7 @@
   .hand{font-family:"MuyaoPleased","Caveat",cursive}
   .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
   .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-  .building-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 64px}
+  .building-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 64px}
   .building-stage{width:min(1180px,100%);margin-top:38px}
   .building-intro{display:block}
   .board-shell{position:relative;margin-top:26px;padding:clamp(16px,2.4vw,28px) 0 clamp(18px,2.6vw,30px);border:1px solid rgba(140,120,85,.22);border-radius:16px;background-color:var(--board);background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:28px 28px;box-shadow:var(--shadow)}
@@ -137,10 +145,6 @@
   .project-label strong{color:var(--ink);font-weight:500}
   .project-label-dot{width:6px;height:6px;border-radius:50%;background:var(--mark);box-shadow:0 0 0 3px rgba(217,105,90,.12)}
   .highlighted-title{max-width:760px;margin-top:auto;color:var(--ink);font-family:"Fraunces","DingTalk JinBuTi",serif;font-size:clamp(52px,7.6vw,96px);font-weight:500;line-height:1.3;letter-spacing:-.045em}
-  @supports ((background-clip:text) or (-webkit-background-clip:text)){
-    .highlighted-title{background-image:linear-gradient(108deg,var(--mark) 0%,#7A5874 16.5%,#3D5C52 33%,var(--mark) 50%,#7A5874 66.5%,#3D5C52 83%,var(--mark) 100%);background-size:180% 100%;background-repeat:no-repeat;background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:highlightGradientOrbit 7s ease-in-out infinite}
-  }
-  @keyframes highlightGradientOrbit{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
   .highlighted-note{max-width:750px;margin-top:21px;color:#504A42;font-size:clamp(16px,1.8vw,20px);line-height:1.55}
   .project-meta{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:18px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:10px;line-height:1.5;letter-spacing:.035em}
   .project-meta span+span::before{content:"/";margin-right:16px;color:var(--mark)}
@@ -172,7 +176,7 @@
   .morph-panel[data-placement="below"]::after{top:-11px}
   .morph-panel[data-placement="above"]::before{bottom:-9px}
   .morph-panel[data-placement="above"]::after{bottom:-11px}
-  .morph-panel-paper{max-height:min(337px,calc(100vh - 31px));padding:23px 25px 24px;background:linear-gradient(145deg,#fbf6ec 0%,#f7efdf 100%);clip-path:var(--torn-note);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ink) var(--paper-2);filter:drop-shadow(.6px 0 0 var(--ink)) drop-shadow(-.6px 0 0 var(--ink)) drop-shadow(0 .6px 0 var(--ink)) drop-shadow(0 -.6px 0 var(--ink)) drop-shadow(0 18px 24px rgba(60,50,35,.2))}
+  .morph-panel-paper{max-height:min(337px,calc(100vh - 31px));padding:23px 25px 24px;background:linear-gradient(145deg,#fbf6ec 0%,#f7efdf 100%);clip-path:var(--torn-note);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ink) var(--paper2);filter:drop-shadow(.6px 0 0 var(--ink)) drop-shadow(-.6px 0 0 var(--ink)) drop-shadow(0 .6px 0 var(--ink)) drop-shadow(0 -.6px 0 var(--ink)) drop-shadow(0 18px 24px rgba(60,50,35,.2))}
   .morph-panel[data-open="true"]{opacity:1;visibility:visible;filter:blur(0);transform:translateY(0) scale(1) rotate(0deg);transition:opacity 220ms ease 30ms,transform 320ms var(--ease-open),filter 240ms ease,visibility 0s}
   .morph-panel-heading{display:flex;align-items:center;gap:18px;margin-bottom:15px;padding-bottom:10px;border-bottom:1px solid var(--line-strong)}
   .morph-panel-kicker{display:flex;align-items:center;gap:8px;color:var(--soft);font-family:"IBM Plex Mono",monospace;font-size:8.5px;line-height:1.2;letter-spacing:.08em;text-transform:uppercase}
@@ -186,12 +190,11 @@
   .no-script-list{padding:24px;border:1px solid var(--line-strong);background:var(--paper)}
   .no-script-list ul{padding-left:20px}
   .no-script-list a{border-bottom:1px solid var(--mark)}
-  @keyframes bRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-  .br{animation:bRise .5s cubic-bezier(.2,.7,.2,1) both}
+  .building-figure{margin-top:34px;color:var(--pencil);font-size:12px}
   @media(max-width:900px){.card-slot--highlighted{width:min(680px,78vw)}.card-slot--featured{width:min(380px,62vw)}.instrument-card{width:min(276px,42vw)}.standard-card{width:min(184px,29vw)}}
   @media(max-width:640px){
     html{scroll-behavior:auto}
-    .building-page{padding:24px 4vw 44px}
+    .building-page{padding:0 4vw 44px}
     .building-stage{margin-top:30px}
     .board-shell{padding-top:14px;border-radius:12px;background-size:24px 24px}
     .board-shell::before{width:86px;height:21px}
@@ -220,10 +223,8 @@
   }
   @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
-    .br,.highlighted-title{animation:none!important;opacity:1!important}
   }
   @media(forced-colors:active){
-    .highlighted-title{background:none;color:CanvasText;-webkit-text-fill-color:CanvasText}
     .project-card,.morph-toggle,.project-cta{border-color:CanvasText}
     .instrument-card-paper{background:CanvasText;forced-color-adjust:none}
     .instrument-card-paper-inner{background:Canvas;forced-color-adjust:none}
@@ -236,22 +237,8 @@
 </helmet>
 
 <div class="building-page" data-screen-label="building">
-  <header class="site-shell-header">
-    <div class="site-header-row br">
-      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status" data-project-count>on the board</div>
-    </div>
-    <nav class="site-index br" aria-label="Primary navigation" style="animation-delay:.08s">
-      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
-    </nav>
-  </header>
-
   <main class="building-stage" id="main-content">
-    <section class="building-intro br" aria-labelledby="building-title">
+    <section class="building-intro" aria-labelledby="building-title">
       <header class="subpage-intro subpage-intro--solo">
         <div class="subpage-title-group">
           <div class="subpage-title-kicker"><span class="subpage-title-number">02</span><span class="subpage-title-en" lang="en">building</span></div>
@@ -260,7 +247,7 @@
       </header>
     </section>
 
-    <section class="board-shell br" style="animation-delay:.12s" aria-labelledby="project-timeline-title">
+    <section class="board-shell" aria-labelledby="project-timeline-title">
       <h2 id="project-timeline-title" class="sr-only">Projects on the building board</h2>
       <div class="timeline-toolbar">
         <span class="timeline-order">projects · scroll →</span>
@@ -286,6 +273,7 @@
         </div>
       </noscript>
     </section>
+    <div class="util building-figure">fig.02</div>
   </main>
 </div>
 </x-dc>

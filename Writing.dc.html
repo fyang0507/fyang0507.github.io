@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,22 +8,48 @@
 <meta name="description" content="Fred Yang's bilingual essays and travel writing, 2015–2025.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<script src="./support.js"></script>
-<script src="./content/posts.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./site-tokens.css">
+<link rel="stylesheet" href="./site-nav.css">
+<link rel="stylesheet" href="./pen.css">
+<link rel="stylesheet" href="./transitions.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="./motion.js"></script>
+<script src="./transitions.js"></script>
+<script src="./support.js"></script>
+<script src="./pen.js" defer></script>
+<script src="./pen-tier.js" defer></script>
+<script src="./site.js" defer></script>
+<script src="./content/posts.js" defer></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status" data-essay-count>essays · 2015–2025</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+    <div class="site-rule" aria-hidden="true"></div>
+  </header>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector("[data-essay-count]").textContent = `${(window.FY_POSTS || []).length} essays · 2015–2025`;
+});
+</script>
+<x-dc>
+<helmet>
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
   a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
@@ -39,16 +65,14 @@
   .statement-beat::after{content:"";position:absolute;left:-.06em;right:-.06em;bottom:-.02em;height:2px;border-radius:50%;background:var(--mark);opacity:.5;transform:rotate(1.4deg)}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @keyframes wRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   @keyframes birdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .wr{animation:wRise .5s cubic-bezier(.2,.7,.2,1) both}
   .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
-  .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
+  .chip.on{color:var(--mark);border-color:var(--mark);background:var(--page)}
   .t-tabs{--tabs-dur:250ms;--tabs-ease:cubic-bezier(0.22,1,0.36,1);position:relative;display:inline-flex;align-items:center;gap:3px;padding:3px;border-radius:999px;background:var(--paper2);border:1.3px solid var(--line)}
   .t-tab{position:relative;appearance:none;border:0;background:transparent;height:26px;padding:4px 14px;color:var(--soft);cursor:pointer;border-radius:999px;z-index:1;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:400;transition:color var(--tabs-dur) var(--tabs-ease),font-weight var(--tabs-dur) var(--tabs-ease)}
   .t-tab:not([aria-selected="true"]):hover{color:var(--ink)}
   .t-tab[aria-selected="true"]{color:var(--mark);font-weight:500}
-  .t-tabs-pill{position:absolute;top:3px;left:0;height:26px;width:0;background:#fff;border-radius:999px;transform:translateX(0);transition:transform var(--tabs-dur) var(--tabs-ease),width var(--tabs-dur) var(--tabs-ease);will-change:transform,width;z-index:0;pointer-events:none;box-shadow:0 1px 2px rgba(60,50,35,.12)}
+  .t-tabs-pill{position:absolute;top:3px;left:0;height:26px;width:0;background:var(--page);border-radius:999px;transform:translateX(0);transition:transform var(--tabs-dur) var(--tabs-ease),width var(--tabs-dur) var(--tabs-ease);will-change:transform,width;z-index:0;pointer-events:none;box-shadow:0 1px 2px rgba(60,50,35,.12)}
   @media (prefers-reduced-motion:reduce){.t-tabs-pill,.t-tab{transition:none!important}}
   .book{transition:transform .18s cubic-bezier(.2,.7,.2,1)}
   .book:hover{transform:translateY(-20px)}
@@ -86,29 +110,14 @@
   .shelf-scroll:has(.book:nth-child(25):hover) ~ .shelf-panel .prev:nth-child(25){opacity:1}
   .ph{background:repeating-linear-gradient(45deg,#F3ECDD 0 7px,#EDE4D2 7px 14px)}
 
-  @media (prefers-reduced-motion:reduce){.wr{animation:none!important;opacity:1!important}.book,.mobile-card{transition:none!important}.book:hover{transform:none}}
+  @media (prefers-reduced-motion:reduce){.book,.mobile-card{transition:none!important}.book:hover{transform:none}}
   @media (max-width:760px){.shelf-wrap{display:none!important}.mobile-list{display:flex!important}.shelf-lang-row{display:none!important}}
 </style>
 </helmet>
 
-<div data-screen-label="writing" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
-
-  <header class="site-shell-header">
-    <div class="site-header-row wr">
-      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status">{{ totalN }} essays · 2015–2025</div>
-    </div>
-    <nav class="site-index wr" aria-label="Primary navigation" style="animation-delay:.08s">
-      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
-    </nav>
-  </header>
-
+<div data-screen-label="writing" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px">
   <div style="width:min(1180px,100%);margin-top:40px">
-    <header class="subpage-intro wr" aria-labelledby="writing-title">
+    <header class="subpage-intro" aria-labelledby="writing-title">
       <div class="subpage-title-group">
         <div class="subpage-title-kicker"><span class="subpage-title-number">01</span><span class="subpage-title-en" lang="en">writing</span></div>
         <h1 id="writing-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">写</span>。</h1>
@@ -119,17 +128,17 @@
       </div>
     </header>
 
-    <div class="wr" style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
+    <div style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ tags }}" as="t" hint-placeholder-count="4">
         <button type="button" class="{{ t.cls }}" onClick="{{ t.onClick }}" aria-pressed="{{ t.pressed }}">{{ t.label }}</button>
       </sc-for>
     </div>
-    <div class="wr" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
+    <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ years }}" as="y" hint-placeholder-count="11">
         <button type="button" class="{{ y.cls }}" onClick="{{ y.onClick }}" aria-pressed="{{ y.pressed }}">{{ y.label }}</button>
       </sc-for>
     </div>
-    <div class="util wr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ totalN }} essays · 显示 {{ visibleN }} / {{ totalN }} 篇</div>
+    <div class="util" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ totalN }} essays · 显示 {{ visibleN }} / {{ totalN }} 篇</div>
 
     <div class="shelf-lang-row" style="margin-top:22px;display:flex;align-items:center;gap:10px">
       <div class="t-tabs" role="tablist" ref="{{ langTabsRef }}">
@@ -177,7 +186,7 @@
         <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="24">
           <a class="{{ p.prevClass }}" href="{{ p.href }}" aria-label="{{ p.readLabel }}">
             <div class="warm-cover" style="height:118px"><img data-content-src="{{ p.cover }}" data-content-srcset="{{ p.coverSrcset }}" sizes="236px" alt="" loading="lazy" decoding="async"></div>
-            <div style="background:#fff;border:1px solid var(--line);border-top:none;padding:10px 13px;flex:1">
+            <div style="background:var(--page);border:1px solid var(--line);border-top:none;padding:10px 13px;flex:1">
               <div class="display" style="font-size:18px">{{ p.zh }}</div>
               <div class="preview-title-en" lang="en">{{ p.en }}</div>
               <div class="util" style="font-size:10px;color:var(--pencil);margin-top:8px">{{ p.tagLine }}</div>
@@ -248,7 +257,7 @@
     </div>
     </sc-if>
 
-    <div class="util wr" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
+    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.01</div>
   </div>
 </div>
 </x-dc>

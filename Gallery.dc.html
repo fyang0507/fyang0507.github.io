@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,22 +8,48 @@
 <meta name="description" content="Fred Yang's photography archive, 2015–2025.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./site-nav.css?v=20260715-13">
-<script src="./support.js"></script>
-<script src="./content/photos.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./site-tokens.css">
+<link rel="stylesheet" href="./site-nav.css">
+<link rel="stylesheet" href="./pen.css">
+<link rel="stylesheet" href="./transitions.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="./motion.js"></script>
+<script src="./transitions.js"></script>
+<script src="./support.js"></script>
+<script src="./pen.js" defer></script>
+<script src="./pen-tier.js" defer></script>
+<script src="./site.js" defer></script>
+<script src="./content/photos.js" defer></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status" data-photo-count>frames · 2015–2025</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍" aria-current="page"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+    <div class="site-rule" aria-hidden="true"></div>
+  </header>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector("[data-photo-count]").textContent = `${(window.FY_PHOTOS || []).length} frames · 2015–2025`;
+});
+</script>
+<x-dc>
+<helmet>
 <style>
-  @font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
-  @font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
   @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  @font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  :root{color-scheme:light;--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6d6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
   a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
@@ -37,11 +63,9 @@
   .writing-statement-line[lang="en"]{font-family:"Caveat",cursive;letter-spacing:.01em}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @keyframes gRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   @keyframes birdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
   @keyframes frameTremble{0%,100%{transform:translate(0,0) rotate(0)}20%{transform:translate(-1px,.5px) rotate(-1deg)}40%{transform:translate(1px,-.5px) rotate(.85deg)}60%{transform:translate(-.8px,-.3px) rotate(-.7deg)}80%{transform:translate(.8px,.3px) rotate(.6deg)}}
   @keyframes garlandSettle{from{opacity:0;transform:translateY(12px) rotate(-1.2deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
-  .gr{animation:gRise .5s cubic-bezier(.2,.7,.2,1) both}
   .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
   .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
   .line-row{overflow-x:auto;overflow-y:hidden;display:flex;align-items:flex-start;gap:16px;scrollbar-width:thin;padding:10px 16px}
@@ -61,31 +85,16 @@
   .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:zoom-out}
   .lightbox-card img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 24px 70px rgba(0,0,0,.48)}
   .load-more-sticker{position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)}
-  @media (prefers-reduced-motion:reduce){.gr,.bird,.hanging-frame-motion{animation:none!important;opacity:1!important}}
+  @media (prefers-reduced-motion:reduce){.bird,.hanging-frame-motion{animation:none!important;opacity:1!important}}
   @media (max-width:860px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
   @media (max-width:480px){.load-more-sticker{transform:translateX(72px) rotate(6deg)}}
   @media (hover:none){.mobile-garland .hanging-frame-motion{animation:garlandSettle .48s cubic-bezier(.2,.7,.2,1) both}}
 </style>
 </helmet>
 
-<div data-screen-label="gallery" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px">
-
-  <header class="site-shell-header">
-    <div class="site-header-row gr">
-      <a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status">{{ totalN }} frames · 2015–2025</div>
-    </div>
-    <nav class="site-index gr" aria-label="Primary navigation" style="animation-delay:.08s">
-      <a class="site-home" href="index.html" aria-label="Home — 首页"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-label="Writing — 在写"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍" aria-current="page"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
-    </nav>
-  </header>
-
+<div data-screen-label="gallery" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px">
   <div style="width:min(1180px,100%);margin-top:40px">
-    <header class="subpage-intro gr" aria-labelledby="shooting-title">
+    <header class="subpage-intro" aria-labelledby="shooting-title">
       <div class="subpage-title-group">
         <div class="subpage-title-kicker"><span class="subpage-title-number">03</span><span class="subpage-title-en" lang="en">shooting</span></div>
         <h1 id="shooting-title" class="display subpage-title" lang="zh">在<span class="subpage-title-mark">拍</span>。</h1>
@@ -96,17 +105,17 @@
       </div>
     </header>
 
-    <div class="gr" style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px;animation-delay:.18s">
+    <div style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="8">
         <button type="button" class="{{ cat.cls }}" onClick="{{ cat.onClick }}" aria-pressed="{{ cat.pressed }}">{{ cat.label }}</button>
       </sc-for>
     </div>
-    <div class="gr" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
+    <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ years }}" as="yr" hint-placeholder-count="10">
         <button type="button" class="{{ yr.cls }}" onClick="{{ yr.onClick }}" aria-pressed="{{ yr.pressed }}">{{ yr.label }}</button>
       </sc-for>
     </div>
-    <div class="util gr" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ filteredN }} · 显示 {{ visibleN }} / {{ filteredN }} 张 · {{ totalN }} frames total</div>
+    <div class="util" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ filteredN }} · 显示 {{ visibleN }} / {{ filteredN }} 张 · {{ totalN }} frames total</div>
 
     <!-- The rack and garland layouts render the same photos. Only one is ever
          mounted: rendering both doubled every <img> in the DOM, so the browser
@@ -162,7 +171,7 @@
       </div>
     </sc-if>
 
-    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.02</div>
+    <div class="util" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
   </div>
 </div>
 

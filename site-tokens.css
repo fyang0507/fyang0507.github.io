@@ -1,0 +1,38 @@
+/* Site-wide tokens and first-paint base. Linked first on every page, so the static
+   header outside <x-dc> paints on paper, in its own faces, before support.js renders.
+   Page-specific tokens live in each page's own CSS; this file is frozen after L0. */
+@font-face{font-family:"MuyaoPleased";src:url("./fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"DingTalk JinBuTi";src:url("./fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Noto Sans SC";src:url("./fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+/* Noto Serif SC is declared per page: Reading loads the -text tier, every other page the -ui tier. */
+
+:root{
+  color-scheme:light;
+  /* paper and ink */
+  --paper:#FBF6EC;--paper2:#F3ECDD;--page:#FEFAEE;--slip:#FCF8EF;
+  --ink:#33302B;--soft:#6D6559;--pencil:#7A7063;   /* pencil is 4.5:1 on paper */
+  --line:#E4DAC7;--line-strong:#CFC1A9;
+  /* coral: identity and the pen's attention only, never small text */
+  --mark:#D9695A;--mark-deep:#A5453A;--pen:#D9695A;
+  /* chosen state: the wheat highlighter band and its edge */
+  --hl:#DCCF98;--hl-ink:#AD9650;
+  /* corkboard, bookshelf and washes */
+  --board:#EEE4CE;--plank:#EFE6D4;--lip:#E4D9C3;
+  --wash-blue:#DCE8E7;--wash-peach:#F0D9CD;--wash-wheat:#E9DFC5;
+  /* type, each with its CJK partner */
+  --disp:"Fraunces","DingTalk JinBuTi",serif;
+  --text:"Fraunces","Noto Serif SC",Georgia,serif;
+  --util:"IBM Plex Mono","Noto Sans SC",monospace;
+  --hand:"Caveat","MuyaoPleased",cursive;
+  /* two clocks: pen strokes and paper settling */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-pen:cubic-bezier(.55,.1,.25,1);
+  --ease-settle:cubic-bezier(.34,1.36,.5,1);
+  --t-micro:180ms;--t-move:520ms;
+}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);line-height:1.5}
+a{color:inherit;text-decoration:none}
+
+/* The subpage frame around the static header (it used to be the x-dc root's top padding). */
+.site-top{display:flex;flex-direction:column;align-items:center;padding:30px 4vw 0}
