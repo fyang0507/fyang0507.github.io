@@ -31,6 +31,8 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 
 /* ---- the lines ---- */
 .g-rack{margin-top:10px}
+/* A width change waits while a print is open; until the lines re-lay, the old ropes must not widen the page. */
+[data-mode="desk"] .g-rack{overflow-x:clip}
 .line-host + .line-host{margin-top:2px}
 .g-end{min-height:74px;display:grid;place-items:center;padding:8px 0;text-align:center;font:20px/1.25 var(--hand);color:var(--pencil)}
 .g-end > span{display:none}

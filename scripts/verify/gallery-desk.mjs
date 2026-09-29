@@ -185,12 +185,12 @@ export default async (page, ctx) => {
   const rid = await p.evaluate(() => document.activeElement.closest('.hang').dataset.id);
   await p.keyboard.press('Enter'); await p.waitForTimeout(700);
   await p.setViewportSize({ width: 1000, height: 900 }); await p.waitForTimeout(600);
-  const during = await p.evaluate(() => ({ open: !document.querySelector('.vw').hidden, inside: document.activeElement === document.querySelector('.vw') }));
+  const during = await p.evaluate(() => ({ open: !document.querySelector('.vw').hidden, inside: document.activeElement === document.querySelector('.vw'), wide: document.documentElement.scrollWidth <= innerWidth }));
   await p.keyboard.press('Escape');
   await p.waitForFunction(() => document.querySelector('.vw').hidden, null, { timeout: 6000 }).catch(() => {});
   await p.waitForTimeout(300);
   const after = await p.evaluate(() => ({ id: document.activeElement.closest && document.activeElement.closest('.hang') && document.activeElement.closest('.hang').dataset.id, per: document.querySelector('.line-host').querySelectorAll('.hang').length }));
-  R.ok('resizing with a print open keeps the viewer; the lines re-lay after it lands, focus kept', during.open && during.inside && after.id === rid && after.per === 5, JSON.stringify({ during, after }));
+  R.ok('resizing with a print open keeps the viewer (no overflow behind it); the lines re-lay after it lands, focus kept', during.open && during.inside && during.wide && after.id === rid && after.per === 5, JSON.stringify({ during, after }));
   await p.setViewportSize({ width: 1440, height: 900 }); await p.waitForTimeout(600); await settle(p);
 
   // ---- a reload in the same session: developed prints stay developed ----
