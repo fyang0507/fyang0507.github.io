@@ -22,7 +22,7 @@
 // a switch; an idle page makes no rAF calls after one; 0 console errors. With localStorage blocked (it throws): each
 // page sets one language (Reading one theme), both switches and the theme toggle work, 0 errors. WebKit, at 1440 and
 // 390: a cold load with
-// fy-lang=en fits every English title (expected to fail until mounting waits for the stylesheets), both switches
+// fy-lang=en fits every English title (two, in fresh contexts), both switches
 // retitle and fit every spine, the book in your hand carries both titles, 0 console errors. Exit code 1 on any failure.
 import { createRequire } from 'module';
 
@@ -383,7 +383,7 @@ export default async (page, ctx) => {
   const req = createRequire(process.argv[1]), pw = await import(req.resolve('playwright-core'));
   const wk = await (pw.webkit || pw.default.webkit).launch({ headless: true });
   for (const [w, h] of [[1440, 900], [390, 844]]) {
-    // the mount can run before writing.css applies (a race): two cold loads, each in a fresh context, must both fit
+    // a cold load fits before the faces land, and WebKit fires no loadingdone: two, each in a fresh context, must fit
     const werr = [], cold = [];
     let wc, wp;
     for (let run = 0; run < 2; run++) {
@@ -395,7 +395,7 @@ export default async (page, ctx) => {
       const wb = badSpines(await spines(wp), 'en'), lg = (await state(wp)).lang;
       cold.push(lg !== 'en' ? 'lang ' + lg : wb.length ? wb.map((b) => b.text.slice(0, 20) + ' @' + b.fs.toFixed(1)).join(' · ') : 'ok');
     }
-    check(ctx, `WebKit ${w}: two cold loads with fy-lang=en fit every English title (EXPECTED TO FAIL, as a race, until mounting waits for the stylesheets)`, cold.every((x) => x === 'ok'), cold.join(' | '));
+    check(ctx, `WebKit ${w}: two cold loads with fy-lang=en fit every English title (the mount waits for the stylesheets, the fit for the faces)`, cold.every((x) => x === 'ok'), cold.join(' | '));
     let wl, wb;
     await wp.click('.lang-b[data-lang=zh]'); await sleep(wp, 500);
     wl = await spines(wp); wb = badSpines(wl, 'zh');
