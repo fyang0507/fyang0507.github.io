@@ -1,6 +1,6 @@
 /* lib/writing/writing.css — the Writing page: the intro
    statement, the bookcase (paper boxes under one camera, planks with lips, contact stipple, the held book's
-   cover, obi and title page), and the index beside it (readout, fore-edge tabs, year ledger).
+   cover, obi and title page), and the index beside it (the language switch, readout, fore-edge tabs, year ledger).
    Flat tones and ink edges, no light source; the pen (pen.css) is the only highlighter, and nothing chosen is
    coral at rest. Ink hairlines are color-mix of --ink, so the only literals are the spine tones below. */
 
@@ -26,12 +26,19 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 
 /* ---- the page body: the bookcase takes the width, the index stands beside it and stays in view ---- */
 .wr{container:wr/inline-size;position:relative;--stick:16px;margin-top:clamp(28px,3.4vw,40px)}
-.wr-body{display:grid;grid-template-columns:minmax(0,1fr) 312px;gap:30px;align-items:stretch}
-.wr-case{position:relative;min-width:0}
-.wr-index{position:relative;display:flex;flex-direction:column;min-width:0}
+/* the language switch heads the index column in a row of its own, so the case and the sticky index still start
+   level and the whole ledger fits beside the case */
+.wr-body{display:grid;grid-template-columns:minmax(0,1fr) 312px;gap:14px 30px;align-items:stretch}
+.wr-case{position:relative;min-width:0;grid-area:2/1}
+.wr-index{position:relative;display:flex;flex-direction:column;min-width:0;grid-area:2/2}
 .wr:not(.is-phone) .wr-index{position:sticky;top:var(--stick);align-self:start}
 .wr.is-phone .wr-body{display:flex;flex-direction:column;gap:0}
 .wr.is-phone .wr-case{margin-top:4px}
+/* set like the ledger's head: label left, choices right */
+.wr-lang{display:flex;align-items:baseline;justify-content:space-between;gap:10px;grid-area:1/2}
+.wr.is-phone .wr-lang{margin-bottom:10px}
+.lang-sw{display:flex;align-items:baseline;gap:5px}
+.lang-dot{font:11.5px/1 var(--util);color:var(--pencil)}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* ---- the camera and its world ---- */
@@ -48,8 +55,11 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 /* ---- a book: five paper faces (--sk, the spine type scale, is set on .sh-view by case.js) ---- */
 .book{--bw:1.5px}
 .f-spine > .bk-spine{position:absolute;inset:0;background:var(--tone);border:var(--bw) solid var(--ink);overflow:hidden}
-.bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);max-height:85%;white-space:nowrap;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi",serif;font-size:calc(var(--fs) * var(--sk));line-height:1.25;letter-spacing:.03em;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
-.series .bk-title{color:var(--tone-s-ink);max-height:70%}
+/* the title in the shelf's language: Chinese upright in a column, Latin turned to read top to bottom, as a spine
+   is set; case.js fits each one to its spine (size, and one line or two) */
+.bk-title{position:absolute;top:7%;left:50%;transform:translateX(-50%);white-space:nowrap;text-wrap:balance;writing-mode:vertical-rl;text-orientation:mixed;font-family:"DingTalk JinBuTi",serif;font-size:calc(11px * var(--sk));line-height:1.25;letter-spacing:.03em;color:var(--ink)}
+.bk-title[lang=en]{text-orientation:sideways;font-family:"Fraunces",serif;font-weight:500;line-height:1.15;letter-spacing:.01em}
+.series .bk-title{color:var(--tone-s-ink)}
 /* the series number is a paper library label; coral stays on 写 */
 .bk-badge{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font:500 calc(9px * var(--sk))/1 "IBM Plex Mono",monospace;padding:3px 3px 2px;border-radius:1px;letter-spacing:.02em}
 .bk-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid color-mix(in srgb,var(--ink) 26%,transparent)}
@@ -103,8 +113,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .cv-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
 .obi{position:absolute;left:0;right:0;bottom:0;min-height:47%;display:flex;flex-direction:column;align-items:flex-start;background:var(--slip);border-top:1.4px solid var(--ink);padding:14px 13px 11px 14px;text-align:left}
 .obi::after{content:"";position:absolute;right:5px;top:0;bottom:0;border-right:1px solid color-mix(in srgb,var(--ink) 22%,transparent)}
-.obi-zh{position:relative;display:inline-block;max-width:100%;font:400 17px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
-.obi-en{margin-top:3px;font:12px/1.25 var(--text);color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* both titles: the shelf's language first (-t), the other under it (-s); Chinese titles only ever in DingTalk,
+   whose subset carries every post title (scripts/generate-fonts.py) */
+.obi-t{position:relative;display:inline-block;max-width:100%;font:400 17px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
+.obi-t[lang=en]{font-family:"Fraunces",serif;font-weight:500;line-height:1.2;letter-spacing:0}
+.obi-s{margin-top:3px;font:12px/1.25 var(--text);color:var(--soft)}
+.obi-s[lang=zh]{font:12.5px/1.35 "DingTalk JinBuTi",serif;letter-spacing:.02em}
+.obi-s[hidden],.p1-s[hidden]{display:none}
 .obi-meta{margin-top:9px;font:9.5px/1.6 var(--util);letter-spacing:.03em;color:var(--pencil)}
 .obi-meta .ml{display:block}
 .obi-meta b{white-space:nowrap;font-weight:400}
@@ -116,8 +131,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .p1{position:absolute;inset:0;transform:translateZ(-1.5px);background:var(--page);border:1px solid color-mix(in srgb,var(--ink) 55%,transparent);border-left-width:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
 .p1 .cv{display:flex;flex-direction:column;align-items:flex-start;padding:17% 11% 11%}
 .p1-head{font:8.5px/1 var(--util);letter-spacing:.14em;color:var(--pencil)}
-.p1-zh{position:relative;margin-top:40px;max-width:76%;font:400 22px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
-.p1-en{margin-top:7px;font:13px/1.3 var(--text);color:var(--soft)}
+.p1-t{position:relative;margin-top:40px;max-width:76%;font:400 22px/1.28 "DingTalk JinBuTi",serif;letter-spacing:.02em;color:var(--ink)}
+.p1-t[lang=en]{font-family:"Fraunces",serif;font-weight:500;line-height:1.2;letter-spacing:-.01em}
+.p1-s{margin-top:7px;font:13px/1.3 var(--text);color:var(--soft)}
+.p1-s[lang=zh]{font:13.5px/1.4 "DingTalk JinBuTi",serif;letter-spacing:.02em}
 .p1-rule{display:block;width:34px;margin-top:16px;border-top:1.5px solid var(--ink)}
 .p1-foot{margin-top:auto;font:8.5px/1.4 var(--util);letter-spacing:.08em;color:var(--pencil)}
 
@@ -182,9 +199,9 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 /* ---- the index: the year ledger (rows at --rh, 30 px, so an underline never hangs into the next year) ---- */
 .ix-years{margin-top:auto;padding-top:14px}
 .lg-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
-.lg-all{position:relative;padding:5px 2px;font:11.5px/1 var(--util);letter-spacing:.03em;color:var(--soft);white-space:nowrap}
-.lg-all span{position:relative}
-.lg-all[aria-pressed=true]{color:var(--ink);cursor:default}
+.lg-all,.lang-b{position:relative;padding:5px 2px;font:11.5px/1 var(--util);letter-spacing:.03em;color:var(--soft);white-space:nowrap}
+.lg-all span,.lang-t{position:relative}
+.lg-all[aria-pressed=true],.lang-b[aria-pressed=true]{color:var(--ink);cursor:default}
 .lg-track{position:relative;user-select:none;-webkit-user-select:none;cursor:pointer}
 .lg-ink{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .lg-rule{stroke:var(--line);stroke-width:1}

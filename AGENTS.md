@@ -105,7 +105,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - `fy-flower-<id>`: Building's flower has been applied;
   - `fy-gallery-dev`: developed prints;
   - `fy-about-flipped`, `fy-about-putback`: retire About's hand note.
-  - localStorage holds only Reading's `fy-lang` and `fy-theme`. Add no other per-visitor memory across visits.
+  - localStorage holds only `fy-lang` (the CN/EN switch Writing and Reading share) and Reading's `fy-theme`. Add no other per-visitor memory across visits.
 
 ## Editing conventions
 
@@ -139,7 +139,10 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - Load generated manifests, stylesheets and modules unversioned (`./content/posts-index.js`, `./lib/shared/site-nav.css`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
 - Do not hand-edit `support.js`; it is generated runtime code.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
-- Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not. `Reading.dc.html` is the only page with a CN/EN switch, using `.en` / `.zh` variants and the `fy-lang` preference in `localStorage`.
+- Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not.
+- `Writing.dc.html` and `Reading.dc.html` have a CN/EN switch. Both resolve the language as `?lang=`, else `fy-lang` in `localStorage`, else `zh`, and a switch writes `fy-lang`, so a choice made on either page is the one the other shows.
+  - Reading swaps its `.en` / `.zh` variants.
+  - Writing (`lib/writing/lang.js`) titles its spines in the chosen language, each fitted to its spine; a book's size and place never depend on the language. The book in your hand shows both titles, the chosen one first, and every book link carries `&lang=`.
 - Treat newlines in `content/posts/*.md` literally: one source newline becomes one rendered line break and repeated newlines remain repeated line breaks. Do not use Markdown trailing spaces as a separate hard-break convention.
 - Gateway pages are light-only. `Reading.dc.html` is the only page with dark mode, which drops its hero's halftone, and it may use paired light/dark navigation artwork; do not add theme switching or dark artwork to other pages.
 - Keep interactive illustration hotspots as semantic anchors with an `href` and an accessible `aria-label`. Their position is controlled by inline percentage geometry.
