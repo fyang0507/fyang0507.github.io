@@ -9,7 +9,9 @@
 // leave  Gallery → home: every object ends lower than it starts (gravity); settled ≤ 1.1 s; frozen at its end, each
 //        object is drawn where the desk lays it out (≤ 1 px), so nothing jumps when the transition hands over
 // tab    Writing → Gallery: the tabmark rides a spring from tab to tab; the relay hops book, laptop, camera; from a
-//        page scrolled 40 px, the header strip, identity and rule ride down together and no object jumps
+//        page scrolled 40 px, the header strip, identity and rule ride down together and no object jumps; into each
+//        of the four pages, every animation transitions-tab.js makes changes only transform and opacity, so the
+//        compositor runs it whatever the page is doing on the main thread
 // none   reduced motion, same tab (Writing ↔ Reading), 404, direct load and reload get no transition; fy-vt is
 //        consumed every time. Plus: no console errors, no horizontal overflow after each move.
 import { ORIGIN, hook, seek, xy, check, drawn, deskBoxes, gap } from './vt-lib.mjs';
@@ -117,6 +119,15 @@ export default async (page, ctx) => {
     const jump = Math.max(...OBJS.map((n) => { const y = ys(n); return Math.max(0, ...y.slice(1).map((v, i) => Math.abs(v - y[i]))); }));
     check(res, T('tab · from a scrolled page the header rides down as one strip, no object jumps'), r.kind === 'tab' && lag.every((l) => l.length > 2) && lag[0][0] < -30 && apart < 1.5 && jump < 12,
       { start: lag[0].length ? +lag[0][0].toFixed(1) : null, apart: +apart.toFixed(2), jump: +jump.toFixed(1) });
+
+    // compositor only: the page's answer (and the relay, the tab) never animates a main-thread property
+    for (const [from, tab] of [['Writing', 'shooting'], ['Gallery', 'writing'], ['Building', 'about'], ['About', 'building']]) {
+      await page.goto(B + from + '.dc.html'); await page.waitForTimeout(900);
+      r = await arrive(page, await clickVisible(page, '.site-tab--' + tab));
+      const bad = r.anims.filter((a) => !a.ua && a.moving.some((p) => p !== 'transform' && p !== 'opacity')).map((a) => a.pe + ': ' + a.moving.join(','));
+      const mine = r.anims.filter((a) => !a.ua).length;
+      check(res, T(`tab · into ${tab}: every animation moves only transform or opacity`), r.kind === 'tab' && mine > 3 && !bad.length, bad.length ? bad : mine + ' animations');
+    }
 
     // no transition: same tab, 404, direct load, reload
     await page.goto(B + 'Writing.dc.html'); await page.waitForTimeout(500);

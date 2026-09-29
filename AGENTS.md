@@ -78,6 +78,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - `site-rule` and `tabmark`
   - home's old/new-only groups: `desk-table` (`.desk-plate`), `desk-edge`, `desk-mug`, `desk-plant`, `desk-bird`, `desk-notes`
   - `rule-live`, the transient line transitions.js draws
+  - `tab-edge`, `tab-caret`, `tab-flash`, `tab-kacha`: the marks a page answers a tab move with (`.fy-tab-*`, added by transitions-tab.js for that one move and removed when it ends)
 - These moves get no view transition: same-tab moves (Writing ↔ Reading), other pages, and reduced motion. Engines without cross-document view transitions keep a hard cut.
 
 ## Motion, pen and colour
@@ -86,6 +87,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Every motion has a cause, and loops sleep when nothing moves (`Motion.Loop`).
   - Do not add ambient loops, gradients, gloss, shimmer, glass blur, parallax or fade-and-rise entrances.
   - The home opener is the one sanctioned register break.
+- **Transitions run on the compositor.** A view-transition animation changes only transform and opacity; a clip may be set but holds still. The new page mounts while its move plays, and anything on the main thread (a changing clip-path, width or height, `composite: 'add'`, SVG redrawn per frame) stops for as long as the page is busy. `vt-moves.mjs` checks every tab move; see `design/2026-09-tab-moves/`.
 - **Reduced motion** goes through `Motion.reduced()` / `Motion.onReduced()`. Turning it on finishes running tweens, and `transitions.css` switches view transitions off.
 - **The pen is the only highlighter.** Wire states with `Tier.wire`:
   - hover: a coral underline hung from the text's baseline (baseline + max(3 px, 0.18 em)), level, with a blunt end;

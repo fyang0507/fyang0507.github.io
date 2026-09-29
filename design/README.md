@@ -13,6 +13,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 | Folder | What it covers | Start here |
 |---|---|---|
 | [`2026-09-motion/`](2026-09-motion/) | FE design audit and motion/interaction redesign: transitions, pen states, the Writing bookcase, the Building corkboard, the Gallery clotheslines, the About specimen card, the Reading hero and footnotes, the home opener. Seven rounds of boards, shipped in the `redesign/motion-revamp` PR. | <http://127.0.0.1:4173/design/2026-09-motion/> (audit and board index), then `HANDOFF.md` (every decision) |
+| [`2026-09-tab-moves/`](2026-09-tab-moves/) | Page → page moves: three candidates compared on the real pages, Fred's pick (each page arrives the way its object moves), and the compositor-only rule that made it smooth. | `README.md` |
 
 ## Conventions
 

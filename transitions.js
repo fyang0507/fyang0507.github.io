@@ -435,11 +435,11 @@
   }
   /* ---- the events ---- */
   // what transitions-tab.js works with: the matrices, the browser's boxes and animations, the row, the landing
-  var V = { M: M, ends: ends, box: box, kill: kill, pa: pa, css: css, mul: mul, tr: tr, rot: rot, sc: sc, f2: f2, ORDER: ORDER, OBJ: OBJ, TAB: TAB, here: HERE, land: land };
+  var V = { M: M, ends: ends, kill: kill, pa: pa, css: css, mul: mul, tr: tr, rot: rot, ORDER: ORDER, OBJ: OBJ, TAB: TAB, here: HERE, land: land };
   var cur = null, lastHref = null, clickT = 0;
   // the band may go on: at once when nothing was carried in, else once the tab has landed (data-vt-landed stays)
   function land(vt) { if (!html.hasAttribute('data-vt-landed')) { html.setAttribute('data-vt-landed', ''); document.dispatchEvent(new CustomEvent('fy:landed', { detail: { vt: !!vt } })); } }
-  function done() { html.removeAttribute('data-vt'); land(true); var s = document.querySelector('.fy-rule-live'); if (s) s.remove(); cur = null; }
+  function done() { html.removeAttribute('data-vt'); land(true); [].forEach.call(document.querySelectorAll('.fy-rule-live, .fy-live'), function (s) { s.remove(); }); cur = null; }
   function liveLine() {
     if (!document.body) return null;
     var NS = 'http://www.w3.org/2000/svg', s = document.createElementNS(NS, 'svg');
@@ -470,6 +470,7 @@
     cur = vt; html.setAttribute('data-vt', kind);
     if (kind === 'leave') land(false);
     var svg = kind === 'tab' ? null : liveLine();
+    if (kind === 'tab' && window.FYTab) FYTab.prepare(HERE);   // the marks the page answers with, before the capture
     vt.finished.then(done, done);
     vt.ready.then(function () {
       try { var A = uaAnims(); if (kind === 'tab') { if (window.FYTab) FYTab.run(V, A, from); else land(true); } else if (kind === 'enter') enter(A, rec, svg); else leave(A, from, svg); }

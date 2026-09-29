@@ -1,0 +1,141 @@
+diff --git a/transitions-tab.js b/transitions-tab.js
+--- a/transitions-tab.js
++++ b/transitions-tab.js
+@@ -9,7 +9,8 @@
+   // held poses at 12 fps (the hand's clock): lift px, lean deg × the direction the tab is going
+   var HOP = [[0, 0], [-4, 2], [-8, 3], [-5, 1], [0, 0]], HOP_BIG = [[0, 0], [-6, -2], [-13, 2], [-8, 3], [0, 0]];
+ 
+-  function run(V, A, from) {
++  function run(V, A, from, live) {
++    svg = live;
+     var M = V.M, dur = M.springEase.duration(150, 21), ease = M.springEase(150, 21), h = V.ends(A, 'site-head');
+     var ride = function (name) {
+       var g = V.ends(A, name);
+@@ -24,8 +25,96 @@
+     setTimeout(function () { V.land(true); }, 40 + dur);
+     var a = V.ORDER.indexOf(V.TAB[from]), b = V.ORDER.indexOf(V.TAB[V.here]), dir = b > a ? 1 : -1;
+     for (var i = a, n = 0; ; i += dir, n++) { hop(V, A, V.OBJ[V.ORDER[i]], n * 65, i === b, dir); if (i === b) break; }
++    var lab = variant(), r = V.ends(A, 'site-rule');
++    if (SWAP[lab]) SWAP[lab](V, A, { dir: dir, to: V.TAB[V.here], svg: svg, y0: r ? r.z0[5] + r.h0 * r.z0[3] / 2 : 0, y1: r ? r.z1[5] + r.h1 * r.z1[3] / 2 : 0 });
+   }
+ 
++  /* ---- LAB · page swaps for triage (local only): ?tab=0|A|B|C, kept for the session, and a switcher ----
++     Delete the losers, this switch and the tab-lab name once Fred picks. */
++  var LAB = [['0', 'now · the paper swap'], ['A', 'A · hinge'], ['B', 'B · pull the sheet'], ['C', 'C · the object answers']];
++  var svg = null;
++  function variant() {
++    try { var q = new URLSearchParams(location.search).get('tab'); if (q && LAB.some(function (l) { return l[0] === q; })) sessionStorage.setItem('fy-tab-lab', q); return sessionStorage.getItem('fy-tab-lab') || '0'; } catch (e) { return '0'; }
++  }
++  function switcher() {
++    if (!variant() || !sessionStorage.getItem('fy-tab-lab') || !document.body) return;
++    var p = document.createElement('div'); p.className = 'fy-tab-lab';
++    p.innerHTML = '<b>tab move</b>' + LAB.map(function (l) { return '<button type="button" data-v="' + l[0] + '"' + (l[0] === variant() ? ' aria-pressed="true"' : '') + '>' + l[1] + '</button>'; }).join('');
++    p.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; sessionStorage.setItem('fy-tab-lab', b.dataset.v); [].forEach.call(p.querySelectorAll('button'), function (x) { x.setAttribute('aria-pressed', x === b); }); });
++    document.body.appendChild(p);
++  }
++  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', switcher); else switcher();
++
++  var INK = '#33302B', PAPER = '#FBF6EC';
++  function el(tag, attrs, parent) { var e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return parent.appendChild(e); }
++  // run fn(ms) every frame on the transition's own clock (an animation of the page swap) until dur
++  function every(anim, dur, fn) { (function f() { if (!anim || anim.playState === 'idle') return; var t = Math.min(dur, +anim.currentTime || 0); fn(t); if (t < dur) requestAnimationFrame(f); })(); }
++  var below = function (y) { return 'inset(' + y.toFixed(1) + 'px 0 0 0)'; };
++  var SWAP = {
++    // A · the page hangs from the rule: the one you leave tips on that line and goes; the next swings in on a spring
++    A: function (V, A, o) {
++      var P = 'perspective(' + Math.round(Math.max(innerWidth, innerHeight) * 1.5) + 'px) ', at = function (y) { return '50% ' + y.toFixed(1) + 'px'; };
++      V.kill(A, 'root', ['old', 'new']);
++      V.pa('old', 'root', [{ transform: P + 'rotateX(0deg)', transformOrigin: at(o.y0), clipPath: below(o.y0), opacity: 1 }, { transform: P + 'rotateX(' + 62 * o.dir + 'deg)', transformOrigin: at(o.y0), clipPath: below(o.y0), opacity: 0 }], { duration: 230, easing: 'cubic-bezier(.55,0,.85,.35)' });
++      V.pa('new', 'root', [{ transform: P + 'rotateX(' + -38 * o.dir + 'deg)', transformOrigin: at(o.y1), clipPath: below(o.y1), opacity: 0 }, { offset: .12, opacity: 1 }, { transform: P + 'rotateX(0deg)', transformOrigin: at(o.y1), clipPath: below(o.y1), opacity: 1 }], { duration: V.M.springEase.duration(190, 17), delay: 150, easing: V.M.springEase(190, 17) });
++    },
++    // B · the next page is already underneath; the one you leave is pulled off toward the tab you chose, the top
++    // sheet of a pad: it lifts at the near edge, then goes, accelerating, turning a little about its far corner
++    B: function (V, A, o) {
++      var W = innerWidth, s = o.dir, K = [], N = 30;
++      for (var i = 0; i <= N; i++) {
++        var t = i / N, e = .3 * t + .7 * t * t * t, lift = Math.sin(Math.min(1, t * 3) * Math.PI / 2) * (1 - t) * 9;
++        K.push({ offset: t, transform: 'translate(' + (s * e * W * 1.2).toFixed(1) + 'px,' + (e * 30 - lift).toFixed(1) + 'px) rotate(' + (s * (e * 7 + Math.min(1, t * 5) * .9)).toFixed(2) + 'deg)',
++          transformOrigin: (s > 0 ? '0% ' : '100% ') + '100%', clipPath: below(o.y0), outline: '1.5px solid rgba(51,48,43,' + Math.min(1, t * 8).toFixed(2) + ')', outlineOffset: '-1.5px', zIndex: 1 });
++      }
++      V.kill(A, 'root', ['old', 'new']);
++      V.pa('old', 'root', K, { duration: 430, easing: 'linear' });
++    },
++    // C · the object answers: the page arrives the way its object moves on the desk
++    C: function (V, A, o) {
++      V.kill(A, 'root', ['old', 'new']);
++      ANSWER[o.to](V, A, o);
++    }
++  };
++  var ANSWER = {
++    // the book turns a page: the next one is laid over from the right, its edge a drawn line
++    writing: function (V, A, o) {
++      var W = innerWidth, H = innerHeight, d = 460, line = el('path', { fill: 'none', stroke: INK, 'stroke-width': 1.6, 'stroke-linecap': 'round' }, o.svg);
++      var band = el('rect', { y: o.y1, height: H - o.y1, width: 14, fill: 'rgba(51,48,43,.06)' }, o.svg), ez = V.M.cubic(.3, 0, .15, 1);
++      var an = V.pa('new', 'root', [{ clipPath: 'inset(' + o.y1 + 'px 0 0 ' + W + 'px)' }, { clipPath: 'inset(' + o.y1 + 'px 0 0 0px)' }], { duration: d, easing: 'cubic-bezier(.3,0,.15,1)' });
++      every(an, d, function (t) {
++        var x = W * (1 - ez(t / d)), bow = Math.sin(Math.PI * t / d) * 18;
++        line.setAttribute('d', 'M' + x.toFixed(1) + ' ' + o.y1 + ' Q' + (x - bow).toFixed(1) + ' ' + ((o.y1 + H) / 2).toFixed(1) + ' ' + x.toFixed(1) + ' ' + H);
++        band.setAttribute('x', (x - 14).toFixed(1)); line.style.opacity = band.style.opacity = t >= d ? 0 : 1;
++      });
++    },
++    // the laptop prints the page: line by line from the rule down, on held frames, a caret at the line being set
++    building: function (V, A, o) {
++      var H = innerHeight, n = 7, step = 62, d = n * step, caret = el('rect', { width: 11, height: 20, fill: INK, x: Math.max(18, innerWidth * .04) }, o.svg);
++      var K = []; for (var i = 0; i <= n; i++) K.push({ offset: i / n, clipPath: 'inset(' + o.y1 + 'px 0 ' + ((H - o.y1) * (1 - i / n)).toFixed(1) + 'px 0)' });
++      var an = V.pa('new', 'root', V.M.held(K), { duration: d });
++      every(an, d + 90, function (t) { var i = Math.min(n, Math.floor(t / step) + 1); caret.setAttribute('y', (o.y1 + (H - o.y1) * i / n - 24).toFixed(1)); caret.style.opacity = t >= d ? 0 : (Math.floor(t / 90) % 2 ? .35 : 1); });
++    },
++    // the camera fires: one flash at the lens in the nav, 咔嚓, and the page opens out of the lens
++    shooting: function (V, A, o) {
++      var g = V.ends(A, 'obj-camera'), W = innerWidth, H = innerHeight, cx = W - 60, cy = o.y1;
++      if (g) { cx = g.z1[0] * g.w1 * .5 + g.z1[2] * g.h1 * .55 + g.z1[4]; cy = g.z1[1] * g.w1 * .5 + g.z1[3] * g.h1 * .55 + g.z1[5]; }
++      var R = Math.max(Math.hypot(cx, cy - o.y1), Math.hypot(W - cx, H - cy), Math.hypot(cx, H - cy)), d = 520;
++      var an = V.pa('new', 'root', [{ clipPath: 'circle(0px at ' + cx.toFixed(1) + 'px ' + cy.toFixed(1) + 'px)' }, { clipPath: 'circle(' + R.toFixed(1) + 'px at ' + cx.toFixed(1) + 'px ' + cy.toFixed(1) + 'px)' }], { duration: d, delay: 60, easing: 'cubic-bezier(.2,.6,.2,1)' });
++      var flash = el('circle', { cx: cx, cy: cy, r: 0, fill: '#FFFDF6', stroke: INK, 'stroke-width': 1.2 }, o.svg);
++      var kacha = el('text', { x: cx - 64, y: cy + 58, 'font-family': '"DingTalk JinBuTi", serif', 'font-size': 22, fill: INK }, o.svg); kacha.textContent = '咔嚓 click!';
++      every(an, d + 60, function (t) {
++        var f = Math.min(1, t / 90); flash.setAttribute('r', (f * 46).toFixed(1)); flash.style.opacity = t < 90 ? 1 : Math.max(0, 1 - (t - 90) / 160);
++        kacha.style.opacity = t > 40 && t < 420 ? 1 : 0; kacha.setAttribute('transform', 'rotate(-4 ' + cx + ' ' + cy + ') translate(0 ' + (-Math.min(1, t / 420) * 10).toFixed(1) + ')');
++      });
++    },
++    // the portrait: the specimen card turns over where it is, and the next page is its other face
++    about: function (V, A, o) {
++      var P = 'perspective(' + Math.round(Math.max(innerWidth, innerHeight) * 1.6) + 'px) ', at = '50% ' + ((o.y0 + innerHeight) / 2).toFixed(1) + 'px';
++      V.pa('old', 'root', [{ transform: P + 'rotateY(0deg)', transformOrigin: at, clipPath: below(o.y0) }, { transform: P + 'rotateY(' + -90 * o.dir + 'deg)', transformOrigin: at, clipPath: below(o.y0) }], { duration: 210, easing: 'cubic-bezier(.5,0,1,.6)' });
++      V.pa('new', 'root', [{ transform: P + 'rotateY(' + 90 * o.dir + 'deg)', transformOrigin: at, clipPath: below(o.y1), opacity: 0 }, { offset: .01, opacity: 1 }, { transform: P + 'rotateY(0deg)', transformOrigin: at, clipPath: below(o.y1), opacity: 1 }], { duration: V.M.springEase.duration(210, 20), delay: 210, easing: V.M.springEase(210, 20) });
++    }
++  };
+   // the relay: each object hops on held frames at 12 fps, leaning the way the tab is going. The poses are added
+   // to wherever the group is (composite add), so an object still riding the header down carries its hop with it.
+   // That base keeps the group's own origin, its centre, so the pivot (the drawing's foot) is measured from there.
+diff --git a/transitions.js b/transitions.js
+--- a/transitions.js
++++ b/transitions.js
+@@ -469,10 +469,10 @@
+     if (!vt || !kind) { if (vt) vt.skipTransition(); land(false); return; }
+     cur = vt; html.setAttribute('data-vt', kind);
+     if (kind === 'leave') land(false);
+-    var svg = kind === 'tab' ? null : liveLine();
++    var svg = liveLine();   // LAB: tab moves draw on it too (the object answers)
+     vt.finished.then(done, done);
+     vt.ready.then(function () {
+-      try { var A = uaAnims(); if (kind === 'tab') { if (window.FYTab) FYTab.run(V, A, from); else land(true); } else if (kind === 'enter') enter(A, rec, svg); else leave(A, from, svg); }
++      try { var A = uaAnims(); if (kind === 'tab') { if (window.FYTab) FYTab.run(V, A, from, svg); else land(true); } else if (kind === 'enter') enter(A, rec, svg); else leave(A, from, svg); }
+       catch (err) { vt.skipTransition(); setTimeout(function () { throw err; }); }
+     }, done);
+   }
+diff --git a/transitions.css b/transitions.css
+--- a/transitions.css
++++ b/transitions.css
+@@ -61,3 +61,11 @@
+ 
+ /* ---- page → home: the rule and the tab are handed to the live line and to transitions.js ---- */
+ html[data-vt=leave]::view-transition-old(site-rule){animation:none;opacity:0}
++
++/* LAB (local triage of the page swaps, transitions-tab.js; delete with the losers) */
++.fy-tab-lab{view-transition-name:tab-lab;position:fixed;left:12px;bottom:12px;z-index:9999;display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:calc(100vw - 24px);padding:8px 10px;border:1.5px solid var(--ink);border-radius:5px;background:var(--paper);font:12px/1.2 "IBM Plex Mono",monospace;color:var(--ink)}
++.fy-tab-lab b{font-weight:500;margin-right:4px}
++.fy-tab-lab button{font:inherit;color:inherit;background:none;border:1px solid var(--line,#E4DAC7);border-radius:3px;padding:4px 7px;cursor:pointer}
++.fy-tab-lab button[aria-pressed=true]{background:var(--hl);border-color:var(--hl-ink)}
++::view-transition-group(tab-lab),::view-transition-old(tab-lab),::view-transition-new(tab-lab){animation:none}
++::view-transition-old(tab-lab){display:none}

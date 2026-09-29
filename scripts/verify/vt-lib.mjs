@@ -29,7 +29,13 @@ export async function hook(context, names = []) {
         rec.ready = true; rec.readyAt = performance.now(); rec.kind = html.getAttribute('data-vt');
         const all = document.getAnimations();
         rec.anims = all.filter(a => a.effect && a.effect.target === html && a.effect.pseudoElement)
-          .map(a => ({ pe: a.effect.pseudoElement, ua: !!a.animationName, n: a.effect.getKeyframes().length, dur: a.effect.getComputedTiming().endTime, state: a.playState }));
+          .map(a => {
+            // the properties whose values actually change across the keyframes (a missing value is interpolated)
+            const k = a.effect.getKeyframes(), skip = new Set(['offset', 'computedOffset', 'easing', 'composite']), props = new Set();
+            k.forEach(f => Object.keys(f).forEach(p => { if (!skip.has(p)) props.add(p); }));
+            const moving = [...props].filter(p => new Set(k.map(f => f[p]).filter(v => v !== undefined && v !== null)).size > 1);
+            return { pe: a.effect.pseudoElement, ua: !!a.animationName, n: k.length, dur: a.effect.getComputedTiming().endTime, state: a.playState, moving };
+          });
         if (rec.freeze) { all.forEach(a => a.pause()); return; }
         (function frame() {
           const t = performance.now() - rec.readyAt, s = { t };
