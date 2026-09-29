@@ -4,6 +4,8 @@ Round 1 of a multi-stage design for the Building section (2026-09-29): what a ca
 
 Execution mode (fred-visual-design-guide): multi-stage. These are the candidates; nothing is refined past the point of choosing.
 
+**Decided 2026-09-29: Fred picked C 档案, the dossier, and no WIP anywhere on the live site.** The record is `HANDOFF.md`; the port is `PORT-PLAN.md`. This file stays as round 1 was presented.
+
 ## How to look
 
 ```sh
@@ -222,9 +224,9 @@ Whichever candidate Fred picks, the port is the same underneath, and every mock 
 - **Content as each source says it**, including the 2026—now / 2025—now mismatch and the overview's stale "placeholders" line.
 - **B retires unpin.** It is the candidate's argument, not a recommendation; A and C keep every settled mechanic.
 
-## Live references (repoint after the root move)
+## Live references
 
-Only two files reference the root's shared CSS and JS, so the move to `lib/shared/` is a two-file edit: `00-live.css` (`site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`) and `00-live.js` (`motion.js`, `pen.js`, `pen-tier.js`, `site.js`). Everything else reaches paths that aren't moving: `lib/building/{cards,physics,flower}.js` and `building.css`, `content/building-projects.js`, `assets/…` (header stickers, `wip-pusher-mask.png`, `assets/njjoe/casebook.js` and its sticker-forge), `favicon.png`, and the live pages' links.
+Only two files reference the shared CSS and JS, so a move is a two-file edit: `00-live.css` (`site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`) and `00-live.js` (`motion.js`, `pen.js`, `pen-tier.js`, `site.js`). Both point at `lib/shared/` since the rebase onto `b085f70`. Everything else reaches paths that aren't moving: `lib/building/{cards,physics,flower}.js` and `building.css`, `content/building-projects.js`, `assets/…` (header stickers, `wip-pusher-mask.png`, `assets/njjoe/casebook.js` and its sticker-forge), `favicon.png`, and the live pages' links.
 
 ## Files
 
