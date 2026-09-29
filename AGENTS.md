@@ -5,12 +5,13 @@
 This is a dependency-free static personal website exported as standalone `.dc.html` pages. There is no package manager, build step, or framework source in this repository.
 
 - Entry page: `index.html` (static markup; no `<x-dc>` and no `support.js`)
-- Shared browser runtime: `support.js` (renders each `.dc.html` page's `<x-dc>` template)
-- Shared tokens and first-paint base: `site-tokens.css` (the one `:root`, the shared `@font-face` rules, the `.site-top` header frame)
-- Shared header and object-tab nav: `site-nav.css` (the `building/` sub-sites load it too)
-- Shared motion and pen modules: `motion.js` (`window.Motion`: the two clocks, springs, sleeping loops, reduced motion), `pen.js` (`window.Pen`: seeded hand strokes and the point arrow), `pen-tier.js` (`TierMark`, `FocusMark`, `Tier.wire`: the pen's states), `pen.css`
-- Shared page glue: `site.js` (`FY.mount`, the nav's pen marks)
-- Cross-document view transitions: `transitions.js` (home ↔ page, and the shared plumbing), `transitions-tab.js` (page → page), `transitions.css`
+- Shared code: `lib/shared/`
+  - Browser runtime: `support.js` (renders each `.dc.html` page's `<x-dc>` template)
+  - Tokens and first-paint base: `site-tokens.css` (the one `:root`, the shared `@font-face` rules, the `.site-top` header frame)
+  - Header and object-tab nav: `site-nav.css` (the `building/` sub-sites load it too)
+  - Motion and pen modules: `motion.js` (`window.Motion`: the two clocks, springs, sleeping loops, reduced motion), `pen.js` (`window.Pen`: seeded hand strokes and the point arrow), `pen-tier.js` (`TierMark`, `FocusMark`, `Tier.wire`: the pen's states), `pen.css`
+  - Page glue: `site.js` (`FY.mount`, the nav's pen marks)
+  - Cross-document view transitions: `transitions.js` (home ↔ page, and the shared plumbing), `transitions-tab.js` (page → page), `transitions.css`
 - Page code: `lib/<page>/` (`home`, `writing`, `building`, `gallery`, `about`, `reading`), each with its own `<page>.css`
 - Vendored `<image-slot>` component that no page currently loads: `image-slot.js`
 - Local fonts: `fonts/`
@@ -57,7 +58,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Keep the header's class names.
   - `.site-rule` and `.site-tabmark` stay the last two children of `.site-index`.
   - Put no inline styles, animation classes or `view-transition-name` on header parts.
-- Head order on every `.dc.html` page:
+- Head order on every `.dc.html` page (the shared files are in `lib/shared/`):
   1. `support.js`, first, so React's fetch from unpkg starts before the stylesheets claim the connections (the page's largest paint waits for React). Don't preload React: arriving before parsing ends makes support.js wait for DOMContentLoaded.
   2. `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/<page>/<page>.css`
   3. the `expect` link
@@ -110,7 +111,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 ## Editing conventions
 
 - Edit static template text in the page's `.dc.html`, page CSS in `lib/<page>/<page>.css`, and page behaviour in `lib/<page>/*.js`. When a module replaces old page logic, delete the old logic instead of keeping both.
-- Keep runtime code at the root or in `lib/`. `.github/workflows/deploy-pages.yml` deletes `scripts/`, `design/`, `.agents/` and `.claude/` before deploying, so nothing a page loads may live there. `scripts/verify/` holds headless checks only.
+- The files at the root are only pages and site metadata (`favicon.png`, `robots.txt`, `llms.txt`, `LICENSE`, `NOTICE.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`). Code shared across pages lives in `lib/shared/`, and one page's code in `lib/<page>/`. `.github/workflows/deploy-pages.yml` deletes `scripts/`, `design/`, `.agents/` and `.claude/` before deploying, so nothing a page loads may live there. `scripts/verify/` holds headless checks only.
 - Edit imported essay bodies in `content/posts/*.md` and gallery metadata in `content/photos-source.ts`, then regenerate in this order and commit every generated file:
 
   ```sh
@@ -136,7 +137,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - Pages load only subset fonts from `fonts/derived/`, never the masters in `fonts/`. The local masters are complete ~6,900-glyph typefaces; the site renders a few hundred of those glyphs. Shipping them made the font the slowest thing on the site — `Gallery.dc.html`'s LCP element is its `<h1 class="display">`, and because `font-display: swap` repaints that heading when the real face arrives, the 985 KB download *became* the LCP at ~2.9 s on Fast 4G. Adding Chinese to a heading, footnote, reference, image caption, page, shared module or `lib/` file changes the required glyph set, so rerun `generate-fonts.py`; the audit fails and names the missing characters if you forget.
 - Noto Serif SC and Noto Sans SC are self-hosted subsets too, not Google Fonts requests. Only Fraunces, Caveat and IBM Plex Mono still come from Google. Noto Serif SC ships in two sizes and **the split is the one thing to keep straight**: `lib/reading/reading.css` references `NotoSerifSC-text.woff2` (every essay body, ~1,087 KB; one subset shared by all essays even though Reading loads one body file at a time) and every other page's CSS references `NotoSerifSC-ui.woff2` (interface Chinese only, ~148 KB). A new page should use the `-ui` tier unless it renders essay bodies. Collapsing to one file would put 1,196 KB on every gateway page, a 3× regression against the ~391 KB they used to fetch from Google.
 - Add photos and covers at full resolution and never hand-resize them. Pages load only `images/derived/`; serving the originals cost 51 MB and a 54-second load on the gallery before this split existed. Size ladders live in `scripts/generate-content.py`; changing one requires `generate-derivatives.py --force --prune`. Because the deploy deletes `scripts/`, derivatives and sprites are built locally and committed, never in CI.
-- Load generated manifests, stylesheets and modules unversioned (`./content/posts-index.js`, `./site-nav.css`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
+- Load generated manifests, stylesheets and modules unversioned (`./content/posts-index.js`, `./lib/shared/site-nav.css`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
 - Do not hand-edit `support.js`; it is generated runtime code. Treat `image-slot.js` as vendored runtime code unless the image-slot behavior itself is the task.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
 - Gateway pages present Chinese and English together where both are available; English-only interface text is acceptable, but Chinese-only interface text is not. `Reading.dc.html` is the only page with a CN/EN switch, using `.en` / `.zh` variants and the `fy-lang` preference in `localStorage`.

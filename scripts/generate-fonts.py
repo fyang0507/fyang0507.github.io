@@ -78,12 +78,11 @@ NOTO_SOURCES = {
 # entire text is folded into every subset. They are small and almost all ASCII,
 # so taking all of them costs a handful of glyphs and removes any need to
 # resolve CSS selectors against static markup. Globs, relative to the root:
-# page code in lib/ and the shared modules at the root render strings of their
-# own (the opener's 点按跳过, Gallery's hand notes), so they count as pages.
+# page code and the shared modules in lib/ render strings of their own (the
+# opener's 点按跳过, Gallery's hand notes), so they count as pages.
 PAGES = [
     "index.html", "Gallery.dc.html", "Writing.dc.html", "Reading.dc.html",
     "About.dc.html", "Building.dc.html", "404.html", "UnderConstruction.dc.html",
-    "site*.css", "site*.js", "pen*.js", "pen.css", "motion.js", "transitions.*",
     "lib/**/*.js", "lib/**/*.css", "assets/fred-agent/fred-agent.css",
 ]
 

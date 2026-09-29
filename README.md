@@ -17,7 +17,7 @@ Then open [http://127.0.0.1:4173/](http://127.0.0.1:4173/).
 - `index.html` is the home page; the section pages are standalone `.dc.html` files.
 - Essays live in `content/posts/`; photo metadata lives in `content/photos-source.ts`.
 - After changing either source, run `python3 scripts/generate-content.py` and commit what it generates: `content/posts-index.js`, `content/bodies/`, `content/photos.js` and `content/home.js`.
-- Site assets, local fonts, and shared browser scripts are kept in `assets/`, `images/`, `fonts/`, and the repository root.
+- Site assets, local fonts, and shared browser scripts are kept in `assets/`, `images/`, `fonts/`, and `lib/shared/`.
 
 The site is intentionally plain static HTML, CSS, and JavaScript so it can be deployed on any static host.
 
