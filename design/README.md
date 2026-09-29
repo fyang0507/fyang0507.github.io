@@ -14,6 +14,7 @@ python3 -m http.server 4173 --bind 127.0.0.1
 |---|---|---|
 | [`2026-09-motion/`](2026-09-motion/) | FE design audit and motion/interaction redesign: transitions, pen states, the Writing bookcase, the Building corkboard, the Gallery clotheslines, the About specimen card, the Reading hero and footnotes, the home opener. Seven rounds of boards, shipped in the `redesign/motion-revamp` PR. | <http://127.0.0.1:4173/design/2026-09-motion/> (audit and board index), then `HANDOFF.md` (every decision) |
 | [`2026-09-tab-moves/`](2026-09-tab-moves/) | Page → page moves: three candidates compared on the real pages, Fred's pick (each page arrives the way its object moves), and the compositor-only rule that made it smooth. | `README.md` |
+| [`2026-09-identity/`](2026-09-identity/) | The top-left identity lockup, made by hand: an audit of today's, and three live candidates (A 签 the pen signs, B 印 carved seals, C 稿 the manuscript grid) in real headers, on home, in the pen's states and in their arrival after the OP. Round 1, awaiting Fred's pick. | <http://127.0.0.1:4173/design/2026-09-identity/>, then `README.md` |
 
 ## Conventions
 

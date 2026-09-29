@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identity · round 1 · design/2026-09-identity</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="01-board.css">
+<script src="01-board.js" defer></script>
+</head>
+<body>
+<div class="bd-top">
+  <b>design/2026-09-identity</b><span>round 1 · the identity lockup · three candidates and today's</span>
+  <nav><a href="#lineup">line-up</a><a href="#A">A 签</a><a href="#B">B 印</a><a href="#C">C 稿</a><a href="#now">today</a><a href="#q">question</a><a href="README.md">README</a></nav>
+  <label><input type="checkbox" id="rm"> reduced motion</label>
+</div>
+<main class="bd">
+  <h1>A hand-made identity <span class="zh">· 手做的署名</span></h1>
+  <p class="lede">Fred: “Not hand-made enough.” “I just want to see what you’ll design.” The tagline stays word for word: <span class="zh">继续写，继续造</span>, where <span class="zh">造</span> is both <i>build</i> and the playful, provocative edge of <span class="zh">造作</span>.</p>
+  <p class="lede">Three directions, each made by a different hand: the site’s own pen signing (A), a knife carving seals (B), and a careful hand filling the writer’s squared paper (C). Every frame below is live: real headers, the real home page, the site’s own pen for hover and focus. Hover and tab through them; replay each arrival.</p>
+
+  <section id="lineup">
+    <div class="sec-head"><h2>Line-up</h2><p>At 1:1, the size they sit at on a wide page. Each keeps <code>.site-identity</code> one link to <code>index.html</code>.</p></div>
+    <div class="lineup">
+      <div class="card"><header><b>Today</b><span class="k">Fraunces · JinBuTi · a CSS swoosh · two stickers at 78 %</span></header>
+        <div class="fr" data-c="now" data-src="01-frame.html?c=now&amp;view=solo" data-w="640" data-h="150" data-eager data-title="today's lockup"></div>
+        <p>Every mark is typeset or geometric; the hand is only suggested by a −1° tilt.</p></div>
+      <div class="card"><header><b>A · <span class="zh">签</span> the signature</b><span class="k">line-led · ink · the site’s pen</span></header>
+        <div class="fr" data-c="A" data-replay data-src="01-frame.html?c=A&amp;view=solo" data-w="640" data-h="150" data-eager data-title="A"></div>
+        <div class="ctl"><button data-play="A">replay the signing</button></div>
+        <p>The pen that marks the whole site signs it. <span class="zh">造</span>’s last sweep won’t stop: it runs under the name as the paraph.</p></div>
+      <div class="card"><header><b>B · <span class="zh">印</span> the seals</b><span class="k">colour-led · coral mass · the knife</span></header>
+        <div class="fr" data-c="B" data-replay data-src="01-frame.html?c=B&amp;view=solo" data-w="640" data-h="150" data-eager data-title="B"></div>
+        <div class="ctl"><button data-play="B">replay the stamping</button></div>
+        <p>The one red on an ink drawing is the maker’s seal: <span class="zh">弗雷德</span> carved white, FRED YANG carved red, and the motto written beside them.</p></div>
+      <div class="card"><header><b>C · <span class="zh">稿</span> the manuscript</b><span class="k">hybrid · printed coral ruling · the careful hand</span></header>
+        <div class="fr" data-c="C" data-replay data-src="01-frame.html?c=C&amp;view=solo" data-w="640" data-h="150" data-eager data-title="C"></div>
+        <div class="ctl"><button data-play="C">replay the writing</button></div>
+        <p>A strip of <span class="zh">稿纸</span>, seven squares over seven. One character won’t be ruled: <span class="zh">造</span>.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== A ============================== -->
+  <section id="A">
+    <div class="sec-head"><h2>A · <span class="zh">签</span> the signature</h2><p>Low source-form distance, line-led, moderate resolution. Ink only at rest; coral is the pen’s attention.</p></div>
+    <h3>In a page header · 1440 · Writing</h3>
+    <div class="fr" data-c="A" data-replay data-src="01-frame.html?c=A" data-w="1440" data-h="205" data-scale=".93" data-title="A in the Writing header at 1440"></div>
+    <h3>Phones · 390 and 320 beside the status line · home at 390 and 1440</h3>
+    <div class="row">
+      <div class="col">
+        <div class="fr" data-c="A" data-replay data-src="01-frame.html?c=A&amp;page=writing" data-w="390" data-h="240" data-title="A at 390"></div>
+        <div class="fr" data-c="A" data-replay data-src="01-frame.html?c=A&amp;page=writing" data-w="320" data-h="240" data-title="A at 320"></div>
+      </div>
+      <div class="fr" data-c="A" data-home="A" data-w="390" data-h="844" data-scale=".5" data-title="A on home at 390"></div>
+      <div class="fr" data-c="A" data-home="A" data-w="1440" data-h="900" data-scale=".47" data-title="A on home at 1440"></div>
+    </div>
+    <div class="ctl"><button data-play="A">replay the signing (all A frames)</button><button data-op="A">play the opener on home: it ends in the signing</button><span class="k">the signing plays once, after a first visit’s OP, and nowhere else</span></div>
+    <h3>States · the site’s pen (Tier.wire), as on every nav link</h3>
+    <div class="fr" data-c="A" data-src="01-frame.html?c=A&amp;view=states" data-w="1340" data-h="150" data-title="A states"></div>
+    <h3>Record</h3>
+    <div class="record">
+      <dl>
+        <dt>source-form distance</dt><dd>low: the name and the motto as a hand writes them; every character keeps its structure and stroke order</dd>
+        <dt>primary carrier</dt><dd>line-led; colour absent at rest</dd>
+        <dt>rendering resolution</dt><dd>moderate: the name, the motto under it, one flourish</dd>
+        <dt>expression anchor</dt><dd>the pen’s cadence: a lead-in on the F and exit flicks on the Latin; <span class="zh">弗雷德</span> in running-hand habits (<span class="zh">弓</span> in one run, <span class="zh">彳</span> as a Z); one stroke that won’t stop</dd>
+        <dt>line plan</dt><dd>one pen, 1.7 px (1.55 on phones), round and blunt; hierarchy by value, not weight: the name in ink (12.2:1), the motto and its paraph in <code>--soft</code> (5.33:1)</dd>
+        <dt>colour plan</dt><dd>none at rest; coral only as the pen’s hover line and focus <span class="zh">「 」</span>; press sinks into the wheat band</dd>
+        <dt><span class="zh">造</span></dt><dd>its <span class="zh">平捺</span> runs on under the whole name, <span class="zh">一波三折</span>: the showing-off stroke (<span class="zh">造作</span>) that is also the line the signature stands on (<span class="zh">造</span>, build)</dd>
+        <dt>English echo</dt><dd>in the accessible name only: “keep writing, keep making”</dd>
+        <dt>cost</dt><dd>drawn SVG, no font glyphs; about 90 paths inline in each static header; the write-on is a few lines, home only</dd>
+        <dt>view transition</dt><dd>unchanged: the same static drawing on every page, so the <code>identity</code> group only moves; nothing redraws during a move</dd>
+      </dl>
+      <div>
+        <p class="rationale zh">现在的署名全是排出来的：Fraunces、钉钉进步体、思源黑体，一道 CSS 椭圆，两张调低了透明度的贴纸；“手感”只是整块歪了 1°。A 把署名交还给网站自己那支笔：Fred Yang 用签名的手写，弗雷德用同一只手写快一点（弓一笔带过，彳写成一个 Z），下面一行继续写，继续造用同一支笔、淡一档的墨，层次靠深浅而不靠粗细。造的最后一笔平捺不肯停，一波三折地拖到整个名字底下，成了签名的花押：既是炫技（造作），也是名字站着的那条线（造）。静止时没有一点珊瑚色，珊瑚色只在笔注意到它的时候出现。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== B ============================== -->
+  <section id="B">
+    <div class="sec-head"><h2>B · <span class="zh">印</span> the seals</h2><p>Medium source-form distance, colour-led, low resolution. The identity’s coral at rest, as flat seal colour.</p></div>
+    <h3>In a page header · 1440 · Writing</h3>
+    <div class="fr" data-c="B" data-replay data-src="01-frame.html?c=B" data-w="1440" data-h="205" data-scale=".93" data-title="B in the Writing header at 1440"></div>
+    <h3>Phones · 390 and 320 beside the status line · home at 390 and 1440</h3>
+    <div class="row">
+      <div class="col">
+        <div class="fr" data-c="B" data-replay data-src="01-frame.html?c=B&amp;page=writing" data-w="390" data-h="240" data-title="B at 390"></div>
+        <div class="fr" data-c="B" data-replay data-src="01-frame.html?c=B&amp;page=writing" data-w="320" data-h="240" data-title="B at 320"></div>
+      </div>
+      <div class="fr" data-c="B" data-home="B" data-w="390" data-h="844" data-scale=".5" data-title="B on home at 390"></div>
+      <div class="fr" data-c="B" data-home="B" data-w="1440" data-h="900" data-scale=".47" data-title="B on home at 1440"></div>
+    </div>
+    <div class="ctl"><button data-play="B">replay the stamping (all B frames)</button><button data-op="B">play the opener on home: it ends in the stamping</button><span class="k">the pen writes the inscription, then the two seals land on held frames with the pin’s impact ticks</span></div>
+    <h3>States</h3>
+    <div class="fr" data-c="B" data-src="01-frame.html?c=B&amp;view=states" data-w="1340" data-h="150" data-title="B states"></div>
+    <h3>Record</h3>
+    <div class="record">
+      <dl>
+        <dt>source-form distance</dt><dd>medium: the name rewritten in the seal’s grammar (<span class="zh">印化</span>): straightened and redistributed into a square (<span class="zh">弗 雷</span> down the right, <span class="zh">德</span> the whole left), carved</dd>
+        <dt>primary carrier</dt><dd>colour-led: the coral mass of the white-text seal carries the identity; the red-text seal’s lines and the inscription are subordinate</dd>
+        <dt>rendering resolution</dt><dd>low: one red event, a smaller second seal, a quiet inscription</dd>
+        <dt>expression anchor</dt><dd>the carve: square cuts, a different knife width per character, each impression a hair off level (stamped by hand, twice), one nick in the stone’s edge; flat colour, no paste grain</dd>
+        <dt>line plan</dt><dd>cuts about 2.2 px, square ends and mitred corners; the inscription in the site’s pen at 1.45 px, ink</dd>
+        <dt>colour plan</dt><dd>coral is the seal: the header’s one material accent (the fixed identity the coral rule allows); ink for the inscription; paper shows through the carving; highest chroma: the white-text seal</dd>
+        <dt><span class="zh">造</span></dt><dd>the seals are what was made: a maker’s mark (<span class="zh">造</span>, build), and the pomp of stamping your own site like a scholar’s painting (<span class="zh">造作</span>). The motto ends on <span class="zh">造</span>, right beside them</dd>
+        <dt>English echo</dt><dd>FRED YANG is carved; the motto’s echo lives in the accessible name</dd>
+        <dt>contrast</dt><dd>carved glyphs are large (22–26 px) at 3.19:1 (the 3:1 large-text bar; a logotype besides); the inscription is ink, 12.2:1</dd>
+        <dt>cost</dt><dd>drawn SVG, no font glyphs; about 60 paths inline; stamp and write-on a few lines, home only</dd>
+        <dt>view transition</dt><dd>unchanged: a static snapshot; the seals never re-stamp on a page move</dd>
+      </dl>
+      <div>
+        <p class="rationale zh">一幅水墨画上唯一的红，是作者盖的章。B 把网站的珊瑚色当成印泥：一方白文名章，弗雷德用传统的“二加一”排法（右列弗、雷，左列一个德通到底）；一方朱文章刻 FRED YANG，正是文人落款最常见的一白一朱。旁边两列竖写的款，从右往左：继续写，继续造。章是刻的，不是写的：方头、直线、每个字的刀口宽窄不一，石边崩了一个小口；平涂的珊瑚色，不做印泥颗粒。造在这里就是章本身：做出来的东西（造），加上给自己的网站郑重其事盖两方章的那份自得（造作）。“继续造”的造，正好落在印旁边。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== C ============================== -->
+  <section id="C">
+    <div class="sec-head"><h2>C · <span class="zh">稿</span> the manuscript</h2><p>Low source-form distance inside a quoted object, hybrid, moderate resolution. The ruling is the machine; the writing is the person.</p></div>
+    <h3>In a page header · 1440 · Writing</h3>
+    <div class="fr" data-c="C" data-replay data-src="01-frame.html?c=C" data-w="1440" data-h="205" data-scale=".93" data-title="C in the Writing header at 1440"></div>
+    <h3>Phones · 390 and 320 beside the status line · home at 390 and 1440</h3>
+    <div class="row">
+      <div class="col">
+        <div class="fr" data-c="C" data-replay data-src="01-frame.html?c=C&amp;page=writing" data-w="390" data-h="240" data-title="C at 390"></div>
+        <div class="fr" data-c="C" data-replay data-src="01-frame.html?c=C&amp;page=writing" data-w="320" data-h="240" data-title="C at 320"></div>
+      </div>
+      <div class="fr" data-c="C" data-home="C" data-w="390" data-h="844" data-scale=".5" data-title="C on home at 390"></div>
+      <div class="fr" data-c="C" data-home="C" data-w="1440" data-h="900" data-scale=".47" data-title="C on home at 1440"></div>
+    </div>
+    <div class="ctl"><button data-play="C">replay the writing (all C frames)</button><button data-op="C">play the opener on home: it ends in the writing</button><span class="k">the grid is printed (there from the start); the hand fills it square by square and takes its time over <span class="zh">造</span></span></div>
+    <h3>States</h3>
+    <div class="fr" data-c="C" data-src="01-frame.html?c=C&amp;view=states" data-w="1340" data-h="150" data-title="C states"></div>
+    <h3>Record</h3>
+    <div class="record">
+      <dl>
+        <dt>source-form distance</dt><dd>low for the words, inside a quoted object (<span class="zh">稿纸</span>) with its own rules: Latin letters two to a square, the comma in its own square, low on the left</dd>
+        <dt>primary carrier</dt><dd>hybrid: without the ruling it is handwriting; without the hand it is an empty form. Both are load-bearing</dd>
+        <dt>rendering resolution</dt><dd>moderate: an even rhythm of fourteen squares, and one break in it</dd>
+        <dt>expression anchor</dt><dd>printed against written: machine-crisp ruling, the careful hand inside it, and one character that won’t be ruled</dd>
+        <dt>line plan</dt><dd>the ruling: 1 px, crisp, coral at 62 % (a printed hairline that carries no information); the writing: 1.6 px ink, round</dd>
+        <dt>colour plan</dt><dd>coral only as the printed ruling, at hairline value; everything written is ink</dd>
+        <dt><span class="zh">造</span></dt><dd>written a size too big and leaning, over its square’s walls: <span class="zh">造作</span> and <span class="zh">造反</span> on an otherwise good sheet. And <span class="zh">稿纸</span> is the writer’s paper, for <span class="zh">写</span></dd>
+        <dt>English echo</dt><dd>in the accessible name only; the Latin name is in the grid</dd>
+        <dt>cost</dt><dd>drawn SVG, no font glyphs; one ruling path and about 90 stroke paths inline; the write-on is a few lines, home only</dd>
+        <dt>view transition</dt><dd>unchanged: a static snapshot</dd>
+      </dl>
+      <div>
+        <p class="rationale zh">写作的人用稿纸。C 是一条两行七格的稿纸，用署名的珊瑚色印格子，用端正的手一格一字地填：Fr|ed|Ya|ng|弗|雷|德，下面是继|续|写|，|继|续|造，七格对七格，照稿纸自己的规矩：西文两个字母占一格，逗号独占一格、靠左下。格子是机器，字是人。只有一个字不守格：造写大了一号、歪着，压过了自己的格线。造作，也是造反，落在一张其余都规规矩矩的稿子上。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== today ============================== -->
+  <section id="now">
+    <div class="sec-head"><h2>Today’s lockup</h2><p>For comparison, in the same frames. The audit is in <a href="README.md">README.md</a>.</p></div>
+    <h3>In a page header · 1440</h3>
+    <div class="fr" data-c="now" data-src="01-frame.html?c=now" data-w="1440" data-h="205" data-scale=".93" data-title="today at 1440"></div>
+    <h3>Phones · 390 and 320 · home at 390 and 1440</h3>
+    <div class="row">
+      <div class="col">
+        <div class="fr" data-c="now" data-src="01-frame.html?c=now&amp;page=writing" data-w="390" data-h="240" data-title="today at 390"></div>
+        <div class="fr" data-c="now" data-src="01-frame.html?c=now&amp;page=writing" data-w="320" data-h="240" data-title="today at 320"></div>
+      </div>
+      <div class="fr" data-c="now" data-home="now" data-w="390" data-h="844" data-scale=".5" data-title="today on home at 390"></div>
+      <div class="fr" data-c="now" data-home="now" data-w="1440" data-h="900" data-scale=".47" data-title="today on home at 1440"></div>
+    </div>
+    <h3>States</h3>
+    <div class="fr" data-c="now" data-src="01-frame.html?c=now&amp;view=states" data-w="1340" data-h="150" data-title="today's states"></div>
+  </section>
+
+  <section id="q">
+    <div class="sec-head"><h2>The question</h2></div>
+    <p class="q">Which one should round 2 take forward: A <span class="zh">签</span> (the pen signs, ink only, coral only when the pen looks), B <span class="zh">印</span> (two coral seals and a written inscription), or C <span class="zh">稿</span> (the manuscript grid where <span class="zh">造</span> won’t stay in its square)? Naming parts to combine is fine too, for example C’s grid ending in B’s seal.</p>
+  </section>
+</main>
+</body>
+</html>

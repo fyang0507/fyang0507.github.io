@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>identity · frame</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<!-- One live context for the board: a page's static header (the markup every .dc.html page keeps outside <x-dc>),
+     or the lockup alone. ?c=now|A|B|C · view=header|solo · page=writing|building|gallery|about · state=rest|hover|focus|press
+     · play=1 (the arrival) · rm=1 (reduced motion preview).
+     LIVE FILES: this page and the home iframes in index.html are the only places the board reaches production.
+     When the shared CSS/JS move (lib/shared/), repoint the six ../../ references below. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site-tokens.css">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="../../pen.css">
+<link rel="stylesheet" href="01-identity.css">
+<style>
+  html,body{background:var(--paper)}
+  body.solo{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+  body.solo .site-top{padding:0}
+  body.states{margin:0;min-height:100vh;display:flex;align-items:center}
+  body.states .site-top{flex-direction:row;justify-content:space-around;align-items:center;width:100%;padding:0 12px;gap:12px}
+  .st-cell{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .st-cell b{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--pencil)}
+</style>
+<script src="../../motion.js"></script>
+<script src="../../pen.js"></script>
+<script src="../../pen-tier.js"></script>
+<script src="../../site.js" defer></script>
+<script src="01-kit.js"></script>
+<script src="01-glyphs.js"></script>
+<script src="01-a-sign.js"></script>
+<script src="01-b-seal.js"></script>
+<script src="01-c-grid.js"></script>
+<script src="01-identity.js"></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="../../index.html" aria-label="Fred Yang — home"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="../../assets/identity-sticker-ghost.png" srcset="../../assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="../../assets/identity-sticker-blob.png" srcset="../../assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status"></div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="../../index.html"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="#" data-p="writing"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="#" data-p="building"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="#" data-p="gallery"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="#" data-p="about"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
+    </nav>
+  </header>
+</div>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), c = q.get('c') || 'now', page = q.get('page') || 'writing';
+  if (q.get('rm') === '1') Motion.reduced = function () { return true; };
+  var STATUS = { writing: '27 essays · 2015–2026', building: 'on the board · 7 件', gallery: 'frames · 2015–2025', about: 'field guide · vol. 01' };
+  document.querySelector('.site-header-status').textContent = STATUS[page];
+  document.querySelectorAll('.site-tab').forEach(function (a) {
+    if (a.dataset.p === page) a.setAttribute('aria-current', 'page');
+    a.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+  document.querySelectorAll('a[href="../../index.html"]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); }); });
+  var link = document.querySelector('.site-identity'), top = document.querySelector('.site-top'), view = q.get('view');
+  if (view === 'solo') {
+    document.body.classList.add('solo');
+    top.textContent = ''; top.appendChild(link);
+  }
+  // four copies side by side, each held in one of the pen's states (the board's still frames)
+  if (view === 'states') {
+    document.body.classList.add('states');
+    top.textContent = '';
+    var NOW = { rest: 'rest', hover: 'hover · nothing happens', focus: 'focus · the browser ring (「 」 on home only)', press: 'press · nothing happens' };
+    var CAND = { rest: 'rest', hover: 'pen hover', focus: 'keyboard focus', press: 'press · the chosen band' };
+    window.STATES = ['rest', 'hover', 'focus', 'press'].map(function (s) {
+      var cell = document.createElement('div'), l = link.cloneNode(true);
+      cell.className = 'st-cell'; cell.innerHTML = '<b>' + (c === 'now' ? NOW : CAND)[s] + '</b>';
+      cell.appendChild(l); top.appendChild(cell);
+      if (c === 'now' && s === 'focus') l.style.cssText = 'outline:2px solid #1a6ee6;outline-offset:0;border-radius:3px';
+      return { s: s, m: IDC.mount(l, c) };
+    });
+  }
+  var m = window.FRAME = view === 'states' ? window.STATES[0].m : IDC.mount(link, c);
+  document.fonts.ready.then(function () {
+    (window.STATES || [{ m: m, s: q.get('state') }]).forEach(function (x) {
+      if (x.m.wire) x.m.wire.mark.build();
+      if (x.s && x.m.state) x.m.state(x.s);
+    });
+    if (q.get('play') === '1' && m.arrive) m.arrive();
+    document.documentElement.setAttribute('data-ready', '');
+  });
+})();
+</script>
+</body>
+</html>
