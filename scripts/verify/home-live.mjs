@@ -20,7 +20,7 @@ export default async (page, ctx) => {
   await page.goto(U, { waitUntil: 'commit' });
   let d = await done(page);
   ctx.log('first visit', JSON.stringify(d), 'data-opener', await page.evaluate(() => document.documentElement.dataset.opener));
-  ctx.log('  card', await page.evaluate(() => document.querySelector('.ep').innerText.replace(/\s+/g, ' ')), '· fy-opener', await page.evaluate(() => sessionStorage.getItem('fy-opener')));
+  ctx.log('  no episode card', await page.evaluate(() => !document.querySelector('.ep, .eye')), '· fy-opener', await page.evaluate(() => sessionStorage.getItem('fy-opener')));
   await page.waitForTimeout(900); await shot('first-landed');
   // reload in the same session: no OP frame, the fall only
   await page.reload({ waitUntil: 'commit' });
@@ -30,13 +30,13 @@ export default async (page, ctx) => {
   // an internal arrival (a same-origin referrer): no opener at all
   await page.goto(U, { waitUntil: 'load', referer: B + 'Writing.dc.html' });
   ctx.log('internal arrival: data-opener', await page.evaluate(() => document.documentElement.dataset.opener), 'OP shown', await page.evaluate(() => window.__seen.op));
-  // skip: a tap in the OP, a tap in the fall, a key in the card; each fades in 250 ms
-  for (const [at, how] of [[600, 'tap'], [2200, 'tap'], [3000, 'key']]) {
+  // skip: a tap in the OP, a tap and a key in the fall; each fades in 250 ms (the camera's way back takes no input)
+  for (const [at, how] of [[600, 'tap'], [2200, 'tap'], [2600, 'key']]) {
     await page.evaluate(() => sessionStorage.clear());
     await page.goto(U + '?opx=1&opener=first', { waitUntil: 'commit' });
     const p = done(page);
     await page.waitForFunction((t) => window.OPX && OPX.info() && OPX.info().t >= t, at);
-    const phase = await page.evaluate(() => (document.querySelector('.eye') ? 'card' : getComputedStyle(document.getElementById('oc-stage')).display !== 'none' ? 'op' : 'desk'));
+    const phase = await page.evaluate(() => OPX.info().phase);
     if (how === 'tap') await page.mouse.click(w / 2, h / 2); else await page.keyboard.press('Space');
     const k0 = Date.now(); const s = await p;
     ctx.log('skip', how, 'in', phase, JSON.stringify(s), 'fade ms ≈', Date.now() - k0);

@@ -24,6 +24,7 @@ python3 -m http.server 4173 --bind 127.0.0.1   # from the repo root
 - **Light theme only.** No dark mode on gateway pages. Fred also likes the **riso** theme (blue ink on warm paper, a light theme) — possible later via the role-layer work (§6).
 - **No per-visitor memory across visits.** No `localStorage` tracking; the site isn't updated often and people don't visit daily. **Session memory stays**: e.g. the full opener plays once per browser session; later home loads in the same session get the short version (`sessionStorage`, like today's live opener).
 - **"ep.NN" is content-derived**: the number of essays on the shelf (27 today). In production read a tiny generated count, not `posts.js`.
+- **Superseded 2026-09-29 (Fred's live test of the PR):** the 日常 · ep.NN corner label and the opener's eyecatch (the bird on cream over that card) are gone; the number didn't read as an essay count. A wide first visit now ends with the camera easing back from the fall's framing into the page's (400 ms), and phones go straight to the live desk. `FY_HOME.essays` stays for the phone panel's "N essays on the shelf".
 - **Wants WOW, not "sleek but ordinary"** — physical/narrative surprises built from Fred's own objects, inside the thesis (§5). Generic tech effects (glow, glass, particles) are a fail.
 
 ### Per board
