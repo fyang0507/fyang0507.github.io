@@ -12,8 +12,8 @@
   'use strict';
 
   /* ---- reduced motion ---- */
-  var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null, rmFns = [];
-  function reduced() { return !!(mq && mq.matches); }
+  var mq = matchMedia('(prefers-reduced-motion: reduce)'), rmFns = [];
+  function reduced() { return mq.matches; }
   function onReduced(fn) {
     rmFns.push(fn);
     return function () { var i = rmFns.indexOf(fn); if (i > -1) rmFns.splice(i, 1); };
@@ -23,7 +23,7 @@
     if (on) { tween.finish(); live.forEach(function (a) { try { a.finish(); } catch (e) { /* already gone */ } }); }
     rmFns.slice().forEach(function (fn) { try { fn(on); } catch (e) { setTimeout(function () { throw e; }); } });
   }
-  if (mq) { if (mq.addEventListener) mq.addEventListener('change', rmChanged); else if (mq.addListener) mq.addListener(rmChanged); }
+  mq.addEventListener('change', rmChanged);
 
   /* ---- numbers ---- */
   function clamp(x, a, b) { return x < a ? a : x > b ? b : x; }
@@ -135,7 +135,6 @@
   // Park the loop while el is off screen; a kick that arrives meanwhile runs when it comes back.
   // Returns a function that stops watching.
   Loop.visible = function (el, loop) {
-    if (!('IntersectionObserver' in window)) return function () {};
     var io = new IntersectionObserver(function (es) {
       var on = es[es.length - 1].isIntersecting;
       loop.parked = !on;

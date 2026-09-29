@@ -35,11 +35,11 @@
   // Re-fit when the host or target changes size, and whenever web fonts land: a font swap moves the
   // baseline, and ResizeObserver never fires for an inline host. Returns an unwatch function.
   function watch(self, els) {
-    var ro = window.ResizeObserver ? new ResizeObserver(function () { if (self.host.isConnected) self.build(); }) : null;
+    var ro = new ResizeObserver(function () { if (self.host.isConnected) self.build(); });
     var fonts = function () { if (!self.dead && self.host.isConnected) self.build(); };
-    if (ro) els.forEach(function (e) { ro.observe(e); });
-    if (document.fonts) document.fonts.addEventListener('loadingdone', fonts);
-    return function () { if (ro) ro.disconnect(); if (document.fonts) document.fonts.removeEventListener('loadingdone', fonts); };
+    els.forEach(function (e) { ro.observe(e); });
+    document.fonts.addEventListener('loadingdone', fonts);
+    return function () { ro.disconnect(); document.fonts.removeEventListener('loadingdone', fonts); };
   }
 
   /* ---- TierMark: tier 1 notice → tier 2 choose, as one stroke ---- */
@@ -233,7 +233,7 @@
       pointerdown: function (e) { if (e.button > 0 || host.disabled) return; st.pressed = true; refresh(e.pointerType === 'touch' ? 'tap' : 'press'); },
       pointerup: function () { if (st.pressed) release(); },
       pointercancel: function () { if (st.pressed) release(); },
-      focus: function () { try { st.focused = host.matches(':focus-visible'); } catch (e) { st.focused = false; } refresh(); },
+      focus: function () { st.focused = host.matches(':focus-visible'); refresh(); },
       blur: function () { st.focused = false; refresh(); },
       click: function (e) { if (e.detail === 0) { st.pressed = true; refresh('key'); release(); } }   // Enter / Space
     };

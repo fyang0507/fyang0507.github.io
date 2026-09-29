@@ -21,7 +21,7 @@
   }
   function f(n) { return Math.round(n * 10) / 10; }
   function pt(p) { return p[0].toFixed(2) + ' ' + p[1].toFixed(2); }
-  function reduced() { return window.Motion ? Motion.reduced() : false; }
+  function reduced() { return Motion.reduced(); }
   // The seed a mark uses: data-pen-seed on the element, else its text.
   function seedOf(el, fallback) { return (el && el.getAttribute && el.getAttribute('data-pen-seed')) || ((el && el.textContent) || '').replace(/\s+/g, ' ').trim() || fallback || 'pen'; }
 
@@ -191,17 +191,17 @@
       var L = p.getTotalLength(); p.style.strokeDasharray = dashes(p, L); p.style.strokeDashoffset = shown ? 0 : hiddenAt(p, L);
     }
     build();
-    var ro = window.ResizeObserver ? new ResizeObserver(function () { build(); }) : null, fonts = function () { build(); };
-    if (ro) ro.observe(el);
+    var ro = new ResizeObserver(function () { build(); }), fonts = function () { build(); };
+    ro.observe(el);
     // ResizeObserver never fires for an inline element, so a font swap that moves the baseline rebuilds here.
-    if (document.fonts) document.fonts.addEventListener('loadingdone', fonts);
+    document.fonts.addEventListener('loadingdone', fonts);
     var api = {
       el: el, svg: svg, rebuild: build,
       show: function () { shown = true; if (p) draw(p, opt); },
       hide: function () { shown = false; if (p) erase(p, opt); },
       destroy: function () {
-        if (ro) ro.disconnect();
-        if (document.fonts) document.fonts.removeEventListener('loadingdone', fonts);
+        ro.disconnect();
+        document.fonts.removeEventListener('loadingdone', fonts);
         el.removeEventListener('pointerenter', api.show); el.removeEventListener('pointerleave', api.hide);
         el.removeEventListener('focus', api.show); el.removeEventListener('blur', api.hide);
         svg.remove();
