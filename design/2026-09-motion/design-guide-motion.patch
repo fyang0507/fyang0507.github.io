@@ -1,0 +1,45 @@
+diff --git a/.agents/skills/fred-visual-design-guide/references/aesthetic.md b/.agents/skills/fred-visual-design-guide/references/aesthetic.md
+index a9607c5..55e4f02 100644
+--- a/.agents/skills/fred-visual-design-guide/references/aesthetic.md
++++ b/.agents/skills/fred-visual-design-guide/references/aesthetic.md
+@@ -80,12 +80,40 @@ The most useful type fact isn't a typeface: **on every sheet the caption's stem
+ 
+ Chinese and English get equal standing — render each completely rather than reducing one to ornament. CJK wants more leading than Latin, and the paragraph gap has to visibly exceed the line gap or paragraphs dissolve into a grid. CJK emphasis is upright: never synthesise an oblique; use weight, size, the accent, a hanging bracket, or a drawn underline.
+ 
++## Motion and states on the personal website
++
++The site's motion follows one thesis, set during the 2026-09 redesign (`design/2026-09-motion/HANDOFF.md` §5 in the site repository). Fred wants a WOW moment built from his own objects: physical, narrative surprises. Sleek-but-ordinary misses.
++
++- **Two clocks.** Drawings move on the hand's clock: held poses, stepped frames, limited animation in the Nichijou manner. Paper and chrome move on the physics clock: mass, momentum, one small overshoot, then settle. A drawing that tweens smoothly reads as a machine; paper that snaps reads as a slideshow.
++- **The pen is the only highlighter.** States are hand-drawn marks, seeded per element so the same word always gets the same stroke. That is wobble, not jitter. Each mark lands in one confident pass and retracts faster than it drew.
++- **What you touch is what arrives.** The object clicked on the desk is the one that flies into its nav tab.
++- **Every motion has a cause.** No ambient loop runs without a subject.
++- **The home opener is the one sanctioned register break:** loud flat colour and hard cuts for about a second and a half.
++
++The pen has four states, each in one 2.2 px pen:
++
++- **notice (hover):** a coral underline hung level from the text's baseline (baseline + max(3 px, 0.18 em)), blunt-ended, never with a rising tail;
++- **focus:** coral 「 」;
++- **chosen or current:** a wheat highlighter band with a darker wheat edge. The coral line is absorbed as the band passes, so nothing chosen is coral at rest. Choosing draws no tick;
++- **point:** one short, nearly straight coral arrow (a 26–40 px shaft), once per view and retired for the session.
++
++**The coral budget.**
++
++- At rest, coral goes only to the point arrow and to fixed identity (the wordmark's pen line and each page title's coral character).
++- Hover and focus are coral because they are transient.
++- Accents that used to be coral (pins, label dots, series badges, progress bars) are ink or pencil.
++- Coral never sets small text.
++- On tinted paper (cork, the wheat card), coral is drawn multiplied by the paper, so a state mark keeps 3:1.
++
++**Light only.** The gateway pages are light-only. The reading page is the only one with a dark mode, and its dark hero drops the halftone. The notebook theme's dark polarity (`../assets/themes/notebook.css`) exists for that page alone. Fred likes a riso variant (blue ink on warm paper, still a light theme), which is parked. The site keeps no per-visitor memory across visits; session memory, such as the opener playing once, is fine.
++
+ ## What to lean away from
+ 
+ Each of these is a default worth resisting, with the reason, because the reason travels further than the list.
+ 
+ - **Authorless polish, mechanically even distribution and gradients** — all of them can read as a *system* having decided. The whole language is evidence that a *person* did. But the inverse of authorless isn't messy: adding noise to look hand-made fails exactly as hard as the polish did. Symmetry and centring remain valid when they carry a source fact, identity or functional hierarchy; do not break them merely to make a composition feel dynamic.
+ - **Cel shading, glossy highlights, rendered volume** — the stopping point is the inked stage, not the finished frame.
++- **Shimmer, glass blur, blur-to-focus, parallax for its own sake, cursor trails, scroll-jacking, staggered fade-ups, glow and particles** — motion without a cause is a system performing; none of it has a subject.
+ - **Bigger, rounder, shinier eyes for more emotion** — the eye is the identity anchor; deform it and the face drifts younger. Emotion arrives through the mouth, brows, hands and small external marks.
+ - **Kawaii mascots, blush hearts, glittering eyes** — 媚, not 萌.
+ - **Equal-weight multicolour** — if every hue owns the hot end, none has a role. In a colour-led or rich-resolution direction, use several colours when the artifact needs them, but name the dominant, structural, neutral and accent roles. Meaning carried by colour alone excludes readers who can't resolve it.

@@ -1,6 +1,6 @@
 ---
 name: add-website-content
-description: Add durable article and photography content to fyang0507.github.io website static archive. Use when needs to import, publish, batch-add, migrate, or repair essays in content/posts, cover images, gallery images, or photo metadata; regenerate content/posts.js and content/photos.js; assign stable identifiers; or verify new content in Writing.dc.html, Reading.dc.html, and Gallery.dc.html.
+description: Add durable article and photography content to fyang0507.github.io website static archive. Use when needs to import, publish, batch-add, migrate, or repair essays in content/posts, cover images, gallery images, or photo metadata; regenerate the content manifests (content/posts.js, posts-index.js, home.js and photos.js); assign stable identifiers; or verify new content in Writing.dc.html, Reading.dc.html, and Gallery.dc.html.
 ---
 
 # Add Website Content
@@ -43,10 +43,10 @@ Treat the checked-in article Markdown, photo metadata, and media files as an app
    git diff --check
    ```
 
-7. Review `git diff` and `git status --short`. Confirm that canonical inputs, copied media, the new files under `images/derived/` and `fonts/derived/`, `content/image-dimensions.json`, `content/font-subsets.json`, and the generated `content/posts.js` or `content/photos.js` are all included. `.github/workflows/deploy-pages.yml` deletes `scripts/` before deploying, so neither derivatives nor font subsets can be rebuilt in CI — an uncommitted derivative is a broken image in production, and an uncommitted font subset is a missing glyph. Do not hand-edit any generated file.
+7. Review `git diff` and `git status --short`. Confirm that canonical inputs, copied media, the new files under `images/derived/` and `fonts/derived/`, `content/image-dimensions.json`, `content/font-subsets.json`, and the generated manifests are all included: `content/posts.js` and `content/posts-index.js` for articles, `content/photos.js` for photos, and `content/home.js` (home's counts and latest entries) for either. `.github/workflows/deploy-pages.yml` deletes `scripts/` before deploying, so neither derivatives nor font subsets can be rebuilt in CI — an uncommitted derivative is a broken image in production, and an uncommitted font subset is a missing glyph. Do not hand-edit any generated file.
 8. Serve the repository with `python3 -m http.server 4173 --bind 127.0.0.1` and verify in a real browser. Check for console errors and failed requests.
    - Article: inspect `Writing.dc.html`, open the direct `Reading.dc.html?post=<generated-id>` URL, switch CN/EN, and check desktop and mobile widths.
-   - Photos: inspect `Gallery.dc.html`, filter by the new year and category, open each new lightbox image, and check desktop and mobile widths.
+   - Photos: inspect `Gallery.dc.html`, filter by the new year and category, open each new print in the viewer, and check desktop and mobile widths.
 9. Report the added canonical records, stable URLs or IDs, generated counts, audit result, and browser verification. Mention any deliberate exception to the archive conventions.
 
 ## Keep additions scalable

@@ -10,16 +10,17 @@
 
 ## Chinese text and the font subsets
 
-Pages load subset fonts from `fonts/derived/`, not the complete masters in `fonts/`. An article can introduce Chinese characters into three places that render in those subset faces, and each one changes the required glyph set:
+Pages load subset fonts from `fonts/derived/`, not the complete masters in `fonts/`. An article can introduce Chinese characters into three subset faces, and each one changes the required glyph set:
 
 | Article element | Rendered in | Source |
 | --- | --- | --- |
-| `title_zh`, `## `/`### ` headings | DingTalk JinBuTi | `Reading.dc.html:63,78` |
-| `subtitle_zh`, `excerpt_zh`, `[^note]:` footnotes, reference entries, image captions | MuyaoPleased | `Reading.dc.html:61,96,101` |
+| `title_zh`, `## `/`### ` headings and section titles | DingTalk JinBuTi | `.title`, `.lm-t` / `.lm-head` in `lib/reading/reading.css` |
+| `subtitle_zh`, image captions | MuyaoPleased | `.eyebrow`, `.fig figcaption` in `lib/reading/reading.css` |
+| headings and section markers (the margin rail's labels), `#### ` headings, the reference appendix title | Noto Sans SC | the rail, `.post-body h4` and `.appendix-title` in `lib/reading/reading.css` |
 
-The article **body** matters too: Noto Serif SC is self-hosted, not fetched from Google, so a new essay's Chinese prose has to be in `NotoSerifSC-text.woff2`. That face is the reason `Reading.dc.html` references a different Noto file from every other page — `-text` carries whole essay bodies (~1,087 KB), `-ui` carries interface Chinese only (~148 KB).
+The article **body** matters too: Noto Serif SC is self-hosted, not fetched from Google, so a new essay's Chinese prose has to be in `NotoSerifSC-text.woff2`. Footnotes and reference entries render in that body serif too (`.mn` in `lib/reading/notes.css`). That face is the reason `lib/reading/reading.css` references a different Noto file from every other page — `-text` carries whole essay bodies (~1,087 KB), `-ui` carries interface Chinese only (~148 KB).
 
-So after adding or editing any Chinese article, run `uv run scripts/generate-fonts.py` and commit `fonts/derived/` and `content/font-subsets.json`. Note that footnote and reference text is real prose, which is why the handwriting face needs ~1,000 glyphs rather than a handful.
+So after adding or editing any Chinese article, run `uv run scripts/generate-fonts.py` and commit `fonts/derived/` and `content/font-subsets.json`. Image captions are arbitrary prose, which is why the handwriting face has to be generated rather than hand-maintained.
 
 If you skip it, the audit fails with `... subset is stale: N character(s) now render in it but are not in the subset` and names them. Left unfixed, those characters silently fall back to a system font in production.
 
@@ -63,7 +64,7 @@ The archive is currently bilingual. Obtain both language versions before publish
 - `commentary` / `杂文`
 - `poem` / `诗`
 
-Additional topical or geographic tags are allowed. Primary tags drive the Writing page's filter chips.
+Additional topical or geographic tags are allowed. Primary tags drive the fore-edge index tabs on the Writing page; the 正 year ledger beside them comes from each article's date. The primary pairs are listed in `TAG_ZH` in `lib/writing/case.js`, so a new primary tag needs an entry there too.
 
 ## Stable article IDs
 
@@ -126,6 +127,6 @@ versioning the URL.
 After generation and the archive audit:
 
 1. Confirm the new cover and article requests return HTTP 200.
-2. Find the card in `Writing.dc.html` and exercise its year and primary-tag filters.
+2. Find the book on the `Writing.dc.html` bookcase, choose its primary-tag tab and its year on the ledger (click a year, or drag for a span), and confirm it stays on the shelf; hover or tap the spine and check the pulled cover and obi.
 3. Open the direct Reading URL, verify both language bodies, cover, title, date, tags, previous/next links, and metadata.
 4. Check desktop and mobile widths and ensure the console remains clean.
