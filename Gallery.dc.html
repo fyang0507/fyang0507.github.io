@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="./site-nav.css">
 <link rel="stylesheet" href="./pen.css">
 <link rel="stylesheet" href="./transitions.css">
+<link rel="stylesheet" href="./lib/gallery/gallery.css">
 <link rel="expect" href="#site-nav" blocking="render">
 <script src="./motion.js"></script>
 <script src="./transitions.js"></script>
@@ -23,6 +24,7 @@
 <script src="./pen-tier.js" defer></script>
 <script src="./site.js" defer></script>
 <script src="./content/photos.js" defer></script>
+<script src="./lib/gallery/app.js" type="module"></script>
 </head>
 <body>
 <div class="site-top">
@@ -37,8 +39,9 @@
       <a class="site-tab site-tab--building" href="Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
       <a class="site-tab site-tab--shooting" href="Gallery.dc.html" aria-label="Shooting — 在拍" aria-current="page"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
       <a class="site-tab site-tab--about" href="About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
     </nav>
-    <div class="site-rule" aria-hidden="true"></div>
   </header>
 </div>
 <script>
@@ -47,51 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <x-dc>
-<helmet>
-<style>
-  @font-face{font-family:"Noto Serif SC";src:url("./fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Noto Serif SC","Fraunces",Georgia,serif}
-  a{color:inherit;text-decoration:none} a:hover{color:var(--mark)}
-  .display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
-  .hand{font-family:"MuyaoPleased","Caveat",cursive}
-  .util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
-  .writing-statement{font-size:clamp(19px,2.2vw,24px);line-height:1.35;color:var(--soft);padding-bottom:8px}
-  .writing-statement-line{display:block}
-  .writing-statement-line + .writing-statement-line{margin-top:2px}
-  .writing-statement-line[lang="zh"]{font-family:"MuyaoPleased",cursive;letter-spacing:.025em}
-  .writing-statement-line[lang="en"]{font-family:"Caveat",cursive;letter-spacing:.01em}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @keyframes birdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  @keyframes frameTremble{0%,100%{transform:translate(0,0) rotate(0)}20%{transform:translate(-1px,.5px) rotate(-1deg)}40%{transform:translate(1px,-.5px) rotate(.85deg)}60%{transform:translate(-.8px,-.3px) rotate(-.7deg)}80%{transform:translate(.8px,.3px) rotate(.6deg)}}
-  @keyframes garlandSettle{from{opacity:0;transform:translateY(12px) rotate(-1.2deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
-  .chip{border:1.3px solid var(--line);background:var(--paper2);color:var(--soft);padding:6px 13px;border-radius:999px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;cursor:pointer}
-  .chip.on{color:var(--mark);border-color:var(--mark);background:#fff}
-  .line-row{overflow-x:auto;overflow-y:hidden;display:flex;align-items:flex-start;gap:16px;scrollbar-width:thin;padding:10px 16px}
-  .photo-rack{position:relative}
-  .photo-rack+.photo-rack{margin-top:24px}
-  .photo-rack .line-row{border-bottom:2px solid var(--ink);padding-bottom:18px}
-
-  .hanging-frame-motion{transform-origin:50% 0}
-  @media (hover:hover){.hanging-frame:hover .hanging-frame-motion{animation:frameTremble .32s linear infinite}}
-  .card{background:var(--paper);border:2px solid var(--ink);padding:6px 6px 5px;box-shadow:0 6px 14px rgba(60,50,35,.1)}
-  .photo-button{display:block;width:100%;border:0;padding:0;background:transparent;cursor:zoom-in;text-align:left;color:inherit;font:inherit}
-  .photo-img{display:block;width:100%;height:100%;object-fit:cover}
-  .peg{width:15px;height:10px;background:var(--ink);margin:0 auto -2px;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
-  .bird{animation:birdBob 2.6s ease-in-out infinite}
-  .lightbox{position:fixed;inset:0;z-index:180;background:rgba(23,18,12,.9);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
-  /* cursor stays zoom-out over the card too: the whole overlay is the dismiss target */
-  .lightbox-card{position:relative;max-width:min(94vw,1280px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px;color:#efe5d3;cursor:zoom-out}
-  .lightbox-card img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 24px 70px rgba(0,0,0,.48)}
-  .load-more-sticker{position:absolute;width:46px;left:50%;bottom:100%;transform:translateX(120px) rotate(6deg)}
-  @media (prefers-reduced-motion:reduce){.bird,.hanging-frame-motion{animation:none!important;opacity:1!important}}
-  @media (max-width:860px){.gallery-wrap{display:none!important}.mobile-garland{display:flex!important}}
-  @media (max-width:480px){.load-more-sticker{transform:translateX(72px) rotate(6deg)}}
-  @media (hover:none){.mobile-garland .hanging-frame-motion{animation:garlandSettle .48s cubic-bezier(.2,.7,.2,1) both}}
-</style>
-</helmet>
-
 <div data-screen-label="gallery" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px">
   <div style="width:min(1180px,100%);margin-top:40px">
     <header class="subpage-intro" aria-labelledby="shooting-title">
@@ -105,199 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </header>
 
-    <div style="margin-top:clamp(48px,6vw,72px);display:flex;flex-wrap:wrap;gap:8px">
-      <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="8">
-        <button type="button" class="{{ cat.cls }}" onClick="{{ cat.onClick }}" aria-pressed="{{ cat.pressed }}">{{ cat.label }}</button>
-      </sc-for>
-    </div>
-    <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px">
-      <sc-for list="{{ years }}" as="yr" hint-placeholder-count="10">
-        <button type="button" class="{{ yr.cls }}" onClick="{{ yr.onClick }}" aria-pressed="{{ yr.pressed }}">{{ yr.label }}</button>
-      </sc-for>
-    </div>
-    <div class="util" style="margin-top:12px;font-size:12px;color:var(--pencil)">Showing {{ visibleN }} / {{ filteredN }} · 显示 {{ visibleN }} / {{ filteredN }} 张 · {{ totalN }} frames total</div>
-
-    <!-- The rack and garland layouts render the same photos. Only one is ever
-         mounted: rendering both doubled every <img> in the DOM, so the browser
-         fetched and decoded each photo twice even though CSS hid one set. -->
-    <sc-if value="{{ wideLayout }}" hint-placeholder-val="{{ true }}">
-    <div class="gallery-wrap" style="position:relative;margin-top:28px">
-      <sc-for list="{{ racks }}" as="rack" hint-placeholder-count="3">
-        <section class="photo-rack" aria-label="{{ rack.label }}">
-          <sc-if value="{{ rack.showBird }}" hint-placeholder-val="{{ false }}">
-            <div class="bird" style="position:absolute;left:14px;top:-36px;width:38px;height:37px;background-image:url('./assets/bird-strip-light.png');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;z-index:2" role="img" aria-label="a small bird"></div>
-          </sc-if>
-          <div class="line-row">
-            <sc-for list="{{ rack.photos }}" as="p" hint-placeholder-count="6">
-              <div class="hanging-frame" style="{{ p.wrapStyle }}">
-                <div class="hanging-frame-motion">
-                  <div class="peg"></div>
-                  <div class="card">
-                    <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" data-content-srcset="{{ p.srcset }}" sizes="148px" width="400" height="300" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
-                    <div class="hand" style="font-size:15px;color:var(--soft);padding:5px 2px 0">{{ p.loc }}</div>
-                    <div class="util" style="font-size:10px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
-                  </div>
-                </div>
-              </div>
-            </sc-for>
-          </div>
-        </section>
-      </sc-for>
-    </div>
-    </sc-if>
-
-    <sc-if value="{{ narrowLayout }}" hint-placeholder-val="{{ false }}">
-    <div class="mobile-garland" style="display:none;flex-direction:column;align-items:center;position:relative;margin-top:14px;padding-top:16px">
-      <div style="position:absolute;left:50%;top:0;bottom:26px;width:2px;background:var(--line);transform:translateX(-50%)" aria-hidden="true"></div>
-      <sc-for list="{{ visibleAll }}" as="p" hint-placeholder-count="18">
-        <div class="hanging-frame" style="{{ p.garlandWrap }}">
-          <div class="hanging-frame-motion">
-            <div class="peg" style="margin:0 auto -2px"></div>
-            <div class="card" style="width:100%">
-              <button type="button" class="photo-button" onClick="{{ p.openPhoto }}" aria-label="{{ p.viewLabel }}"><span style="display:block;aspect-ratio:4/3;overflow:hidden"><img class="photo-img" data-content-src="{{ p.src }}" data-content-srcset="{{ p.srcset }}" sizes="min(76vw,320px)" width="400" height="300" alt="{{ p.loc }}" loading="lazy" decoding="async"></span></button>
-              <div class="hand" style="font-size:16px;color:var(--soft);padding:6px 3px 0">{{ p.loc }}</div>
-              <div class="util" style="font-size:10.5px;color:var(--pencil)">{{ p.dateLabel }} · {{ p.catLabel }}</div>
-            </div>
-          </div>
-        </div>
-      </sc-for>
-    </div>
-    </sc-if>
-
-    <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ true }}">
-      <div style="text-align:center;margin-top:34px;position:relative">
-        <img class="load-more-sticker" src="./assets/sticker-happy.png" alt="" aria-hidden="true">
-        <button type="button" class="hand" onClick="{{ loadMore }}" style="border:1.5px solid var(--ink);background:var(--paper2);color:var(--ink);padding:10px 24px;border-radius:999px;font-size:19px;cursor:pointer">Load more · 再晾一批（{{ remaining }} remaining）</button>
-      </div>
-    </sc-if>
+    <!-- lib/gallery/app.js mounts the filters, the clotheslines and the viewer here. -->
+    <div class="g-root" data-mount="gallery"></div>
 
     <div class="util" style="font-size:12px;color:var(--pencil);margin-top:34px">fig.03</div>
   </div>
 </div>
-
-<sc-if value="{{ selectedPhoto }}" hint-placeholder-val="{{ false }}">
-  <!-- The whole overlay dismisses, image and caption included; don't reintroduce
-       a close button. Escape also closes it. -->
-  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick="{{ closeLightbox }}">
-    <div class="lightbox-card">
-      <img data-content-src="{{ selectedPhoto.display }}" width="{{ selectedPhoto.dw }}" height="{{ selectedPhoto.dh }}" alt="{{ selectedPhoto.loc }}" decoding="async" fetchpriority="high">
-      <div class="hand" style="font-size:19px">{{ selectedPhoto.loc }}</div>
-      <div class="util" style="font-size:11px;color:#c9bda3">{{ selectedPhoto.date }} · {{ selectedPhoto.catLabel }}</div>
-    </div>
-  </div>
-</sc-if>
 </x-dc>
-<script type="text/x-dc" data-dc-script>
-const CAT_LABEL = {landscape:'Landscape',cityscape:'Cityscape',people:'People',architecture:'Architecture',street:'Street',creature:'Creature','black and white':'B & W',abstract:'Abstract'};
-
-const PHOTOS = (window.FY_PHOTOS || []).slice();
-for (let i = PHOTOS.length - 1; i > 0; i--) {
-  const j = Math.floor(Math.random() * (i + 1));
-  [PHOTOS[i], PHOTOS[j]] = [PHOTOS[j], PHOTOS[i]];
-}
-
-// Matches the 860px breakpoint in the stylesheet below. Kept in sync manually:
-// the rack/garland CSS and this query must agree or a layout renders unstyled.
-const NARROW_QUERY = '(max-width:860px)';
-
-class Component extends DCLogic {
-  state = {
-    activeCategory: 'all', activeYear: 'all', visibleCount: 18, selectedPhoto: null,
-    narrow: window.matchMedia(NARROW_QUERY).matches
-  };
-
-  componentDidMount() {
-    this._onKey = e => { if (e.key === 'Escape') this.setState({ selectedPhoto: null }); };
-    window.addEventListener('keydown', this._onKey);
-    this._mq = window.matchMedia(NARROW_QUERY);
-    this._onMq = e => this.setState({ narrow: e.matches });
-    this._mq.addEventListener('change', this._onMq);
-    this.hydrateImages();
-  }
-  componentDidUpdate() { this.hydrateImages(); }
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this._onKey);
-    if (this._mq) this._mq.removeEventListener('change', this._onMq);
-  }
-  hydrateImages() {
-    requestAnimationFrame(() => {
-      document.querySelectorAll('img[data-content-src]').forEach(img => {
-        // Set srcset before src so the browser picks a candidate once rather
-        // than fetching the src and then re-selecting from the srcset.
-        const srcset = img.getAttribute('data-content-srcset');
-        if (srcset && srcset.indexOf('{{') === -1 && img.getAttribute('srcset') !== srcset) img.setAttribute('srcset', srcset);
-        const src = img.getAttribute('data-content-src');
-        if (src && src.indexOf('{{') === -1 && img.getAttribute('src') !== src) img.setAttribute('src', src);
-      });
-    });
-  }
-
-  renderVals() {
-    const st = this.state;
-    const matches = p => (st.activeCategory === 'all' || p.cat === st.activeCategory) && (st.activeYear === 'all' || p.date.slice(0,4) === st.activeYear);
-    const filtered = PHOTOS.filter(matches);
-    const visible = filtered.slice(0, st.visibleCount);
-
-    const catBase = st.activeYear === 'all' ? PHOTOS : PHOTOS.filter(p => p.date.slice(0,4) === st.activeYear);
-    const catCounts = {};
-    catBase.forEach(p => { catCounts[p.cat] = (catCounts[p.cat] || 0) + 1; });
-    const catOrder = Object.keys(catCounts).sort((a,b) => catCounts[b] - catCounts[a]);
-    const categories = [{ id:'all', label:'All · 全部 ' + catBase.length, cls: st.activeCategory==='all' ? 'chip on' : 'chip', pressed:st.activeCategory==='all'?'true':'false',
-      onClick: () => this.setState({ activeCategory:'all', visibleCount:18 }) }]
-      .concat(catOrder.map(c => ({ id:c, label:(CAT_LABEL[c]||c) + ' ' + catCounts[c], cls: st.activeCategory===c ? 'chip on' : 'chip', pressed:st.activeCategory===c?'true':'false',
-        onClick: () => this.setState({ activeCategory:c, visibleCount:18 }) })));
-
-    const yrBase = st.activeCategory === 'all' ? PHOTOS : PHOTOS.filter(p => p.cat === st.activeCategory);
-    const yrCounts = {};
-    yrBase.forEach(p => { const y = p.date.slice(0,4); yrCounts[y] = (yrCounts[y] || 0) + 1; });
-    const yrOrder = Object.keys(yrCounts).sort((a,b) => b.localeCompare(a));
-    const years = [{ id:'all', label:'All years · 全部年份', cls: st.activeYear==='all' ? 'chip on' : 'chip', pressed:st.activeYear==='all'?'true':'false',
-      onClick: () => this.setState({ activeYear:'all', visibleCount:18 }) }]
-      .concat(yrOrder.map(y => ({ id:y, label:y + ' · ' + yrCounts[y], cls: st.activeYear===y ? 'chip on' : 'chip', pressed:st.activeYear===y?'true':'false',
-        onClick: () => this.setState({ activeYear:y, visibleCount:18 }) })));
-
-    const decorate = p => {
-      const rot = ((p.id * 53) % 9) - 4;
-      const gx = (p.id % 2 === 0) ? -16 - (p.id % 3) * 4 : 16 + (p.id % 3) * 4;
-      return { ...p,
-        wrapStyle: 'flex:none;width:148px;transform:rotate(' + rot + 'deg)',
-        garlandWrap: 'position:relative;z-index:1;width:min(76vw,320px);margin:0 0 30px;transform:translateX(' + gx + 'px) rotate(' + rot + 'deg)',
-        dateLabel: p.date.slice(0,7).replace('-','·'),
-        catLabel: CAT_LABEL[p.cat] || p.cat,
-        viewLabel: 'View photo · 放大照片: ' + p.loc,
-        openPhoto: () => this.setState({ selectedPhoto: { ...p, catLabel: CAT_LABEL[p.cat] || p.cat } }) };
-    };
-
-    const decorated = visible.map(decorate);
-    const narrow = st.narrow;
-    const racks = [];
-    if (!narrow) {
-      for (let i = 0; i < decorated.length; i += 6) {
-        racks.push({
-          label: 'Photo rack ' + (racks.length + 1),
-          photos: decorated.slice(i, i + 6),
-          showBird: i === 12
-        });
-      }
-    }
-
-    return {
-      categories, years,
-      racks,
-      wideLayout: !narrow,
-      narrowLayout: narrow,
-      visibleAll: narrow ? decorated : [],
-      filteredN: filtered.length,
-      visibleN: visible.length,
-      totalN: PHOTOS.length,
-      hasMore: st.visibleCount < filtered.length,
-      remaining: filtered.length - visible.length,
-      loadMore: () => this.setState(s => ({ visibleCount: Math.min(s.visibleCount + 6, filtered.length) })),
-      selectedPhoto: st.selectedPhoto,
-      closeLightbox: () => this.setState({ selectedPhoto: null })
-    };
-  }
-}
-</script>
 </body>
 </html>

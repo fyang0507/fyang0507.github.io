@@ -1,0 +1,104 @@
+/* lib/gallery/gallery.css — Gallery (fig.03): the darkroom and the line (design/2026-09-motion/r2-06-gallery.css).
+   Linked in the head, so it applies at first paint. One pen for rope, nails, pegs and frames (~1.7px ink). */
+@font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Noto Serif SC","Fraunces",Georgia,serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.display{font-family:"DingTalk JinBuTi","Fraunces",serif;font-weight:400}
+.hand{font-family:"MuyaoPleased","Caveat",cursive}
+.util{font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+.writing-statement{font-size:clamp(19px,2.2vw,24px);line-height:1.35;color:var(--soft);padding-bottom:8px}
+.writing-statement-line{display:block}
+.writing-statement-line + .writing-statement-line{margin-top:2px}
+.writing-statement-line[lang="zh"]{font-family:"MuyaoPleased",cursive;letter-spacing:.025em}
+.writing-statement-line[lang="en"]{font-family:"Caveat",cursive;letter-spacing:.01em}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* The host is filled a frame after the intro paints; holding a screen's height keeps fig.03 from jumping. */
+.g-root{min-height:100vh}
+
+/* ---- filters: pen tiers (hover = the coral line, chosen = the wheat band) ---- */
+.g-filters{margin-top:clamp(48px,6vw,72px);display:grid;row-gap:18px}
+.g-chips{display:flex;flex-wrap:wrap;column-gap:28px;row-gap:16px;align-items:baseline}
+.g-chip{padding:2px 0;font:400 15px/1.3 var(--text);color:var(--soft);text-align:left;transition:color .14s ease}
+.g-chip sup{margin-left:4px;font:11px/1 var(--util);color:var(--pencil)}
+.g-chip[data-pen-tier="1"],.g-chip[data-pen-tier="2"]{color:var(--ink)}
+.g-chip:disabled{cursor:default;opacity:.45}
+.g-count{margin-top:22px;font:12px/1.5 var(--util);letter-spacing:.04em;color:var(--pencil)}
+
+/* ---- the lines ---- */
+.g-rack{margin-top:10px}
+.line-host + .line-host{margin-top:2px}
+.g-end{min-height:74px;display:grid;place-items:center;padding:8px 0;text-align:center;font:20px/1.25 var(--hand);color:var(--pencil)}
+.g-end > span{display:none}
+[data-mode="desk"] .g-end:not(.full) .more-d,[data-mode="phone"] .g-end:not(.full) .more-m,.g-end.full .done{display:inline}
+.g-end.full{color:var(--soft)}
+
+.g-line{position:relative}
+.g-line .rope{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.rope .rope-line{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round}
+.rope .nail{fill:var(--ink)}
+.rope .knot{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linecap:round}
+.hang{position:absolute;left:0;top:0;transform-origin:50% 0;will-change:transform;transition:opacity .14s linear}
+.hang.unpegged{opacity:0}
+.peg{overflow:visible;pointer-events:none;--pf:var(--ink)}
+.hang > .peg{position:absolute;left:50%;top:-8px;width:10px;height:22px;margin-left:-5px;z-index:2}
+.peg .jaw{transform-box:view-box;transform-origin:10px 15px;transition:transform 70ms cubic-bezier(.3,.7,.4,1)}
+.peg .jaw path{fill:var(--pf);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.peg .jaw .spring{fill:none;stroke-width:1.3;stroke-linecap:round}
+.peg .coil{fill:var(--paper);stroke:var(--ink);stroke-width:1.3;vector-effect:non-scaling-stroke}
+.peg.open .jaw-l{transform:rotate(15deg)}
+.peg.open .jaw-r{transform:rotate(-15deg)}
+.snapmark{position:absolute;overflow:visible;pointer-events:none;z-index:3}
+.snapmark path{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round}
+
+/* ---- the print (the live page's card geometry). The meta sits clear of the caption's hover line (pen spacing). ---- */
+.print{position:relative;display:block;width:100%;margin-top:6px;padding:var(--pad) var(--pad) 5px;background:var(--paper);border:2px solid var(--ink);
+  box-shadow:0 6px 14px color-mix(in srgb,var(--ink) 10%,transparent);text-align:left;cursor:zoom-in;color:inherit}
+.win{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--paper2)}
+.win img{display:block;width:100%;height:100%;object-fit:cover}
+/* The developer's flat grey-green, never a gradient. This file's one colour literal: a chemical, not a site colour. */
+:root{--chem:#C2C5AB}
+.chem{position:absolute;inset:0;background:var(--chem);opacity:0;pointer-events:none}
+.undev .chem{opacity:1}
+.cap{display:inline-block;padding-top:5px;font:var(--cap)/1.4 var(--hand);color:var(--soft);max-width:100%;vertical-align:top}
+.meta{display:block;margin-top:calc(var(--cap) * .6 + 1px);font:var(--meta)/1.5 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---- the viewer ---- */
+.vw{position:fixed;inset:0;z-index:700;pointer-events:none}
+.vw[hidden]{display:none}
+.vw:focus{outline:none}
+.vw-veil{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 66%,transparent);opacity:0;pointer-events:auto;cursor:zoom-out}
+.vw-hint{position:fixed;left:0;right:0;display:flex;justify-content:center;gap:28px;font:11px/1.2 var(--util);letter-spacing:.05em;color:color-mix(in srgb,var(--paper) 82%,transparent);pointer-events:none;opacity:0}
+.vw-hint .t{display:none}
+@media (hover:none),(max-width:760px){.vw-hint{flex-direction:column;align-items:center;gap:6px}.vw-hint .k{display:none}.vw-hint .t{display:inline}}
+.fly{position:fixed;left:0;top:0;margin:0;transform-origin:50% 50%;pointer-events:auto;cursor:zoom-out;touch-action:none;user-select:none;-webkit-user-select:none;will-change:transform}
+.fly.homing{pointer-events:none}
+.fly-card{position:absolute;inset:0;background:var(--paper);border:2px solid var(--ink);contain:strict}
+.fly-win{position:absolute;overflow:hidden;background:var(--paper2)}
+.fly-win img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
+.fly-chem{position:absolute;inset:0;background:var(--chem);opacity:0}
+.fly-hi{opacity:0;transition:opacity .16s linear}
+.fly-hi.on{opacity:1}
+.fly-cap{position:absolute;line-height:1.4;font-family:var(--hand);color:var(--soft)}
+.fly-meta{position:absolute;white-space:nowrap;line-height:1.5;font-family:var(--util);letter-spacing:.04em;color:var(--pencil)}
+.fly > .peg{position:absolute;z-index:2}
+
+/* ---- phone: one swipe line per clothesline, bleeding to the screen's edges ---- */
+[data-mode="phone"] .g-rack{margin-left:-4vw;margin-right:-4vw}
+.mline{margin-top:16px}
+.mline-head{display:flex;justify-content:space-between;padding:0 4vw;font:10.5px/1.2 var(--util);letter-spacing:.05em;color:var(--pencil)}
+.mline-count{color:var(--soft)}
+.mscroll{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.mscroll::-webkit-scrollbar{display:none}
+.mtrack{position:relative}
+.msnap{position:absolute;top:0;height:8px;scroll-snap-align:center;pointer-events:none}
+
+@media (prefers-reduced-motion:reduce){.hang,.g-chip,.fly-hi,.peg .jaw{transition:none}}
+
+@media (max-width:760px){
+  .g-filters{row-gap:14px}
+  .g-chips{column-gap:20px;row-gap:14px}
+  .g-end{font-size:17px}
+}
