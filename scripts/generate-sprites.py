@@ -23,8 +23,8 @@ canonical and untouched.
   while that object is away. Neither overlay is part of the partition.
 - strip/<name>-<cell width>.webp: the sprite strips at their master cell width,
   ½ and ¼, so a small sprite never scales a 2,464 px strip down in CSS. The
-  portrait strip is masked to the frame's silhouette. The ½ and ¼ rungs, which
-  the desk paints at rest, are lossless; the master rung is lossy.
+  portrait strip is masked to the frame's silhouette. Every rung is lossy (with
+  exact alpha) and each weighs less than the rung above it.
 - op/*.webp: the opener OP's hero cut-outs.
 - desk-geo.js: window.FY_DESK, the geometry in desk pixels.
 
@@ -381,10 +381,13 @@ def build() -> tuple[dict[str, bytes], dict, dict]:
                for name, (src, _) in STRIPS.items()}
     for name, (_, n) in STRIPS.items():
         entry = {"cells": n, "files": []}
-        for rung, size in enumerate(ladder(masters[name], n)):
+        for size in ladder(masters[name], n):
             rel = f"strip/{name}-{size.width // n}.webp"
-            files[rel] = webp(size, lossless=rung > 0)
+            files[rel] = webp(size)
             entry["files"].append({"src": rel, "cw": size.width // n, "h": size.height})
+        weights = [len(files[f["src"]]) for f in entry["files"]]
+        if weights != sorted(weights, reverse=True) or len(set(weights)) < len(weights):
+            raise SystemExit(f"strip {name}: a smaller rung is not lighter than the one above it {weights}")
         geo["strips"][name] = entry
     for obj, name in STRIP_OBJ.items():
         img = np.array(masters[name])
