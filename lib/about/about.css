@@ -17,7 +17,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
   /* the stock's edge, ply by ply */
   --ply:#D9CDB3;--ply-core:#B9AA8C;--ply-outer:#CBBD9F;--ply-line:#4A4238;
   /* the sleeve's print and the QR slip's paper and tape */
-  --kraft-ink:#3B3024;--kraft-rule:rgba(59,48,36,.72);--slip:#FFFDF7;--slip-edge:#DDD2BE;--tape:rgba(217,207,160,.72);--dot:rgba(51,48,43,.5);
+  --kraft:#D5BB8F;--kraft-back:#C4A677;--kraft-fibre:#9E8158;--kraft-seam:#8F7550;--kraft-ink:#3B3024;--kraft-rule:rgba(59,48,36,.72);--slip:#FFFDF7;--slip-edge:#DDD2BE;--tape:rgba(217,207,160,.72);--dot:rgba(51,48,43,.5);
   min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 60px;
   overflow-x:clip   /* the sleeve set aside past the left edge, and any 「 」 at the right, never widen the page */
 }
@@ -94,7 +94,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .cue-t{margin:4px 0 0 -2px;white-space:nowrap;transform:rotate(-3deg)}
 .cue-zh{font-size:17px}
 
-/* ---------- the two faces (r3): every size in card units, 1u = 1/576 of the card's height, set as --u by the rig ---------- */
+/* ---------- the two faces: every size in card units, 1u = 1/576 of the card's height, set as --u by the rig ---------- */
 .a-card{--u:1px}
 .sc-face{position:relative;display:flex;flex-direction:column;height:100%;border-radius:calc(14*var(--u));padding:calc(19*var(--u)) calc(18*var(--u)) calc(15*var(--u));overflow:hidden;
   font-family:"Noto Serif SC","Fraunces",Georgia,serif;line-height:1.5;-webkit-user-select:none;user-select:none}
@@ -120,7 +120,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .sc-note .sc-zh{font-size:calc(16*var(--u));line-height:1.3}
 .sc-note .sc-en{margin-top:calc(3*var(--u));font-family:"Caveat",cursive;font-size:calc(14.5*var(--u));line-height:1.2;letter-spacing:.02em}
 
-/* day · one field list; RANGE is its first row under the heavy rule (r2 set it apart as a block) */
+/* day · one field list; RANGE is its first row, under the heavy rule */
 .sc-fields{margin-top:auto;border-bottom:1px solid var(--card-rule)}
 .sc-row{display:grid;grid-template-columns:calc(58*var(--u)) 1fr;gap:calc(10*var(--u));padding:calc(5.6*var(--u)) 0 calc(6.2*var(--u));border-top:1px solid var(--card-rule)}
 .sc-row.sc-row-range{border-top:calc(1.5*var(--u)) solid var(--ink)}
