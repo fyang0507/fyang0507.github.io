@@ -12,8 +12,10 @@
   --paper:#FBF6EC;--paper2:#F3ECDD;--page:#FEFAEE;--slip:#FCF8EF;
   --ink:#33302B;--soft:#6D6559;--pencil:#7A7063;   /* pencil is 4.5:1 on paper */
   --line:#E4DAC7;--line-strong:#CFC1A9;
-  /* coral: identity and the pen's attention only, never small text */
-  --mark:#D9695A;--mark-deep:#A5453A;--pen:#D9695A;
+  /* coral: identity and the pen's attention only, never small text. The pen is coral
+     multiplied by its paper; pen.css switches --pen per [data-paper]. */
+  --mark:#D9695A;--mark-deep:#A5453A;
+  --pen-cream:#D9695A;--pen-cork:#CB5E49;--pen-wheat:#C85E47;--pen:var(--pen-cream);
   /* chosen state: the wheat highlighter band and its edge */
   --hl:#DCCF98;--hl-ink:#AD9650;
   /* corkboard, bookshelf and washes */

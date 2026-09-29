@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Verification only (scripts/ never deploys). Loads the shared pen exactly as a subpage does:
+     site-tokens.css + pen.css, motion.js blocking, pen.js + pen-tier.js deferred. Tests: pen-api.mjs, pen-spacing.mjs. -->
+<title>pen harness · 笔的测试台</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site-tokens.css"><link rel="stylesheet" href="../../pen.css">
+<style>
+  body{font-family:var(--text);padding:28px clamp(16px,4vw,48px) 80px}
+  h1{font:500 22px/1.2 var(--disp);margin:0 0 18px}
+  section{margin:0 0 34px;padding:18px 20px;border:1px solid var(--line);border-radius:10px}
+  .k{font:11px/1.4 var(--util);color:var(--pencil);margin:0 0 14px}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+  .row{display:flex;flex-wrap:wrap;column-gap:34px;row-gap:22px;align-items:baseline}
+  .f{padding:2px 0;font:400 16px/1.3 var(--text);color:var(--soft)}
+  .f[data-pen-tier="1"],.f[data-pen-tier="2"]{color:var(--ink)}
+  .f sup{margin-left:4px;font:11px/1 var(--util);color:var(--pencil)}
+  .act{display:inline-flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:14px;margin-top:28px;font:500 18px/1.3 var(--text)}
+  .act .t{display:inline-block}
+  .act small{font:11.5px/1 var(--util);color:var(--pencil)}
+  .after{margin-top:14px;font:400 15px/1.6 var(--text);color:var(--soft);max-width:560px}
+  .nav{position:relative;display:flex;gap:28px;justify-content:flex-end;height:64px;align-items:flex-end;padding-bottom:14px}
+  .nav a{font:500 12.5px/16px var(--util);color:var(--soft)}
+  .nav .t{display:inline-block}
+  .site-rule{height:1.5px;background:var(--ink)}
+  .cork{padding:34px 28px 40px;background:var(--board);border-radius:14px}
+  .card{display:block;width:min(420px,100%);padding:28px 28px 26px;text-align:left;border-radius:11px;background:var(--wash-wheat);transform:rotate(3deg);transform-origin:50% 14px}
+  .card .kind{display:block;font:500 10.5px/1.3 var(--util);color:var(--soft)}
+  .card .ct{display:block;margin-top:14px;font:500 32px/1.15 var(--disp)}
+  .card .ct .t{display:inline-block}
+  .card .note{display:block;margin-top:18px;font:400 15.5px/1.55 var(--text);color:var(--soft)}
+  .scroll{display:inline-grid;place-items:center;width:40px;height:40px;margin-top:26px;border:1.5px solid var(--ink);border-radius:50%;font:500 15px/1 var(--util)}
+  .scroll .t{display:block;width:20px;text-align:center;line-height:18px}
+  .ann{position:relative;font:400 20px/1.4 var(--text)}
+  svg.glyph{width:160px;height:60px;overflow:visible}
+</style>
+<script src="../../motion.js"></script>
+<script defer src="../../pen.js"></script><script defer src="../../pen-tier.js"></script>
+</head><body>
+<h1>pen harness · 笔的测试台</h1>
+
+<section id="paper">
+  <p class="k">paper · filters (choose one), a toggle, a momentary action</p>
+  <div class="row" role="group" aria-label="filters">
+    <button type="button" class="f" data-f="all" aria-pressed="true">all · 全部<sup>27</sup></button>
+    <button type="button" class="f" data-f="travel" aria-pressed="false">travel log · 游记<sup>15</sup></button>
+    <button type="button" class="f" data-f="stories" aria-pressed="false">stories we live · 我们生活的故事<sup>5</sup></button>
+    <button type="button" class="f" data-f="poem" aria-pressed="false">poem · 诗<sup>2</sup></button>
+    <button type="button" class="f" id="toggle" aria-expanded="false">open card · 打开</button>
+    <button type="button" class="f" id="plain">no brackets · 无括号</button>
+  </div>
+  <button type="button" class="act" id="more"><span class="t">Load more · 再晾一批</span><small>12 remaining · 还剩 12 张</small></button>
+  <p class="after">Whatever follows an underline sits at least ten pixels below its stroke.</p>
+</section>
+
+<section id="same">
+  <p class="k">same text, another place: the stroke must be identical</p>
+  <button type="button" class="f" id="twin">travel log · 游记<sup>15</sup></button>
+</section>
+
+<section id="navsec">
+  <p class="k">a nav above its rule</p>
+  <nav class="nav"><a href="#w" id="n1"><span class="t">writing · 在写</span></a><a href="#b" id="n2"><span class="t">building · 在造</span></a></nav>
+  <div class="site-rule"></div>
+</section>
+
+<section class="cork" data-paper="cork">
+  <p class="k">cork, and a wheat card rotated 3°</p>
+  <button type="button" class="card" id="card" data-paper="wheat" aria-expanded="false">
+    <span class="kind">system · 2026—now</span><span class="ct"><span class="t">Fred Agent</span></span>
+    <span class="note">An operating environment that gives swappable general-purpose agents durable handles into time.</span>
+  </button>
+  <button type="button" class="scroll" id="scroll" aria-label="Scroll on · 往后"><span class="t">→</span></button>
+</section>
+
+<section id="misc">
+  <p class="k">Pen.annotate underline · Pen.glyph</p>
+  <span class="ann" id="ann">a sentence underlined by annotate</span>
+  <svg class="glyph" id="glyph" aria-hidden="true"></svg>
+</section>
+
+<script>
+  // Harness wiring (verification only): the one global here is HX, for the tests.
+  document.addEventListener('DOMContentLoaded', function () {
+    var $ = function (s) { return document.querySelector(s); }, HX = window.HX = { w: {} };
+    var filters = [].slice.call(document.querySelectorAll('[data-f]'));
+    filters.forEach(function (b) {
+      var t = HX.w[b.dataset.f] = Tier.wire(b, { chosen: b.getAttribute('aria-pressed') === 'true' });
+      b.addEventListener('click', function (e) {
+        filters.forEach(function (o) { var on = o === b; o.setAttribute('aria-pressed', on); HX.w[o.dataset.f].set(on, on ? (e.detail === 0 ? 'key' : 'press') : 'hover'); });
+      });
+    });
+    var tg = $('#toggle'); HX.w.toggle = Tier.wire(tg, { chosen: function () { return tg.getAttribute('aria-expanded') === 'true'; } });
+    tg.addEventListener('click', function () { tg.setAttribute('aria-expanded', tg.getAttribute('aria-expanded') !== 'true'); HX.w.toggle.refresh(); });
+    HX.w.more = Tier.wire($('#more'), { target: '.t' });
+    HX.w.plain = Tier.wire($('#plain'), { focus: false });
+    HX.w.twin = Tier.wire($('#twin'));
+    HX.w.n1 = Tier.wire($('#n1'), { target: '.t', chosen: true }); HX.w.n2 = Tier.wire($('#n2'), { target: '.t' });
+    var card = $('#card');
+    HX.w.card = Tier.wire(card, { target: '.ct .t', focus: { on: 'host', big: true, gap: 7, gy: 7 }, chosen: function () { return card.getAttribute('aria-expanded') === 'true'; } });
+    card.addEventListener('click', function () { card.setAttribute('aria-expanded', card.getAttribute('aria-expanded') !== 'true'); HX.w.card.refresh(); });
+    HX.w.scroll = Tier.wire($('#scroll'), { target: '.t', over: 2, focus: { on: 'host', gap: 5, gy: 5 } });
+    HX.ann = Pen.annotate($('#ann'), 'underline', { manual: true, on: true });
+    var g = Pen.glyph([140, 30], 4, 34, 'harness'), svg = $('#glyph');
+    [g.shaft, g.head].forEach(function (d) { svg.appendChild(Pen.path(d, {})).setAttribute('class', 'pt-s'); });
+    document.documentElement.setAttribute('data-ready', '');
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); }); });
+</script>
+</body></html>
