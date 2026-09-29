@@ -1,0 +1,75 @@
+/* r3-07 · the two faces of the specimen card, re-laid for a portrait card.
+   Transcribed from r2-07-about-card.css (itself from About.dc.html:39–168): same stock, inks and taste fixes
+   (no inset highlight, no coral glow, GUARD SKILL in pencil so the radar is the night face's only coral).
+   What changed is the composition. r2 was a 1:1.31 landscape-ish panel (figure column beside a field column,
+   radar beside the stand); this is one column on a 7:12 card, name first. Every size is in card units:
+   1u = 1/576 of the card's height (set as --u by the rig), so a phone and a desktop show the same printed
+   card at two sizes instead of two different layouts. The reference card is 336u × 576u. */
+.a-card{--u:1px}
+.sc-face{position:relative;display:flex;flex-direction:column;height:100%;border-radius:calc(14*var(--u));padding:calc(19*var(--u)) calc(18*var(--u)) calc(15*var(--u));overflow:hidden;
+  font-family:"Noto Serif SC","Fraunces",Georgia,serif;line-height:1.5;-webkit-user-select:none;user-select:none}
+.sc-face img{-webkit-user-drag:none}
+.sc-day{border:calc(2.2*var(--u)) solid #33302B;background:#FBF6EC;color:#33302B}
+.sc-night{border:calc(2.2*var(--u)) solid #55483A;background:#16120F;color:#F3E9D8}
+
+/* head: meta line, the name, the form — identical on both faces so a flip reads as one card */
+.sc-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:calc(10*var(--u));font:calc(9.4*var(--u))/1.4 "IBM Plex Mono",monospace;letter-spacing:.09em}
+.sc-day .sc-meta{color:#746B5E}
+.sc-night .sc-meta{color:#C3B5A0}
+.sc-title{margin-top:calc(9*var(--u));font-family:"DingTalk JinBuTi","Fraunces",serif;font-size:calc(35*var(--u));line-height:1.08;font-weight:500;white-space:nowrap}
+.sc-title-en{font-family:"IBM Plex Mono",monospace;font-size:.4em;letter-spacing:.08em;vertical-align:.24em}
+.sc-form{margin-top:calc(3*var(--u));font:calc(9.4*var(--u))/1.5 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.08em;color:#746B5E}
+.sc-night .sc-form{color:#C3B5A0}
+.sc-zh,.sc-en{display:block}
+
+/* day · the figure band: the one quiet region, the seated figure and the coral hand note beside it */
+.sc-art{display:grid;grid-template-columns:calc(118*var(--u)) 1fr;gap:calc(14*var(--u));align-items:center;margin:calc(10*var(--u)) 0 calc(11*var(--u))}
+.sc-figure{height:calc(152*var(--u));display:flex;align-items:flex-end;justify-content:center}
+.sc-figure img{display:block;height:100%;width:auto;max-width:none}
+.sc-note{position:relative;padding:calc(9*var(--u)) 0 0;border-top:calc(1.4*var(--u)) solid #D9695A;color:#B94F43;font-family:"MuyaoPleased","Caveat",cursive;transform:rotate(-1.2deg);transform-origin:0 0}
+.sc-note .sc-zh{font-size:calc(16*var(--u));line-height:1.3}
+.sc-note .sc-en{margin-top:calc(3*var(--u));font-family:"Caveat",cursive;font-size:calc(14.5*var(--u));line-height:1.2;letter-spacing:.02em}
+
+/* day · one field list; RANGE is its first row under the heavy rule (r2 set it apart as a block) */
+.sc-fields{margin-top:auto;border-bottom:1px solid #D9CFBD}
+.sc-row{display:grid;grid-template-columns:calc(58*var(--u)) 1fr;gap:calc(10*var(--u));padding:calc(5.6*var(--u)) 0 calc(6.2*var(--u));border-top:1px solid #D9CFBD}
+.sc-row.sc-row-range{border-top:calc(1.5*var(--u)) solid #33302B}
+.sc-label{display:block;font:500 calc(9.6*var(--u))/1.35 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.sc-row .sc-label{color:#746B5E;padding-top:calc(2.5*var(--u))}
+.sc-l-zh,.sc-l-en{display:block}
+.sc-l-zh{font-family:"Noto Sans SC",sans-serif;letter-spacing:.06em}
+.sc-l-en{margin-top:calc(1*var(--u));font-size:.92em;font-weight:400}
+.sc-row dd{margin:0;min-width:0}
+.sc-row .sc-zh{font-size:calc(14.6*var(--u));line-height:1.42}
+.sc-row .sc-en{margin-top:calc(1*var(--u));font:calc(10.2*var(--u))/1.32 "IBM Plex Mono",monospace;letter-spacing:.01em}
+
+/* night · the radar across the card, then the stand beside its guard skill */
+.sc-night .sc-label,.sc-night .sc-en{color:#C3B5A0}
+.sc-radar-panel{margin:calc(8*var(--u)) calc(-6*var(--u)) 0}
+.sc-radar{display:block;width:100%;height:auto;overflow:visible}
+.sc-lower{display:grid;grid-template-columns:calc(128*var(--u)) 1fr;gap:calc(10*var(--u));align-items:end;margin-top:auto;padding-top:calc(6*var(--u))}
+.sc-stand{height:calc(186*var(--u));display:flex;justify-content:center;align-items:flex-end;margin-left:calc(-6*var(--u))}
+.sc-stand img{display:block;height:100%;width:auto;max-width:none;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 2.5%,#000 97.5%,transparent 100%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 2.5%,#000 97.5%,transparent 100%);mask-composite:intersect}
+.sc-lower-t{min-width:0;padding-bottom:calc(2*var(--u))}
+.sc-stand-name{margin-bottom:calc(10*var(--u));font-family:"IBM Plex Mono","Noto Sans SC",sans-serif;line-height:1.3}
+.sc-stand-k{display:block;color:#C3B5A0;font-size:calc(9*var(--u));letter-spacing:.09em}
+.sc-stand-name strong{display:block;margin-top:calc(3*var(--u));color:#F3E9D8;font-size:calc(12.5*var(--u));font-weight:500;letter-spacing:.03em}
+.sc-stand-en{display:block;margin-top:calc(1*var(--u));font-size:.8em;letter-spacing:.06em;color:#C3B5A0}
+.sc-special{border:calc(1.4*var(--u)) dashed #6E604F;border-radius:calc(3*var(--u));padding:calc(10*var(--u)) calc(12*var(--u)) calc(11*var(--u))}
+.sc-special .sc-label{color:#C3B5A0}
+.sc-special-name{margin-top:calc(5*var(--u));color:#F3E9D8}
+.sc-special-name .sc-zh{font-size:calc(17*var(--u));line-height:1.35}
+.sc-special-name .sc-en{margin-top:calc(2*var(--u));font:calc(10.2*var(--u))/1.35 "IBM Plex Mono",monospace;letter-spacing:.04em}
+
+/* radar marks — pencil on the night stock; coral only for the data (sizes are in viewBox units) */
+.rd-ring,.rd-spoke{fill:none;stroke:#C3B5A0;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.rd-ring{opacity:.72}
+.rd-spoke{opacity:.6}
+.rd-poly{fill:none;stroke:#EE8E72;stroke-width:4.6;stroke-linecap:round;stroke-linejoin:round}
+.rd-fill{stroke:none;opacity:0}
+.rd-pts circle{fill:#EE8E72;stroke:#16120F;stroke-width:3;opacity:0}
+.rd-level{fill:#C3B5A0;font:500 12px "IBM Plex Mono",monospace}
+.rd-label{fill:#F3E9D8;font:500 19px "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.02em}
+.rd-label .rd-en{fill:#C3B5A0;font-size:17px;font-weight:400;letter-spacing:.01em}

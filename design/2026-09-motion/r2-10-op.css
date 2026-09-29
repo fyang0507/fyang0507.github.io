@@ -1,0 +1,90 @@
+/* r2-10 · the OP's frames (from 10-opener-c-shots.css; the name beat lives in r2-10-op-names.css). Every shot
+   is a poster: flat field, one giant thing, one bilingual label, one mark family, ≤ 3 colours. Landscape is
+   composed for 1440 × 900; portrait (≤ 5:6) is recomposed, not squashed — type stacks vertically, objects take
+   the middle band, 中文 above and English below.
+   The display face is the site's own JinBuTi *subset* (fonts/derived, 53 KB): it already holds every glyph
+   the OP sets, so the OP adds no font weight to the site. */
+@font-face{font-family:"OP JinBuTi";src:url("../../fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:block}
+
+.oc-stage{position:fixed;inset:0;z-index:300;overflow:hidden;display:none;background:var(--f0,#FFC629);cursor:pointer}
+html.opening .oc-stage,.oc-stage.fading{display:block}   /* .fading: a skip fades the OP off the page, not a jump cut */
+.oc-stage.off{display:none!important}
+.sh{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--f);color:#1F1B17;contain:strict}
+.sh.on{visibility:visible}
+.sh .fx{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.sh .p{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));white-space:nowrap;line-height:1;font-style:normal;font-weight:400}
+.sh .ob{width:var(--w);display:block;user-select:none}
+/* reserve each cut-out's box before its bytes arrive: the marks are aimed at these boxes at build time */
+.sh-lap0 .ob,.sh-lap .ob{aspect-ratio:487/352}
+.sh-cam .ob{aspect-ratio:640/439}
+
+/* per-tick states inside a shot (data-f = tick index within the shot) */
+.sh:not([data-f="0"]) .only0{visibility:hidden}
+.sh[data-f="0"] .from1{visibility:hidden}
+.sh[data-f="0"] .from2,.sh[data-f="1"] .from2{visibility:hidden}
+
+/* the slam: two held poses, not a tween — tick 0 lands oversized, tick 1 is the settled pose. Labels only:
+   on full-frame type the cut is already the slam, and scaling an 800 px glyph flips enough area to count
+   as a flash (WCAG 2.3.1). */
+.sh[data-f="0"] .lb-cn,.sh[data-f="0"] .lb-en{scale:1.16}
+/* …except on Fred's shot, whose action is his face (neutral → caught): cream type on coral is the largest
+   luminance step in the OP, and slamming it made its own flash */
+.sh-me[data-f="0"] .lb-cn,.sh-me[data-f="0"] .lb-en{scale:none}
+
+/* type roles for the OP: display CN = JinBuTi, display EN = Fraunces italic 500 — the heaviest italic the site
+   already loads (index.html's Google Fonts request), so the OP adds no font weight */
+.sh .gl,.sh .cn,.sh .lb-cn,.sh .sfx,.sh .sp-cn{font-family:"OP JinBuTi",serif}
+.sh .word,.sh .lb-en{font-family:"Fraunces",serif;font-style:italic;font-weight:500;letter-spacing:-.01em;line-height:.8}
+.sh .lb-cn{font-size:12vw;letter-spacing:.02em}
+.sh .lb-en{font-size:6.4vw}
+
+/* ---------- landscape ---------- */
+/* the whip-in smear ends about where the laptop lands, so it never outshines the landed frame (flash plan) */
+.sh-lap0 .sil{--x:31%;--y:54%;--w:44vw;transform:translate(-50%,-50%) rotate(-4deg) skewX(-20deg) scaleX(1.32)}
+.sh-lap .ob{--x:35%;--y:54%;--r:-4deg;--w:44vw}
+.sh-lap .lb-cn{--x:79%;--y:40%;--r:4deg}
+.sh-lap .lb-en{--x:80%;--y:62%;--r:4deg}
+
+.sh-book .ob{--x:37%;--y:55%;--r:-3deg;--w:47vw;aspect-ratio:462/355;background:0 0/300% 100% no-repeat}
+.oc-stage.g0 .sh-book .ob{background-image:url("assets-gen/10c-book.webp")}
+.sh-book[data-f="1"] .ob{background-position:50% 0}
+.sh-book[data-f="2"] .ob{background-position:100% 0}
+.sh-book .lb-cn{--x:80%;--y:40%;--r:4deg}
+.sh-book .lb-en{--x:81%;--y:62%;--r:4deg}
+
+.sh-cam .ob{--x:64%;--y:56%;--r:5deg;--w:41vw}
+.sh-cam .lb-cn{--x:20%;--y:42%;--r:-4deg}
+.sh-cam .lb-en{--x:21%;--y:64%;--r:-4deg}
+.sh-cam .sfx{--x:52%;--y:14%;--r:-7deg;font-size:5.4vw}
+.sh .sfx i{font-family:"Fraunces",serif;font-style:italic;font-weight:500}
+
+.sh-me{color:#FBF6EC}
+.sh-me .ob{--x:63%;--y:52%;--r:3deg;--w:30vw;aspect-ratio:362/401;background:0 0/200% 100% no-repeat}
+.oc-stage.g0 .sh-me .ob{background-image:url("assets-gen/10c-me.webp")}
+.sh-me[data-f="1"] .ob{background-position:100% 0}
+.sh-me .lb-cn{--x:23%;--y:40%;--r:-4deg}
+.sh-me .lb-en{--x:24%;--y:62%;--r:-4deg}
+
+/* ---------- portrait: recomposed for 390 × 844 ---------- */
+@media (max-aspect-ratio:5/6){
+  .sh .lb-cn{font-size:21vw}
+  .sh .lb-en{font-size:13vw}
+
+  .sh-lap0 .sil{--x:50%;--y:43%;--w:86vw;transform:translate(-50%,-50%) rotate(-4deg) skewY(-12deg) scaleY(1.4)}
+  .sh-lap .ob{--x:50%;--y:48%;--r:-4deg;--w:86vw}
+  .sh-lap .lb-cn{--x:46%;--y:17%;--r:-3deg}
+  .sh-lap .lb-en{--x:54%;--y:79%;--r:-3deg}
+
+  .sh-book .ob{--x:50%;--y:49%;--r:3deg;--w:90vw}
+  .sh-book .lb-cn{--x:48%;--y:18%;--r:-3deg}
+  .sh-book .lb-en{--x:54%;--y:80%;--r:-3deg}
+
+  .sh-cam .ob{--x:50%;--y:50%;--r:-6deg;--w:84vw}
+  .sh-cam .lb-cn{--x:52%;--y:18%;--r:3deg}
+  .sh-cam .lb-en{--x:50%;--y:81%;--r:3deg}
+  .sh-cam .sfx{--x:30%;--y:33%;--r:-8deg;font-size:9vw}
+
+  .sh-me .ob{--x:50%;--y:49%;--r:3deg;--w:64vw}
+  .sh-me .lb-cn{--x:48%;--y:18%;--r:-3deg}
+  .sh-me .lb-en{--x:52%;--y:80%;--r:-3deg}
+}

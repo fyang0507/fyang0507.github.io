@@ -1,0 +1,158 @@
+/* Board r3-02 — the pen: one stroke in two tiers, and the pointer. Board chrome, marks, slice 1. */
+
+:root{
+  --hl:#DCCF98;          /* tier 2 wash: wheat, a touch warmer so it reads on the corkboard */
+  --hl-ink:#AD9650;      /* tier 1 line: the same highlighter's thin edge, dense enough to read as a pen */
+}
+
+/* ---- the marks ---- */
+.tm-band{fill:var(--hl);opacity:.86}
+.tm-line{fill:none;stroke:var(--hl-ink);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.tm-pool{fill:none;stroke:var(--hl-ink);stroke-width:1.7;stroke-linecap:round;opacity:.42}
+.fm-c{fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pt-s{fill:none;stroke:var(--mark);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+/* The note: a margin note at the arrow's tail. Hand fonts, soft ink; never coral. */
+.pt-note{position:absolute;left:0;top:0;z-index:7;white-space:nowrap;pointer-events:none;font:600 20px/1 var(--hand);color:var(--soft);visibility:hidden}
+.pt-note .en,.pt-note .zh{display:inline-block}
+.pt-note .zh{font:18px/1 var(--hand-cn);color:var(--soft)}
+.pt-note.row .zh{margin-left:7px}
+.pt-note.stack .en,.pt-note.stack .zh{display:block}
+.pt-note.stack .zh{margin-top:3px}
+.pt-note.al-r{text-align:right}.pt-note.al-c{text-align:center}
+
+/* ---- what changed ---- */
+.changed{display:grid;grid-template-columns:200px minmax(0,1fr);gap:10px 28px;margin-top:28px;padding:18px 0 22px;border-bottom:1px solid var(--line)}
+.changed-k{font-size:11px;letter-spacing:.1em;color:var(--mark);padding-top:5px}
+.changed-q{font:italic 400 19px/1.45 var(--text);color:var(--ink);max-width:860px}
+.changed-q cite{margin-left:8px;font-style:normal;font-size:11px;color:var(--pencil)}
+.changed-list{grid-column:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;list-style:none;font-size:14.5px;line-height:1.5;color:var(--soft)}
+.changed-list b{color:var(--ink);font-weight:500}
+
+.live-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 24px;margin:30px 4px -16px}
+.live-hint{font:21px/1.2 var(--hand);color:var(--pencil);transform:rotate(-1deg);transform-origin:left}
+.slowmo{display:flex;gap:8px;align-items:center;font:12px/1 var(--util);color:var(--soft);cursor:pointer}
+.slowmo input{accent-color:var(--ink)}
+.cand.proof .cand-letter{border-style:dashed}
+.spec-stage,.bd-stage{container-type:inline-size;min-height:0}
+.spec-stage [data-tier]:focus-visible,.bd-stage [data-tier]:focus-visible,.bd-stage [data-focus]:focus-visible,.pn-legend .lg-w:focus-visible,.cmp-w:focus-visible,.po:focus-visible,.play-t:focus-visible{outline:none}
+[data-tier]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+
+/* ---- slice 1 ---- */
+.spec{position:relative;padding:6px 26px 18px}
+.pn-nav{position:relative;display:flex;align-items:flex-end;height:118px;padding-right:4px;border-bottom:1.5px solid var(--ink)}
+.pn-home,.pn-tab{position:relative;display:block;flex:none;color:var(--ink)}
+.pn-home{width:118px;height:64px;margin-right:auto}
+.pn-tab{width:104px;height:64px}
+.pn-obj{--lift:0px;--tilt:0deg;--art-x:0px;--art-y:0px;position:absolute;left:50%;bottom:30px;display:block;width:56px;height:56px;margin-left:-28px;pointer-events:none;background:no-repeat calc(50% + var(--art-x)) calc(50% + var(--art-y))/100% 100%;transform:translateY(var(--lift)) rotate(var(--tilt));transform-origin:bottom center;transition:transform .32s var(--ease-settle)}
+.pn-home .pn-obj{left:0;bottom:2px;width:56px;height:50px;margin-left:0;background-size:contain;background-position:left bottom}
+.pn-peek{background-image:url("../../assets/sticker-peek.png")}
+.pn-book{--art-x:-2px;background-image:image-set(url("../../assets/nav-book-light.png") 1x,url("../../assets/nav-book-light@2x.png") 2x)}
+.pn-laptop{--art-x:3px;--art-y:-2px;background-image:image-set(url("../../assets/nav-laptop-light.png") 1x,url("../../assets/nav-laptop-light@2x.png") 2x)}
+.pn-camera{--art-x:1px;--art-y:8px;background-image:image-set(url("../../assets/nav-camera-light.png") 1x,url("../../assets/nav-camera-light@2x.png") 2x)}
+.pn-frame{--art-x:2px;--art-y:7px;background-image:image-set(url("../../assets/nav-frame-light.png") 1x,url("../../assets/nav-frame-light@2x.png") 2x)}
+/* The object answers the hand on the physics clock: a 3px lift and a small tilt, one overshoot. */
+.pn-tab.is-hover .pn-obj,.pn-tab.is-focus .pn-obj{--lift:-3px}
+.pn-tab.is-hover .pn-book{--tilt:-3deg}.pn-tab.is-hover .pn-camera{--tilt:-2deg}.pn-tab.is-hover .pn-frame{--tilt:2deg}.pn-tab.is-hover .pn-laptop{--tilt:1deg}
+.pn-home.is-hover .pn-obj{transform:translateX(3px)}
+
+.pn-label{position:absolute;left:0;right:0;bottom:8px;text-align:center;white-space:nowrap;pointer-events:none}
+.pn-home .pn-label{left:62px;right:auto;text-align:left}
+.pn-label .pen-t{position:relative;display:inline-block;color:var(--soft);line-height:16px;transition:color .14s ease}
+.pn-label .en{font:500 12.5px/16px var(--util);letter-spacing:.01em}
+.pn-label .zh{margin-left:2px;font:400 12px/16px var(--util-cn);letter-spacing:.04em;color:var(--pencil)}
+.t1 .pn-label .pen-t,.t2 .pn-label .pen-t{color:var(--ink)}
+.t1 .pn-label .zh,.t2 .pn-label .zh{color:var(--soft)}
+
+.pn-body{display:grid;gap:28px;margin-top:26px}
+.pn-read{max-width:640px}
+.pn-p{font:400 18px/1.72 var(--text);color:var(--ink)}
+.pn-p.zh{margin-top:14px;font:400 17px/1.9 var(--text-cn)}
+/* Tier 0 for prose links: a pencil hairline so they can be found. It steps aside when the pen is there. */
+.pn-p a{position:relative;color:var(--ink);white-space:nowrap;text-decoration:underline;text-decoration-color:var(--pencil);text-decoration-thickness:1px;text-underline-offset:4px}
+.pn-p a.t1,.pn-p a.t2{text-decoration-color:transparent}
+.fnref{font:500 .7em var(--util);position:relative;top:-.5em;vertical-align:baseline;margin-left:1px}
+.fnref a{color:var(--soft);text-decoration:none}
+.pn-side{min-width:0}
+.pn-k{margin-bottom:20px;font-size:11px;color:var(--pencil)}
+/* No tick any more, so tags need only the band's 4px overhang plus air between them. */
+.pn-filters{display:flex;flex-wrap:wrap;column-gap:34px;row-gap:22px;align-items:baseline}
+.pn-f{position:relative;padding:2px 0;color:var(--soft);font:400 16px/1.3 var(--text);text-align:left;transition:color .14s ease}
+.pn-f .zh{font:400 15px/1.3 var(--text-cn)}
+.pn-f .sep,.pn-action .sep{color:var(--pencil)}
+.pn-f .n{margin-left:5px;font:400 11px/1 var(--util);color:var(--pencil);position:relative;top:-.45em}
+.pn-f.t1,.pn-f.t2{color:var(--ink)}
+.pn-action{position:relative;display:inline-flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:6px;margin-top:32px;padding:3px 0;color:var(--ink);font:500 18px/1.3 var(--text);text-align:left}
+.pn-action .pen-t{position:relative;display:inline-block}
+.pn-action .zh{font:500 17px/1.3 var(--text-cn)}
+.pn-action .n{font:400 11.5px/1 var(--util);color:var(--pencil)}
+
+/* ---- legend: the stroke's two tiers + focus, then the pointer, set apart ---- */
+.pn-legend{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:24px 0;margin-top:34px;padding:22px 0 4px;border-top:1px dashed var(--line)}
+.lg-set{min-width:0;padding-left:20px}
+.lg-sep{border-left:1px dashed var(--line);padding-left:26px}
+.lg-k{margin-bottom:18px;font-size:10.5px;color:var(--pencil)}
+.lg-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 26px}
+.lg{position:relative;min-width:0}
+.lg-pt{padding-left:44px}
+.lg-w{position:relative;display:inline-block;padding:1px 0;font:400 15.5px/1.3 var(--text);color:var(--ink);cursor:pointer}
+.lg-w .zh{margin-left:5px;font:400 14px/1.3 var(--text-cn);color:var(--soft)}
+.lg-note{margin-top:12px;font:11px/1.55 var(--util);color:var(--pencil);letter-spacing:.02em}
+
+@container (min-width:900px){
+  .pn-body{grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:72px;margin-top:32px}
+  .pn-home{width:150px}
+}
+@container (max-width:470px){
+  .spec{padding:4px 16px 16px}
+  .pn-nav{height:112px;padding-right:0}
+  .pn-home{flex:1 1 auto;width:auto;min-width:56px}
+  .pn-home .pn-obj{width:36px;height:34px}
+  .pn-home .pn-label{left:38px}
+  .pn-tab{width:64px;height:62px}
+  .pn-obj{width:44px;height:44px;margin-left:-22px;bottom:42px}
+  .pn-label{bottom:6px}
+  .pn-label .en,.pn-label .zh{display:block;margin-left:0}
+  .pn-label .pen-t{line-height:15px}
+  .pn-label .en{font-size:11px;line-height:15px;letter-spacing:0}
+  .pn-label .zh{font-size:11px;line-height:15px}
+  .pn-p{font-size:17px}
+  .pn-p.zh{font-size:16px}
+  .pn-filters{column-gap:30px;row-gap:20px}
+  .pn-legend{grid-template-columns:1fr}
+  .lg-set{padding-left:4px}
+  .lg-sep{border-left:0;border-top:1px dashed var(--line);padding:20px 0 0 4px}
+  .lg-row{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:26px}
+}
+
+/* ---- rules ---- */
+.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:28px;margin-top:36px}
+.lab-card{border:1.5px solid var(--ink);border-radius:10px;padding:18px 20px 20px;background:var(--paper);min-width:0}
+.lab-wide{grid-column:1/-1}
+.lab-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.lab-k{flex:none;white-space:nowrap;font:500 11px/1 var(--util);letter-spacing:.1em;color:var(--mark)}
+.lab-title{font:500 19px/1.2 var(--disp)}
+.lab-title .display-cn{margin-left:6px;font-size:.92em;color:var(--soft)}
+.lab-lede{margin-top:14px;font-size:15px;line-height:1.55;color:var(--soft);max-width:980px}
+.table-scroll{overflow-x:auto;margin-top:16px;padding:6px 0 4px}
+.rules{width:100%;min-width:760px;border-collapse:collapse;font:12.5px/1.5 var(--util);color:var(--soft)}
+.rules thead th{padding:6px 16px 8px 0;text-align:left;font-weight:400;font-size:11px;letter-spacing:.06em;color:var(--pencil);border-bottom:1px solid var(--line)}
+.rules thead th:first-child{padding-left:34px}
+.rules tbody th{padding:12px 16px 12px 34px;text-align:left;font-weight:500;color:var(--ink);white-space:nowrap;vertical-align:top}
+.rules tbody th .zh{display:block;margin-top:2px;font:400 12px/1.4 var(--util-cn);color:var(--soft)}
+.rules td{padding:12px 16px 12px 0;vertical-align:top}
+.rules tbody tr + tr{border-top:1px solid var(--line)}
+.lgm{position:relative;display:inline-block}
+.sw{display:inline-block;width:18px;height:9px;margin-right:7px;vertical-align:0;border-radius:1px}
+.sw-ink{height:2.5px;vertical-align:3px;background:var(--hl-ink)}
+.sw-wash{background:var(--hl)}
+.sw-ink2{height:2.5px;vertical-align:3px;background:var(--ink)}
+.spec-list{display:grid;grid-template-columns:max-content 1fr;gap:8px 14px;margin-top:16px;font-size:14px;line-height:1.52;color:var(--soft)}
+.spec-list dt{font:500 11px/1.95 var(--util);color:var(--ink);letter-spacing:.04em}
+.spec-list b{color:var(--ink);font-weight:500}
+.verdict code{font:11.5px var(--util);color:var(--ink)}
+
+@media (max-width:760px){
+  .changed{grid-template-columns:1fr}
+  .changed-list{grid-column:1;grid-template-columns:1fr}
+  .changed-q{font-size:17px}
+}

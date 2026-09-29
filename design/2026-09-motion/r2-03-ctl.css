@@ -1,0 +1,99 @@
+/* r2-03-ctl.css — the three parts of the filter: readout sentence, index tabs, year ruler.
+   Coral is spent only on marks that say "this dimension is narrowed" (tab underline, ruler
+   brackets/loops). Pencil marks what can be pressed; ink says what is chosen; paper moves on springs.
+   Both controls carry the same small bilingual label (类别 · tags / 年份 · years) in the same column. */
+
+.ctl-label{display:flex;flex-direction:column;gap:3px;white-space:nowrap}
+.ctl-label [lang=zh]{font:500 12.5px/1 var(--util-cn);color:var(--soft);letter-spacing:.06em}
+.ctl-label span:not([lang]){font:10.5px/1 var(--util);color:var(--pencil);letter-spacing:.08em}
+
+/* ---------- readout ---------- */
+.ro{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:11px;row-gap:0;min-height:30px;font:400 19px/1.5 var(--text);color:var(--ink)}
+.ro-v{display:inline-flex;align-items:baseline;gap:9px;white-space:nowrap}
+.ro-t,.ro-was-t{white-space:nowrap}
+.ro .zh{font:500 17px/1.5 var(--text-cn)}
+.ro-v.is-all{color:var(--soft)}
+.ro-v.is-all .zh{font-weight:400}
+.ro-sep{color:var(--pencil);font-weight:300}
+.ro-n{font:12px/1 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap}
+.ro-was{position:relative;color:var(--pencil)}
+.ro-was[hidden]{display:none}
+.ro-was .zh{font-weight:400}
+.ro-strike{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.ro-clear{margin-left:auto;align-self:center;padding:4px 2px;font:11.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);visibility:hidden;white-space:nowrap}
+.ro-clear span{position:relative}
+.ro-clear:hover{color:var(--ink)}
+.ro.narrowed .ro-clear{visibility:visible}
+
+/* ---------- index tabs (round-1 B, labelled) ---------- */
+.ix-band{position:relative;height:64px;border-bottom:1.5px solid var(--ink);overflow:hidden;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.ix-band::-webkit-scrollbar{display:none}
+.ix-band.on-line{border-bottom:0}
+.ix-track{display:flex;height:100%;width:max-content;padding-right:8px}
+.ix-label{flex:none;width:84px;align-self:flex-end;padding:0 0 9px 2px}
+.ix-group{display:flex;gap:4px;height:100%}
+.ix{position:relative;flex:none;height:80px;padding:10px 18px 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;text-align:left;transform:translateY(13px);cursor:pointer}
+.ix-l1{white-space:nowrap;line-height:14px}
+.ix-shape{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ix-shape path{fill:var(--paper);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+.ix.is-on .ix-shape path{fill:#FFFDF8}
+.ix-en{position:relative;font:500 11.5px/14px var(--util);letter-spacing:.03em;color:var(--ink)}
+.ix-n{position:relative;margin-left:7px;font:10.5px/14px var(--util);color:var(--pencil)}
+.ix-zh{position:relative;display:block;margin-top:7px;font:12px/14px var(--util-cn);color:var(--soft)}
+.ix-ul{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.ix.is-off .ix-shape path{fill:var(--paper2)}
+.ix.is-off .ix-en,.ix.is-off .ix-zh,.ix.is-off .ix-n{color:var(--pencil)}
+.ix:focus-visible{outline-offset:-5px}
+
+/* ---------- year ruler ---------- */
+.yr{position:relative;display:grid;grid-template-columns:84px minmax(0,1fr);align-items:start;margin-top:12px}
+.yr-head{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:calc(var(--th, 14px) - 4px) 0 0 2px}
+.yr-all{position:relative;padding:3px 0;font:11px/1 var(--util);letter-spacing:.04em;color:var(--soft);white-space:nowrap}
+.yr-all span{position:relative}
+.yr-all[aria-pressed=true]{color:var(--ink);cursor:default}
+.yr-all:hover{color:var(--ink)}
+.yr-track{position:relative;display:flex;height:calc(var(--th, 14px) + 34px);touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:pointer}
+.yr.is-drag .yr-track{cursor:ew-resize}
+.yr-ink{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.yr-base{stroke:var(--pencil);stroke-width:1}
+.yr-tick{stroke:var(--pencil);stroke-width:1.2;stroke-linecap:round}
+.tl path{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round}
+.yr.narrowed .tl:not(.in) path{stroke:var(--pencil);opacity:.42}
+.yr-win{fill:none;stroke:var(--mark);stroke-width:2.2;stroke-linecap:round}
+.yr-cell{position:relative;flex:1 1 0;min-width:0;height:100%}
+.yr-cell:focus-visible{outline:2px solid var(--mark);outline-offset:-2px;border-radius:4px}
+.yr-y{position:absolute;left:50%;top:calc(var(--th, 14px) + 12px);transform:translateX(-50%);padding:0 2px;font:10.5px/1 var(--util);letter-spacing:.04em;color:var(--soft);white-space:nowrap}
+.yr-short{display:none}
+.yr-cell.is-dim .yr-y{color:var(--pencil);opacity:.55}
+.yr.narrowed .yr-cell:not(.is-in) .yr-y{color:var(--pencil)}
+.yr-cell.is-sel .yr-y{color:var(--ink);font-weight:500;opacity:1}
+.yr-br{position:absolute;left:0;top:0;width:1px;height:1px;pointer-events:none;z-index:2}
+.yr-br svg{position:absolute;left:0;top:1px;width:1px;height:1px;overflow:visible}
+.yr-loop{position:absolute;width:1px;height:1px;overflow:visible;pointer-events:none}
+/* The drag flag: a paper tag on a pin, riding over your pointer (higher over a thumb). */
+.yr-flag{position:absolute;left:0;top:0;z-index:6;padding:5px 9px 6px;background:var(--paper);border:1.5px solid var(--ink);border-radius:3px;
+  font:500 11.5px/1 var(--util);letter-spacing:.03em;color:var(--ink);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s linear;box-shadow:0 4px 10px rgba(60,50,35,.1)}
+.yr-flag::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:9px;margin-left:-.75px;background:var(--ink)}
+.yr.flag-on .yr-flag{opacity:1}
+
+/* ---------- phone widths: tab strip scrolls, ruler label on its own line, taller touch cells ---------- */
+@container wx (max-width:640px){
+  .ro{font-size:16px;column-gap:7px;line-height:1.55}
+  .ro .zh{font-size:14.5px}
+  .ro-v{gap:6px}
+  .ro-n{font-size:11px}
+  .ro-clear{font-size:11px}
+  /* On a phone the values that still mean "everything" drop their Chinese twin (English-only UI is
+     allowed; Chinese-only is not) and struck-out values keep only English: two lines, always. */
+  .ro-was .zh,.ro-v.is-all .zh{display:none}
+  .ix-label{width:50px;padding-bottom:10px}
+  .ix{padding:10px 14px 0}
+  .yr{grid-template-columns:1fr;row-gap:4px;margin-top:10px}
+  .yr-head{flex-direction:row;justify-content:space-between;align-items:center;padding:0 0 0 2px}
+  .yr-head .ctl-label{flex-direction:row;align-items:baseline;gap:7px}
+  .yr-all{padding:8px 4px}
+  .yr-track{height:calc(var(--th, 14px) + 44px)}
+  .yr-y{top:calc(var(--th, 14px) + 14px);font-size:11px}
+  .yr-full{display:none}
+  .yr-short{display:inline}
+}

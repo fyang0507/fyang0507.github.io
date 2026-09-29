@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 · The opener — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<style>
+  .screen{position:relative;overflow:hidden;background:#17120C;aspect-ratio:1440/900}
+  .screen.phone{aspect-ratio:auto;height:min(80vh,760px);display:grid;place-items:center;background:var(--paper2)}
+  .screen iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:var(--paper)}
+  .screen.phone .device{position:relative;height:100%;aspect-ratio:390/844;border:1.5px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--paper)}
+  .screen .poster{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer;background:rgba(23,18,12,.04);font:500 12px/1 var(--util);letter-spacing:.06em;color:var(--ink)}
+  .screen .poster span{padding:10px 16px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper)}
+  .opts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);font:11px/1 var(--util);color:var(--pencil)}
+  .opts button,.opts a{height:28px;display:inline-flex;align-items:center;padding:0 11px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper2);font:500 11px/1 var(--util);color:var(--ink)}
+  .opts button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .opts .sp{flex:1}
+  .breaks{margin-top:6px;font:11.5px/1.6 var(--util);color:var(--pencil)}
+  .breaks b{color:var(--mark);font-weight:500}
+  .beats{margin-top:8px;font-size:13.5px;line-height:1.55;color:var(--soft)}
+  .today{display:flex;gap:18px;align-items:center;margin-top:26px;padding:14px 16px;border:1px dashed var(--pencil);border-radius:10px;font-size:15px;color:var(--soft)}
+  .today a{flex:none;height:30px;display:inline-flex;align-items:center;padding:0 12px;border:1.5px solid var(--ink);border-radius:999px;font:500 11px/1 var(--util);color:var(--ink)}
+  .cands.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,560px),1fr))}
+</style>
+</head>
+<body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 10 · ALLOWED TO BREAK THE RULES ONCE</div><h1 class="board-title">The opener <span class="display-cn">开场</span></h1></div>
+    <div>
+      <p class="board-why">Today’s opener is a black screen, five birds hopping in a row, “日常 · ep.01” and a fixed 3.4 s <b>fake</b> “loading…”, then an iris. It was meant as a Nichijou tribute, but it’s neither of Nichijou’s two registers: the <b>manic OP</b> (hard cuts, loud flat colour, giant type) or the <b>deadpan eyecatch</b> (one ordinary object floating in cream). Nichijou’s comedy lives in the jump between them. Your own guide says register breaks are rare and expensive, and the opener is exactly the one moment that earns one.</p>
+      <p class="evidence">shared rules for all four: ≤ 3.2 s first visit · ≤ 0.6 s returning · any click / key / wheel fast-forwards in ~250 ms · the reveal waits for the real image decode, never a fake wait · ≤ 3 flashes/s (WCAG 2.3.1) · reduced motion = no opener · lands pixel-exact on the live desk</p>
+    </div>
+  </header>
+
+  <div class="today"><span>For reference, today’s opener plays once per browser tab.</span><a href="../../index.html" target="_blank" rel="noopener">today’s opener ↗</a></div>
+
+  <section class="cands wide" id="cands"></section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div id="verdict">
+    <p><b>C, the OP then the eyecatch.</b> It’s the only one that is actually Nichijou and not just Nichijou-flavoured: manic, loud, poster-grade cuts, then a hard cut to a mug floating in silence with your real visit count. That contrast is the joke, and it’s the most “drastically better” jump from today. It breaks your colour rules on purpose, for 1.8 seconds, once, in the one place the guide says a register break is earned.</p>
+    <p>Pick by the feeling you want at the door. <b>C</b> gets a laugh. <b>B</b> gets awe: the most technically virtuosic, with a GPU dependency and a finish furthest from your canon. <b>A</b> is the most <i>you</i>, the hand drawing its own home page, and it pays into the vector line art that board 11 wants anyway. <b>D</b> has the best story, but it lives on a tiny bird and slows down on slow connections. Worth considering as a refinement: <b>C → A</b>, where after the mug eyecatch the pen draws the rest of the desk around it instead of the camera pulling back. That keeps the tribute and ends on your thesis.</p>
+    <div class="record">执行模式：多阶段（四个候选已渲染 → 等 Fred 选择 → 精修）
+事实：现开场是黑屏＋五只鸟＋假的 3.4 秒 loading；《日常》的笑点在 “狂躁 OP” 与 “面瘫过场” 之间的落差
+取 / 舍：取 定格节奏、硬切、一件物浮在米色里的沉默；舍 原作画面、角色与 “日常/nichijou” 标题组合
+映射：A 加载＝作画 · B 加载＝墨在纸里走 · C 加载＝一场 OP 之后的沉默 · D 加载＝小鸟盯着的那条线
+破例：C 在 1.8 秒内打破单一强调色与低彩度——这是一次被允许的 “破格”（register break），其余 99% 的时间照旧
+共同底线：首访 ≤ 3.2 秒 · 回访 ≤ 0.6 秒 · 任意输入快进 · 真实等待不作假 · 每秒闪烁 ≤ 3 次 · 减少动态＝不播放</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script>
+<script src="shared/mock.js"></script>
+<script src="10-opener.js"></script>
+</body>
+</html>

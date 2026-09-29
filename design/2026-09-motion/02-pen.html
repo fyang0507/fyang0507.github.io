@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · The pen — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="02-pen.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 02</div><h1 class="board-title">The pen: one state language <span class="display-cn">笔：统一的状态语言</span></h1></div>
+    <div><p class="board-why">Every interactive state on the site is a stock default: links and tabs <b>swap to coral</b> on hover, the Writing and Gallery filters are <b>SaaS pills with a coral border</b> for "on", focus is a browser outline, and the subpage nav labels are <b>8.5px mono at 62% opacity</b> — unreadable. Meanwhile the site's own signature, the hand-drawn coral stroke under the name and under 狂狷, is never used interactively. If the thesis is hand-annotated humanity, the interface should be annotated by the same hand.</p>
+      <p class="evidence">evidence: <code>site-nav.css:49</code> .site-nav-label 8.5px · .62 · <code>site-nav.css:48</code> current = coral dot · <code>Writing.dc.html:29</code> <code>Gallery.dc.html:29</code> <code>Reading.dc.html:40</code> a:hover{color:var(--mark)} · <code>Writing.dc.html:45–46</code> .chip / .chip.on · <code>Gallery.dc.html:161</code> pill button · <code>site-nav.css:7</code> <code>Writing.dc.html:39</code> the signature stroke, static only</p></div>
+  </header>
+
+  <!-- Baseline: the same slice with the live styles, so every grammar below is compared like with like. -->
+  <article class="cand today-card">
+    <div class="cand-head"><span class="cand-letter">0</span><span class="cand-name">Today, as shipped <span class="display-cn">现状</span></span><span class="cand-mech">live CSS · colour swap · pills · browser outline</span></div>
+    <div class="stage spec-stage today" data-grammar="today"></div>
+  </article>
+
+  <p class="live-hint">every stage below is live — hover it, Tab through it, tap a filter or a nav object ↓</p>
+  <section class="cands pens" aria-label="Candidate grammars">
+    <article class="cand" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Circle what you mean <span class="display-cn">圈出来</span></span><span class="cand-mech">Pen.loop · hand's clock</span></div>
+      <div class="stage spec-stage" data-grammar="a"></div>
+      <div class="cand-foot"><div>A loop is the most unmistakable thing a pen can do: circling where you are on the nav reads like someone marking a map. But it is a loud gesture, and a loop around a word in running text breaks the line gap.<div class="tradeoff"><b>cost</b> two coral loops at rest (current + selected) · loops overlap neighbouring lines in prose · <b>a11y</b> ink focus loop clears 3:1 · <b>support</b> all evergreen</div></div><button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Underline &amp; tick <span class="display-cn">划线与打勾</span></span><span class="cand-mech">underline · tick · scribble · 「 」</span></div>
+      <div class="stage spec-stage" data-grammar="b"></div>
+      <div class="cand-foot"><div>Four marks, four meanings: an underline means "this one?", a tick means "chosen", the scribble is the identity stroke meaning "you are here", and hanging corner brackets 「 」 mean "the keyboard is here". Every mark lives in the word's own line box or line gap, so it works in a paragraph as well as in the nav.<div class="tradeoff"><b>cost</b> one coral mark at rest; hover spends it briefly · <b>a11y</b> focus is a distinct shape, not a colour · <b>support</b> all evergreen</div></div><button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">The pointing hand <span class="display-cn">指一下</span></span><span class="cand-mech">Pen.arrow · brackets · hand's clock</span></div>
+      <div class="stage spec-stage" data-grammar="c"></div>
+      <div class="cand-foot"><div>The home page's annotation arrows, used as state: a small pen arrow swings in from above and points at what you are about to press. The most editorial and the least chrome — but an arrow needs clear air, and prose has none.<div class="tradeoff"><b>cost</b> needs ~30px of free space above every target · arrows collide with the line above in prose · <b>a11y</b> hover vs focus differ only by value (pencil → ink) · <b>support</b> all evergreen</div></div><button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-d">
+      <div class="cand-head"><span class="cand-letter">D</span><span class="cand-name">Highlighter wash <span class="display-cn">荧光笔</span></span><span class="cand-mech">marker band · masked sweep · colour-led</span></div>
+      <div class="stage spec-stage" data-grammar="d"></div>
+      <div class="cand-foot"><div>The colour-led alternative: a flat wheat band with scissor-cut ends is swept in behind the words, left to right, and never over them. No coral in the chrome at all — but a band behind text is a background fill wearing a hand-made edge, and it can't show focus on its own.<div class="tradeoff"><b>cost</b> reads as study notes; competes with the Reading hero washes · <b>a11y</b> wheat behind soft text drops contrast to ~4.0:1, so text goes to ink · <b>support</b> SVG mask, all evergreen</div></div><button class="replay" data-replay="replayD">↻ replay</button></div>
+    </article>
+  </section>
+
+  <!-- The two rules every grammar shares: stable wobble and timing. -->
+  <section class="lab" aria-label="Shared rules">
+    <article class="lab-card" id="wobble">
+      <div class="lab-head"><span class="lab-k">RULE 1</span><h2 class="lab-title">Wobble, not jitter <span class="display-cn">是手抖，不是乱抖</span></h2></div>
+      <p class="lab-lede">Hover each word a few times. Every pass leaves a faint ghost. The seeded mark lands on its own ghost every time — one hand, one circle. The re-rolled one draws a new circle each hover and builds a bundle: evidence of nobody.</p>
+      <div class="wj">
+        <div class="wj-col">
+          <div class="wj-k util">seeded by the word · 同一只手</div>
+          <button type="button" class="wj-word" data-wj="seeded"><span class="wj-t"><span class="en">travel log</span> <span class="zh">游记</span></span></button>
+          <div class="wj-n util" data-wj-n="seeded">0 passes</div>
+        </div>
+        <div class="wj-col bad">
+          <div class="wj-k util">re-rolled every hover <span class="wj-anti">anti-pattern · 反例</span></div>
+          <button type="button" class="wj-word" data-wj="jitter"><span class="wj-t"><span class="en">travel log</span> <span class="zh">游记</span></span></button>
+          <div class="wj-n util" data-wj-n="jitter">0 passes</div>
+        </div>
+      </div>
+      <div class="lab-actions"><button class="replay" data-replay="wjAuto">↻ hover both ×5</button><button class="replay ghost" data-replay="wjClear">clear ghosts</button></div>
+      <dl class="seed-list">
+        <dt>seed</dt><dd>the marked element's own text + mark kind (+ state), e.g. <code>"travel log · 游记 15|loop"</code>. Same words, same circle — on every page, every visit.</dd>
+        <dt>resize</dt><dd>rebuild from the same seed at the new width: the character of the stroke survives, only its span changes.</dd>
+        <dt>never</dt><dd><code>Math.random()</code> at hover time, per-frame noise, or a CSS <code>animation</code> that wiggles a drawn mark.</dd>
+      </dl>
+    </article>
+
+    <article class="lab-card" id="timing">
+      <div class="lab-head"><span class="lab-k">RULE 2</span><h2 class="lab-title">Timing &amp; inputs <span class="display-cn">节奏与输入</span></h2></div>
+      <div class="tm">
+        <div class="tm-row"><span class="tm-w" data-tm="tick"><span class="tm-t">poem 诗</span></span><span class="tm-ms util" data-tm-ms="tick">—</span></div>
+        <div class="tm-row"><span class="tm-w" data-tm="underline"><span class="tm-t">Ox Alpha</span></span><span class="tm-ms util" data-tm-ms="underline">—</span></div>
+        <div class="tm-row"><span class="tm-w" data-tm="loop"><span class="tm-t">stories we live · 我们生活的故事</span></span><span class="tm-ms util" data-tm-ms="loop">—</span></div>
+      </div>
+      <div class="lab-actions"><button class="replay" data-replay="tmPlay">▶ draw all three at once</button></div>
+      <dl class="spec-list">
+        <dt>draw</dt><dd><b>200 + 1.1 × length ms, capped at 620</b> — a tick lands in ~⅕ s, a long loop in ~⅗ s. One pass, never two.</dd>
+        <dt>ease</dt><dd><code>cubic-bezier(.55,.1,.25,1)</code> — quick start, decelerating landing, like a wrist.</dd>
+        <dt>retract</dt><dd><b>200 ms</b>, <code>cubic-bezier(.4,0,.8,.4)</code>, the tail chasing the head off the end. Always faster than the draw.</dd>
+        <dt>pointer</dt><dd>enter draws, leave retracts; leaving mid-draw retracts from wherever the pen is.</dd>
+        <dt>touch</dt><dd>no hover at all. A tap commits the <b>selected</b> mark only — nothing is left sticking after a finger lifts.</dd>
+        <dt>keyboard</dt><dd>Tab shows the focus mark (<code>:focus-visible</code> only, never on click). Enter / Space selects.</dd>
+        <dt>reduced motion</dt><dd>every mark appears complete, instantly; retract is instant. Same end states, no stroke travel.</dd>
+        <dt>never</dt><dd>hover never re-marks what is already marked (current, selected). Focus always shows.</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>B · Underline &amp; tick.</b> It is the only grammar that works everywhere the site has state — nav, prose links, filters, a primary action, and keyboard focus — without borrowing space it doesn't have. Each mark has one meaning, the coral is spent once at rest (the current-page scribble, which is literally the identity stroke), and focus is a different <em>shape</em> rather than a different colour.</p>
+    <p>Keep A's loop and C's arrow as <em>moments</em>, not states: a loop for the one thing a page wants you to notice (a "new" essay), arrows for the home desk's annotations, where they already live. Drop D, or keep a wash only for the Reading page's text selection colour. Watch: the scribble is drawn once per page arrival, never on every hover; the tick needs ~18px of free space before a word, so keep filter gaps ≥ 24px.</p>
+    <table class="rules" aria-label="Rule table for grammar B">
+      <tr><th>hover</th><td>→ coral underline, one pass, lifts at the end · retracts 200 ms</td></tr>
+      <tr><th>focus</th><td>→ ink corner brackets 「 」 at the word's corners · keyboard only</td></tr>
+      <tr><th>selected</th><td>→ ink tick before the word · stays · text to ink</td></tr>
+      <tr><th>current</th><td>→ coral scribble under the label · drawn once on arrival</td></tr>
+    </table>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：身份区与“狂狷”下面那一笔珊瑚色手绘线——网站自己的签名，让它开始回应人。
+动作时钟：手的时钟。每个状态都是一笔：一次画完（200–620 ms，随长度增加），收笔更快（200 ms）；抖动按元素播种，永不重掷。
+映射：指针靠近 → 划线（“是这个吗？”）/ 键盘停留 → 墨色直角引号「」（“键盘在这”）/ 选中 → 打勾（“就它了”）/ 当前页 → 潦草的下划线（“你在这”）。
+规则表：hover → 珊瑚下划线 · focus → 墨色「」 · selected → 墨色勾 · current → 珊瑚潦草线
+线条计划：一支笔，2px 圆头，单遍；层级靠深浅（珊瑚 / 墨 / 铅笔灰），不靠粗细。导航标签 12.5px 等宽英文 + 12px 中文（手机 11px，上下两行），全不透明。
+色彩计划：珊瑚色只留给当前页那一笔（静止时唯一的珊瑚），悬停时短暂借用；勾与「」用墨色；取消胶囊按钮、颜色切换与浏览器默认轮廓。</div>
+  </div></section>
+</main>
+
+<!-- One real UI slice: subpage nav (site-nav.css), a Reading paragraph (谷歌只想躺赢 §3),
+     Writing's tag filters as words, Gallery's primary action. Cloned into every stage. -->
+<template id="slice">
+  <div class="spec">
+    <nav class="pn-nav" aria-label="Primary navigation (specimen)">
+      <a class="pn-home" href="../../index.html" aria-label="Home — 首页" data-pen="nav"><span class="pn-obj pn-peek"></span><span class="pn-label"><span class="pen-t"><span class="en">home</span> <span class="zh">首页</span></span></span></a>
+      <a class="pn-tab" href="../../Writing.dc.html" aria-label="Writing — 在写" aria-current="page" data-pen="nav"><span class="pn-obj pn-book"></span><span class="pn-label"><span class="pen-t"><span class="en">writing</span> <span class="zh">在写</span></span></span></a>
+      <a class="pn-tab" href="../../Building.dc.html" aria-label="Building — 在造" data-pen="nav"><span class="pn-obj pn-laptop"></span><span class="pn-label"><span class="pen-t"><span class="en">building</span> <span class="zh">在造</span></span></span></a>
+      <a class="pn-tab" href="../../Gallery.dc.html" aria-label="Shooting — 在拍" data-pen="nav"><span class="pn-obj pn-camera"></span><span class="pn-label"><span class="pen-t"><span class="en">shooting</span> <span class="zh">在拍</span></span></span></a>
+      <a class="pn-tab" href="../../About.dc.html" aria-label="About — 关于" data-pen="nav"><span class="pn-obj pn-frame"></span><span class="pn-label"><span class="pen-t"><span class="en">about</span> <span class="zh">关于</span></span></span></a>
+    </nav>
+    <div class="pn-body">
+      <div class="pn-read">
+        <p class="pn-p" lang="en">Speaking of Niulai—a few weeks earlier, a model had appeared on <a href="https://openrouter.ai/stealth/ox-alpha" data-pen="link">OpenRouter</a> under the codename <a href="https://openrouter.ai/stealth/ox-alpha" data-pen="link">Ox Alpha</a>: generous context, genuinely smart, killer at code. Universally praised, the model earned the nickname “Niulai”—the bull had arrived<sup class="fnref"><a href="#fn2" data-pen="link" aria-label="footnote 2">[2]</a></sup>.</p>
+        <p class="pn-p zh" lang="zh">说起牛来，两三周前<a href="https://openrouter.ai/stealth/ox-alpha" data-pen="link">OpenRouter</a>上面出现了一个代号<a href="https://openrouter.ai/stealth/ox-alpha" data-pen="link">Ox Alpha</a>的模型：量大管饱，智能在线，编程牛逼。获得全网好评的该模型遂喜得“牛来”称号<sup class="fnref"><a href="#fn2" data-pen="link" aria-label="脚注 2">[2]</a></sup>。</p>
+      </div>
+      <div class="pn-side">
+        <div class="pn-k util">filter · 筛选</div>
+        <div class="pn-filters" role="group" aria-label="Filter essays by tag · 按类别筛选">
+          <button type="button" class="pn-f" data-pen="filter" aria-pressed="true"><span class="en">all</span> <span class="sep">·</span> <span class="zh">全部</span><span class="n">27</span></button>
+          <button type="button" class="pn-f" data-pen="filter" aria-pressed="false"><span class="en">travel log</span> <span class="sep">·</span> <span class="zh">游记</span><span class="n">15</span></button>
+          <button type="button" class="pn-f" data-pen="filter" aria-pressed="false"><span class="en">stories we live</span> <span class="sep">·</span> <span class="zh">我们生活的故事</span><span class="n">5</span></button>
+          <button type="button" class="pn-f" data-pen="filter" aria-pressed="false"><span class="en">commentary</span> <span class="sep">·</span> <span class="zh">杂文</span><span class="n">3</span></button>
+          <button type="button" class="pn-f" data-pen="filter" aria-pressed="false"><span class="en">poem</span> <span class="sep">·</span> <span class="zh">诗</span><span class="n">2</span></button>
+        </div>
+        <button type="button" class="pn-action" data-pen="action"><span class="pen-t"><span class="en">Load more</span> <span class="sep">·</span> <span class="zh">再晾一批</span></span><span class="n" data-remaining="12">12 remaining · 还剩 12 张</span></button>
+      </div>
+    </div>
+    <div class="pn-legend" aria-label="Legend"></div>
+  </div>
+</template>
+
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="02-pen-marks.js"></script><script src="02-pen.js"></script><script src="02-pen-lab.js"></script>
+</body></html>

@@ -1,0 +1,71 @@
+/* 09 · D — the mobile desk. One drawing, one camera; native scroll-snap is the dolly. */
+html,body{height:100%;overflow:hidden}
+.m{height:100svh;display:flex;flex-direction:column;overflow:hidden}
+.m-head{flex:none;padding:18px 12px 0}
+.rig{position:relative;flex:1 1 auto;min-height:0;--vh:clamp(280px,calc(100svh - 340px),540px)}
+
+.view{position:absolute;left:0;right:0;top:0;height:var(--vh);overflow:hidden;pointer-events:none}
+.layer{position:absolute;left:0;top:0;width:1000px;height:750px;transform-origin:0 0;will-change:transform}
+.m-img{display:block;width:100%;user-select:none;-webkit-user-drag:none}
+.m-book{position:absolute;left:36.04%;top:61.5%;width:21.34%;aspect-ratio:462/355}
+.m-bookface{position:absolute;inset:0;background:url("../../assets/book-flip2-light.png") 0 0/600% 100% no-repeat}
+.layer.flip .m-bookface{animation:mBook 1.15s steps(1,end) 1 both}
+.m-frame{position:absolute;left:55.23%;top:33.03%;width:15.54%;aspect-ratio:616/577}
+.m-fframe{position:absolute;inset:0;background:url("../../assets/frame-exp3-light.png") 0 0/400% 100% no-repeat}
+.m-steam{position:absolute;left:26.3%;top:46.5%;width:6.8%;overflow:visible}
+.m-steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;opacity:0;animation:mOnsen 3.1s ease-in-out infinite}
+.m-steam .st2{animation-delay:1.05s}.m-steam .st3{animation-delay:2.1s}
+.m-screen{position:absolute;left:25.6%;top:27.6%;width:22.6%;font:13px/1.55 var(--util),var(--util-cn);letter-spacing:.01em;color:var(--soft);white-space:pre-wrap}
+.m-screen .o{color:var(--ink)}
+.m-caret{display:inline-block;width:.55em;height:1.05em;background:var(--mark);vertical-align:-.15em;margin-left:2px;animation:mCaret 1.15s infinite}
+.m-bird{position:absolute;left:14%;top:67.5%;width:7%;aspect-ratio:308/317;transition:left .1s linear}
+.m-bframe{position:absolute;inset:0;background:url("../../assets/bird-strip6-light.png") 0 0/600% 100% no-repeat}
+.m-flash{position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 76.8% 71%,rgba(255,255,255,1) 0%,rgba(255,255,255,.7) 20%,rgba(255,255,255,0) 58%)}
+.layer.snap .m-flash{animation:mFlash .9s linear both}
+.m-kacha{position:absolute;left:74%;top:55.5%;font:27px/1 var(--hand-cn),var(--hand);color:var(--mark);opacity:0;white-space:nowrap}
+.layer.snap .m-kacha{animation:mKacha 1s cubic-bezier(.2,.7,.2,1) both}
+.vf{position:absolute;inset:10px 12px;width:calc(100% - 24px);height:calc(100% - 20px);overflow:visible}
+
+.track{position:relative;height:100%;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.track::-webkit-scrollbar{display:none}
+.track:focus-visible{outline:2px solid var(--mark);outline-offset:-4px}
+.panel{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column}
+.win{display:block;flex:none;height:var(--vh);position:relative}
+.win:focus-visible{outline:2px solid var(--mark);outline-offset:-14px}
+.ov-hot{position:absolute;display:block}
+.ov-hot span{position:absolute;left:50%;white-space:nowrap;font:19px/1 var(--hand-cn),var(--hand);color:var(--ink);transform:translateX(var(--ax,-50%)) rotate(-2deg);opacity:var(--ov,1)}
+.ov-hot[data-lbl="top"] span{bottom:calc(100% + 4px)}
+.ov-hot[data-lbl="bottom"] span{top:calc(100% + 6px)}
+.ov-hot:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+
+.copy{flex:1;padding:14px 24px 0}
+.copy .k{font:500 10.5px/1 var(--util);letter-spacing:.08em;color:var(--pencil)}
+.copy .lbl{display:inline-block;margin-top:10px;font:34px/1 var(--hand-cn),var(--hand);color:var(--ink);transform:rotate(-1.5deg);transform-origin:0 50%}
+.copy .lbl::after{content:" →";font-family:var(--hand);font-size:.8em;color:var(--soft)}
+.copy .fact{margin-top:12px;max-width:330px;font:12.5px/1.6 var(--util),var(--util-cn);letter-spacing:.02em;color:var(--soft)}
+.copy .fact b{font-weight:500;color:var(--ink)}
+.copy .fact .nw{white-space:nowrap}
+.copy .lede{margin-top:10px;font-size:16px;line-height:1.45;color:var(--ink)}
+.copy .lede.zh{margin-top:4px;font-size:14.5px;line-height:1.6;color:var(--soft)}
+
+.idx{flex:none;display:flex;justify-content:space-between;padding:4px 10px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.idx button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;min-height:66px;padding:8px 0 6px}
+.idx .obj{display:block;width:46px;height:38px;background-repeat:no-repeat;background-size:contain;background-position:center bottom}
+.idx .obj-desk{background-image:url("../../assets/sticker-peek.png")}   /* the subpages' home tab object */
+.idx .t{position:relative;font:500 10px/1 var(--util);letter-spacing:.04em;color:var(--soft)}
+.idx button[aria-current="true"] .t{color:var(--ink)}
+.idx button:focus-visible{outline:2px solid var(--mark);outline-offset:-2px;border-radius:6px}
+
+@keyframes mBook{0%{background-position:0% 0}16.6%{background-position:20% 0}33.3%{background-position:40% 0}50%{background-position:60% 0}66.6%{background-position:80% 0}83.3%,100%{background-position:0% 0}}
+@keyframes mOnsen{0%{transform:translateY(12px);opacity:0}28%{opacity:.4}60%{opacity:.22}100%{transform:translateY(-24px);opacity:0}}
+@keyframes mFlash{0%{opacity:0}5%{opacity:1}12%{opacity:.12}18%{opacity:.85}45%,100%{opacity:0}}
+@keyframes mKacha{0%{opacity:0;transform:translateY(8px) scale(.55) rotate(-5deg)}14%{opacity:1;transform:translateY(0) scale(1.08) rotate(-2deg)}30%{transform:scale(1) rotate(-2deg)}62%{opacity:1}100%{opacity:0;transform:translateY(-16px) rotate(-2deg)}}
+@keyframes mCaret{0%,45%{opacity:1}50%,95%{opacity:0}}
+
+html.rm .m-steam path{animation:none!important;opacity:0}
+html.rm .m-steam .st2{opacity:.28}
+html.rm .layer .m-bookface,html.rm .layer .m-flash,html.rm .layer .m-kacha,html.rm .m-caret{animation:none!important}
+@media (prefers-reduced-motion:reduce){
+  .m-steam path,.layer .m-bookface,.layer .m-flash,.layer .m-kacha,.m-caret{animation:none!important}
+  .m-steam .st2{opacity:.28}
+}

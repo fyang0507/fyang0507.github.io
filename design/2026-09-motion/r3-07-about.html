@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3 · 07 · A longer card, a slimmer sleeve — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r3-07-about-card.css"><link rel="stylesheet" href="r3-07-about.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 07 · ROUND 3</div><h1 class="board-title">A longer card, a slimmer sleeve <span class="display-cn">卡更修长，套更窄</span></h1></div>
+    <div><p class="board-why">Round 2 settled the gesture: pull the specimen card out of its kraft sleeve, feel the top edge catch on the lip, lift it into your hand, throw it over. Fred kept all of that. What he didn't like was the <b>shape</b>. The card was a 1:1.31 panel and the sleeve almost square, so the object read as a squat badge rather than a keepsake card. It also fell below the fold at 1440×900.</p>
+      <p class="evidence">evidence: <code>r2-07-about.html</code> card 520×680 · sleeve 287×301 · in the hand the card ends 70px below a 900px screen · on a phone the card is 328×812 (1:2.48) because its content wraps · <code>About.dc.html:47</code> fixed 520×680, <code>:163</code> 900px on phones</p></div>
+  </header>
+
+  <section class="r3-changed" aria-label="What changed from round 2">
+    <div><div class="r3-k">FRED, ON ROUND 2</div><p class="r3-quote">“07: Looks good, but we should lengthen the card/sleeve, now it looks kinda ‘fat’.”</p></div>
+    <div><p class="r3-did"><b>Only the proportions changed; the interaction did not.</b> The card is now <b>7:12</b>, a tarot card's proportion, instead of 1:1.31. The sleeve is <b>1:1.5</b> instead of 1:1.05, with half the seam allowance. The card keeps one proportion on every screen: r2's phone card had stretched to 1:2.48. It is sized to fit, so at 1440×900 the whole card in your hand fits one view, with the sleeve's printed header still showing above it.</p>
+      <p class="r3-did">Both faces are <b>re-laid for portrait</b>, not scaled. Day reads name → figure and hand note → one field list, and RANGE becomes its first row under the heavy rule. Night reads name → radar across the card (its viewBox cropped to the ink, so on desktop its labels go from 9px to 14px) → the stand beside its guard skill. The <b>physics is re-tuned</b> too. The pull runs 1.6 card widths instead of 1.1, and friction eases as the card comes out. The lift raises the card toward you, a narrower card flips a little quicker, and it tilts more across its width than along its length.</p></div>
+    <div class="r3-sil"><svg class="sil" viewBox="0 0 330 192" role="img" aria-label="Silhouettes at true relative size, 1440 by 900. Round 2: sleeve 280 by 294 (1 to 1.05), card 520 by 680 (1 to 1.31). Round 3: sleeve 210 by 320 (1 to 1.52), card 390 by 668 (1 to 1.71)."><rect x="5" y="140.8" width="49.9" height="17.2" rx="1.5" fill="none" stroke="#938979" stroke-width="1.2"/><path d="M3.4 90H56.6Q58 90 58 91.4V148.8H34.2A4.2 4.2 0 0 0 25.8 148.8H2V91.4Q2 90 3.4 90Z" fill="none" stroke="#938979" stroke-width="1.2" stroke-linejoin="round"/><rect x="68" y="22" width="104" height="136" rx="3.2" fill="none" stroke="#938979" stroke-width="1.2"/><rect x="197.4" y="144.8" width="39.2" height="13.2" rx="1.6" fill="#FBF6EC" stroke="#33302B" stroke-width="1.5"/><path d="M197.4 88.8H236.6Q238 88.8 238 90.2V152.8H220.6A3.6 3.6 0 0 0 213.4 152.8H196V90.2Q196 88.8 197.4 88.8Z" fill="#D5BB8F" stroke="#33302B" stroke-width="1.5" stroke-linejoin="round"/><rect x="248" y="24.4" width="77.9" height="133.6" rx="3.1" fill="#FBF6EC" stroke="#33302B" stroke-width="1.5"/><text class="sil-k" x="2" y="11">R2</text><text class="sil-k" x="196" y="11">R3</text><text x="30" y="174" text-anchor="middle">1:1.05</text><text class="sil-dim" x="30" y="188" text-anchor="middle">sleeve</text><text x="120" y="174" text-anchor="middle">1:1.31</text><text class="sil-dim" x="120" y="188" text-anchor="middle">card</text><text x="217" y="174" text-anchor="middle">1:1.52</text><text class="sil-dim" x="217" y="188" text-anchor="middle">sleeve</text><text x="287" y="174" text-anchor="middle">1:1.71</text><text class="sil-dim" x="287" y="188" text-anchor="middle">card</text></svg>
+      <p class="sil-cap">true relative size at 1440×900 · sleeve on the desk (card's sliver below it), card in the hand</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Sleeve, then hand, at 7:12 <span class="display-cn">先抽出，再翻面 · 七比十二</span></span><span class="cand-mech">friction pull · lip catch · lift · throw-flip · pen radar · physics + hand's clock</span></div>
+      <div class="stage hs-stage">
+        <div class="sc-kicker">FIELD GUIDE · SET 01 · SPECIMEN 001</div>
+        <div class="ctl-slot"></div>
+        <div class="rig">
+          <div class="sl sl-back" aria-hidden="true"><svg></svg></div>
+          <div class="card-pos">
+            <div class="a-card" id="r3-card" tabindex="-1" role="group" aria-roledescription="specimen card · 标本卡" aria-label="标本卡，日间形态。左右拖动或按回车翻面，按上箭头收回卡套。Specimen card, day form. Drag sideways or press Enter to flip; Arrow Up puts it back in the sleeve.">
+              <article class="sc-face sc-day a-face a-day" aria-hidden="false"></article>
+              <article class="sc-face sc-night a-face a-night" aria-hidden="true"></article>
+            </div>
+            <div class="sc-fig" aria-hidden="true">fig.04</div>
+          </div>
+          <div class="sl sl-front">
+            <svg class="sl-kraft" aria-hidden="true"></svg>
+            <div class="sl-print" aria-hidden="true">
+              <div class="sl-k">FIELD GUIDE · 001</div>
+              <div class="sl-t"><span lang="zh">标本卡</span> <span class="sl-t-en">SPECIMEN CARD</span></div>
+              <div class="sl-rule"></div>
+              <ul class="sl-forms"><li><span class="sl-box"></span><span><span lang="zh">日间</span> DAY</span></li><li><span class="sl-box"></span><span><span lang="zh">夜间</span> NIGHT</span></li></ul>
+            </div>
+            <div class="sl-warn" aria-hidden="true"><span lang="zh">请勿折叠</span><span>DO NOT BEND</span></div>
+            <svg class="sl-impact" aria-hidden="true"></svg>
+            <div class="bird" aria-hidden="true"><div class="bird-sprite"></div></div>
+            <button type="button" class="sl-hit" tabindex="-1" aria-hidden="true" aria-controls="r3-card" aria-label="把标本卡收回卡套。Put the specimen card back in its sleeve."></button>
+          </div>
+          <div class="a-shadow" aria-hidden="true"></div>
+          <button type="button" class="grip" aria-controls="r3-card" aria-label="从卡套里抽出标本卡。按回车，或往下拖。Pull the specimen card out of its sleeve: press Enter, or drag down."></button>
+          <div class="cue" aria-hidden="true"><svg class="cue-arrow" viewBox="0 0 26 50"></svg><span class="cue-t"><span class="hand-cn">抽出来</span> · pull</span></div>
+        </div>
+        <blockquote class="sc-statement"><span class="sc-zh" lang="zh">世如未竟天工卷，格物致知珞玉心。</span><span class="sc-en" lang="en">BY DAY, I MAKE THINGS HAPPEN. BY NIGHT, I KEEP THEM FROM DISAPPEARING.</span></blockquote>
+        <div class="soc-slot"></div>
+        <span class="hint hs-hint"></span>
+      </div>
+      <div class="cand-foot"><div>Everything Fred accepted in round 2 is still here, in the same order. You <b>pull</b> the card down out of the sleeve. It holds, slips, then slides, and the field rows come out bottom first until the name <b>架桥者 · BUILDER</b> clears the lip. The top edge catches, the lip sags and the sleeve comes along. It lets go with a slap and two frames of impact ticks, and the card is <b>lifted into your hand</b>, where round-1 A takes over. What's new is the shape and the numbers behind it. A 7:12 card comes out of a 1:1.5 sleeve over a longer pull. Its friction eases as less of it is left inside, so the last third runs free before the catch. In the hand it fits the screen under the sleeve's header.
+        <div class="tradeoff"><b>cost</b> as r2: one rAF loop that sleeps at rest · 9 flat plies · the lip is one path rewritten only while it moves · the card's size is computed on resize, never per frame · <b>fit</b> in the hand the card fits one screen at 1440×900 and 390×844, and the whole pull, catch included, fits it too · <b>a11y</b> unchanged from r2: the sliver is a real button (Enter / Space / ↓ pulls, then focus moves to the card; ↑ / Esc re-sleeves); PULL becomes FLIP in the same slot; hidden face aria-hidden; radar keeps title/desc · <b>touch</b> only a finger-down drag that starts on the sliver pulls; scrolling is left to the browser; tap to pull or re-sleeve · <b>reduced motion</b> card presented out of the sleeve, flips and re-sleeving instant, radar already drawn</div></div><div class="foot-ctl"><div class="ar-tog" role="group" aria-label="Card proportion · 卡片比例"><span class="ar-k">proportion <span lang="zh">比例</span></span><button type="button" class="ar-b" data-ar="12/7" aria-pressed="true"><span class="ar-t">7:12</span> <span class="ar-n">tarot · <span lang="zh">塔罗牌</span> · pick</span></button><button type="button" class="ar-b" data-ar="8/5" aria-pressed="false"><span class="ar-t">5:8</span> <span class="ar-n">index card · <span lang="zh">索引卡</span></span></button></div><button class="replay" data-replay="replayR3">↻ replay</button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship A at 7:12.</b> It is exactly r2 with the shape Fred asked for. The card reads as something you'd keep in a book, not a badge on a lanyard. The sleeve is now a tall envelope that fits the card, not a square pouch. The pull is longer because the card is longer, and since the whole gesture now fits one screen, the catch and the lift happen where you can see them.</p>
+    <p>The proportion switch under the stage runs the same rig at <b>5:8</b>, an index card and close to an ID card. It is the only alternative worth showing, and it is close. At the same height it is 6% wider on desktop, and on a phone, where the width is fixed, it comes out 7% smaller, type included. It drifts back toward the badge Fred objected to. Keep 7:12.</p>
+    <p>Watch: in the hand the card is sized to the screen's height (up to 740px), so a short laptop gets a smaller card, but every face is laid out in card units, so it is the same card and never a different layout. At 1440×900 it is 390×668: within 12px of r2's 680 in height, and a quarter narrower. On a 1080p screen it grows to 420×720. On screens shorter than about 850px it stops shrinking at its reference size (the phone's type sizes), and there the page scrolls a little instead. The narrowing is what fixes "fat". Making it taller than the screen would bring the fold problem back. The re-sleeve drag lowers the card toward the mouth before you push it in. Because the lifted card now sits a little higher than where it left the desk, the first 100px of an upward drag dip it slightly as it shrinks. That is physically right (you set it down, then slide it in), but it is the one place the new geometry shows.</p>
+    <div class="record">执行模式：精修（第三轮 · 只改比例，不改交互）
+表达锚点：标本卡是一张可以夹在书里的卡片，不是挂在胸前的胸牌：七比十二的竖长比例，卡套是贴身的细长纸袋。
+动作时钟：物理时钟 —— 抽出（先粘住、再打滑；摩擦随卡在套里的长度递减，最后三分之一几乎不拖）、卡在卡套口（卡套口下垂、卡套被带着走）、松脱（卡套弹回并扭一下）、拿起到手里（放大、向你抬起一点、更长的卡前倾更多）、倾斜（横向多、纵向少）、甩动翻面（窄卡转动惯量小，翻得略快）、半色调接触阴影、推回卡套；手的时钟 —— 两帧冲击线、小鸟的定格姿势、雷达逐笔画出、卡套清单上的钢笔勾。
+映射：手指往下拖 → 卡片滑出，套里剩得越多越慢；卡片上沿碰到卡套口 → 卡住、卡套口被拉弯；拉力超过摩擦 → 卡片弹出；卡片离开桌面 → 放大到一屏之内、卡套抬头的印字仍露在上方；第一次拿到某一面 → 清单打勾；抵达夜面 → 见证者开始记录；往上推 → 放回卡套口，再推进去。
+比例：卡 7:12（竖长）；卡套约 1:1.5（第二轮 1:1.05）；所有卡面尺寸以卡高的 1/576 为单位，手机与桌面是同一张卡的两个尺寸。
+线条计划：卡套边缘、缝线、纤维、冲击线、提示箭头（改为短而近直）都是单笔、钝头、铅笔 / 墨色；悬停只用笔的下划线（改用荧光笔细边的赭色，不再用珊瑚色）。
+色彩计划：牛皮纸为结构色；日面珊瑚色只留给手写批注，夜面珊瑚色只留给雷达多边形；无高光、无流光、无光晕，接触阴影用网点。</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r3-07-about-kit.js"></script><script src="r3-07-about-sleeve.js"></script><script src="r3-07-about-rig.js"></script><script src="r3-07-about-hands.js"></script>
+</body></html>

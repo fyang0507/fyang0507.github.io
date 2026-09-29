@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · Page transitions — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="01-transitions.css">
+<link rel="stylesheet" href="01-transitions-pages.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 01</div><h1 class="board-title">Page transitions <span class="display-cn">转场</span></h1></div>
+    <div><p class="board-why">Every navigation is a hard cut followed by the same generic “fade and rise 14px” on every page. Yet the site sets up continuity perfectly and never delivers it: the laptop, book, frame and camera on the desk are the doors, and every subpage repeats <b>the same four objects</b> as its tab nav, the current one in a folder-tab outline with a coral dot. The object you click simply vanishes instead of arriving, and tab-to-tab hops between subpages hard-cut too.</p>
+      <p class="evidence">evidence: <code>index.html:184–195</code> desk hotspots → plain links · <code>site-nav.css:47</code> active tab is a static border · <code>Building.dc.html:189</code> <code>Writing.dc.html:42</code> <code>Gallery.dc.html:40</code> <code>About.dc.html:34</code> the same 14px rise, four times · no <code>@view-transition</code> anywhere</p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Object becomes tab <span class="display-cn">物归其位</span></span><span class="cand-mech">shared element · arc on a spring · pen-drawn tab · physics clock</span></div>
+      <div class="stage ms-stage"><span class="hint">click any object on the desk ↗</span></div>
+      <div class="cand-foot"><div>The object you click is picked up, carried on an arc with mass (one small overshoot, then it settles) and set down in its own slot in the arriving page’s tab nav; the rest of the desk recedes beneath it, the pen draws the folder tab around it, and the title lands last. “home” carries it back to the desk. Tab→tab: the outline and its coral dot slide to the new tab while the content swaps.
+        <div class="tradeoff"><b>support</b> cross-document View Transitions — <code>@view-transition{navigation:auto}</code> plus one <code>view-transition-name</code> per desk object and the matching <code>.site-nav-object</code> — morph object→tab with CSS alone in Chrome/Edge 126+ and Safari 18.2+; Firefox falls back to today’s hard cut. The arc and overshoot are ~40 lines of JS in <code>pagereveal</code> that re-key <code>::view-transition-group(obj)</code> with these sampled keyframes (this demo previews the curve with WAAPI). · <b>tab→tab</b> pure CSS: <code>view-transition-name:active-tab</code> on the current tab’s outline + a spring written as <code>linear()</code> — this demo runs it as a real same-document <code>startViewTransition</code>. · <b>a11y</b> reduced motion = instant swap; the destination strip is readable by ~0.45 s, the object lands at ~0.5 s, and input is never blocked past the landing. · <b>cost</b> the pen outline replaces the CSS border on every page.</div></div>
+        <button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Dolly into the object <span class="display-cn">推镜入物</span></span><span class="cand-mech">one camera zoom about a fixed point · clip-path canvas · physics clock</span></div>
+      <div class="stage ms-stage"><span class="hint">click any object on the desk ↗</span></div>
+      <div class="cand-foot"><div>One committed push. The laptop’s blank screen, the book’s open spread, the frame’s picture or the camera’s lens is already showing the destination; the camera pushes in about a single fixed point until that surface fills the view, then it opens to the full page (the lens literally opens its aperture). Back pulls out along the same line; tab→tab trucks the camera sideways in tab order.
+        <div class="tradeoff"><b>support</b> not a shared element — desk and page have nothing in common to name — so cross-document VT only helps as a stage: <code>::view-transition-old(root)</code> zoom keyframes and a <code>new(root)</code> clip-path, both computed per object in JS on <code>pageswap</code>/<code>pagereveal</code> (Chrome/Edge 126+, Safari 18.2+; Firefox hard cut). · <b>cost</b> the desk raster is upscaled ×4–10 mid-push and goes soft for ~150 ms; the largest motion on the board, on every click. · <b>a11y</b> a full-viewport zoom is exactly what <code>prefers-reduced-motion</code> exists for — instant swap there. · <b>tab→tab</b> the truck is the weak part: honest, but close to a generic slide.</div></div>
+        <button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">Nichijou cut <span class="display-cn">日常式转场</span></span><span class="cand-mech">iris · held beat · stepped bird · hand’s clock</span></div>
+      <div class="stage ms-stage"><span class="hint">click any object on the desk ↗</span></div>
+      <div class="cand-foot"><div>The opener’s iris closes onto the thing you clicked and holds it for a beat, snaps shut, cuts to an episode card while one bird hops across on held frames, then opens on the same object where it now lives — its nav tab. It’s the site’s own joke, and it lands. But it costs ≈1.1 s per navigation: charming the first time, a tax by the fifth.
+        <div class="tradeoff"><b>cost</b> ~1.1 s of blocked view vs. ~0 for today’s cut; tab→tab and back drop the card and still cost ~0.7 s. · <b>support</b> cross-document: circle <code>clip-path</code> keyframes on <code>::view-transition-old(root)</code> / <code>new(root)</code>, card + bird as a transient element of the new page — but the close can only start once the next page is ready, so on a slow network the click feels dead. The JS alternative closes on click, navigates under the black (the beat becomes an honest loading screen) and opens on <code>pagereveal</code>. · <b>a11y</b> reduced motion = instant swap; the black is the opener’s warm #17120C, never a white flash.</div></div>
+        <button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A — Object becomes tab.</b> It is the only candidate that pays off what the site already built: the desk object and the nav object are the same drawing, and A literally carries one into the other, so the nav finally explains itself. It is also the cheapest to ship honestly — the morph and the tab slide are CSS-only cross-document View Transitions; only the arc and overshoot need a little JS, and Firefox simply keeps today’s cut.</p>
+    <p>Combine: keep C’s episode card, but ration it like the existing opener — the first home→subpage navigation of a session only, never on back or tab→tab. Leave B on the board as the cinematic reference; it spends the whole motion budget on the camera instead of the object. Watch in A: the desk drawing and the nav sprite differ (the nav laptop carries the ghost sticker, the nav book is steeper), and the crossfade over the middle of the arc (30–75%) is what hides that — don’t lengthen it. Keep landing under ~0.5 s and never make the title wait on the pen. Give the identity lockup its own <code>view-transition-name</code> so it never blinks between pages.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：桌上的物件就是门；点哪个，哪个就跟着你走进下一页，落在导航里自己的位置上（物归其位）
+动作时钟：物理时钟 — 物件被拿起（先抬 6px）、沿弧线带着质量飞行、一次小过冲后落定；标签外框带着珊瑚点滑动；标题像纸一样落下。手的时钟 — 笔一笔画出文件夹标签；手写题注逐帧“写”出来；C 里的小鸟按帧跳
+映射：点击 → 拿起；桌面退后 → 其余物件后撤淡出；落进标签槽 → 笔画出外框、珊瑚点落定；切换标签 → 同一个外框滑到新标签、内容换页；返回 → 物件原路飞回桌上的空位
+线条计划：标签外框用 pen.js 的同一只手（固定种子）一笔画成，1.3px 墨线，带细微抖动；返回时收笔比画得快
+色彩计划：珊瑚色唯一持有者是激活标签上的圆点；过渡中不新增颜色，不用渐变、模糊、光泽</div>
+  </div></section>
+</main>
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="01-transitions-motion.js"></script>
+<script src="01-transitions-pages.js"></script>
+<script src="01-transitions-site.js"></script>
+<script src="01-transitions-a.js"></script>
+<script src="01-transitions-b.js"></script>
+<script src="01-transitions-c.js"></script>
+<script src="01-transitions.js"></script>
+</body></html>

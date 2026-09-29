@@ -1,0 +1,19 @@
+/* r3-08b-board.css — board chrome for round 3: the "what changed from round 2" strip and the build's controls. */
+.r3-changed{display:grid;grid-template-columns:150px minmax(0,1fr);gap:24px;margin-top:22px;padding:14px 18px;border:1px dashed var(--pencil);border-radius:8px}
+.r3-changed-k{font:500 11px/1.5 var(--util);letter-spacing:.1em;color:var(--pencil)}
+.r3-changed q{display:block;font:500 17px/1.45 var(--disp);color:var(--ink);quotes:"“" "”"}
+.r3-changed p{margin-top:8px;font-size:15px;line-height:1.55;color:var(--soft)}
+.r3-changed b{color:var(--ink);font-weight:500}
+.r3-changed ul{margin:8px 0 0 18px;font-size:15px;line-height:1.55;color:var(--soft)}
+.r3-changed li + li{margin-top:4px}
+#cand-n .cand-letter{width:40px;border-radius:13px}
+.foot-ctl{display:flex;flex-direction:column;gap:7px;align-items:stretch}
+.foot-ctl .replay{justify-content:center}
+.foot-ctl .replay[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.cand-foot .clock{display:block;margin-top:6px;font:11.5px/1.6 var(--util);color:var(--pencil)}
+.cand-foot .clock b{color:var(--ink);font-weight:500}
+@media (max-width:760px){
+  .r3-changed{grid-template-columns:1fr;gap:6px}
+  .cand-foot{grid-template-columns:1fr}
+  .foot-ctl{flex-direction:row;flex-wrap:wrap}
+}

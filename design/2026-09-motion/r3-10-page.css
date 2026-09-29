@@ -1,0 +1,30 @@
+/* r3-10 · the opener page, on top of r2-10-cd.css (page, fall layer, eyecatch, controls) and r2-10-op.css (the OP's
+   frames), both loaded unchanged. This adds only what round 3 changed: name beat a alone, the returning run that
+   never shows the OP, the bird that is on the desk from the cut, and the quiet skip hint of a long hold. */
+
+/* ---------- the name beat: a · 一字一切 (from r2-10-op-names.css; b and c are gone) ---------- */
+.sh-a-fu .gl{--x:43%;--y:52%;--r:-6deg;font-size:100vh}
+.sh-a-lei .gl{--x:57%;--y:50%;--r:5deg;font-size:114vh}
+.sh-a-de .gl{--x:50%;--y:52%;--r:-3deg;font-size:100vh}
+.sh-a-fred{color:#FBF6EC}
+.sh-a-fred .word{--x:50%;--y:50%;--r:-5deg;font-size:40vw}
+@media (max-aspect-ratio:5/6){
+  .sh-a-fu .gl{--x:47%;--y:43%;--r:-6deg;font-size:104vw}
+  .sh-a-lei .gl{--x:53%;--y:53%;--r:5deg;font-size:120vw}
+  .sh-a-de .gl{--x:50%;--y:46%;--r:-3deg;font-size:106vw}
+  .sh-a-fred .word{--x:50%;--y:50%;--r:-90deg;font-size:36vh}
+}
+
+/* The OP's first field is 弗's yolk, painted before the script runs; a returning run never shows the OP at all. */
+.oc-stage{--f0:#FFC629}
+html.ret .oc-stage{display:none}
+
+/* The bird is on the empty desk from the cut. It arrives with the drawing it stands on (same 160 ms as the plate),
+   so a cold load never shows a bird floating on blank paper. */
+.op .op-bird{opacity:0}
+.op.set .op-bird{opacity:1;transition:opacity .16s linear}
+
+/* A long hold says one thing, after 1.5 s: that you can skip it. No spinner, no percentage.
+   #7A7063: the audit's 4.5:1 pencil (--pencil is 3.2:1 on paper, too faint for 12 px text). */
+.skip-hint{position:fixed;left:50%;bottom:max(18px,3.4vh);z-index:40;transform:translateX(-50%);font:12px/1 var(--util),var(--util-cn);letter-spacing:.05em;color:#7A7063;white-space:nowrap;pointer-events:none;visibility:hidden}
+.skip-hint.on{visibility:visible}

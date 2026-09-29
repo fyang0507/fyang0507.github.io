@@ -1,0 +1,38 @@
+/* R2 · board 10 — the combined opener, played live in an iframe at desktop or phone framing. */
+.screen{position:relative;overflow:hidden;background:#17120C;aspect-ratio:1440/900}
+.screen.phone{aspect-ratio:auto;height:min(80vh,760px);display:grid;place-items:center;background:var(--paper2)}
+.screen iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:var(--paper)}
+.screen.phone .device{position:relative;height:100%;aspect-ratio:390/844;border:1.5px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--paper)}
+.screen .poster{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer;background:rgba(23,18,12,.04);font:500 12px/1 var(--util);letter-spacing:.06em;color:var(--ink)}
+.screen .poster span{padding:10px 16px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;border-top:1px solid var(--line);font:11px/1 var(--util);color:var(--pencil)}
+.opts button,.opts a{height:28px;display:inline-flex;align-items:center;padding:0 11px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper2);font:500 11px/1 var(--util);color:var(--ink)}
+.opts button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.opts .sp{flex:1}.opts .gap{width:6px}
+.opts .lab{margin-left:4px}
+.beats{margin:4px 0 0;padding-left:18px;font-size:13.5px;line-height:1.55;color:var(--soft)}
+.beats li{margin:3px 0}
+.beats .t{font:11.5px/1 var(--util);color:var(--pencil);margin-right:6px}
+.breaks{margin-top:10px;font:11.5px/1.6 var(--util);color:var(--pencil)}
+.breaks b{color:var(--mark);font-weight:500}
+
+/* what changed from round 1 */
+.changed{margin-top:26px;padding:16px 18px;border:1px dashed var(--pencil);border-radius:10px;display:grid;gap:12px}
+.changed-k{font:500 11px/1.4 var(--util);letter-spacing:.1em;color:var(--mark)}
+.changed-row{display:grid;grid-template-columns:minmax(0,.9fr) 24px minmax(0,1.4fr);gap:10px;align-items:start;font-size:14.5px;line-height:1.5;color:var(--soft)}
+.changed-row q{font-family:var(--text);font-style:italic;color:var(--ink);quotes:"“" "”"}
+.changed-row .arrow{font:16px/1.4 var(--util);color:var(--pencil)}
+.changed-row b{color:var(--ink);font-weight:500}
+@media (max-width:760px){.changed-row{grid-template-columns:1fr}.changed-row .arrow{display:none}}
+
+/* the three name beats */
+.sub{margin:44px 0 16px;font:500 clamp(22px,2.6vw,30px)/1.15 var(--disp)}
+.sub .display-cn{margin-left:8px;font-size:.8em;color:var(--soft)}
+.names{grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr))}
+.strip{display:block;width:100%;height:auto;background:var(--paper2);border-bottom:1px solid var(--line)}
+.names .cand-foot{grid-template-columns:1fr}
+.names .audit{margin-top:8px;font:11px/1.6 var(--util);color:var(--pencil)}
+.names .audit b{color:var(--ink);font-weight:500}
+.names .row{display:flex;gap:8px;margin-top:10px}
+.names .row button{height:28px;padding:0 11px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper2);font:500 11px/1 var(--util)}
+.names .row button:hover{background:var(--ink);color:var(--paper)}

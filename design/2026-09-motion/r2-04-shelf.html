@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2-04 · The bookshelf, in depth — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r2-04-shelf.css"><link rel="stylesheet" href="r2-04-book.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 04 · ROUND 2</div><h1 class="board-title">The bookshelf, in depth <span class="display-cn">立体书架</span></h1></div>
+    <div><p class="board-why">In round 1, B's shelf was <b>flat until you touched it</b>. Hovering switched on perspective, tipped a spine and raised a separate bookmark card, so the depth arrived as a trick rather than a place. A had the right logic (you pull a book and open it), but its hover only lifted the spine, with <b>no preview</b>. Round 2 builds the shelf as paper boxes from the first frame. Pulling a book is then just the camera you were already looking through, and the preview is printed on the book itself.</p>
+      <p class="evidence">evidence (round 1): <code>04-shelf.css:33</code> page-block top <code>display:none</code> at rest · <code>:53</code> it only exists once <code>.tip3d</code> tips the book · <code>:59</code> the preview is a separate card on a stem · <code>04-shelf-a.js:49</code> A's hover = lift 16&nbsp;px, no facts</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 1">
+    <div class="changed-k">WHAT CHANGED<br>FROM ROUND 1</div>
+    <ol>
+      <li><q>the 3D effect is too abrupt because the bookshelf is 2D to start</q><b>3D from the first frame.</b> One fixed camera sits above the plank with a shifted lens, so spines stay exactly their flat size. Every book is a paper box (page-block top, boards, fore-edge) on a plank with a front lip and a contact stipple. Nothing changes projection on hover.</li>
+      <li><q>the added hover on top didn't really carry physical logic</q><b>The preview is on the book.</b> Hover hooks the spine, slides the book out, lifts it clear and turns it in the hand. The real cover faces you and the facts are printed on a paper obi / 腰封 (A), or on the title page as the board cracks open (B). No slip, no card.</li>
+      <li><q>A has a better logic of "opening the book", but it didn't provide the preview hover</q><b>Click continues the same gesture.</b> From the held pose the book comes square, the board swings open to the ex libris and title page, and the title page grows into Reading. Back / Esc reverses it all and puts the book back in its slot.</li>
+    </ol>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Pull it, read the band <span class="display-cn">抽书看腰封</span></span><span class="cand-mech">hover: hook → slide out → lift + turn · the obi carries the preview · click: square → open → page · physics clock · bird perches on the held book</span></div>
+      <div class="stage s-a" id="stage-a"><span class="stage-note">hover, or Tab in and walk with ← →<br>click / Enter opens · back · Esc re-shelves</span><span class="hint">point at a spine and pause ↗</span></div>
+      <div class="cand-foot"><div>Point, and a finger hooks the head of the spine: the book tips on its front edge and you see more of its page block. Pause, and it slides out, is lifted clear of the row and turns in your hand to show the real cover under a paper belly band. The band carries both titles, date, reading time, tag and a pencilled aside. The neighbours lose their support only once it is clear, then lean into the gap. Click, and the book comes square, the board swings open and the title page becomes the page.
+        <div class="tradeoff"><b>cost</b> CSS&nbsp;3D paper boxes (5 faces × 18 books, one fixed perspective) · live springs for the hover, ≈0.5&nbsp;s to readable · spring-baked WAAPI for the open, ≈1.1&nbsp;s click to page · <b>a11y</b> the shelf is one tab stop: ← → / Home / End walk it and pull each book, Enter / Space opens, Esc re-shelves or leaves Reading; each link's label carries every fact on the band; reduced motion shows the held pose and the page without travel · <b>support</b> preserve-3d + linear(): Chrome&nbsp;113, Safari&nbsp;17.2, Firefox&nbsp;112</div></div>
+        <button class="replay" data-replay="replayA">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">Crack it open <span class="display-cn">翻开扉页</span></span><span class="cand-mech">hover: hook → slide out → lift + turn + the board opens 80° · preview on the title page · click: that page grows · physics clock</span></div>
+      <div class="stage s-a" id="stage-b"><span class="stage-note">same shelf, same keys<br>the facts are inside the book</span><span class="hint">point at a spine and pause ↗</span></div>
+      <div class="cand-foot"><div>The same pull, but the book is held half-open in a V: cover on the left, title page on the right. The facts are typeset on the title page and the aside is pencilled in like an inscription. Click, and the board simply keeps opening: the page you peeked at is the page that arrives.
+        <div class="tradeoff"><b>cost</b> the same engine plus one spring (the board's hinge) · the cover is seen at 40°, so the image reads less than in A · the V is wider (≈300&nbsp;px) and hides more of the row · <b>a11y · support</b> as A</div></div>
+        <button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-m">
+      <div class="cand-head"><span class="cand-letter">M</span><span class="cand-name">A on a phone <span class="display-cn">手机上的书架</span></span><span class="cand-mech">390 px · horizontal 3D strip · tap = pull + obi · tap again = open</span></div>
+      <div class="stage s-m" id="stage-m">
+        <div class="phone"><div class="phone-screen strip-stage" id="phone-screen">
+          <div class="m-host" id="m-host"></div>
+          <div class="m-head"><div class="m-kick"><b>01</b>writing</div><div class="m-title">在写。</div><div class="m-sub">27 essays · 2015–2026</div></div>
+          <div class="m-cue hand" id="m-cue">tap a spine ↓<span>点一下书脊</span></div>
+          <div class="m-hint"><div class="util">← swipe the shelf · 左右滑动 →</div><div class="util">27 · 全部</div></div>
+        </div></div>
+        <div class="m-notes">
+          <h4>WHAT CHANGES ON A PHONE</h4>
+          <ul>
+            <li><b>The shelf stays a 3D shelf.</b> All 27 books sit on one plank as a native swipe strip. The camera is fixed to the screen, so as the shelf slides past, the far sides of the books change. You feel the depth with a thumb; no gyroscope needed.</li>
+            <li><b>Tap = pull.</b> The first tap takes the book out and turns it to show its cover and band, and the strip recentres so it has room. Tap the book again, or its band, to open.</li>
+            <li><b>Tap anywhere else to put it back.</b> The neighbours lean into the gap, then get shoved upright.</li>
+            <li><b>The bird comes along the tops,</b> late, and sits on the book you are holding.</li>
+          </ul>
+          <p class="zh">书架还是立体的：整排书横向滑动，眼睛不动，书从眼前滑过。点一下，书被抽出、转过来给你看封面和腰封；再点一下，翻开。</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>The recommended mechanism at 390&nbsp;px, with the same code in tap mode. Spines are 1.2× for comfortable tap targets, the board is 176&nbsp;px, and the book faces 250&nbsp;px tall when it opens. Coming back from the page puts the book back in its slot.
+        <div class="tradeoff"><b>cost</b> 27 paper boxes in one scroller; the far sides are re-inked on scroll (one rAF) · <b>a11y</b> spines stay real links with full labels; the strip is keyboard-walkable too · <b>support</b> perspective on a scroll container keeps its origin fixed to the viewport in every engine</div></div>
+        <button class="replay" data-replay="replayM">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A: Pull it, read the band.</b> It answers all three notes with one object. The shelf has depth before you touch it, so pulling a book is just the camera you were already looking through. The preview is printed on the thing you pulled, a real obi on its real cover. And the open is the same gesture, continued. The bird now has a reason to move: someone took a book down, and it wants to see.</p>
+    <p>Watch: the held book is big (a ≈190&nbsp;px board) and briefly overlaps the heads of the row. The gap and the leaning neighbours stay visible under it, which is the point. B tells the stronger continuity story (the page you peek at is the page that arrives) but shows the cover at 40°; choose B if the reading page matters more than the cover. The camera numbers keep it Fred's shelf: the eye sits 660&nbsp;px above the plank at a 4400&nbsp;px perspective, which gives page-block tops of 11–15&nbsp;px and side slivers only where a taller book stands next to a shorter one.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：从书架上抽出一本书、拿在手里看封面和腰封——书架本来就是立体的，悬停只是手的动作，而不是界面换了一种投影
+动作时钟：物理时钟 = 勾书（绕前下沿前倾）、滑出、抬离书排并在手中转身（ζ≈0.62，一次小回弹）、邻书失去支撑倚向空位（ζ≈0.36，摇两下站稳）、放回时把邻书推正；打开 = 弹簧烘焙的 WAAPI；手的时钟 = 小鸟逐格跳（6 帧约 10 fps，迟半拍才注意到）
+映射：指向 → 手指勾住书顶，书前倾，看到更多书页顶面；停下 → 书滑出、被抬起、转过来给你看封面；书离开书排 → 邻书才失去支撑倚向空位；移开 → 书转回、滑回，把邻书推正；点击 → 书正对你，封面翻开到藏书票和扉页，扉页长成阅读页；小鸟注意到你拿起了一本书 → 迟半拍沿书顶跳过来，站到你手里那本书的书顶上；你把书放回 → 它跟着书回到书排
+线条计划：五个面都是平涂纸色 + 墨线；斜看的面（书页顶面、侧板）远端的线按透视缩短量加粗，屏幕上仍是一笔 1.5px；书拿近放大时线宽反向缩小，全程一支笔；书页顶面用可数的细线表示纸边；接触处是三排由大到小的网点，不用模糊阴影
+色彩计划：珊瑚色唯一持有者 = 笔在腰封（B：扉页）中文标题下划的那一道；系列编号仍是纸质书标；封面照片沿用 Writing 的暖色滤镜；无渐变、无高光、无光源</div></div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-04-kit.js"></script><script src="r2-04-shelf3d.js"></script><script src="r2-04-read.js"></script><script src="r2-04-cover.js"></script>
+<script src="r2-04-bird.js"></script><script src="r2-04-pull.js"></script><script src="r2-04-boot.js"></script>
+</body></html>

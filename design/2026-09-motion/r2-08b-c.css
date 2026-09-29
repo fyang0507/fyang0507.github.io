@@ -1,0 +1,20 @@
+/* r2-08b-c.css — C · The annotator's hand + catalogue card. At rest the margin note is the readable round-1 note.
+   The card is a 3×5 library catalogue card: whiter stock, a ruled header (No. · host, typed in utility mono),
+   the citation in text serif, the rod hole at the foot. It hinges on its bottom edge, like a card pulled up out
+   of a drawer and tipped toward you. The pen's coral is the view's one accent; the card stays ink and pencil. */
+.rd.cc-mode .mn-in{display:block;transition:opacity .12s .06s}
+.rd.cc-mode .mn.on .mn-in{opacity:0;transition:opacity .1s var(--cc-fade,.3s)}
+.rd.cc-mode .mn.on{z-index:6}
+.cc{position:absolute;left:-13px;top:-10px;width:236px;display:block;perspective:700px;perspective-origin:50% 100%;pointer-events:none}   /* eye level with the drawer; just past edge-on the card shows its back and is culled */
+.cc-card{position:relative;display:block;padding:9px 15px 26px;background:#FFFDF8;border:1px solid #E1D6C1;border-radius:3px;
+  box-shadow:0 1px 1.5px rgba(60,50,35,.10),0 10px 20px -8px rgba(60,50,35,.20);transform-origin:50% 100%;backface-visibility:hidden;
+  transform:translateY(12px) rotateX(93deg);font:13.5px/1.5 var(--text-cn);color:var(--ink)}
+.rd.lang-en .cc-card{font-family:var(--text)}
+.cc-top{display:flex;justify-content:space-between;gap:10px;margin:0 -2px 8px;padding:0 2px 6px;border-bottom:1px solid #d9ccb4;
+  box-shadow:0 2px 0 -1px #efe6d4;font:500 10.5px/1 var(--util);letter-spacing:.06em;color:var(--pencil)}
+.cc-card .fe-who{font-size:10.5px}
+.cc-card .fe-title{margin-top:3px;font-size:14px;line-height:1.45}
+.cc-card .fe-extra{font-size:12.5px;line-height:1.45}
+.cc-card .fe + .fe{margin-top:9px;padding-top:9px}
+.cc-hole{position:absolute;left:50%;bottom:8px;width:10px;height:10px;margin-left:-5px;border-radius:50%;box-sizing:border-box;border:1.3px solid #d9ccb4;background:var(--paper)}
+.cc-ink{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}

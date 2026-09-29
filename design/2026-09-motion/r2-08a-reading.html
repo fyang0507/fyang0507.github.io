@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2 · 08A · Reading, settled and marked — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="r2-08a-board.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 08A · ROUND 2</div><h1 class="board-title">Reading, settled and marked <span class="display-cn">题图落定 · 铅笔页边</span></h1></div>
+    <div><p class="board-why">Fred picked <b>A, the pencil margin</b>, and <b>D, the hero settling</b>. In production they share one page, so they are built together here on a real Reading page in its own window. In round 1, A only understood essays numbered 1.0, 2.0… At the bottom of the page its rail lay across the “previous” card and the footer, and on short essays it stopped short of the end. D’s dissolve was a thin dotted edge that ran ahead of the text, leaving a screen of empty paper between the hero and the body.</p>
+      <p class="evidence">evidence: <code>08-reading-a.js:66</code> rail height is <code>clientHeight − railTop − 44</code> (window-relative), so at the end it sits over <code>.pn</code> and <code>footer</code> · <code>08-reading-a.js:122</code> the reading line is fixed at 30%: on 香港森林 at 100% it reports <code>done=false</code> with the ink 50 of 597px short · <code>08-reading-render.js:15</code> only knows <code>&lt;strong&gt;N.N&lt;/strong&gt;</code> · <code>08-reading-d.js:73</code> paper rises at 2× scroll, so the body arrives ~360px after the cover is gone · <code>content/posts.js</code>: of 27 essays, 16 are numbered in Chinese (1.0, （一）, or both), 2 use headings, and 9 have no structure; 13 have none in at least one language</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 1">
+    <div class="changed-k">WHAT CHANGED FROM ROUND 1</div>
+    <div class="changed-row"><span class="changed-tag">A</span><q>Not all essays have the segments in 1.0, 2.0 etc., plus the current version has a bug when scrolled till the end.</q>
+      <p>Landmarks now come from whatever the essay has. First come numbered markers in any form (1.0, （一）, I., (3), 序 / Preface / 后记). Then headings: real <code>h2</code>/<code>h3</code> and whole-line bold titles. Then figures and pull quotes. An essay with none gets <b>minute ticks</b> at paragraph starts (“3 min”), and a long unmarked stretch inside a structured essay is filled the same way. <b>End of scroll:</b> the rail is sticky inside the essay’s own column, so it leaves with the essay instead of lying over the ending. Over the last screen the reading line sweeps to the bottom, so at 100% the last landmark is reached and the line closes with a ✓, even on a 3-minute essay. Bounce and overscroll read as the nearest end.</p></div>
+    <div class="changed-row"><span class="changed-tag">D</span><q>Not clearly showcased because the transition/dissolve effect is not obvious. There’s also the interplay with padding/margin to the body content.</q>
+      <p>The cover is now a plate pinned behind the top of the window, and reading <b>prints paper over it</b>. Just ahead of the paper, the cover is re-screened as a coarse colour halftone. Its dots stay registered to the plate and shrink in place, band by band, until only paper is left. The paper edge is tied to the text and always sits 84px above the first line, so there is never an empty screen and text never sits on the cover. The title rides slower than the page and flies into the nav; a wrapped title condenses into one line. When the paper reaches the top, the nav settles from 76 to 56px and a pencil hairline is drawn outward from the title. The same pen then goes on down the margin to draw A’s rail.</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-ad">
+      <div class="cand-head"><span class="cand-letter">AD</span><span class="cand-name">The settled page, with a pencil in the margin <span class="display-cn">落定的页面，页边一支铅笔</span></span><span class="cand-mech">halftone canvas registered to a pinned plate · per-line flight into the nav · sticky margin rail · physics clock for paper, hand’s clock for pen marks</span></div>
+      <div class="ad-bar">
+        <div class="picker" role="radiogroup" aria-label="Essay · 选一篇文章"></div>
+        <div class="ad-tools"><button class="replay" data-replay="replaySlow">▶ scroll the hero for me</button><button class="replay" data-replay="replayTop">↻ top</button>
+          <a class="ad-open" id="ad-open" href="r2-08a-page.html" target="_blank" rel="noopener">open full page ↗ <span class="zh">整页打开</span></a></div>
+      </div>
+      <div class="stage ad-stage">
+        <iframe id="ad-frame" title="Reading page demo · 阅读页演示"></iframe>
+        <span class="hint ad-hint">scroll the page slowly ↓ 慢慢往下读</span>
+      </div>
+      <div class="cand-foot"><div>Start at the top and scroll slowly. The cover’s lower edge is already a halftone. As you read, the paper edge climbs with the text and the dots shrink row by row, while the title shrinks and travels into the nav. The moment the paper reaches the top, the nav settles, the hairline is drawn out from the title, and the pen carries on down the left margin to draw the rail: ticks, labels, and the coral loop on the landmark you are in. Hover or focus a label to preview it; click to go there. Switch essays to see the rail follow each essay’s own structure. On a phone the hairline <i>is</i> the rail, with ticks and a “3.0 / 10” counter.
+        <div class="tradeoff"><b>cost</b> one canvas redraw per scroll frame, only while the hero is on screen (1–2k dots, about 1 ms), then the plate is hidden; the flight and the nav settle are transforms · <b>a11y</b> the real <code>h1</code> stays in the document (the flying copy is aria-hidden); the rail is a <code>&lt;nav&gt;</code> of anchors with ↑/↓ and a preview on focus; anchors land 28px clear of the nav; the phone counter is aria-live · <b>reduced motion</b> the plate scrolls with the page with a static halftone edge, the nav turns to paper in one step, and the rail steps per landmark · <b>support</b> plain scroll events, no scroll-timeline dependency, so it behaves the same in every engine</div></div>
+        </div>
+    </article>
+  </section>
+
+  <section class="plan" aria-label="The layout plan">
+    <div class="plan-k">THE LAYOUT PLAN · 版式数字</div>
+    <div class="plan-body">
+      <p class="plan-lede">Hero height, the body’s top padding and the nav’s height change are one plan, not three settings. The intro’s bottom padding is <code>gap + Z + pad</code>, so the body starts exactly <code>pad</code> below solid paper. The paper edge moves with the text, so that distance holds at every scroll position. It reaches the top of the window at <code>sL = B0 − pad</code>. At that moment the first line sits at <code>pad = n1 + 28</code>, just as the nav settles to <code>n1</code>.</p>
+      <table class="plan-t">
+        <thead><tr><th></th><th>1440 × 900</th><th>390 × 844</th><th>this frame, live</th></tr></thead>
+        <tbody>
+          <tr><th>nav at rest → landed <span>n0 → n1</span></th><td>76 → 56</td><td>62 → 50</td><td data-k="nav"></td></tr>
+          <tr><th>paper lead above the first line <span>pad</span></th><td>84 (= n1 + 28)</td><td>70 (= n1 + 20)</td><td data-k="pad"></td></tr>
+          <tr><th>halftone wedge · dot cell · band <span>Z · c · 2c</span></th><td>200 · 14 · 28</td><td>150 · 10 · 20</td><td data-k="z"></td></tr>
+          <tr><th>gap from title to wedge <span>gap</span></th><td>26</td><td>18</td><td data-k="gap"></td></tr>
+          <tr><th>hero band = body top at rest <span>B0</span></th><td>629 (1-line title) · 681 (2-line)</td><td>469 · 533</td><td data-k="b0"></td></tr>
+          <tr><th>landing scroll <span>sL = B0 − pad</span></th><td>545 · 597</td><td>399 · 463</td><td data-k="sl"></td></tr>
+          <tr><th>title scale in flight</th><td>52 → 16px (×0.31)</td><td>34 → 15px (×0.44)</td><td data-k="k"></td></tr>
+          <tr><th>rail: sticky top · height</th><td>84 · 772 (vh − 128)</td><td>on the nav hairline</td><td data-k="rail"></td></tr>
+          <tr><th>reading line</th><td colspan="2">30% of the reading area; sweeps to 100% over the last 0.8 screen of scroll</td><td data-k="marks"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship A and D together as the Reading page.</b> D’s print-over is now the one dense event on the page: the cover turns into its own halftone and gives way to paper as you begin, the title condenses into the nav, and a single pen stroke hands over to A’s margin. After that, the page stays quiet, with a graphite line and one coral loop. The overlap bug is fixed structurally. The nav is opaque at every position and paints its own slice of the plate, so text cannot show through it.</p>
+    <p>Watch three things in production. First, the halftone samples the cover through a canvas, so covers must stay same-origin (they are, in <code>images/derived/</code>). Second, dark photographic covers print heavier dots; the dot ink is held back on dark cells, but check new covers at the top of the page. Third, the rail needs about 180px of left margin, so below roughly 1000px wide it becomes the phone strip. Footnotes (board B) float in the right margin and do not compete with the rail.</p>
+    <div class="record">执行模式：第二轮 · 受控迭代（A + D 同页，保留概念与载体）
+表达锚点：“拿着铅笔读一篇印出来的文章”：开头的题图像一块印版，往下读时纸从下面印上来盖住它；读者手里的铅笔在页边记下读到哪儿
+动作时钟：物理时钟（题图印版与纸边与滚动一一对应，没有回弹；导航落定时弹簧一次小过冲）；手的时钟（导航细线、页边铅笔线、刻度、当前圈一笔画出，收笔更快）
+映射：往下读 → 纸边随正文上升，前方的题图被重新网点化，网点一行一行缩小直到只剩纸；题图标题跟不上页面、缩小并飞进导航（两行标题并成一行）；纸到达顶端 → 导航从 76 收到 56、细线从标题向两边画出、同一支笔沿左侧页边画下铅笔线；读到某个地标 → 该刻度被圈上；读完 → 线的末端打一个勾
+线条计划：一支笔，1.3–1.8px 圆头，按元素固定种子抖动（不逐帧重掷）；纸边的起伏也是固定种子的手裁边
+色彩计划：珊瑚色唯一持有者是当前地标的圈（手机上是计数器的圈）；网点取自题图本身的颜色，是唯一的大面积色，只在开头出现一次；细线与铅笔线用纸色系的铅笔灰
+地标层级：编号（1.0 / （一） / I. / 序）→ 标题（h2/h3、整行粗体）→ 图与引文 → 无结构时按阅读分钟在段首落刻度（“3 min”）</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-08a-landmarks.js"></script>
+<script src="r2-08a-board.js"></script>
+</body></html>

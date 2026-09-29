@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Remove non-site tooling files
-        run: rm -rf .git .github .agents .claude scripts
+        run: rm -rf .git .github .agents .claude scripts design
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 · One drawing, any light — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="11-themes.css">
+</head>
+<body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 11 · ANSWER TO “PAPER LOCKS US INTO ONE THEME”</div><h1 class="board-title">One drawing, any light <span class="display-cn">一张画，任何光线</span></h1></div>
+    <div>
+      <p class="board-why">You’re right that the lock-in is real. But it lives in the <b>assets and the plumbing</b>, not in the paper idea. Each illustration is a PNG with the pen colour and opaque cream fills baked in, so it only looks right on cream. Every page also re-declares the palette as hex. Separate the drawing from its colour once, and a theme becomes a token change instead of an asset project.</p>
+      <p class="evidence">evidence: 237 literal colours across 9 files · 8 separate <code>:root</code> palettes · 24 per-theme illustration files (15 <code>-light</code>, 9 <code>-dark</code>) · masters are 15–50% opaque cream fill (desk 15%, portrait 48%, book 50%)</p>
+    </div>
+  </header>
+
+  <section class="sec11">
+    <h2><span class="n">01</span>Today <span class="display-cn">现状</span></h2>
+    <p class="lead">These are the exact PNGs the site ships, on paper and then on a night field. The line art itself would survive the dark. <b>The baked cream fills turn every object into a glowing cut-out</b>, which is why the nav and bird were hand-exported a second time as <code>-dark</code> files and why the gateway pages were declared light-only.</p>
+    <div class="pair">
+      <div class="panel"><div data-today="theme-day"></div><div class="cap"><span><b>as shipped</b> · paper</span><span>works, but only here</span></div></div>
+      <div class="panel"><div data-today="theme-night"></div><div class="cap"><span><b>as shipped</b> · night field</span><span>cream cut-outs, ink disappears</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec11">
+    <h2><span class="n">02</span>Role layers, live <span class="display-cn">角色分层</span></h2>
+    <p class="lead">The same masters, split by a generator into three layers: <b>ink</b> (how much of each pixel is pen), <b>fill</b> (how much is paper hiding what’s behind) and <b>tint</b> (the few drawn colours: the bird’s yellow, the cat on the mug, the ghost on the camera). Tokens colour ink and fill, and tint stays as drawn. The sprites animate exactly as before. Switch the theme, then press <b>parity</b> and drag across the desk to compare against the shipped PNG.</p>
+    <div class="bigstage" id="big">
+      <div class="slot"></div>
+      <div class="controls">
+        <button data-set="theme-day" aria-pressed="true">paper · 纸</button>
+        <button data-set="theme-night" aria-pressed="false">night · 夜</button>
+        <button data-set="theme-cyan" aria-pressed="false">cyanotype · 蓝晒 (stress test)</button>
+        <button data-set="theme-riso" aria-pressed="false">riso · 孔版 (stress test)</button>
+        <span class="sp"></span>
+        <button data-parity aria-pressed="false">parity · 对照原图</button>
+        <button class="replay" data-replay="replayThemes">↻ cycle</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec11">
+    <h2><span class="n">03</span>Side by side <span class="display-cn">并排</span></h2>
+    <p class="lead">Four themes from one set of files. The two stress tests aren’t proposals. They show that the art no longer cares what colour the paper is. Value hierarchy survives every one: lighter pencil lines stay lighter because darkness became opacity, as your guide asks (“hierarchy by darkness, not by thickness”).</p>
+    <div class="grid4">
+      <div class="panel"><div data-theme4="theme-day"></div><div class="cap"><span><b>paper</b> · the site today, rebuilt</span><span>field #FBF6EC · ink #33302B</span></div></div>
+      <div class="panel"><div data-theme4="theme-night"></div><div class="cap"><span><b>night</b> · the same desk under a lamp</span><span>field #1E1913 · ink #EFE5D3</span></div></div>
+      <div class="panel"><div data-theme4="theme-cyan"></div><div class="cap"><span><b>cyanotype</b> · stress test</span><span>not a proposal</span></div></div>
+      <div class="panel"><div data-theme4="theme-riso"></div><div class="cap"><span><b>riso</b> · stress test</span><span>not a proposal</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec11" id="polarity">
+    <h2><span class="n">04</span>Where polarity can’t flip <span class="display-cn">不能反相的地方</span></h2>
+    <p class="lead">Your catch. <b>Line-only art reads the same inverted:</b> the nav frame’s cat, the laptop, the plant. <b>Continuous grey tone doesn’t.</b> The portrait’s halftone hair and shading only mean something dark-on-light. In negative the pupils go white and the hair goes grey, and the face stops being that face, which is why photographic negatives of people are hard to read. The generator now finds the print inside the frame from pixels alone: it takes the paper region around a seed and closes it to a convex sheet, in all four expressions. One line of config per master says “this holds a toned print”.</p>
+    <p class="lead" style="margin-top:-6px">B fixed the face but introduced a second medium. The scene is chalk on a dark board, and B pastes a lit paper sheet into it. So the print has to be drawn in <b>the same chalk as everything else</b>, and the face has to survive that. (I also tried a chalk halftone of the positive. At real sizes the dot screen is coarser than the face and reads as a checkerboard, so I dropped it.)</p>
+    <div class="pair">
+      <div class="panel"><div data-pol="lit"></div><div class="cap"><span><b>B · lit sheet</b> · previous</span><span>face ✓ · but a second medium</span></div></div>
+      <div class="panel"><div data-pol="line"></div><div class="cap"><span><b>D · chalk contour</b> ★</span><span>one chalk, face ✓</span></div></div>
+    </div>
+    <p class="lead" style="margin-top:22px"><b>D</b> keeps the print’s strong strokes as chalk. The solid dark masses (the pupils) are found by shape, as a matched pair wider than any stroke. They stay dark and get a thin chalk rim, so the eyes still look at you instead of glowing. The grey tone becomes its own layer with one strength setting. The ladder below shows that one setting at four fixed values, which is where the choice actually is: from a clean chalk drawing (the canon’s “people get airier”) to nearly the old negative. The book is an ordinary world object: dark pages, with the faint text boosted into readable chalk dashes.</p>
+    <div class="grid4t">
+      <div class="panel"><div data-polzoom="line" data-tone="0"></div><div class="cap"><span><b>tone 0%</b></span><span>pure contour</span></div></div>
+      <div class="panel"><div data-polzoom="line" data-tone=".35"></div><div class="cap"><span><b>tone 35%</b></span><span>hair has texture</span></div></div>
+      <div class="panel"><div data-polzoom="line" data-tone=".7"></div><div class="cap"><span><b>tone 70%</b></span><span>shading turns light</span></div></div>
+      <div class="panel"><div data-polzoom="line" data-tone="1"></div><div class="cap"><span><b>tone 100%</b></span><span>close to the negative</span></div></div>
+    </div>
+    <div class="lampctl"><label for="tone">tone · 灰调 (drives the two panels below and D everywhere else on this board)</label><input id="tone" type="range" min="0" max="100" value="0"><span id="tone-v">0%</span></div>
+    <div class="pair" style="margin-top:14px">
+      <div class="panel"><div data-polzoom="line"></div><div class="cap"><span><b>D</b> · live close-up</span><span>move the knob</span></div></div>
+      <div class="panel"><div data-polfull="line"></div><div class="cap"><span><b>D</b> · in context, at its real size</span><span>tone barely registers here</span></div></div>
+    </div>
+    <p class="lead" style="margin-top:14px">At the size the portrait actually lives on the desk, tone is nearly invisible: 0% and 100% differ by about 3/255. So the knob is really a close-up decision, for the About page or a zoom. My call is <b>0% on the desk</b> (the cleanest chalk drawing) and <b>about 35% wherever the portrait is shown large</b>.</p>
+  </section>
+
+  <section class="sec11">
+    <h2><span class="n">05</span>What changes <span class="display-cn">要改什么</span></h2>
+    <table class="nums">
+      <thead><tr><th>LAYER</th><th>TODAY</th><th>PROPOSED</th></tr></thead>
+      <tbody>
+        <tr><td><b>Principle</b></td><td class="rule-old">“Gateway pages are light-only … do not add theme switching or dark artwork to other pages.”</td><td><b>Every surface is theme-agnostic.</b> Colour comes only from role tokens. Which themes ship is a product decision, not something the artwork dictates. “Paper” is a <i>material</i> (grain, torn edges, pins, halftone, the hand), not a colour. Paper at night is still paper.</td></tr>
+        <tr><td><b>Tokens</b></td><td>8 copies of <code>:root</code>, 237 literal colours, <code>#fff</code>, <code>rgba(60,50,35,…)</code> shadows</td><td>One <code>site-tokens.css</code> using the role names that already exist in your guide’s <code>themes.json</code> (field, field-raised, ink, recessive-ink, hairline, accent, wash). Pages reference roles only, and a lint rule flags any hex outside the tokens file.</td></tr>
+        <tr><td><b>Illustrations</b></td><td>RGBA PNGs with pen colour and cream fill baked in, re-exported per theme (nav: 16 files, 136 KB)</td><td>Masters stay canonical. <code>generate-derivatives.py</code> also emits <code>ink / fill / tint</code> layers (nav: 8 masks, 40 KB; desk: 842 KB → 432 KB). They render through one small <code>.art</code> component (<code>mask-image</code>, with a <code>-webkit-</code> prefix for Safari).</td></tr>
+        <tr><td><b>Long run</b></td><td>raster line art goes soft at 3× (board 09 flagged it)</td><td>Vectorise the line art to SVG with <code>currentColor</code>. It stays crisp at any density, can be themed natively and <i>can be drawn stroke by stroke</i>, which is the same investment opener A needs.</td></tr>
+        <tr><td><b>Tone on dark</b></td><td>implicit: everything is dark-on-cream</td><td><b>One medium per scene.</b> On a dark field everything is drawn in the world’s one chalk. Faint line-like tone (a book’s text) gets a <code>gain</code>, and a toned print (the portrait) is reduced to chalk contour: its tone is dropped, and its pupils are found as a matched pair of dark masses, kept dark and rimmed in chalk. It’s declared per master and written to <code>roles.json</code>, and the renderer picks the treatment from the field. Photos and covers are content, not drawings: they keep their colour and get a mat.</td></tr>
+        <tr><td><b>Stays raster</b></td><td>—</td><td>Photos, essay covers and the About stand figure are content, not chrome. In dark themes they keep their colour and get a paper mat (field-raised border) plus a 4% dim, never a filter that changes the image.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Do the decoupling now, whether or not dark mode ships.</b> It’s one generator step and one tokens file, and it removes the reason every breaking change feels expensive: nothing visual stays welded to a colour. Then dark mode (or seasonal paper, or a print theme) becomes a cheap, reversible decision you can make on taste alone.</p>
+    <p>Sequence it as an “L0.5” between hygiene and the motion system, because boards 01 and 09 move these very sprites around and should move the role-layered versions. Night gets its own small art-direction pass later: which accents survive a dark field, and how strong the grain is.</p>
+    <div class="record">执行模式：非生产（论证＋可运行的证明）
+事实：插画 PNG 内烘焙了笔色与 15–50% 的不透明米色填充；导航与小鸟另有手工导出的 -dark 版本；9 个文件里有 237 个硬编码颜色、8 份 :root
+取 / 舍：取 “纸” 作为材质（颗粒、撕边、图钉、网点、手）；舍 “纸＝米色” 这一颜色绑定
+表达锚点：明度即不透明度——浅的铅笔线在任何主题里依旧更浅，层级不丢
+线条计划：ink 层由 token 着色，承担全部结构 / 色彩计划：field 与 field-raised 由主题决定；tint 保留原画的少量颜色；珊瑚色仍是唯一强调
+来源图角色：母版为唯一真源，分层为可再生衍生物（与尺寸阶梯同理）
+深色底上的灰阶：一个画面只用一种媒介——全部是同一支粉笔。书页的淡字加增益；肖像照片退回到轮廓（去掉灰调，按“成对的深色团块”找到瞳孔，保留深色并描一圈粉笔边），正是母版里“人要画得更空”的那种简化</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script>
+<script src="shared/mock.js"></script>
+<script src="11-themes.js"></script>
+</body>
+</html>

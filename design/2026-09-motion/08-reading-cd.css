@@ -1,0 +1,80 @@
+/* 08-reading-cd.css — candidate C (marker) and D (hero settles). */
+
+/* ================= C · Marker ================= */
+.rd.c-mark .post-body{isolation:isolate}
+.rd.c-mark .post-body ::selection{background:transparent;color:inherit}   /* the marker band is the selection */
+.rd.c-mark .mn,.rd.c-mark .fnref{-webkit-user-select:none;user-select:none}
+.c-layer{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:-1}
+.c-band{fill:#F3C6A5;opacity:.72}
+.c-band.pending{opacity:.5}
+.rd.dark .c-band{fill:#C98A5E;opacity:.34}
+.rd.dark .c-band.pending{opacity:.24}
+.c-tools{position:absolute;z-index:6;display:flex;align-items:stretch;background:var(--paper);border:1.5px solid var(--ink);border-radius:4px;box-shadow:var(--card-shadow);
+  opacity:0;visibility:hidden;transform:translateY(5px) rotate(-1deg) scale(.97);transform-origin:70% 100%;transition:opacity .1s,transform .12s,visibility 0s .12s}
+.c-tools.below{transform-origin:70% 0}
+.c-tools.on{opacity:1;visibility:visible;transform:rotate(-1deg);transition:opacity .12s,transform .4s var(--ease-settle)}
+.c-tools button{position:relative;padding:8px 11px 9px;font:11px/1 var(--util-cn);letter-spacing:.03em;color:var(--ink);white-space:nowrap}
+.c-tools button + button{border-left:1px solid var(--line)}
+.c-tools:not(.existing) [data-do="erase"]{display:none}
+.c-tools .c-said{display:none;align-items:center;padding:0 11px;border-left:1px solid var(--line);font:11px/1 var(--util-cn);color:var(--soft);white-space:nowrap}
+.c-tools.said .c-said{display:flex}
+.rd.c-mark .post-body.zh em{font-style:normal}
+
+/* ================= D · Hero settles ================= */
+.rd.d-on{--d-scale:1.18;scroll-timeline:--rdy block}
+@container rd (max-width:640px){.rd.d-on .rd-page{--d-scale:1.22}.rd.d-on .post-wash img,.rd.d-on .d-navwash img{opacity:.4}}
+/* crisper at rest than today (.34, sepia .18, gradient mask); the edge is halftone paper, not a gradient */
+.rd.d-on .post-wash{opacity:1;-webkit-mask-image:none;mask-image:none;overflow:clip}
+.rd.d-on .post-wash img,.d-navwash img{opacity:.46;filter:saturate(.62) contrast(.97) sepia(.06) brightness(1.03);transform:scale(var(--d-scale))}
+/* dark: the drawing's ink flips like the site's other line art (invert + hue-rotate keeps its colours' hues) */
+.rd.dark.d-on .post-wash img,.rd.dark .d-navwash img{opacity:.5;filter:invert(.9) hue-rotate(180deg) saturate(.55) sepia(.12) brightness(.92)}
+.d-front{position:absolute;left:0;right:0;top:100%;height:100%;background:var(--paper);will-change:transform;pointer-events:none}
+.d-dots{position:absolute;left:0;bottom:100%;display:block}
+.d-dots .d-paper{fill:var(--paper)}
+/* the nav: always opaque; its background is the slice of wash behind it */
+.rd.d-on .rnav{overflow:clip;background:var(--paper);border-bottom:0}
+.rd.d-on .rnav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);opacity:var(--d-hair,0);pointer-events:none}
+.d-navwash{position:absolute;z-index:0;left:0;top:0;width:100%;height:var(--d-w);overflow:clip;pointer-events:none;will-change:transform}
+.d-navwash img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform-origin:center}
+.d-navtitle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px;color:var(--ink);opacity:0;transform:translateY(110%);pointer-events:none;
+  font:400 16px/1.2 var(--disp-cn);letter-spacing:.03em}
+.rd.lang-en .d-navtitle{font:600 15px/1.2 var(--disp);letter-spacing:0}
+.d-navtitle > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* narrow: the title takes the back label's place */
+.rd.d-narrow .rnav-mid{position:static}
+.rd.d-narrow .d-navtitle{left:var(--d-tl,60px);right:var(--d-tr,100px);justify-content:flex-start;padding:0;font-size:15px}
+.rd.d-rm.d-narrow.d-tucked .back-t{opacity:0}
+/* ending: the previous essay's cover develops out of the same dots */
+.rd .pn a.d-pn{min-height:148px;padding-right:calc(40% + 18px);display:flex;flex-direction:column;justify-content:center}
+.d-dev{position:absolute;top:0;right:0;bottom:0;width:40%;overflow:clip;pointer-events:none;border-left:1px solid var(--line)}
+.d-dev img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 40%;opacity:.85;filter:saturate(.8) sepia(.06)}
+.rd.dark .d-dev img{opacity:.7;filter:saturate(.6) brightness(.8)}
+.d-front-dev{top:0;background:var(--paper2)}
+.d-front-dev .d-paper{fill:var(--paper2)}
+
+/* CSS scroll timelines: every range is in px of the scroller, written by layout */
+@keyframes d-drift{from{transform:translateY(0) scale(var(--d-scale))}to{transform:translateY(22%) scale(var(--d-scale))}}
+@keyframes d-rise{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+@keyframes d-hair{from{opacity:0}to{opacity:1}}
+@keyframes d-tuck{from{opacity:0;transform:translateY(110%)}to{opacity:1;transform:translateY(0)}}
+@keyframes d-fade{from{opacity:1}to{opacity:0}}
+@keyframes d-develop{from{transform:translateY(0)}to{transform:translateY(var(--d-devt))}}
+.rd.d-sda .post-wash img,.rd.d-sda .d-navwash img{animation:d-drift linear both;animation-timeline:--rdy;animation-range:0px var(--d-w)}
+.rd.d-sda .post-wash .d-front,.rd.d-sda .d-navwash .d-front{animation:d-rise linear both;animation-timeline:--rdy;animation-range:0px var(--d-e)}
+.rd.d-sda .d-navwash{animation:d-rise linear both;animation-timeline:--rdy;animation-range:0px var(--d-w)}
+.rd.d-sda .rnav::after{animation:d-hair linear both;animation-timeline:--rdy;animation-range:var(--d-h0) var(--d-h1)}
+.rd.d-sda .d-navtitle{animation:d-tuck linear both;animation-timeline:--rdy;animation-range:var(--d-t0) var(--d-t1)}
+.rd.d-sda.d-narrow .back-t{animation:d-fade linear both;animation-timeline:--rdy;animation-range:var(--d-t0) var(--d-t1)}
+.rd.d-sda .d-front-dev{animation:d-develop linear both;animation-timeline:--rdy;animation-range:var(--d-e0) var(--d-e1)}
+
+/* reduced motion: no scroll-linked motion, the states are still there */
+.rd.d-rm .d-navwash,.rd.d-rm .d-front-dev{display:none}
+.rd.d-rm .rnav{background:transparent}
+.rd.d-rm.nav-solid .rnav{background:var(--paper)}
+.rd.d-rm.nav-solid .rnav::after{opacity:1}
+.rd.d-rm .d-navtitle{transform:none}
+.rd.d-rm.d-tucked .d-navtitle{opacity:1}
+@container rd (max-width:640px){
+  .rd .pn a.d-pn{min-height:0;padding:124px 18px 16px}
+  .d-dev{left:0;bottom:auto;width:auto;height:108px;border-left:0;border-bottom:1px solid var(--line)}
+}

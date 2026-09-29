@@ -1,0 +1,12 @@
+/* r4-03-index.css — additions to r3-03-index.css (loaded unchanged before this file):
+   - the pen in board 02's round-4 colours (r4-02-tier.js): the notice line is coral (.tm-hot), it cools into
+     the wheat band's darker edge (.tm-line) when chosen; keyboard focus 「 」 is coral; nothing chosen is
+     coral at rest;
+   - a ledger that holds any number of years: row height comes from the app (--rh), so the side index always
+     fits the viewport it sticks to; on a phone a dense ledger sets its year labels smaller. */
+.tm-hot{fill:none;stroke:var(--mark);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.tm-line{stroke:var(--hl-ink)}
+.fm-c{stroke:var(--mark)}
+
+.lg-rows .lg-track{height:calc(var(--ny, 12) * var(--rh, 21.5px))}
+.wr.dense-years .lg-cols .lg-y{font-size:9.5px;letter-spacing:0}

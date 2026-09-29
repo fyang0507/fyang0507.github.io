@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 · A desk that is lived at — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="09-home-desk.css"><link rel="stylesheet" href="09-home.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 09</div><h1 class="board-title">A desk that is lived at <span class="display-cn">有人住的桌子</span></h1></div>
+    <div><p class="board-why">The desk is the site's best idea, but once the opener ends it is <b>a still picture</b>. Objects react only while a hotspot is hovered; the laptop types a <b>canned “$ make life”</b> forever; the bird hops at random whether or not anyone is there; nothing tells a returning visitor what changed; the opener's “loading…” is a <b>fixed 3.4 s</b> whether or not anything is loading; and on a phone the desk shrinks to a strip with <b>half the screen blank</b> under four underlined links.</p>
+      <p class="evidence">evidence: <code>index.html:59–66</code> reactions exist only under <code>:has(:hover)</code> · <code>index.html:371</code> the canned typed line · <code>index.html:380–406</code> birdLoop ignores the visitor · <code>index.html:342–343</code> fixed 2050 / 3400 ms opener timers · <code>index.html:234</code> “loading…” · <code>index.html:212–217</code> mobile nav · <code>/tmp/fyaudit/m-index.html.png</code></p></div>
+  </header>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">The desk notices you <span class="display-cn">桌子注意到你</span></span><span class="cand-mech">proximity · lingering · pointer velocity · hand's clock</span></div>
+      <div class="stage"><div class="desk-wrap" id="desk-a"></div><span class="hint">bring the cursor near the bird · linger by the portrait · flick past the mug ↗</span></div>
+      <div class="cand-foot"><div>Three subjects, three causes. The bird stops when you come near, hops round to face you (three short “noticed” strokes, once) and holds a round-eyed stare; come very close and it hops a little way off and looks back — it never chases. The portrait, lingered beside, blinks and looks up (the existing “surprised” frame, held), then goes back to deadpan: noticed once, not performed. Steam is pushed by a fast pass and recovers. All three return to today's calm desk.<div class="tradeoff"><b>cost</b> ~160 lines on top of today's desk; one pointermove handler; rAF only while the steam spring is moving · <b>a11y</b> focusing the portrait's door is a glance; nothing is information-bearing · <b>support</b> evergreen; touch = a tap is a brief presence</div></div><button class="replay" data-replay="replayA">↻ reset</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">The laptop tells the truth <span class="display-cn">笔记本说实话</span></span><span class="cand-mech">FY_POSTS · BUILDING_PROJECTS · FY_PHOTOS · human keystrokes / machine output</span></div>
+      <div class="stage"><div class="desk-wrap" id="desk-b"></div><span class="hint">hover (or Tab to) the laptop ↗</span></div>
+      <div class="cand-foot"><div>The screen types what actually happened last: the newest essay (中英 titles), the most recently updated project, the newest photograph — each answer a real, focusable link. A person types the command (uneven keystrokes, a hesitation, a wrong key noticed and backspaced); the machine answers whole, instantly. That split is the thesis in miniature, and it replaces the only fiction on the page.<div class="tradeoff"><b>cost</b> needs the three manifests on the home page (posts.js is the heavy one — ship a 1 KB “latest” digest from generate-content.py instead) · <b>a11y</b> links reachable by Tab, the cycle pauses on focus/hover, reduced motion swaps whole answers · <b>support</b> evergreen</div></div><button class="replay" data-replay="replayB">↻ replay</button></div>
+    </article>
+
+    <article class="cand" id="cand-c">
+      <div class="cand-head"><span class="cand-letter">C</span><span class="cand-name">A note for returning visitors <span class="display-cn">留言便签</span></span><span class="cand-mech">localStorage · flutter + spring settle · peel · physics clock</span></div>
+      <div class="stage">
+        <div class="c-panel"><span class="c-k">simulate · 模拟</span><button class="replay" data-sim="first">first visit · 初次</button><button class="replay" data-sim="weeks">back after 3 weeks · 三周后</button><button class="replay" data-sim="months">back after 4 months · 四个月后</button><span class="c-status"></span></div>
+        <div class="desk-wrap" id="desk-c"></div><span class="hint">drag the note off to peel it ↗</span></div>
+      <div class="cand-foot"><div>The desk remembers when you were last here and leaves one note about the one thing that changed, stuck to the front edge near that object, with a pen arrow. The copy is computed from the manifests, so it is honest even when the answer is “nothing new in three weeks — just more tea.” It flutters down like paper, sticks with one small overshoot, and peels when dragged (stiff while the adhesive holds, then free).<div class="tradeoff"><b>cost</b> one localStorage key; the note must never block a door · <b>a11y</b> role=note, “peel off · 撕掉” button, Esc/Delete, focus returns to the object · <b>support</b> evergreen; a first-visit note risks reading as an onboarding tooltip</div></div><button class="replay" data-replay="replayC">↻ replay</button></div>
+    </article>
+
+    <article class="cand pick" id="cand-d">
+      <div class="cand-head"><span class="cand-letter">D</span><span class="cand-name">Mobile desk <span class="display-cn">手机上的桌子</span></span><span class="cand-mech">native scroll-snap drives a camera · one object per shot</span></div>
+      <div class="stage d-stage">
+        <div class="phone"><iframe src="09-home-mobile.html" title="Mobile home, 390 × 844" width="390" height="844" loading="lazy"></iframe></div>
+        <div class="shotlist">
+          <div class="sl-k">shot list · 分镜 &nbsp;(390 × 844)</div>
+          <ol>
+            <li><b>00 desk</b> the whole tabletop, four doors, the bird hopping — tap any object</li>
+            <li><b>01 laptop</b> screen types the latest project, <i>git log -1 building/</i></li>
+            <li><b>02 portrait</b> he blinks and looks up, then back to deadpan</li>
+            <li><b>03 camera</b> 咔嚓 — flash, and the newest frame's place and date</li>
+            <li><b>04 book</b> a page turns; newest essay, 中文 + English</li>
+          </ol>
+          <p class="hand sl-note">the swipe <i>is</i> the camera move — native snap, no scroll-jacking</p>
+        </div>
+      </div>
+      <div class="cand-foot"><div>A horizontal, natively snapped strip of five shots drives one continuous camera over the same drawing — the desk is never cut into cards. Each object arrives big, with its label, a live fact from the data and a whole-window tap target; the object's own sprite reacts when the camera settles on it. The bottom index reuses the subpages' object tabs, so home and subpages finally share one vocabulary.<div class="tradeoff"><b>cost</b> the 1448 px drawing is upscaled ~1.3× on the tightest shot — a 2× desk export is needed for 3× phones · <b>a11y</b> strip is focusable with ← →; every shot is a real link; reduced motion keeps the camera (user-driven) and drops the sprite reactions · <b>support</b> scroll-snap + scrollend (timeout fallback)</div></div><button class="replay" data-replay="replayD">↻ back to 00</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship D, then B and A together; hold C.</b> D is not optional — the phone home is currently the weakest screen on the site, and the camera walk keeps the desk as one drawing instead of cutting it into cards. B replaces the only untrue thing on the page with real, linked activity, and is the best statement of the thesis (a hand typing, a machine answering). A's bird and portrait make the desk feel occupied without asking for anything; keep them to exactly these two reactions (the steam lean is the most expendable of the three).</p>
+    <p>C is charming but belongs later and narrower: returning visitors only (no first-visit note — that is an onboarding tooltip in paper), and never when nothing changed <i>and</i> the gap is under a week. If shipped, it should share B's “latest” digest so the note and the screen always agree. Watch that A never interrupts a hop mid-air and that the bird never moves toward the cursor — the moment it follows you it becomes a pet, and that is 媚.</p>
+    <p><b>The opener: make it honest, and shorter.</b> Today it is a fixed 3.4 s “loading…” once per session, whether the desk is cached or not. Proposal: (1) play it only on a visitor's first-ever visit (<code>localStorage</code>, not <code>sessionStorage</code>); (2) drop the word “loading…” and let the hopping birds <i>be</i> the load — iris opens when <code>img.decode()</code> on the desk resolves, with a floor of 1.1 s (so the gag lands) and a ceiling of 2.4 s; (3) every later visit gets a 450 ms iris only, and the tag counts real visits — <i>日常 · ep.07</i> — which shares C's visit counter and makes the Nichijou joke true; (4) reduced motion or a tap skips it outright, as today.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：桌子是“有人住的”——看见你、说实话、给你留字条；主体始终是人和物，不是机器
+动作时钟：手的时钟 = 小鸟跳跃/原地跳转身/定住盯看、相框眨眼抬眼、书翻页、咔嚓（逐帧、定格、预备姿势）；蒸汽弹簧按 12fps 取样，仍属手的时钟 / 物理时钟 = 便签飘落、贴合回弹一次、撕下的动量与重力、手机镜头随原生滑动
+映射：光标靠近 → 小鸟停下、转身、盯着你；过近 → 跳开两步再回头（从不靠近你）· 光标停留 → 相框眨眼后抬眼一拍再回到面瘫 · 快速划过 → 蒸汽被气流推开后回正 · 悬停/聚焦笔记本 → 人敲命令、机器整段回答真实的最新文章/项目/照片 · 距上次来访 → 一张便签说一件变化 · 手指滑动 → 镜头绕桌一圈，物体落定时自己动一下
+线条计划：全部沿用原画与原精灵图，不重画；新增笔迹只有：小鸟头顶三笔“注意到”短线（墨色，14 秒内只出现一次）、终端链接左侧的笔括号、便签箭头、手机底部当前项的笔下划线；均为一笔画出、收笔更快
+色彩计划：珊瑚色唯一持有者 = 每个视图里的一次事件：笔记本光标（原有）/ 便签箭头 / 手机当前项下划线；便签为麦色纸（wash-wheat 38%），不加渐变与高光；深色模式不适用（首页为浅色专用）</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="../../content/posts.js"></script><script src="../../content/building-projects.js"></script><script src="../../content/photos.js"></script>
+<script src="09-home-desk.js"></script><script src="09-home-a.js"></script><script src="09-home-b.js"></script><script src="09-home-c.js"></script>
+<script>
+  HomeA(document.getElementById('desk-a'));
+  HomeB(document.getElementById('desk-b'));
+  HomeC(document.getElementById('desk-c'), document.querySelector('#cand-c .c-panel'));
+  (function () {                                           // D: fit the 390 × 844 frame to narrow stages
+    var st = document.querySelector('.d-stage'), ph = st.querySelector('.phone'), fr = ph.querySelector('iframe');
+    function fit() { var w = st.clientWidth - 24, s = Math.min(1, w / 394); ph.style.setProperty('--s', s); ph.style.height = (848 * s) + 'px'; ph.style.width = (394 * s) + 'px'; }
+    addEventListener('resize', fit); fit();
+    window.replayD = function () { try { fr.contentWindow.replayD(); } catch (e) {} };
+  })();
+</script>
+</body></html>

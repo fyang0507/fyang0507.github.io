@@ -1,0 +1,23 @@
+/* r3-08b-note.css — the round-3 build: C's pen with A's slip. The margin slip itself is r2-08b-a.css, unchanged
+   (.rd.ta); this file adds only the pen's layer, the coral budget and the phone slip restyled as A's paper. */
+
+/* coral is spent once per view, and here it belongs to the pen: body links, hovers and focus go to ink */
+.rd.pa .post-body a{text-decoration-color:var(--pencil)}
+.rd.pa a:hover,.rd.pa .btn:hover{color:var(--ink);border-color:var(--ink)}
+.rd.pa :focus-visible{outline:1.5px dashed var(--ink);outline-offset:3px}
+.rd.pa .pa-g path{pointer-events:none}
+
+/* ---- phone: round 2's slip from the slot, on A's paper ---- */
+.fs-a .fs-head{align-items:center;gap:9px;padding:2px 20px 9px 18px}
+.fs-a .fs-eye{flex:none;width:9px;height:9px;border-radius:50%;box-sizing:border-box;border:1.3px solid #d9ccb4;background:var(--paper);
+  box-shadow:inset 0 1px 1px rgba(60,50,35,.12)}   /* punched: the page shows through */
+.fs-a .fs-no{font:500 12px/1 var(--util);color:var(--ink)}
+.fs-a .fs-lab{font:10.5px/1 var(--util-cn);letter-spacing:.06em;color:var(--pencil)}
+.fs-a .fs-body{padding:0 22px 6px 36px;font:15px/1.72 var(--text-cn);color:var(--soft)}
+.rd-stage.is-en .fs-a .fs-body{font-family:var(--text);line-height:1.62}
+.fs-a .fs-cite em{font-style:normal;color:var(--ink)}
+.fs-a .fs-cite a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-decoration-thickness:1px;text-underline-offset:3px}
+.fs-a .fs-cite .d{font:11px/1 var(--util);letter-spacing:.02em;color:var(--pencil);white-space:nowrap}
+/* A's hand-cut edge on the top; the tail stays in the slot */
+.fs-a .fs-slip::before{background:#FFFCF5}
+.fs-a .fs-foot a{text-decoration:none}

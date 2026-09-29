@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R4·03 · Writing, as a full page — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<!-- Board r4-03 at true scale: the live site header and intro (Writing.dc.html:80–111, site-nav.css) above the
+     same bookcase + index component the board mounts. ?n=27|60|120 sets how many essays (60 and 120 add
+     synthetic ones), ?rule=grow|cap the growth rule. No board chrome. -->
+<link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="../../site-nav.css"><link rel="stylesheet" href="r2-04-book.css">
+<link rel="stylesheet" href="r4-03-board.css"><link rel="stylesheet" href="r3-03-case.css"><link rel="stylesheet" href="r4-03-case.css">
+<link rel="stylesheet" href="r3-03-index.css"><link rel="stylesheet" href="r4-03-index.css">
+<style>
+  .pg{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 60px}
+  .pg-body{width:min(1180px,100%);margin-top:40px}
+  .writing-statement-line{display:block}
+  .writing-statement-line[lang=zh]{font-family:var(--hand-cn);letter-spacing:.025em}
+  .writing-statement-line[lang=en]{margin-top:2px;font-family:var(--hand);letter-spacing:.01em}
+  .pg .wr-body{margin-top:clamp(28px,3.4vw,40px)}
+  .pg .wr{--stick:14px}
+  .pg{position:relative}
+  .pg-back{position:absolute;right:14px;top:8px;z-index:60;font:11px/1 var(--util);color:var(--pencil)}
+  .pg-back:hover{color:var(--ink)}
+</style>
+</head><body>
+<div class="pg">
+  <header class="site-shell-header">
+    <div class="site-header-row">
+      <a class="site-identity" href="../../index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。返回首页"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="../../assets/identity-sticker-ghost.png" srcset="../../assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="../../assets/identity-sticker-blob.png" srcset="../../assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status"><span id="pg-status">27 essays · 2015–2026</span></div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="../../index.html" aria-label="Home — 首页"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="r4-03-page.html" aria-label="Writing — 在写" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="../../Building.dc.html" aria-label="Building — 在造"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="../../Gallery.dc.html" aria-label="Shooting — 在拍"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="../../About.dc.html" aria-label="About — 关于"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+    </nav>
+  </header>
+  <main class="pg-body">
+    <header class="subpage-intro" aria-labelledby="writing-title">
+      <div class="subpage-title-group">
+        <div class="subpage-title-kicker"><span class="subpage-title-number">01</span><span class="subpage-title-en" lang="en">writing</span></div>
+        <h1 id="writing-title" class="display-cn subpage-title" lang="zh">在<span class="subpage-title-mark">写</span>。</h1>
+      </div>
+      <div class="subpage-note">
+        <span class="writing-statement-line" lang="zh">不得中行而与之，必也<span class="beat">狂狷</span>乎。</span>
+        <span class="writing-statement-line" lang="en"><span class="beat">Action</span>, not understanding, changes the world.</span>
+      </div>
+    </header>
+    <div class="wr" data-inst="p" data-intro="0"></div>
+  </main>
+  <a class="pg-back" href="r4-03-writing.html">← board r4-03</a>
+</div>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script>
+<script src="r2-02-anim.js"></script><script src="r4-02-tier.js"></script><script src="r2-02-point.js"></script>
+<script src="r2-04-kit.js"></script><script src="r2-04-cover.js"></script><script src="r2-04-read.js"></script>
+<script src="r4-03-data.js"></script><script src="r4-03-fill.js"></script><script src="r4-03-reflow.js"></script><script src="r4-03-case.js"></script>
+<script src="r4-03-bird.js"></script><script src="r4-03-pull.js"></script>
+<script src="r3-03-tally.js"></script><script src="r3-03-tabs.js"></script><script src="r3-03-ledger.js"></script><script src="r3-03-readout.js"></script>
+<script src="r2-03-filter.js"></script><script src="r4-03-app.js"></script>
+</body></html>

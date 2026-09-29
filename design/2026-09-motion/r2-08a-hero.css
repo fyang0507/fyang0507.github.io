@@ -1,0 +1,51 @@
+/* r2-08a-hero.css — D · the plate, the printed-over edge, the title's flight and the nav that lands.
+   Stack, bottom to top: .plate (fixed cover + halftone canvas, z0) · .wrap page content (z1) · .rnav (z50: its own copy
+   of the plate, so it is always opaque yet looks transparent at the top) · .fly (z60, the travelling title). */
+
+/* ---- the nav: fixed, opaque at every scroll position ---- */
+.rnav{position:fixed;z-index:50;top:0;left:0;right:0;height:var(--n0);pointer-events:none}
+.nav-plate{position:absolute;left:0;right:0;top:0;height:var(--n0);overflow:hidden;background:var(--paper);transition:transform .56s var(--ease-settle)}
+.nav-plate-in{position:absolute;left:0;top:0;width:100%;height:var(--b0);transition:transform .56s var(--ease-settle)}
+/* landing: the paper band's lower edge rises from n0 to n1 while its contents stay registered with the page plate */
+.rnav.landed .nav-plate{transform:translateY(calc(var(--n1) - var(--n0)))}
+.rnav.landed .nav-plate-in{transform:translateY(calc(var(--n0) - var(--n1)))}
+.nav-row{position:relative;z-index:2;pointer-events:auto;max-width:1200px;height:var(--n0);margin:0 auto;padding:0 var(--gutter);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;transition:transform .56s var(--ease-settle)}
+.rnav.landed .nav-row{transform:translateY(calc((var(--n1) - var(--n0)) / 2))}
+/* the landed title sits at the landed centre from the start; the row settles up to meet it */
+.nav-title{position:absolute;z-index:3;left:0;right:0;top:0;height:var(--n1);display:flex;align-items:center;justify-content:center;
+  padding:0 max(250px,calc((100vw - 1200px) / 2 + 250px));opacity:0;pointer-events:none}
+.nav-title-t{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);
+  font-family:var(--disp-cn);font-size:16px;font-weight:400;line-height:1.2;letter-spacing:.02em}
+html.lang-en .nav-title-t{font-family:var(--disp);font-size:15px;font-weight:600;line-height:1.1;letter-spacing:-.01em}
+.rnav.landed .nav-title{opacity:1}
+html.narrow .nav-title{justify-content:flex-start;padding:0 var(--nt-r,100px) 0 var(--nt-l,64px)}
+html.narrow .nav-title-t{font-size:15px}
+html.narrow.lang-en .nav-title-t{font-size:14px}
+.back-t{transition:opacity .18s var(--ease-out)}
+.rnav:not(.landed) .back-t{transition:none}   /* in flight its opacity follows the scroll */
+html.narrow .rnav.landed .back-t,html.narrow .rnav.titled .back-t{opacity:0}
+.nav-hair{position:absolute;z-index:1;left:0;top:calc(var(--n1) - 3px);overflow:visible;pointer-events:none}
+.nav-hair path{fill:none;stroke:var(--guide);stroke-width:1.3;stroke-linecap:round}
+
+/* ---- the plate: pinned cover + halftone canvas ---- */
+.plate{position:fixed;z-index:0;left:0;top:0;width:100%;height:var(--b0);overflow:hidden;pointer-events:none}
+.plate-art{position:absolute;inset:0;overflow:hidden}
+.plate-img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 42%;transform:scale(1.14);opacity:.5;filter:saturate(.78) sepia(.05)}
+.plate-cv{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+.nav-plate .plate-cv{height:var(--n0)}
+
+/* ---- the travelling title ---- */
+.fly{position:fixed;z-index:60;left:0;top:0;pointer-events:none;visibility:hidden}
+.fly .title{margin:0}
+.fly-line,.fly-eb{position:absolute;left:0;top:0;transform-origin:0 0;white-space:nowrap}
+.fly-eb .eyebrow{margin:0}
+
+/* ---- reduced motion: the plate scrolls with the page; the nav turns to paper as one step ---- */
+html.rm .plate{position:absolute}
+html.rm .nav-plate{display:none}
+html.rm .rnav{transition:none}
+html.rm .rnav.papered{background:var(--paper)}
+html.rm .nav-hair{top:calc(var(--n0) - 3px)}
+html.rm .nav-title{height:var(--n0)}
+html.rm .rnav.titled .nav-title{opacity:1}

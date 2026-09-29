@@ -1,0 +1,39 @@
+/* r2-08b-b.css — B · Unfolds between the lines. The margin goes quiet; a strip of paper is inserted as a block in
+   the paragraph where the ref's visual line ends. Its gap height is set every frame from the paper's projected
+   height (JS), and its tab and flaps are nested 3D hinges. Every line in a flap sits on one 24px grid, so each
+   crease falls between two lines of the note and never through one. */
+.rd.uf-mode .mn{display:none}
+.rd .uf{display:block;position:relative;font-size:0;line-height:0}
+.uf-gap{display:block;position:relative;height:0;perspective:1000px;perspective-origin:50% 0}
+.uf-paper{display:block;position:absolute;left:-12px;right:-12px;top:4px;transform-style:preserve-3d}
+.uf-head{display:flex;align-items:center;gap:12px;height:34px;padding:0 10px 0 16px;background:#FFFCF5;border:1px solid var(--line);border-bottom:0;
+  transform-origin:50% 0;transform-style:preserve-3d;backface-visibility:hidden;-webkit-backface-visibility:hidden;font:10.5px/1 var(--util);letter-spacing:.05em;color:var(--pencil)}
+.uf-no{font:500 13px/1 var(--util);color:var(--ink);letter-spacing:0}
+.uf-lab{font-family:var(--util-cn)}
+.uf-hosts{display:flex;gap:10px;min-width:0;overflow:hidden;white-space:nowrap}
+.rd .post-body .uf-src{color:var(--ink);text-decoration:none}
+.rd .post-body .uf-src:hover{color:var(--ink);text-decoration:underline;text-decoration-color:var(--pencil);text-underline-offset:3px}
+.uf-fold{margin-left:auto;flex:none;height:26px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font:10.5px/1 var(--util-cn);letter-spacing:.04em;color:var(--soft);cursor:pointer}
+.uf-fold:hover{color:var(--ink);border-color:var(--pencil)}
+.uf-hinge{display:block;position:absolute;left:-1px;right:-1px;transform-origin:50% 0;transform-style:preserve-3d}
+.uf-hinge .uf-hinge{left:0;right:0}   /* only the first hinge steps out over the tab's border; all flaps share one width */
+.uf-flap{display:block;overflow:hidden;background:#FFFCF5;border:1px solid var(--line);border-top:0;border-bottom:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:inset 0 1px 0 rgba(147,137,121,.22)}                         /* the crease between two flaps */
+.uf-head > .uf-hinge > .uf-flap{box-shadow:none;border-top:1px dashed #d3c7b1}   /* the fold line became the first crease */
+.uf-hinge:not(:has(.uf-hinge)) > .uf-flap{border-bottom:1px solid var(--line)}
+.uf-slice{display:block;padding:0 22px 0 44px;font:14.5px/24px var(--text-cn);color:var(--ink);overflow-wrap:anywhere}
+.rd.lang-en .uf-slice{font-family:var(--text)}
+.uf-slice *{line-height:24px}
+.uf-slice .fe + .fe{margin-top:0;padding-top:24px;border-top:0}
+.uf-slice .fe-title,.uf-slice .fe-extra,.uf-slice .fe-meta{margin-top:0}   /* one 24px grid: creases fall between lines */
+.uf-slice .fe-who{font-size:11px}
+.rd .post-body .uf-slice .fe-title{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.rd .post-body .uf-slice .fe-title:hover{text-decoration-color:var(--pencil)}
+.uf-slice .fe-extra{color:var(--soft);font-size:13.5px}
+.uf-slice .fe-meta{line-height:24px}
+.uf-perf{fill:none;stroke:var(--mark);stroke-width:1.6;stroke-dasharray:5 5!important;stroke-dashoffset:0!important}
+@container rd (max-width:640px){
+  .uf-lab{display:none}
+  .uf-head{gap:10px;padding-left:14px}
+  .uf-slice{padding:0 16px 0 36px}
+}

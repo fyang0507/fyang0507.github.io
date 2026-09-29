@@ -1,0 +1,83 @@
+/* r3-05 · the featured mark on the lead card, the icon + pin switch, and the real-size comparison strip.
+   The corkboard itself is r2-05 unchanged (r2-05-cards.css + r2-05-board.css). */
+
+/* ---- the mark ---- */
+.stk{position:absolute;z-index:2;pointer-events:none;transform:rotate(var(--rot));filter:drop-shadow(-.5px .8px 0 rgba(60,50,35,.2))}
+.stk svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.stk-flap{transform:scaleX(.7)}                   /* the flap that didn't take the glue, folded up about its crease */
+.stk-shadow{filter:blur(.3px)}
+.stk--stamp{filter:none;mix-blend-mode:multiply}  /* ink in the paper: it darkens what it lands on, it doesn't sit on it */
+.slot.r3-pin-coral{--pin-color:var(--mark)}
+
+/* round 2's W4 asterisk, kept only for the reference tile (from r2-05-wordmark.css) */
+.wm-fx{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.wm-sticker{position:absolute;transform:rotate(-9deg);pointer-events:none}
+.wm-sticker svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.wm--star .project-label-dot{width:auto;height:auto;border-radius:0;background:none;font:500 13px/.6 "IBM Plex Mono",monospace;color:var(--ink);transform:translateY(2px)}
+.wm--star .project-label-dot::before{content:"*"}
+
+/* ---- the switch: icon · pin · apply again ---- */
+.r3-switches{display:flex;flex-wrap:wrap;align-items:center;gap:8px 26px}
+.r3-switches .wm-switch{gap:4px 12px}
+.r3-apply{font:11px/1 var(--util);color:var(--pencil);padding:6px 2px;border-bottom:1px solid transparent}
+.r3-apply:hover,.r3-apply:focus-visible{color:var(--ink);border-bottom-color:var(--pencil)}
+.wm-switch .cn{margin-left:4px;font:12px/1 var(--util-cn)}
+
+/* ---- comparison strip: every mark on the real lead card, at the two real sizes ---- */
+.r3-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.r3-tile{display:flex;flex-direction:column;min-width:0;padding:18px clamp(12px,1.3vw,18px) 18px;border-right:1px solid var(--line);background:var(--paper)}
+.r3-tile:last-child{border-right:0}
+.r3-tile-head{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;min-height:40px}
+.r3-no{flex:none;display:grid;place-items:center;min-width:30px;height:22px;padding:0 6px;border:1.2px solid var(--ink);border-radius:999px;font:500 10.5px/1 var(--util)}
+.r3-tile.pick .r3-no{background:var(--mark);border-color:var(--mark);color:var(--paper)}
+.r3-tile--was .r3-no{border-style:dashed;color:var(--pencil);border-color:var(--pencil)}
+.r3-name{font:500 15.5px/1.25 var(--disp)}
+.r3-name .display-cn{display:block;margin-top:2px;font-size:.92em;color:var(--soft)}
+.r3-tag{margin-left:auto;font:10px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);white-space:nowrap}
+.r3-tile.pick .r3-tag{color:var(--ink)}
+.r3-crop{position:relative;overflow:hidden;border-radius:6px;border:1px solid rgba(140,120,85,.22);background:color-mix(in srgb,#E9DFC5 46%,var(--paper))}
+.r3-crop--d{height:150px}
+.r3-crop--m{height:112px;margin-top:8px}
+.r3-crop .cork-wrap{position:absolute;left:0;top:0}
+.r3-crop .cork{border:0;background:none;padding:0}
+.r3-crop .cork::before,.r3-crop .board-pin,.r3-crop .slot--lead .swing::after{display:none}
+.r3-crop .paper--lead{filter:none}
+.r3-size{margin-top:5px;font:10px/1.3 var(--util);color:var(--pencil);letter-spacing:.02em}
+.r3-cap{margin-top:12px;font-size:14px;line-height:1.5;color:var(--soft)}
+.r3-cap b{color:var(--ink);font-weight:500}
+.r3-checks{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font:11px/1.6 var(--util);color:var(--soft);list-style:none}
+.r3-checks b{color:var(--ink);font-weight:500}
+.r3-tile-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:12px}
+.r3-try{font:11px/1 var(--util);letter-spacing:.03em;color:var(--ink);border-bottom:1px solid var(--pencil);padding:5px 0}
+.r3-try:hover,.r3-try:focus-visible{border-bottom-color:var(--ink)}
+.r3-redo{font:11px/1 var(--util);color:var(--pencil);padding:5px 0}
+.r3-redo:hover{color:var(--ink)}
+
+/* the pin question, drawn out: two thumbnails of the lead card's top edge */
+.r3-pinq{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px 28px;align-items:center;padding:20px clamp(14px,1.6vw,22px);border-top:1px solid var(--line);background:var(--paper2)}
+.r3-pinq h3{font:500 18px/1.2 var(--disp)}
+.r3-pinq h3 .display-cn{margin-left:6px;font-size:.9em;color:var(--soft)}
+.r3-pinq p{margin-top:6px;font-size:14.5px;line-height:1.55;color:var(--soft);max-width:720px}
+.r3-pinq p b{color:var(--ink);font-weight:500}
+
+@media (max-width:1100px){
+  .r3-strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .r3-tile{border-bottom:1px solid var(--line)}
+  .r3-tile:nth-child(3n){border-right:0}
+  .r3-tile:nth-child(3n+1):nth-last-child(-n+2),.r3-tile:nth-child(3n+1):nth-last-child(-n+2)~.r3-tile{border-bottom:0}
+}
+@media (max-width:760px){
+  .r3-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .r3-tile,.r3-tile:nth-child(3n){border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .r3-tile:nth-child(2n){border-right:0}
+  .r3-tile:last-child{border-bottom:0}
+  .r3-tile--was{grid-column:1/-1;border-right:0}
+  .r3-tile--was .r3-crops{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .r3-tile--was .r3-crop--m{margin-top:0}
+  .r3-pinq{grid-template-columns:1fr}
+  .r3-switches{flex-direction:column;align-items:flex-start;gap:6px}
+  .r3-tag{display:none}
+  .r3-tile-head{min-height:0}
+  #cand-a .cand-foot,#cand-f .cand-foot{grid-template-columns:1fr}
+  #cand-a .cand-foot .replays{flex-direction:row;align-items:center;justify-content:flex-start}
+}

@@ -1,0 +1,59 @@
+/* r2-05 · W — wordmark treatments on the real lead card, and the study tiles that show them. */
+.wm-fx{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.wm-stop{position:absolute;left:100%;top:0;color:var(--mark);transform-origin:30% 75%}
+/* a die-cut sticker (cream, ink outline — like the identity stickers) carrying the coral asterisk */
+.wm-sticker{position:absolute;transform:rotate(-9deg);pointer-events:none}
+.wm-sticker svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+/* the footnote's other end: the label dot becomes an ink asterisk */
+.wm--star .project-label-dot{width:auto;height:auto;border-radius:0;background:none;font:500 13px/.6 "IBM Plex Mono",monospace;color:var(--ink);transform:translateY(2px)}
+.wm--star .project-label-dot::before{content:"*"}
+.slot.wm-pin-coral{--pin-color:var(--mark)!important}
+
+/* ---- study tiles ---- */
+.wm-study{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.wm-tile{display:flex;flex-direction:column;padding:20px clamp(14px,1.6vw,22px) 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+.wm-tile:nth-child(3n){border-right:0}
+.wm-tile:nth-last-child(-n+3){border-bottom:0}
+.wm-tile-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.wm-no{flex:none;display:grid;place-items:center;min-width:30px;height:22px;padding:0 6px;border:1.2px solid var(--ink);border-radius:999px;font:500 10.5px/1 var(--util)}
+.wm-tile.pick .wm-no{background:var(--mark);border-color:var(--mark);color:var(--paper)}
+.wm-tile--was .wm-no{border-style:dashed;color:var(--pencil);border-color:var(--pencil)}
+.wm-name{font:500 16px/1.25 var(--disp)}
+.wm-name .display-cn{margin-left:6px;font-size:.9em;color:var(--soft)}
+.wm-tag{margin-left:auto;font:10px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--pencil);white-space:nowrap}
+.wm-tile.pick .wm-tag{color:var(--ink)}
+.wm-card{position:relative}
+.wm-cap{margin-top:14px;font-size:14px;line-height:1.5;color:var(--soft)}
+.wm-cap b{color:var(--ink);font-weight:500}
+.wm-why{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font:11.5px/1.6 var(--util);color:var(--soft)}
+.wm-why b{color:var(--ink);font-weight:500}
+.wm-tile-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:12px}
+.wm-try{font:11px/1 var(--util);letter-spacing:.03em;color:var(--ink);border-bottom:1px solid var(--pencil);padding:5px 0}
+.wm-try:hover,.wm-try:focus-visible{border-bottom-color:var(--ink)}
+.wm-redraw{font:11px/1 var(--util);color:var(--pencil);padding:5px 0}
+.wm-redraw:hover{color:var(--ink)}
+
+/* the study cork: one lead card, pinned, at phone card size */
+.cork-wrap--study .cork{padding:26px 0 6px;border-radius:12px}
+.cork-wrap--study .cork::before{display:none}
+.cork-wrap--study .cork-viewport{padding:10px 14px 24px;overflow:visible;cursor:default}
+.cork-wrap--study .cork-track{min-height:0;padding:0;gap:0}
+.cork-wrap--study .slot--lead{--drop:0px;width:calc(100cqw - 28px)}
+.cork-wrap--study .paper--lead .paper-body{min-height:0;padding:26px 22px 30px}
+.cork-wrap--study .highlighted-title{margin-top:26px}
+.cork-wrap--study .highlighted-note{font-size:15px}
+.cork-wrap--study .swing{cursor:default}
+.wm-tile--was .wm-card{opacity:.92}
+
+@media (max-width:1100px){
+  .wm-study{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wm-tile:nth-child(3n){border-right:1px solid var(--line)}
+  .wm-tile:nth-child(2n){border-right:0}
+  .wm-tile:nth-last-child(-n+3){border-bottom:1px solid var(--line)}
+  .wm-tile:nth-last-child(-n+2){border-bottom:0}
+}
+@media (max-width:760px){
+  .wm-study{grid-template-columns:1fr}
+  .wm-tile,.wm-tile:nth-child(3n){border-right:0;border-bottom:1px solid var(--line)}
+  .wm-tile:last-child{border-bottom:0}
+}

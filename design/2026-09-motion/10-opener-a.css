@@ -1,0 +1,77 @@
+/* 10 · A — the desk draws itself. Home layout copied from index.html:114–219; the desk itself is
+   09-home-desk.css. This file takes over the desk's entrance (the opener owns it) and styles the
+   traced-ink layer and the mockup control strip. */
+/* The live site's own type and palette (index.html:19–30): self-hosted subsets, no masters. */
+@font-face{font-family:"MuyaoPleased";src:url("../../fonts/derived/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"DingTalk JinBuTi";src:url("../../fonts/derived/DingTalkJinBuTi.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Noto Sans SC";src:url("../../fonts/derived/NotoSansSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+:root{--paper:#FBF6EC;--paper2:#F3ECDD;--ink:#33302B;--soft:#6D6559;--pencil:#938979;--mark:#D9695A;--line:#E4DAC7;
+  --hand:"Caveat",cursive;--hand-cn:"MuyaoPleased",cursive;--util:"IBM Plex Mono",monospace;--util-cn:"Noto Sans SC",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper)}
+body{background:var(--paper);color:var(--ink);font-family:"Fraunces",Georgia,serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--mark);outline-offset:3px}
+html.rm .desk .caret{animation:none}
+
+html,body{min-height:100%}
+body{overflow-x:hidden}
+.home{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px}
+.hd{width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:6}
+.deskhost{position:relative;width:min(1180px,100%,calc((100vh - 240px)*1.3333));margin-top:4px;transform-origin:0 0}
+.a10 .desk{width:100%;aspect-ratio:1448/1086}   /* the drawing needs its box before the raster arrives */
+.mnav{display:none;width:min(1180px,100%);flex-wrap:wrap;gap:8px 26px;margin-top:14px;font:24px/1.5 var(--hand-cn),var(--hand)}
+.mnav a{position:relative;display:inline-block}
+.mnav .t{display:inline-block}
+.mnav .ul{position:absolute;left:0;right:0;bottom:1px;height:2px;background:var(--mark);border-radius:1px}
+.fig{width:min(1180px,100%);margin-top:14px;font:12.5px/1.5 var(--util);letter-spacing:.04em;color:var(--pencil)}
+@media (max-width:760px){
+  .a10 .desk .navnote,.a10 .desk .arrows{display:none!important}
+  .mnav{display:flex}
+}
+
+/* The opener owns every entrance on the desk: no CSS entrance animations, JS sets the states. */
+.a10 .desk .scene-img,.a10 .desk .bookhold,.a10 .desk .frameface,.a10 .desk .screen,
+.a10 .desk .spark,.a10 .desk .bird,.a10 .desk .rise{animation:none}
+.a10 .desk .spark{opacity:1}
+.a10 .desk.drawn .arrows .stroke{animation:none;stroke-dashoffset:0}
+.a10 .desk:not(.steam-on) .steam path{animation:none;opacity:0}   /* steam starts from its first breath */
+.a10-op .desk .bird{transition:none}
+.a10-op .desk .navnote,.a10-op .desk .hot{pointer-events:none}
+
+/* Before the script runs, nothing of the landing may flash if an opener is about to play. */
+.a10-op .hd,.a10-op .fig{opacity:0}
+.a10-op .mnav .t,.a10-op .mnav .ul{opacity:0}
+
+/* the traced ink: centreline strokes in the desk image's own space, exactly over the raster */
+.ink10{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}
+.ink10 path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ink10 .obj{--k:1;--wet:0}
+.ink10 .obj path{stroke:color-mix(in srgb,#3a342e calc(var(--wet) * 100%),var(--c))}   /* wet trace -> true value */
+.ink10 .obj path.fill{fill:#FCF8F1;stroke:none}
+.ink10 .obj path.blob{stroke:none}
+.ink10 .gone{display:none}
+.ink10 .obj-ghost{transform-box:view-box}
+
+/* returning visit: a paper patch over the raster camera while the pen draws it back in */
+.cam-patch{position:absolute;left:67.6%;top:62.7%;width:20.1%;height:18.8%;z-index:2;pointer-events:none;opacity:0;
+  background:var(--paper);box-shadow:0 0 8px 6px var(--paper);border-radius:6px}
+
+/* skip catcher: the whole page is one "fast-forward" target while the opener plays */
+.catch{position:fixed;inset:0;z-index:50;cursor:pointer}
+.catch[hidden]{display:none}
+
+/* mockup-only control strip */
+.ctl{position:fixed;left:12px;bottom:10px;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:0 7px;
+  font:11px/1.9 var(--util);letter-spacing:.03em;color:var(--pencil);opacity:.72}
+.ctl:hover,.ctl:focus-within{opacity:1}
+.ctl button{color:var(--soft);padding:2px 0}
+.ctl button:hover{color:var(--ink)}
+.ctl button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.ctl label{display:inline-flex;gap:5px;align-items:center;cursor:pointer;color:var(--soft)}
+.ctl input{accent-color:var(--soft)}
+.ctl .sep{opacity:.6}
+@media (max-width:760px){.ctl{font-size:10px;left:10px;right:10px;bottom:6px}}

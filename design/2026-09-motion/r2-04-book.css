@@ -1,0 +1,79 @@
+/* r2-04-book.css — what you see when a book is in your hand: the front board (real cover under a paper obi
+   carrying the preview), the title page under it, the inside of the board (ex libris), and the reading page
+   the title page grows into. Cover content is laid out at "in the hand" size (.cv) and scaled down onto the
+   board, so type is set once and lands crisp at the held size. */
+
+/* ---- the front board (a hinged leaf on the book's right face) ---------------------------------------- */
+.leaf{position:absolute;inset:0;transform-origin:0 50%;transform-style:preserve-3d}
+.leaf-front,.leaf-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.leaf-front{background:var(--tone);border:var(--bw) solid var(--ink);border-left-width:0}
+.leaf-back{transform:rotateY(180deg);background:#EFE6D3 repeating-linear-gradient(135deg,transparent 0 9px,rgba(51,48,43,.05) 9px 10px);border:var(--bw) solid var(--ink)}
+.cv{position:absolute;left:0;top:0;transform-origin:0 0}
+.cv-img{position:absolute;inset:0;overflow:hidden;background:var(--paper2)}
+.cv-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
+
+/* ---- the obi / 腰封: a paper band round the lower half of the board, carrying the preview ------------------ */
+/* a flex column that grows upward if a long title needs the room; the aside always sits at the band's foot */
+.obi{position:absolute;left:0;right:0;bottom:0;min-height:47%;display:flex;flex-direction:column;align-items:flex-start;background:var(--slip);border-top:1.4px solid var(--ink);padding:14px 13px 11px 14px;text-align:left}
+/* the band's fold at the fore-edge: two short creases where it turns round the book */
+.obi::after{content:"";position:absolute;right:5px;top:0;bottom:0;border-right:1px solid rgba(51,48,43,.22)}
+.obi-zh{position:relative;display:inline-block;max-width:100%;font:400 17px/1.28 var(--disp-cn);letter-spacing:.02em;color:var(--ink)}
+.obi-en{margin-top:3px;font:12px/1.25 var(--text);color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.obi-meta{margin-top:9px;font:9.5px/1.6 var(--util);letter-spacing:.03em;color:var(--pencil)}
+.obi-meta .ml{display:block}
+.obi-meta b{white-space:nowrap}
+.obi-meta b{font-weight:400}
+.obi-meta b[lang="zh"]{font-family:var(--util-cn);letter-spacing:.02em}
+.obi-note{margin-top:auto;padding-top:10px;font:16px/1 var(--hand);color:var(--soft);transform:rotate(-2.5deg);transform-origin:0 50%;white-space:nowrap}
+.obi-note span{font:15px/1 var(--hand-cn);margin-left:7px;color:var(--ink)}
+
+/* ---- inside: the board's reverse and the title page ---------------------------------------------------------- */
+.exlib{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) rotate(-2deg);padding:12px 16px 10px;border:1.5px solid rgba(51,48,43,.7);font:10px/1.7 var(--util);letter-spacing:.14em;color:var(--soft);text-align:center;background:var(--page);white-space:nowrap}
+.exlib b{display:block;font:500 17px/1.3 var(--hand);letter-spacing:0;color:var(--ink)}
+.p1{position:absolute;inset:0;transform:translateZ(-1.5px);background:var(--page);border:1px solid rgba(51,48,43,.55);border-left-width:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.p1 .cv{display:flex;flex-direction:column;align-items:flex-start;padding:17% 11% 11%}
+.p1-head{font:8.5px/1 var(--util);letter-spacing:.14em;color:var(--pencil)}
+.p1-zh{position:relative;margin-top:40px;max-width:76%;font:400 22px/1.28 var(--disp-cn);letter-spacing:.02em;color:var(--ink)}
+.p1.peek .cv{padding-top:14%}
+.p1.peek .p1-zh{margin-top:26px}
+.p1-meta{margin-top:14px;font:9.5px/1.6 var(--util);letter-spacing:.03em;color:var(--pencil)}
+.p1-meta .ml{display:block}
+.p1-meta b{font-weight:400;white-space:nowrap}
+.p1-meta b[lang="zh"]{font-family:var(--util-cn)}
+/* B: the aside pencilled inside the board, under the ex libris, like a flyleaf note */
+.fly-note{position:absolute;left:14%;right:8%;top:66%;font:18px/1 var(--hand);color:var(--soft);transform:rotate(-4deg);transform-origin:0 50%;white-space:nowrap}
+.fly-note span{display:block;margin-top:6px;font:15px/1 var(--hand-cn);color:var(--ink)}
+.fly-note ~ .exlib,.exlib:has(~ .fly-note){top:34%}
+.p1-en{margin-top:7px;font:13px/1.3 var(--text);color:var(--soft)}
+.p1-rule{display:block;width:34px;margin-top:16px;border-top:1.5px solid var(--ink)}
+.p1-foot{margin-top:auto;font:8.5px/1.4 var(--util);letter-spacing:.08em;color:var(--pencil)}
+
+/* ---- the reading page (destination) ------------------------------------------------------------------------ */
+.rd{position:absolute;inset:0;z-index:40}
+.rd[hidden]{display:none}
+.rd-paper{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:0 0;background:var(--page);box-shadow:0 0 0 1px rgba(51,48,43,.5)}
+.rd-page{position:absolute;inset:0;overflow:hidden}
+.rd-wash{position:absolute;left:0;right:0;top:0;height:64%;margin:0;overflow:hidden;opacity:.34;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 40%,rgba(0,0,0,.7) 64%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 40%,rgba(0,0,0,.7) 64%,transparent 100%)}
+.rd-wash img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.18);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
+.rd-nav{position:relative;display:flex;align-items:center;gap:10px;padding:16px 22px;font:12.5px/1 var(--util-cn);color:var(--soft)}
+.rd-mark{width:26px;height:26px}
+.rd-back{font:12.5px/1 var(--util-cn);color:var(--soft);padding:6px 2px}
+.rd-back:hover{color:var(--ink)}
+.rd-lang{margin-left:auto;font:12px/1 var(--util);color:var(--pencil)}
+.rd-col{position:relative;width:min(580px,calc(100% - 48px));margin:0 auto;padding-top:clamp(28px,7vh,70px)}
+.rd-kicker{font:11.5px/1 var(--util-cn);letter-spacing:.08em;color:var(--soft)}
+.rd-title{margin-top:14px;font:400 46px/1.2 var(--disp-cn);letter-spacing:.02em;white-space:nowrap;transform-origin:0 0;width:max-content;max-width:none}
+.rd-en{margin-top:6px;font:18px/1.3 var(--text);color:var(--soft)}
+.rd-meta{margin-top:16px;font:12px/1.5 var(--util-cn);letter-spacing:.02em;color:var(--pencil);white-space:pre}
+.rd-body{margin-top:36px;font:16.5px/1.9 var(--text-cn);color:var(--ink)}
+.rd-body p + p{margin-top:16px}
+.rd-body-en{font-family:var(--text);font-size:16.5px;line-height:1.7;color:var(--soft)}
+.s-m .rd-col{width:calc(100% - 40px);padding-top:30px}
+.s-m .rd-title,.strip-stage .rd-title{font-size:30px}
+.s-m .rd-meta{white-space:normal}
+.s-m .rd-body{font-size:15.5px}
+@media (max-width:760px){
+  .rd-title{font-size:32px}
+  .rd-meta{white-space:normal}
+}

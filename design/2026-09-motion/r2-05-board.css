@@ -1,0 +1,103 @@
+/* r2-05 · corkboard, round 2 — board chrome, the integrated A+C stage, phone frame, unpin layer. */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---- what changed from round 1 ---- */
+.changed{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;margin-top:22px;padding:18px 0 20px;border-bottom:1px solid var(--line)}
+.changed-k{font:500 11px/1.4 var(--util);letter-spacing:.1em;color:var(--pencil)}
+.changed ol{list-style:none;display:grid;gap:12px}
+.changed li{display:grid;grid-template-columns:minmax(0,.9fr) 22px minmax(0,1.5fr);gap:10px;align-items:baseline}
+.changed q{font:20px/1.3 var(--hand);color:var(--ink);quotes:"“" "”"}
+.changed .arr{font:12px/1 var(--util);color:var(--pencil)}
+.changed p{font-size:15px;line-height:1.55;color:var(--soft)}
+.changed p b{color:var(--ink);font-weight:500}
+
+/* ---- stage ---- */
+.stage--cork{padding:26px clamp(10px,2vw,26px) 34px;background:var(--paper)}
+.stage-note{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px 22px;margin:0 4px 18px;font:12px/1.4 var(--util);color:var(--pencil)}
+.stage-note .hand{font-size:21px;color:var(--soft);transform:rotate(-1.2deg);display:inline-block}
+.stage-note .zh{font-family:var(--hand-cn);font-size:17px;margin-left:6px;white-space:nowrap}
+.wm-switch{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px}
+.wm-switch-k{font:10.5px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--pencil)}
+.wm-switch button{position:relative;padding:6px 4px;font:11.5px/1 var(--util);letter-spacing:.02em;color:var(--soft)}
+.wm-switch button[aria-pressed="true"]{color:var(--ink)}
+.wm-switch button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.wm-switch .pk{margin-left:4px;font-size:9.5px;color:var(--pencil)}
+
+/* ---- the integrated board ---- */
+.cork .cork-viewport{overflow:clip;touch-action:pan-y;cursor:grab}
+.cork.grabbing .cork-viewport,.cork.grabbing .cork-viewport *{cursor:grabbing!important}
+.cork.grabbing .cork-track{-webkit-user-select:none;user-select:none}
+.cork .cork-track,.cork .swing{will-change:transform}
+.cork .slot.lifted{z-index:20}
+.cork .slot.unpinned{z-index:1!important}
+
+/* pin ticks: pen marks drawn at the pin head for two held frames (hand's clock) */
+.pin-ticks{position:absolute;z-index:9;width:52px;height:52px;margin:-26px 0 0 -26px;overflow:visible;pointer-events:none}
+.pin-ticks g{opacity:0}
+.pin-ticks path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round}
+
+/* ---- unpin layer: the card in hand and its field note ---- */
+.unpin-layer{inset:0;z-index:800}
+.unpin-layer--fixed{position:fixed}
+.unpin-layer--local{position:absolute;z-index:2}
+.unpin-layer[hidden]{display:none}
+.unpin-layer.leaving{pointer-events:none}
+.unpin-scrim{position:absolute;inset:0;background:rgba(251,246,236,.68);opacity:0;transition:opacity .45s var(--ease-out) .16s}
+.unpin-scrim.on{opacity:1}
+.unpin-layer.leaving .unpin-scrim{transition:opacity .34s var(--ease-out)}
+html.rm .unpin-scrim{transition:none!important}
+@media (prefers-reduced-motion:reduce){.unpin-scrim{transition:none!important}}
+.unpin-fly{position:absolute;left:0;top:0;z-index:2;container-type:inline-size;pointer-events:none}
+.unpin-card{position:absolute!important;left:0;top:0;margin:0!important;pointer-events:auto}
+.unpin-card .swing{cursor:default}
+.unpin-card .lift{transition-duration:.5s}
+.unpin-card .morph-icon{transform:translate(-50%,-50%) rotate(45deg)}
+.unpin-panel{position:absolute;z-index:1;opacity:0;transform-origin:50% 0;filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-6px 16px 20px rgba(60,50,35,.14))}
+.unpin-panel.open{opacity:1}
+.unpin-panel-paper{padding:28px 26px 34px;background:var(--paper);border-top:1px dashed var(--line-strong);clip-path:polygon(0 0,100% 0,100% 96%,94% 100%,84% 97%,74% 100%,64% 96%,54% 100%,44% 97%,34% 100%,24% 96%,14% 100%,5% 97%,0 100%)}
+.unpin-panel--lead .unpin-panel-paper{background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper))}
+.unpin-panel--featured .unpin-panel-paper{background:color-mix(in srgb,var(--wash-blue) 55%,var(--paper))}
+.unpin-panel--instrument .unpin-panel-paper{background-color:var(--paper);background-image:repeating-linear-gradient(rgba(207,193,169,.3) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(207,193,169,.3) 0 1px,transparent 1px 9px)}
+.unpin-kicker{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:10px;border-bottom:1px solid var(--line-strong);font:8.5px/1.2 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.unpin-close{display:inline-flex;gap:6px;align-items:center;flex:none;padding:6px 0;font:500 10px/1 var(--util);letter-spacing:.04em;text-transform:none;color:var(--ink);border-bottom:1px solid var(--ink)}
+.unpin-close span{font-size:14px}
+.unpin-close:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.unpin-title{margin-top:16px;font:500 24px/1.15 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.02em}
+.unpin-note{margin-top:12px;color:#504A42;font-size:15.5px;line-height:1.62}
+.unpin-panel .project-meta{margin-top:16px}
+.unpin-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:20px}
+.unpin-cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:10px/1 var(--util);letter-spacing:.035em}
+.unpin-cta:hover,.unpin-cta:focus-visible{background:var(--ink);color:var(--paper)}
+.unpin-actions a:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+/* ---- phone ---- */
+.stage--phone{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:center;padding:36px clamp(20px,4vw,56px);border-top:1px solid var(--line);background:var(--paper2)}
+.phone{position:relative;width:390px;height:800px;border:1.5px solid var(--ink);border-radius:46px;background:var(--paper);overflow:hidden}
+.phone::before{content:"";position:absolute;z-index:3;left:50%;top:11px;width:92px;height:24px;border-radius:14px;background:var(--ink);transform:translateX(-50%)}
+.phone-screen{position:relative;z-index:0;height:100%;overflow-y:auto;overflow-x:hidden;padding:54px 15.6px 30px;scrollbar-width:none}
+.phone-screen::-webkit-scrollbar{display:none}
+.phone-title{margin:0 2px 24px}
+.phone-title .k{display:flex;align-items:baseline;gap:8px;font:500 17px/1 var(--disp);color:var(--soft)}
+.phone-title .k b{font:500 8.5px/1 var(--util);color:var(--soft);letter-spacing:.08em}
+.phone-title h3{margin-top:6px;font:400 50px/.96 var(--disp-cn)}
+.phone-notes h3{font:500 22px/1.2 var(--disp)}
+.phone-notes h3 .display-cn{margin-left:8px;font-size:.86em;color:var(--soft)}
+.phone-notes ol{margin-top:18px;padding:0;list-style:none;display:grid;gap:15px;counter-reset:n}
+.phone-notes li{position:relative;padding-left:34px;font-size:15px;line-height:1.55;color:var(--soft);counter-increment:n}
+.phone-notes li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:3px;font:500 10.5px/1 var(--util);color:var(--pencil)}
+.phone-notes li b{color:var(--ink);font-weight:500}
+.phone-notes code{font:12px var(--util);color:var(--ink)}
+.phone-notes .hand{display:block;margin-top:22px;font-size:22px;color:var(--soft);transform:rotate(-1deg)}
+
+.cand-foot .replays{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+
+@media (max-width:1100px){.stage--phone{grid-template-columns:1fr;justify-items:center}.phone-notes{max-width:560px}}
+@media (max-width:760px){
+  .changed{grid-template-columns:1fr;gap:10px}
+  .changed li{grid-template-columns:1fr;gap:2px}
+  .changed .arr{display:none}
+  .stage--phone{display:none}
+  .stage--cork{padding:20px 10px 26px}
+  .stage-note{margin:0 12px 14px;flex-direction:column;align-items:flex-start;gap:8px}
+  .unpin-panel-paper{padding:24px 20px 30px}
+}

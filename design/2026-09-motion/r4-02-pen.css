@@ -1,0 +1,36 @@
+/* Board r4-02 — round 4, layered over round 3's CSS (r3-02-pen/build/spec.css load first, unchanged).
+   Two changes: coral for the pen's live attention, and air under every underline. */
+
+/* ---- coral: one ink, drawn as each paper shows it ----
+   #D9695A on cream reads 3.19:1. Flat on the corkboard it would be 2.72:1 and on the lead card's
+   wheat 2.69:1, under the 3:1 a state mark needs; real ink darkens with tinted paper, so on those
+   surfaces the same coral is drawn multiplied by the paper — which keeps every coral mark ≥ 3.17:1. */
+:root{--pen:#D9695A}
+.bd-shell,.tile-vs{--pen:#CB5E49}       /* coral × cork (#EEE4CE): 3.17:1 */
+.bd-card{--pen:#D9695A}                 /* paper cards: 3.19:1 */
+.bd-card--lead{--pen:#C85E47}           /* coral × the lead card's wheat (#EBE4C9): 3.20:1 */
+.bd-shell .fm-c{stroke:#CB5E49}         /* 「 」 around a card are drawn on the cork, not on the card */
+.tm-hot{fill:none;stroke:var(--pen);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tm-line{stroke-width:2}                /* the wheat pass under the coral; the coral covers it exactly */
+.fm-c{stroke:var(--pen);stroke-width:2.2}
+.pt-s{stroke:var(--pen)}
+.sw-coral{height:2.5px;vertical-align:3px;background:var(--mark)}
+
+/* ---- air under the underline ----
+   The line hangs from the baseline (r4-02-tier.js): baseline + max(3 px, 0.18 em). Whatever follows —
+   the next line of text or a drawn rule — stays ≥ 10 px below the stroke and ≥ 2× the line's drop,
+   so the line reads as belonging to the word above it. Where a layout crowded it, the layout moved;
+   the stroke did not shrink. r4-02-check.js measures this live. */
+.pn-label{bottom:12px}                              /* nav labels: 8 → 12 px above the nav rule */
+.pn-nav{height:122px}                               /* …and the nav grows the 4 px back */
+.rules tbody th .zh{margin-top:13px}                /* "1 · notice" / 留意: the second line clears the mark */
+.bd-card .bd-note{margin-top:16px}                  /* card title → body: 12 → 16 px, room for the band too */
+.bd-card--lead .bd-note{margin-top:18px}
+@container (max-width:470px){
+  .pn-nav{height:116px}
+  .pn-label{bottom:11px}
+  .pn-action{row-gap:14px}                          /* the count wraps under Load more on a phone */
+}
+.gapcheck{margin-top:12px;font-size:11.5px;line-height:1.65;color:var(--soft)}
+.gapcheck b{font-weight:500;color:var(--ink)}
+.nw{white-space:nowrap}

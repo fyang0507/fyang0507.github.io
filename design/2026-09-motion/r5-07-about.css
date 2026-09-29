@@ -1,0 +1,148 @@
+/* r5-07 · board strip, stage, sleeve, controls. Faces are r3's, unchanged (r3-07-about-card.css is loaded as is).
+   Copied from r4-07-about.css; round-5 changes: the strip's gesture map, the upright sleeve as the only sleeve, the
+   sleeve's visible 放回 · put back label, the hand-note beside the lifted card, and no orientation study. */
+
+/* ---------- what changed from round 2 ---------- */
+.r5-changed{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr) auto;gap:clamp(22px,4vw,56px);align-items:start;padding:20px 0 22px;border-bottom:1px dashed var(--pencil)}
+.r5-k{font:500 11px/1.4 var(--util);letter-spacing:.1em;color:var(--mark)}
+.r5-quote{margin-top:8px;font:23px/1.3 var(--hand);color:var(--ink)}
+.r5-did{font-size:15px;line-height:1.6;color:var(--soft)}
+.r5-did b{color:var(--ink);font-weight:500}
+.r5-did + .r5-did{margin-top:8px}
+.gm{display:block;width:330px;max-width:100%;height:auto;overflow:visible}
+.gm text{font:10.5px "IBM Plex Mono",monospace;fill:var(--soft);letter-spacing:.03em}
+.gm .gm-k{font-weight:500;fill:var(--ink);letter-spacing:.06em}
+.gm .gm-cn{font-family:"Noto Sans SC",sans-serif;font-size:10px}
+.gm .gm-dim{fill:var(--pencil)}
+.gm-cap{margin-top:6px;font:11px/1.45 var(--util);color:var(--pencil);max-width:330px}
+
+/* ---------- stage ---------- */
+.stage.hs-stage{display:flex;flex-direction:column;align-items:center;padding:13px 20px 64px}
+.sc-kicker{font:12px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;color:var(--pencil)}
+.ctl-slot{margin-top:5px;min-height:36px;display:flex;justify-content:center}
+.cand-foot b{color:var(--ink);font-weight:500}
+.hs-hint{bottom:14px}
+.hs-hint .hand-cn{font-size:16px}
+
+/* ---------- FLIP / PULL: glyph + label, pen underline on hover ---------- */
+.flip{display:inline-flex;align-items:center;gap:9px;padding:7px 6px;color:var(--ink);font:500 12px/1 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.08em}
+.flip[hidden]{display:none}
+.flip-ico{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.flip-t{position:relative;padding-bottom:1px}
+.flip-t [lang=zh]{font-family:"Noto Sans SC",sans-serif;letter-spacing:.04em}
+/* focus is the pen's coral 「 」 (r4-07-about-kit.js), so the browser ring steps aside on everything that has one */
+.flip:focus-visible,.soc:focus-visible,.grip:focus-visible,.a-card:focus-visible,.sl-hit:focus-visible{outline:none}
+
+/* ---------- the rig: sleeve panels, the card between them, the shadow, the grip ---------- */
+.rig{position:relative;z-index:2;width:100%;height:420px;margin-top:0}
+.rig > .sl,.rig > .card-pos,.rig > .a-shadow{position:absolute;left:0;top:0}
+.card-pos{z-index:2;transform-origin:50% 50%;perspective:2100px;perspective-origin:50% 110%}
+/* The eye sits a little below the card, as if it lies on the desk: the near (bottom) edge of the stock shows at rest.
+   r2's 125% and 1800px were set for a squat card; on a 7:12 card they swung the top edge away too hard mid-flip.
+   The card's size is set by the rig (7:12, fitted to the screen); the faces fill it. */
+.a-card{position:relative;display:grid;transform-style:preserve-3d;touch-action:pan-y;cursor:grab;border-radius:14px}
+.a-card:active{cursor:grabbing}
+.a-face{grid-area:1/1;height:100%;min-height:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.a-day{transform:translateZ(6px)}
+.a-night{transform:rotateY(180deg) translateZ(6px)}
+.a-edge{position:absolute;inset:0;border-radius:14px;background:#D9CDB3;pointer-events:none}
+.a-edge.core{background:#B9AA8C}
+.a-edge.outer{background:#CBBD9F;border:1.3px solid #4A4238}
+/* contact shadow as a halftone dot field — countable marks, not a blur */
+.a-shadow{z-index:5;border-radius:14px;pointer-events:none;transform-origin:50% 50%;opacity:0;
+  background-image:radial-gradient(circle,rgba(51,48,43,.5) 0 1.05px,transparent 1.45px);background-size:5px 5px}
+/* fig. caption: beside the card's foot on wide screens (the longer card needs the line below it) */
+.sc-fig{position:absolute;left:calc(100% + 12px);bottom:4px;color:var(--pencil);font:11px/1 "IBM Plex Mono",monospace;letter-spacing:.04em;opacity:0;white-space:nowrap}
+
+.sl{transform-origin:50% 50%}
+.sl svg{position:absolute;left:0;top:0;overflow:visible}
+.sl-back{z-index:1}
+.sl-front{z-index:3;cursor:grab}
+.sl-impact{visibility:hidden;pointer-events:none}
+/* the printed header, top left; the rig keeps its right edge clear of the notch */
+.sl-print{position:absolute;left:0;right:0;top:0;padding:1.2em 1.5em 0;color:#3B3024;font-size:10px;line-height:1.4;pointer-events:none}
+.sl-k{font:1em/1.3 "IBM Plex Mono",monospace;letter-spacing:.1em;opacity:.8;white-space:nowrap}
+.sl-t{margin-top:.25em;font:500 1.82em/1.1 "DingTalk JinBuTi","Fraunces",serif;letter-spacing:.01em;white-space:nowrap}
+.sl-t [lang=zh]{font-family:"DingTalk JinBuTi",serif}
+.sl-t-en{font-size:.6em;letter-spacing:.06em}
+.sl-rule{margin-top:.5em;border-top:1.2px solid rgba(59,48,36,.72)}
+.sl-forms{list-style:none;display:flex;flex-wrap:nowrap;gap:1.2em;margin-top:.6em;font:1.02em/1.3 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.05em;white-space:nowrap}
+.sl-forms li{display:flex;align-items:center;gap:.5em}
+.sl-forms [lang=zh]{font-family:"Noto Sans SC",sans-serif}
+.sl-box{position:relative;flex:none;width:1.2em;height:1.2em;border:1.3px solid #3B3024;border-radius:2px}
+.sl-box svg{position:absolute;left:-2px;top:-6px;overflow:visible}
+/* small print along the bottom edge, where the closed end's quiet half needs one anchor */
+.sl-warn{position:absolute;left:1.5em;bottom:1.15em;color:#3B3024;font:.8em/1.35 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.08em;opacity:.56;pointer-events:none;white-space:nowrap}
+.sl-warn span{display:block}
+.bird{position:absolute;right:14px;top:-41px;width:46px;height:44px;pointer-events:none}
+.bird-sprite{width:100%;height:100%;background:url('../../assets/bird-strip-light.png') 0 0/200% 100% no-repeat}
+.bird.up{transform:translateY(-6px)}
+.bird.up .bird-sprite{background-position:100% 0}
+.sl-hit{position:absolute;inset:0;border-radius:7px;cursor:pointer}
+.sl-hit[tabindex="-1"]{cursor:grab}
+/* 放回 · put back: printed on the sleeve once it is empty, the visible half of "tap the sleeve" */
+.put{position:absolute;display:flex;flex-direction:row;align-items:center;gap:6px;color:#3B3024;font:500 11px/1 "IBM Plex Mono","Noto Sans SC",sans-serif;letter-spacing:.06em;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .16s linear}
+.rig.held .put{opacity:1}
+.sl .put-ico{position:static;display:block;width:17px;height:17px;flex:0 0 17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.put-t{position:relative}
+.put-t [lang=zh]{font-family:"Noto Sans SC",sans-serif}
+/* the hand-note beside the card on its first lifts: pencil, hand fonts; a line greys once it has been done */
+.hold-note{position:absolute;z-index:4;color:var(--pencil);font:17px/1.25 var(--hand);pointer-events:none;opacity:0;transform:rotate(-1.5deg);transform-origin:0 0;transition:opacity .16s linear}
+.hold-note.on{opacity:1}
+.hold-note p{margin:0 0 7px}
+.hold-note .hand-cn{display:block;font-size:15px}
+.hold-note .hn-en{display:block;text-wrap:balance}
+.hold-note .done{opacity:.42}
+.grip{position:absolute;z-index:7;border-radius:10px;cursor:grab}
+.grip[hidden]{display:none}
+.grip:focus-visible{outline:none}
+/* the cue: r3-02's arrow glyph pointing along the pull, its hand note under the tail (soft ink, never coral) */
+.cue{position:absolute;z-index:4;display:flex;flex-direction:column;align-items:flex-start;color:var(--soft);font:19px/1 var(--hand);pointer-events:none;opacity:0;transition:opacity .12s linear}
+.cue.on{opacity:1}
+.cue-arrow{width:40px;height:24px;flex:none;overflow:visible}
+.cue-t{margin:4px 0 0 -2px;white-space:nowrap;transform:rotate(-3deg)}
+.cue .hand-cn{font-size:17px}
+
+
+
+/* ---------- statement + contact row (text first, line icon, pen underline) ---------- */
+.sc-statement{width:min(700px,100%);margin-top:40px;padding-top:18px;border-top:1.5px solid var(--line);text-align:center}
+.sc-statement .sc-zh{font-family:"Noto Serif SC",serif;font-size:clamp(18px,2.6vw,25px);line-height:1.5}
+.sc-statement .sc-en{margin-top:7px;color:var(--soft);font:11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.035em}
+.sc-statement .sc-zh,.sc-statement .sc-en{display:block}
+.soc-slot{width:100%}
+.soc-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 24px;margin-top:16px}
+.soc{display:inline-flex;align-items:center;gap:7px;padding:7px 2px;color:var(--ink);font:12px/1 "IBM Plex Mono",monospace;letter-spacing:.04em}
+.soc-ico{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.soc-t{position:relative;white-space:nowrap}
+.soc-zh{font:11.5px/1 "Noto Sans SC",sans-serif;color:var(--soft);letter-spacing:.02em}
+.soc-wx{position:relative;display:inline-flex}
+.qr-slip{position:absolute;right:-18px;bottom:calc(100% + 14px);z-index:30;width:152px;padding:12px 12px 9px;background:#FFFDF7;border:1px solid #DDD2BE;box-shadow:3px 4px 0 rgba(51,48,43,.1);text-align:center;
+  opacity:0;visibility:hidden;transform:translateY(12px) rotate(-7deg) scale(.94);transform-origin:70% 100%;transition:transform .5s var(--ease-settle),opacity .12s linear,visibility 0s linear .5s}
+.qr-slip.on{opacity:1;visibility:visible;transform:rotate(-2deg);transition:transform .5s var(--ease-settle),opacity .1s linear,visibility 0s}
+.qr-slip::before{content:"";position:absolute;left:50%;top:-9px;width:54px;height:18px;margin-left:-27px;background:rgba(217,207,160,.72);transform:rotate(3deg)}
+.qr-slip img{display:block;width:126px;height:126px;object-fit:cover;margin:0 auto}
+.qr-cap{display:block;margin-top:6px;font:9.5px/1.3 "IBM Plex Mono","Noto Sans SC",monospace;color:var(--pencil)}
+
+@media (max-width:1100px){.r5-changed{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}.r5-gm{grid-column:1/-1}}
+@media (max-width:760px){.r5-changed{grid-template-columns:1fr;gap:12px}}
+@media (max-width:680px){
+  .stage.hs-stage{padding:18px 6px 60px}
+  .sc-statement{text-align:left;margin-top:36px;padding-left:6px;padding-right:6px}
+  .soc-row{justify-content:flex-start;gap:2px 20px;padding:0 6px}
+  .bird{top:-36px;width:40px;height:38px}
+  .hs-hint{display:none}
+  .cue{font-size:17px}
+  .cue .hand-cn{font-size:15px}
+}
+/* stacked rig (sleeve above the card): the fig. caption goes under the card's foot; the note is smaller */
+.rig.stacked .sc-fig{left:auto;right:4px;bottom:-20px}
+.rig.stacked .hold-note{font-size:15px}
+.rig.stacked .hold-note .hand-cn{font-size:13.5px}
+.rig.stacked .hold-note p{margin-bottom:4px}
+.rig.stacked .hold-note .hand-cn,.rig.stacked .hold-note .hn-en{display:inline}
+.rig.stacked .hold-note .hn-en::before{content:" · "}
+/* the release rule, stated under the stage */
+.rule{margin:8px 0 4px;font:11.5px/1.6 var(--util);color:var(--soft)}
+.rule > span{display:block;padding-left:1.2em;text-indent:-1.2em}
+.rule b{color:var(--ink);font-weight:500}

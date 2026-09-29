@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3 · 08b · Footnotes with a body — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="r2-08b-base.css">
+<link rel="stylesheet" href="r2-08b-slip.css">
+<link rel="stylesheet" href="r2-08b-a.css">
+<link rel="stylesheet" href="r3-08b-note.css">
+<link rel="stylesheet" href="r3-08b-board.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 08b · ROUND 3</div><h1 class="board-title">Footnotes with a body <span class="display-cn">有身体的脚注</span></h1></div>
+    <div><p class="board-why">Fred chose <b>C’s mechanism</b>, the annotator’s pen gesture, and <b>A’s note</b>, the tugged slip. In round 2 they were two separate things. C’s arrow ended beside a catalogue card that was pulled up out of a drawer. A’s slip was hauled in on a coral thread, which is a second coral line. This round is one build: the pen draws, and <b>the arrow does the thread’s job</b>. The slip comes to the arrow’s tip.</p>
+      <p class="evidence">evidence: round 2 <code>r2-08b-c.js:58</code> the arrow aims at the card’s drawer (<code>mr.left − 19</code>), bending when the note sits lower than the ref · <code>r2-08b-a.js:33–34</code> A’s slip target, which is 14px clear of the text and on the ref’s leading, and <code>r2-08b-a.css:5</code> the eyelet pivot at 11.5 × 14.5 · data: <code>FY_POSTS[0]</code>, 9 refs, all real citations, three of them double</p></div>
+  </header>
+
+  <div class="r3-changed">
+    <div class="r3-changed-k">WHAT CHANGED<br>FROM ROUND 2</div>
+    <div><q>Agree with C, but the sidenote sticker design should be A.</q>
+      <ul>
+        <li><b>C’s gesture stays whole.</b> A corner ⌜ where the claim starts, then one stroke without lifting: ⌟ where it ends, a loop round the number, and an arrow flung through the leading into the margin. It is one careful stroke and one fast one, with the full choreography once and then a quick repeat.</li>
+        <li><b>C’s catalogue card is gone. The note is A’s slip</b>, with its paper, hand-cut edges, seeded tilt, punched eyelet and typography, and it is the same object at rest and in use.</li>
+        <li><b>The arrow replaces A’s thread.</b> The arrow is drawn level along the ref’s leading, and its point stops at the rim of the spot where the eyelet will rest. As the point lands, the slip is jerked there by its eyelet. It lands 26px clear of the text, not A’s 14px, so the arrowhead has room in the gutter. It <b>pivots on the eyelet</b>, its trailing edge lags the pull, and it squares up to the text on A’s spring with one small overshoot. There is no thread and no knot. Because the slip comes to the arrow, the arrow stays level and straight. It no longer bends down to reach a note that sits lower than its ref.</li>
+        <li><b>Coral budget:</b> the pen is the only coral in the reading view. The thread is gone, the underline C drew on the card’s title is gone, and body links, hover and focus go to ink. Citations stay upright serif with utility-mono dates, never handwriting.</li>
+        <li><b>Phone:</b> it is still the slip pulled out of a slot cut in the page, and you swipe it back in. It is restyled as A’s paper, with the eyelet before the number and the citation set as A sets it, with live links.</li>
+      </ul></div>
+  </div>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-n">
+      <div class="cand-head"><span class="cand-letter">C·A</span><span class="cand-name">The pen, and the slip it pulls <span class="display-cn">一笔拽来纸条</span></span><span class="cand-mech">one pen path ⌟ → loop → arrow (hand’s clock) · A’s slip pivots on its eyelet to the tip (physics clock)</span></div>
+      <div class="stage rd-stage" id="stage-n" data-hint="hover a footnote number ↗ 指一下注释号"><div class="rd-frame"><div class="rd" tabindex="0" role="region" aria-label="The essay, scrollable · 可滚动阅读"></div></div></div>
+      <div class="cand-foot"><div>Point at a number, focus it, or tap it on a wide touch screen. The pen marks the source the way a reader with a pen does: ⌜ at the start of the claim, then ⌟ at its end, a loop round the number, and a flung arrow through the leading into the margin. The instant the point lands, the slip is pulled to it by its eyelet. It swings a few degrees about the eyelet as it comes, then squares up to face the sentence, lifted off the page. The bracket shows exactly which words the source backs, the arrow shows where the source is, and the slip carries the source. Let go and the ink lifts, faster than it went down, and the slip drifts home to its tilt. Point down a run of refs and each one is a quick stroke and a short swing.
+        <span class="clock"><b>first</b> touch down, lift, one stroke (430 ms), the point lands at ~510 and pulls the slip, square by ~1000, still by ~1150 · <b>repeat</b> one quick stroke (250 ms), slip pulled at ~215, still by ~600 · <b>phone</b> slip from the slot, swipe to put it back</span>
+        <div class="tradeoff"><b>cost</b> three paths per reveal on WAAPI, plus one transform per moving slip; the rAF loop sleeps when every slip is at rest · <b>a11y</b> refs stay real links; focus plays the same gesture, Esc lets go; the margin slip is the note itself, and the reference list stays the accessible source · <b>reduced motion</b> the marks are simply there and the slip is already at the arrow’s tip; nothing travels · <b>risk</b> the phrase finder is still a heuristic (a clause stop or ~34 characters back), so an author-marked span would be exact</div></div>
+        <div class="foot-ctl"><button class="replay" data-replay="replayN">↻ first time · 初见</button><button class="replay" data-replay="repeatN">↻ repeat · 再见</button><button class="replay" data-phone="stage-n" aria-pressed="false"><span class="ph-t">phone 390 · 手机</span></button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship this one build.</b> It keeps what made C the pick: the WOW carries information. The ⌜⌟ shows which words the source backs, the loop shows which number, and the arrow shows where the source is. It keeps what Fred liked in A: the note is a real piece of paper with an eyelet, and it answers the pen physically. Where round 2 needed a second coral line to pull the slip, the arrow now does it, so one gesture carries both the pointing and the pull. The first reveal takes under a second, and every one after is a stroke and a swing of about half a second.</p>
+    <p>Watch three things. A slip pulled up to its ref can overlap the slip above it for as long as it is held (the held one is always on top); on a page dense with notes, consider nudging the neighbour. The phrase finder is a heuristic, so author-marked spans would make the bracket exact. And the site nav’s current-tab dot is coral; it sits above the essay and scrolls away before any note, but board 02’s pen states should settle it for every page.</p>
+    <div class="record">执行模式：第三轮 · 合并为一个方案（C 的动作 + A 的纸条）
+表达锚点：“拿着笔读书的人”：一笔标出论断的起止、圈住注释号、把箭头甩进页边；页边那张打了孔的纸条被箭头叫过来，挂在箭尖上
+动作时钟：笔迹走手的时钟（落笔、抬笔、一笔到底，收笔比落笔快）；纸条走物理时钟（以孔眼为轴转动，拖尾滞后，A 的弹簧一次小回弹后摆正）；首次完整编排，之后一律快速版
+映射：指向注释号 → ⌜ 落在论断起点，同一笔画出 ⌟、圈号、箭头；箭尖落下的瞬间纸条被孔眼拽到箭尖 → 绕孔眼摆动、摆正面对正文；松开 → 墨迹更快地抬起，纸条回到页边原来的倾角；手机上点 → 笔在页面下方割一道口，纸条从口里抽出，下滑塞回
+线条计划：一支笔，1.7px 圆头，按注释号固定种子抖动；⌟、圈、箭头是同一条路径，不抬笔；箭头沿行距水平而短，箭尖停在孔眼边缘
+色彩计划：珊瑚色唯一持有者是这一笔；A 的红线、C 卡片标题下划线取消；正文链接、悬停与焦点改为墨色；纸条只用纸色、墨色与铅笔色，阴影只标接触
+字体：注释一律直立衬线（中文 Noto Serif SC），注号与日期用 utility 等宽；hand 字体不用于任何引用</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-08b-render.js"></script><script src="r2-08b-notes.js"></script><script src="r3-08b-slip.js"></script>
+<script src="r3-08b-note.js"></script>
+</body></html>

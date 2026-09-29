@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R3 · 08A · Reading, settled and marked — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="r2-08a-board.css">
+<style>.changed q.nq{quotes:none}</style>
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 08A · ROUND 3</div><h1 class="board-title">Reading, settled and marked <span class="display-cn">题图落定 · 铅笔页边</span></h1></div>
+    <div><p class="board-why">Round 2 built <b>A, the pencil margin</b>, and <b>D, the hero settling</b>, as one Reading page. Fred accepted it with one note: the dotted dissolve was already there when the page opened. He was right that it was a bug. The page opened on a cover whose lower third was already dots, so the one dense event of the page had been spent before the reader did anything. Round 3 fixes this at the cause and changes nothing else.</p>
+      <p class="evidence">evidence: <code>r2-08a-hero.js:65–78</code> the wedge is every cell between <code>F − Z</code> and <code>F</code>, and <code>r2-08a-hero.js:225</code> <code>F = B0 − pad − y</code>, so at <code>y = 0</code> the paper edge is already on screen (545px down at 1440×900, 399px at 390×844) and the full 200px (150px) wedge is printed · measured in a fresh context at scroll 0: 160,169 non-paper canvas pixels at 1440×900, 46,285 at 390×844 · <code>r2-08a-hero.js:213</code> reduced motion drew the same wedge as its “static edge” · ruled out: image decode, scroll restoration (the board’s iframe opens at 0 after a reload), a board auto-demo (none), resize and DPR (every redraw is a pure function of scroll)</p></div>
+  </header>
+
+  <section class="changed" aria-label="What changed from round 2">
+    <div class="changed-k">WHAT CHANGED FROM ROUND 2</div>
+    <div class="changed-row"><span class="changed-tag">D</span><q>You can’t display the dotted dissolve initially, it should only appear when scrolling. I think this is a bug in the display page, I don’t think you mean it.</q>
+      <p><b>Root cause:</b> the halftone wedge had a fixed depth. It was anchored to the paper edge, and at the top of the page that edge is already inside the window, so the wedge was printed before any scroll. Only its <i>position</i> followed the scroll, never its <i>amount</i>. <b>Fix:</b> the wedge now has a depth <code>D(y)</code> that is part of the scroll mapping. At <code>y = 0</code>, <code>D = 0</code>: the clean cover image, ending in one smooth hand-cut paper edge, with no dots anywhere. The first pixels you scroll add halftone one for one, easing to the full 200px by <code>y = 400</code> (150px by 300 on a phone), which is before the paper lands. From then on the page is round 2 exactly. Scroll back to the top and <code>D</code> returns to 0, and the cover is clean again. Reduced motion never prints dots. The paper edge is now drawn as one path, not cell by cell, so the clean state has no staircase.</p></div>
+    <div class="changed-row"><span class="changed-tag">A</span><q class="nq">No note on A; accepted as built.</q>
+      <p>Unchanged and loaded as the round-2 files: landmarks from any structure, the sticky margin rail that leaves with the essay, the reading line that sweeps to 100% over the last screen, the title’s flight into the nav, the nav landing and hairline, and the phone strip. Re-checked on this page at both sizes.</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-ad">
+      <div class="cand-head"><span class="cand-letter">AD</span><span class="cand-name">The settled page, with a pencil in the margin <span class="display-cn">落定的页面，页边一支铅笔</span></span><span class="cand-mech">halftone depth tied to scroll, 0 at the top · canvas registered to a pinned plate · per-line flight into the nav · sticky margin rail · physics clock for paper, hand’s clock for pen marks</span></div>
+      <div class="ad-bar">
+        <div class="picker" role="radiogroup" aria-label="Essay · 选一篇文章"></div>
+        <div class="ad-tools"><button class="replay" data-replay="replaySlow">▶ scroll the hero for me</button><button class="replay" data-replay="replayTop">↻ top</button>
+          <a class="ad-open" id="ad-open" href="r3-08a-page.html" target="_blank" rel="noopener">open full page ↗ <span class="zh">整页打开</span></a></div>
+      </div>
+      <div class="stage ad-stage">
+        <iframe id="ad-frame" title="Reading page demo · 阅读页演示"></iframe>
+        <span class="hint ad-hint">scroll the page slowly ↓ 慢慢往下读</span>
+      </div>
+      <div class="cand-foot"><div>The page opens on the clean cover and the title, with the paper’s hand-cut edge below them. Begin to scroll and the cover’s lower edge starts to break into its own colour halftone. The band deepens as you read, while the paper edge climbs with the text and the dots shrink row by row. Meanwhile the title shrinks and travels into the nav. The moment the paper reaches the top, the nav settles, the hairline is drawn out from the title, and the pen carries on down the left margin to draw the rail: ticks, labels, and the coral loop on the landmark you are in. Scroll back to the top and the cover is whole again. Hover or focus a label to preview it; click to go there. Switch essays to see the rail follow each essay’s structure. On a phone the hairline <i>is</i> the rail, with ticks and a “3.0 / 10” counter.
+        <div class="tradeoff"><b>cost</b> one canvas redraw per scroll frame, only while the hero is on screen (1–2k dots, about 1 ms), then the plate is hidden; at the top only one paper path is drawn · <b>a11y</b> the real <code>h1</code> stays in the document (the flying copy is aria-hidden); the rail is a <code>&lt;nav&gt;</code> of anchors with ↑/↓ and a preview on focus; anchors land 28px clear of the nav; the phone counter is aria-live · <b>reduced motion</b> the plate scrolls with the page as the clean cover with its cut edge, never dots; the nav turns to paper in one step, and the rail steps per landmark · <b>support</b> plain scroll events, no scroll-timeline dependency, so it behaves the same in every engine</div></div>
+        </div>
+    </article>
+  </section>
+
+  <section class="plan" aria-label="The layout plan">
+    <div class="plan-k">THE LAYOUT PLAN · 版式数字</div>
+    <div class="plan-body">
+      <p class="plan-lede">Hero height, the body’s top padding and the nav’s height change are one plan, not three settings. The intro’s bottom padding is <code>gap + Z + pad</code>, so the body starts exactly <code>pad</code> below solid paper. The paper edge moves with the text, so that distance holds at every scroll position. It reaches the top of the window at <code>sL = B0 − pad</code>. At that moment the first line sits at <code>pad = n1 + 28</code>, just as the nav settles to <code>n1</code>. New in round 3: the halftone’s depth is <code>D(y) = Z · (1 − (1 − y/R)²)</code> with <code>R = min(2Z, sL)</code>. It starts at 0, grows one for one at first, and reaches <code>Z</code> before the landing.</p>
+      <table class="plan-t">
+        <thead><tr><th></th><th>1440 × 900</th><th>390 × 844</th><th>this frame, live</th></tr></thead>
+        <tbody>
+          <tr><th>nav at rest → landed <span>n0 → n1</span></th><td>76 → 56</td><td>62 → 50</td><td data-k="nav"></td></tr>
+          <tr><th>paper lead above the first line <span>pad</span></th><td>84 (= n1 + 28)</td><td>70 (= n1 + 20)</td><td data-k="pad"></td></tr>
+          <tr><th>halftone depth at scroll y <span>D(y) · new</span></th><td>0 at the top → 200 by y = 400</td><td>0 at the top → 150 by y = 300</td><td data-k="depth"></td></tr>
+          <tr><th>full wedge · dot cell · band <span>Z · c · 2c</span></th><td>200 · 14 · 28</td><td>150 · 10 · 20</td><td data-k="z"></td></tr>
+          <tr><th>gap from title to wedge <span>gap</span></th><td>26</td><td>18</td><td data-k="gap"></td></tr>
+          <tr><th>hero band = body top at rest <span>B0</span></th><td>629 (1-line title) · 681 (2-line)</td><td>469 · 533</td><td data-k="b0"></td></tr>
+          <tr><th>landing scroll <span>sL = B0 − pad</span></th><td>545 · 597</td><td>399 · 463</td><td data-k="sl"></td></tr>
+          <tr><th>title scale in flight</th><td>52 → 16px (×0.31)</td><td>34 → 15px (×0.44)</td><td data-k="k"></td></tr>
+          <tr><th>rail: sticky top · height</th><td>84 · 772 (vh − 128)</td><td>on the nav hairline</td><td data-k="rail"></td></tr>
+          <tr><th>reading line</th><td colspan="2">30% of the reading area; sweeps to 100% over the last 0.8 screen of scroll</td><td data-k="marks"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship A and D together as the Reading page, with the round-3 fix.</b> The print-over is now truly the one dense event, and it belongs to the reader. The page opens on the whole cover. The halftone appears only because you began to read, deepens as you go, and hands over to the paper, the nav and the pen in the margin. After that the page stays quiet, with a graphite line and one coral loop. Going back to the top restores the cover, because the state is a function of the scroll and nothing else.</p>
+    <p>Watch three things in production, as in round 2. First, the halftone samples the cover through a canvas, so covers must stay same-origin (they are, in <code>images/derived/</code>). Second, dark photographic covers print heavier dots, so check new covers at the first few hundred pixels of scroll. Third, the rail needs about 180px of left margin, so below roughly 1000px wide it becomes the phone strip. One more for the port: keep <code>D(0) = 0</code> as an invariant with a test. A reload that restores the scroll mid-hero will show the dissolve for that position, which is correct.</p>
+    <div class="record">执行模式：第三轮 · 修一个缺陷（其余保持第二轮原样）
+表达锚点：“拿着铅笔读一篇印出来的文章”：开头是一整张干净的题图，读者开始往下读，纸才从下面印上来盖住它；读者手里的铅笔在页边记下读到哪儿
+缺陷与根因：网点楔形的深度是常数 Z，锚在纸边上方；页面顶端时纸边已在窗口内，所以一打开就印好了 200px 网点。滚动只驱动了它的位置，没有驱动它的“量”
+修正：楔形深度 D(y) 成为滚动映射的一部分，D(0)=0，先一比一增长，y=R 时达到 Z（R=min(2Z, sL)，落定之前）；回到顶端 D 归零；纸边改为一条平滑的手裁路径，干净状态没有格子台阶；减弱动态时永远不出网点
+动作时钟：物理时钟（题图印版、纸边、网点深度与滚动一一对应，没有回弹；导航落定时弹簧一次小过冲）；手的时钟（导航细线、页边铅笔线、刻度、当前圈一笔画出，收笔更快）
+映射：开始往下读 → 题图下缘开始被重新网点化，读得越多网点带越深；纸边随正文上升，网点一行一行缩小直到只剩纸；标题缩小飞进导航；纸到顶 → 导航落定、细线画出、铅笔沿页边画下；回到顶端 → 题图恢复完整
+线条计划：一支笔，1.3–1.8px 圆头，按元素固定种子抖动（不逐帧重掷）；纸边是固定种子的手裁边
+色彩计划：珊瑚色唯一持有者是当前地标的圈（手机上是计数器的圈）；网点取自题图本身的颜色，只在开始阅读之后出现一次；细线与铅笔线用铅笔灰</div>
+  </div></section>
+</main>
+<script src="../../content/posts.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-08a-landmarks.js"></script>
+<script src="r3-08a-board.js"></script>
+</body></html>

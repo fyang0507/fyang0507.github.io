@@ -1,0 +1,57 @@
+{
+ "desk-scene2": {
+  "tint": true,
+  "print": false,
+  "gain": 1
+ },
+ "frame-exp3": {
+  "tint": true,
+  "print": true,
+  "gain": 1
+ },
+ "book-flip2": {
+  "tint": true,
+  "print": false,
+  "gain": 2
+ },
+ "bird-strip6": {
+  "tint": true,
+  "print": false,
+  "gain": 1
+ },
+ "nav-book@2x": {
+  "tint": false,
+  "print": false,
+  "gain": 2
+ },
+ "nav-laptop@2x": {
+  "tint": true,
+  "print": false,
+  "gain": 1
+ },
+ "nav-camera@2x": {
+  "tint": true,
+  "print": false,
+  "gain": 1
+ },
+ "nav-frame@2x": {
+  "tint": false,
+  "print": false,
+  "gain": 1
+ },
+ "identity-sticker-ghost@2x": {
+  "tint": false,
+  "print": false,
+  "gain": 1
+ },
+ "identity-sticker-blob@2x": {
+  "tint": false,
+  "print": false,
+  "gain": 1
+ },
+ "sticker-peek": {
+  "tint": false,
+  "print": false,
+  "gain": 1
+ }
+}

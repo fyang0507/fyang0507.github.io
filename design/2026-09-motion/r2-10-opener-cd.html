@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R2 · 10 — C → D: the OP, then the gag — opener mockup</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="preload" href="../../fonts/derived/DingTalkJinBuTi.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="09-home-desk.css"><link rel="stylesheet" href="r2-10-cd.css">
+<link rel="stylesheet" href="r2-10-op.css"><link rel="stylesheet" href="r2-10-op-names.css">
+<script>
+  // Decide before first paint so a playing opener never flashes the desk underneath it.
+  // "Returning" is this browser session only (sessionStorage), like today's live opener. No localStorage.
+  (function () {
+    var q = new URLSearchParams(location.search), h = document.documentElement, rm = false;
+    try { rm = sessionStorage.getItem('mock-rm') === '1'; } catch (e) {}
+    if (rm) h.classList.add('rm');
+    rm = rm || matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!rm && q.get('autoplay') !== '0') h.classList.add('opening');
+    if (q.get('ctl') === '0') h.classList.add('no-ctl');
+  })();
+</script>
+</head><body>
+<div class="pg">
+  <header class="pg-head">
+    <a class="site-identity" href="../../index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。首页">
+      <span class="site-identity-copy">
+        <span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span>
+        <span class="site-identity-tag" lang="zh">继续写，继续造</span>
+        <span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="../../assets/identity-sticker-ghost.png" srcset="../../assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="../../assets/identity-sticker-blob.png" srcset="../../assets/identity-sticker-blob@2x.png 2x" alt=""></span>
+      </span>
+    </a>
+    <div class="ep" role="note"><span class="ep-t"><span class="ep-cn" lang="zh">日常</span><span class="ep-no">ep.</span></span><span class="ep-sub"></span></div>
+  </header>
+
+  <div class="deskbox"><div id="desk-host"></div></div>
+
+  <nav class="mnav" aria-label="site">
+    <a href="../../Writing.dc.html">在写 writing</a><a href="../../Building.dc.html">在造 building</a>
+    <a href="../../Gallery.dc.html">在拍 shooting</a><a href="../../About.dc.html">关于 about</a>
+  </nav>
+  <div class="fig">fig.01</div>
+</div>
+
+<div class="oc-stage" id="oc-stage" aria-hidden="true"></div>
+
+<div class="ctl" role="group" aria-label="opener mockup controls">
+  <button type="button" data-a="replay">↻ replay</button><span class="sep">·</span>
+  <button type="button" data-a="skip">skip</button><span class="sep">·</span>
+  <button type="button" data-m="first">first visit</button><span class="sep">/</span><button type="button" data-m="returning">returning</button><span class="sep">·</span>
+  <span class="lab">name</span><button type="button" data-n="a">a</button><button type="button" data-n="b">b</button><button type="button" data-n="c">c</button><span class="sep">·</span>
+  <button type="button" data-a="rm">reduced motion</button>
+</div>
+
+<script src="../../content/posts.js" async></script>
+<script src="shared/pen.js"></script><script src="09-home-desk.js"></script>
+<script src="r2-10-load.js"></script><script src="r2-10-gag-phys.js"></script><script src="r2-10-gag-stage.js"></script><script src="r2-10-gag-fx.js"></script><script src="r2-10-gag.js"></script>
+<script src="r2-10-op-art.js"></script><script src="r2-10-op-names.js"></script><script src="r2-10-op-shots.js"></script>
+<script src="r2-10-cd.js"></script>
+</body></html>

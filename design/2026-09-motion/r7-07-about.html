@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R7 · 07 · It turns where it is — redesign mockups</title>
+<link rel="icon" href="../../favicon.png"><link rel="stylesheet" href="shared/mock.css"><link rel="stylesheet" href="r3-07-about-card.css"><link rel="stylesheet" href="r7-07-about.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 07 · ROUND 7</div><h1 class="board-title">It turns where it is <span class="display-cn">原地翻面</span></h1></div>
+    <div><p class="board-why">Round 6 gave the hand one rule (on the sleeve it goes back in, anywhere else it flips) but kept round 5's carrying. The card followed your pointer during a drag, then flipped while springing back. So every flip was also a trip away from its place and back, movement that had nothing to do with turning a card over.</p>
+      <p class="evidence">evidence: <code>r6-07-about-rig.js</code> <code>holdMove()</code> <code>ox.to = dx; oy.to = dy</code> carries the card with the pointer, and <code>home()</code> springs it back with an overshoot while the flip runs. The put-back target was the card's centre, which is why the card had to travel.</p></div>
+  </header>
+
+  <section class="r7-changed" aria-label="What changed from round 6">
+    <div><div class="r7-k">FRED, ON ROUND 6</div><p class="r7-quote">“The card got moved away from the original position <i>and</i> flipped, can we eliminate that unnecessary movement?”</p></div>
+    <div><p class="r7-did"><b>The card stays where it is.</b> A drag no longer carries it. It turns in place, a rotateY about its own centre, 10° as soon as it moves and up to 40° after a third of a card's width, toward the way you are dragging. Let go and the flip finishes from there, with one overshoot and no trip. The only other change while you hold it is a lift of a hair off the page.</p>
+      <p class="r7-did"><b>Your pointer is what goes to the sleeve now, not the card.</b> When the pointer enters the sleeve zone (the sleeve plus a margin past its mouth), the sleeve takes the card half in. That quick glide from its place to the mouth is the card's only travel, and the turn relaxes to 0. Move the pointer back out and the card glides home, and the turn picks up from your drag. Let go in the zone and it slides fully in; let go anywhere else and it flips in place. <b>The sleeve shows it is the target before you get there</b>: its lip bows toward your pointer in proportion to how near it is. The cue is ink; the coral 「 」 appears only once the pointer is in. On a phone the sleeve still steps aside to the left edge. The zone there is the strip plus the page margin beside it, 51 px wide and as tall as the card, so a thumb drag reaches it anywhere along the card.</p></div>
+    <div class="r7-gm"><svg class="gm" viewBox="0 0 330 202" role="img" aria-label="Gesture map, two outcomes, each shown as the preview you see while dragging. Anywhere else: the card turns where it is, inside its own footprint, and letting go flips it; a tap flips it too. Pointer on the sleeve: the sleeve takes the card half in, its only trip, and letting go puts it back."><text class="gm-k" x="4" y="12">ANYWHERE ELSE</text><rect x="38" y="24" width="44" height="72" rx="3" fill="none" stroke="#938979" stroke-width="1" stroke-dasharray="3 3"/><path d="M43.5 23 L76.5 29 L76.5 91 L43.5 97 Z" fill="#FBF6EC" stroke="#33302B" stroke-width="1.4" stroke-linejoin="round"/><path d="M76.5 29 L79 30 L79 90 L76.5 91" fill="#D9CDB3" stroke="#33302B" stroke-width="1.1" stroke-linejoin="round"/><path d="M49 40 L70 43" fill="none" stroke="#938979" stroke-width="1.1" stroke-linecap="round"/><path d="M49 50 L72 53" fill="none" stroke="#938979" stroke-width="1.1" stroke-linecap="round"/><circle cx="46" cy="112" r="3.4" fill="#33302B"/><circle cx="46" cy="112" r="7" fill="none" stroke="#33302B" stroke-width="1" opacity=".5"/><path d="M54 112 L92 112" fill="none" stroke="#33302B" stroke-width="1.5" stroke-linecap="round"/><path d="M86.2 114.9 L92 112 L86.6 109.3" fill="none" stroke="#33302B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><text x="4" y="134">drag · or tap</text><text x="4" y="148">it turns where it is</text><text x="4" y="162"><tspan class="gm-k">let go = flip</tspan></text><text class="gm-cn gm-dim" x="4" y="176">原地翻面</text><text class="gm-k" x="176" y="12">POINTER ON THE SLEEVE</text><rect x="276" y="24" width="42" height="72" rx="3" fill="none" stroke="#938979" stroke-width="1" stroke-dasharray="3 3"/><rect x="178" y="24" width="44" height="72" rx="2" fill="#D5BB8F" stroke="#33302B" stroke-width="1.5"/><path d="M222 33 L246 33 Q249 33 249 36 L249 84 Q249 87 246 87 L222 87" fill="#FBF6EC" stroke="#33302B" stroke-width="1.4" stroke-linejoin="round"/><path d="M222 24 L222 96" stroke="#33302B" stroke-width="1.5"/><path d="M222 54 A6 6 0 0 0 222 66" fill="#D5BB8F" stroke="#33302B" stroke-width="1.2"/><path d="M216 30 L212 30 L212 36 M228 90 L232 90 L232 84" fill="none" stroke="#D9695A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M292 112 L210 112" fill="none" stroke="#33302B" stroke-width="1.5" stroke-linecap="round"/><path d="M211.8 109.1 L206 112 L211.4 114.7" fill="none" stroke="#33302B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="200" cy="112" r="3.4" fill="#33302B"/><circle cx="200" cy="112" r="7" fill="none" stroke="#33302B" stroke-width="1" opacity=".5"/><text x="176" y="134">bring the pointer onto it</text><text x="176" y="148">it takes the card half in</text><text x="176" y="162"><tspan class="gm-k">let go = back in</tspan></text><text class="gm-cn gm-dim" x="176" y="176">指到卡套上 = 放回</text><text class="gm-dim" x="4" y="196">dashed: the card's place</text></svg>
+      <p class="gm-cap">the flip happens in the card's own footprint; only the sleeve moves it</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">Flip in place, back in by the sleeve <span class="display-cn">原地翻面，卡套收回</span></span><span class="cand-mech">sideways friction pull · lip catch · lift · in-place turn preview · pointer-targeted dock · pen radar · physics + hand's clock</span></div>
+      <div class="stage hs-stage">
+        <div class="sc-kicker">FIELD GUIDE · SET 01 · SPECIMEN 001</div>
+        <div class="ctl-slot"></div>
+        <div class="rig">
+          <div class="sl sl-back" aria-hidden="true"><svg></svg></div>
+          <div class="card-pos">
+            <div class="a-card" id="r7-card" tabindex="-1" role="group" aria-roledescription="specimen card · 标本卡" aria-label="标本卡，日间形态。按回车或空格翻面，按 Esc 放回卡套。Specimen card, day form. Enter or Space turns it over; Escape puts it back in the sleeve.">
+              <article class="sc-face sc-day a-face a-day" aria-hidden="false"></article>
+              <article class="sc-face sc-night a-face a-night" aria-hidden="true"></article>
+            </div>
+            <div class="sc-fig" aria-hidden="true">fig.04</div>
+          </div>
+          <div class="sl sl-front">
+            <svg class="sl-kraft" aria-hidden="true"></svg>
+            <div class="sl-print" aria-hidden="true">
+              <div class="sl-k">FIELD GUIDE · 001</div>
+              <div class="sl-t"><span lang="zh">标本卡</span> <span class="sl-t-en">SPECIMEN CARD</span></div>
+              <div class="sl-rule"></div>
+              <ul class="sl-forms"><li><span class="sl-box"></span><span><span lang="zh">日间</span> DAY</span></li><li><span class="sl-box"></span><span><span lang="zh">夜间</span> NIGHT</span></li></ul>
+            </div>
+            <div class="sl-warn" aria-hidden="true"><span lang="zh">请勿折叠</span><span>DO NOT BEND</span></div>
+            <svg class="sl-impact" aria-hidden="true"></svg>
+            <div class="bird" aria-hidden="true"><div class="bird-sprite"></div></div>
+            
+          </div>
+          <div class="a-shadow" aria-hidden="true"></div>
+          <button type="button" class="grip" aria-controls="r7-card" aria-label="从卡套里抽出标本卡。按回车，或往右拖。Pull the specimen card out of its sleeve: press Enter, or drag right."></button>
+          <div class="cue" aria-hidden="true"><svg class="cue-arrow" viewBox="0 -12 40 24"></svg><span class="cue-t"><span class="hand-cn">抽出来</span> · pull</span></div>
+          <div class="hold-note" aria-hidden="true"><p class="hn-flip"><span class="hand-cn">点击或拖动翻面</span><span class="hn-en">tap or drag to flip</span></p><p class="hn-back"><span class="hand-cn">拖进卡套放回</span><span class="hn-en">drag it into the sleeve to put back</span></p></div>
+        </div>
+        <blockquote class="sc-statement"><span class="sc-zh" lang="zh">世如未竟天工卷，格物致知珞玉心。</span><span class="sc-en" lang="en">BY DAY, I MAKE THINGS HAPPEN. BY NIGHT, I KEEP THEM FROM DISAPPEARING.</span></blockquote>
+        <div class="soc-slot"></div>
+        <span class="hint hs-hint"></span>
+      </div>
+      <div class="cand-foot"><div>The sleeve stands on the desk with its mouth to the right and the card's edge showing through a thumb notch. <b>Pull</b> it to the right. It holds, slips, then slides; the hand holding the sleeve gives a little the other way; and the edge catches on the lip for a beat before it pops free. It is <b>lifted into your hand</b> beside the sleeve, and there it stays. <b>Tap it, or drag across it and let go</b>, and it turns over where it is; the radar draws itself at night. To put it away, <b>bring your pointer onto the sleeve</b>. The sleeve takes the card half in, and letting go there slides it home.
+        <div class="rule"><b>the release rule · 松手规则</b>, with one question: where is the <i>pointer</i> when you let go?
+          <span>① in the sleeve zone (the sleeve itself, plus a margin past its mouth that stops short of the card: <span data-rule="trav">220</span> px from the card's centre, <span data-rule="zw">51</span> px wide) → <b>back in</b>;</span>
+          <span>② anywhere else → <b>flip, in place</b>, toward the drag's net sideways direction, at any speed and over any distance. A drag with less than <span data-rule="side">12</span> px of sideways travel counts as vertical and flips to the right. A tap (&lt; <span data-rule="tap">6</span> px, &lt; <span data-rule="ms">450</span> ms) flips too;</span>
+          <span>③ nothing else. Only a gesture the browser takes for scrolling (<code>pointercancel</code>) does nothing.</span>
+          <span>While you drag, the card never moves except into the sleeve. Out of the zone it turns in place (<span data-rule="pmin">10</span>° at once, up to <span data-rule="pmax">40</span>° after <span data-rule="pat">130</span> px). As the pointer nears the zone the sleeve's lip bows toward it. In the zone the card sits half in the mouth, flat.</span></div>
+        <div class="tradeoff"><b>cost</b> as r6, minus the carry: one rAF loop that sleeps at rest · 9 flat plies · the lip is one path rewritten only while it moves · one clip-path while the card is in the mouth · <b>fit</b> 1440×900: the card in the hand (432×740) and the sleeve beside it fit one screen · 390×844: the card (316×542) beside the sleeve set aside at the left edge, the hand-note under it · <b>a11y</b> as r6: the sliver is a button (Enter / Space / → pulls, focus moves to the card); on the card Enter / Space / → turn it over, ← the other way, Esc puts it back; 放回 / PUT BACK follows FLIP in the tab order and shows while focused; coral 「 」 on focus · <b>touch</b> tap to flip, drag sideways and let go to flip in place, drag your thumb to the sleeve strip at the page edge to put back; a swipe that starts vertical scrolls and leaves the card alone · <b>reduced motion</b> card presented out of the sleeve; no turn while dragging; flip and put-back instant on release</div></div><button class="replay" data-replay="replayR7">↻ replay</button></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>Ship this as the About card.</b> The card now behaves like a card you are holding. Turning it over doesn't move it, and it leaves your hand only when you put it back. The rule is still r6's single question, asked of your pointer: <i>on the sleeve it goes back in; anywhere else it turns over.</i> Both outcomes show before you let go: the card turning where it is, or the card half in the sleeve's mouth.</p>
+    <p>Watch: a drag that crosses the sleeve on its way somewhere else does take the card to the mouth and back, since the pointer passed through the zone. It returns to its exact place and then flips there. On a phone the zone is at the page edge, so a flip toward the left that runs all the way to the edge puts the card back instead; the half-inserted card shows that before you let go. Because the card no longer follows the finger, a drag carries no sense of weight. That is the trade Fred asked for.</p>
+    <div class="record">执行模式：精修（第七轮 · 原地翻面；只有进卡套时卡才移动）
+表达锚点：拿在手里的卡不跟着手指走，只在原地转；要收回时，指到卡套上，卡套才把它接过去。
+动作时钟：物理时钟 —— 抽出（r5 不变）；手里：卡原地转（绕自身中线，一动就 10°，拖过三分之一个卡宽到 40°），只抬起一点点；松手 → 从转到的角度原地翻完（一次小回弹，不往返）；指针靠近卡套 → 卡套口按距离向指针弯（墨色，不用珊瑚色）；指针进卡套区 → 珊瑚色「 」、卡滑到卡套口半插进去（卡唯一的移动），转角回到 0；指针离开 → 卡滑回原位、转角接着按拖动方向转；在区内松手 → 推进去；手的时钟 —— 两帧冲击线、小鸟定格、雷达逐笔画出、清单钢笔勾。
+映射（松手规则）：指针在卡套区内 → 放回；否则 → 原地、顺着横向拖动方向翻面（几乎竖直或拖回原处 → 向右）；点击 → 翻面；浏览器接管为滚动 → 什么也不做。
+卡套区：卡套本身 + 卡套口外一段（不碰到卡）。手机上是页面左边的卡套条加上页边，51 px 宽、与卡同高。
+键盘：同 r6（Enter / 空格翻面，Esc 放回，获得焦点才出现的“放回 / PUT BACK”）。
+提示：点击或拖动翻面 · 拖进卡套放回；两件事各做过一次后本次会话不再出现。
+色彩计划：牛皮纸为结构色；静止时珊瑚色只在日面手写批注 / 夜面雷达（以及抽出前的一支提示箭头）；卡套口的「 」只在指针进区时短暂出现；无高光、无流光、无光晕，接触阴影用网点。</div>
+  </div></section>
+</main>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script><script src="r3-02-arrow.js"></script>
+<script src="r4-07-about-kit.js"></script><script src="r6-07-about-sleeve.js"></script><script src="r7-07-about-rig.js"></script><script src="r7-07-about-hands.js"></script>
+</body></html>

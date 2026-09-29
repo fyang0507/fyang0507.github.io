@@ -1,0 +1,139 @@
+/* Board r3-02 — the pointer: anatomy, key poses, the specimen sheet and the playground. */
+
+.ptr{margin-top:36px;padding:18px 20px 24px;border:1.5px solid var(--ink);border-radius:10px}
+.ptr .morph-sub{margin-left:auto;font-size:11px;color:var(--pencil)}
+
+/* ---- anatomy ---- */
+.anat{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:18px}
+.anat-fig{display:flex;flex-direction:column;min-width:0;padding:12px 14px;border:1px dashed var(--line);border-radius:8px}
+.anat-art{position:relative;height:232px;overflow:hidden}
+.anat-art svg{position:absolute;left:0;top:0}
+.anat-fig figcaption{margin-top:10px;font-size:11px;line-height:1.55;color:var(--pencil)}
+.anat-fig figcaption b{font-weight:500;color:var(--ink)}
+.an-box{fill:none;stroke:#CFC1A9;stroke-width:1;stroke-dasharray:3 3}
+.an-word{font-family:var(--text);font-weight:500;fill:var(--ink)}
+.an-lab{font:400 13px var(--text);fill:var(--ink)}
+.an-chord{fill:none;stroke:var(--pencil);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
+.an-dim{fill:none;stroke:var(--pencil);stroke-width:1}
+.an-lead{fill:none;stroke:var(--pencil);stroke-width:1;stroke-dasharray:2 2}
+.an-t{font:10.5px var(--util);letter-spacing:.02em;fill:var(--soft)}
+.an-s{font:6.5px var(--util);fill:var(--pencil)}
+.an-ghost{fill:none;stroke:var(--pencil);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.an-first{fill:none;stroke:var(--ink);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.an-n{font:500 7.5px var(--util);fill:var(--pencil)}
+.an-n.first{fill:var(--ink)}
+
+/* ---- the arrow's key poses ---- */
+.poses{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-top:14px}
+.pf{min-width:0;border:1px dashed var(--line);border-radius:8px;padding:0 0 10px}
+.pf-s{position:relative;height:104px;overflow:hidden}
+.pf-s > .sx-k,.pf-s > .sx-h{position:absolute}
+.pf-t{padding:0 12px;font-size:11px;line-height:1.5;color:var(--soft)}
+.pf-t b{display:block;font-weight:500;color:var(--ink)}
+.pf-n{float:right;color:var(--pencil)}
+
+/* ---- the specimen sheet ---- */
+.tiles-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+.tiles-title{font:500 17px/1.2 var(--disp)}
+.tiles-title .display-cn{margin-left:6px;font-size:.92em;color:var(--soft)}
+.tiles-note{flex:1 1 320px;font-size:11px;line-height:1.5;color:var(--pencil)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:14px}
+.tile{display:flex;flex-direction:column;min-width:0}
+.tile-vs,.tile-phone{grid-column:span 2}
+.tile-f{position:relative;height:var(--th,172px);overflow:hidden;border:1px solid var(--line);border-radius:8px;background:var(--paper);container-type:inline-size}
+.tile-f > :not(svg):not(.pt-note),.sx-phone > :not(svg):not(.pt-note),.play-f > :not(svg):not(.pt-note),.sx-board > *{position:absolute}
+.tile-c{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;margin-top:8px;font-size:12.5px;line-height:1.4;color:var(--ink)}
+.tile-n{grid-row:span 2;padding-top:1px;font-size:10.5px;color:var(--pencil)}
+.tile-t b{font-weight:500}
+.tile-t .zh{font-size:12px;color:var(--soft)}
+.tile-r{font-size:10.5px;line-height:1.5;color:var(--soft)}
+.tile-r2 .tile-r{color:var(--ink)}
+.is-none .tile-f{border-style:dashed}
+
+/* scene pieces: the site's own type, small */
+.sx-p{font:400 13.5px/1.55 var(--text);color:var(--soft)}
+.sx-p.zh{font-family:var(--text-cn);font-size:13px}
+.sx-dense{line-height:1.5}
+.sx-in{color:var(--ink);font-weight:500}
+.sx-lab{font:500 16.5px/1.3 var(--text);color:var(--ink);white-space:nowrap}
+.sx-lab .zh{font:500 15.5px/1.3 var(--text-cn)}
+.sx-lab .sep{color:var(--pencil)}
+.sx-mid{left:50%;transform:translateX(-50%)}
+.sx-k{font:11px/1.3 var(--util);color:var(--pencil);white-space:nowrap}
+.sx-ic{display:grid;place-items:center;width:38px;height:38px;border:1.5px solid var(--ink);border-radius:50%;font:500 14px/1 var(--util);color:var(--ink)}
+.sx-tag{font:400 15px/1.3 var(--text);color:var(--soft);white-space:nowrap}
+.sx-tag sup{margin-left:3px;font:10.5px/1 var(--util);color:var(--pencil)}
+.sx-wrap{white-space:normal}
+.sx-cloud{left:12px;right:12px;top:14px;display:flex;flex-wrap:wrap;column-gap:22px;row-gap:30px;align-items:baseline}
+.sx-rows{left:0;right:0;top:18px;display:grid;row-gap:34px}
+.sx-rows > div{display:flex;justify-content:center;column-gap:22px}
+.sx-rows .sx-tag{font-size:14px}
+.sx-pc{left:16px;right:16px;top:50px;row-gap:22px;column-gap:28px}
+.sx-h{font:500 24px/1.15 var(--disp);color:var(--ink);white-space:nowrap}
+.sx-h.sm{font-size:19px}
+.sx-phone{left:50%;top:0;bottom:0;width:min(358px,100%);transform:translateX(-50%);border-left:1px dashed var(--line);border-right:1px dashed var(--line)}
+
+/* a small corkboard: the lead card and the next one, hung as on Building */
+.sx-board{position:absolute;inset:0;background-color:#EEE4CE;background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:24px 24px}
+.sx-card{display:flex;flex-direction:column;padding:18px 18px 16px;border:1.5px solid #CFC1A9;border-radius:10px;background:var(--paper);box-shadow:0 8px 20px rgba(60,50,35,.10);transform-origin:50% 14px}
+.sx-lead{left:18px;top:46px;width:262px;border-color:transparent;background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper));transform:rotate(-1.4deg)}
+.sx-two{left:318px;top:124px;width:196px;transform:rotate(2.2deg)}
+.sx-kind{font:500 9.5px/1.3 var(--util);letter-spacing:.06em;color:var(--soft)}
+.sx-ct{margin-top:9px;font:500 25px/1.15 var(--disp);color:var(--ink)}
+.sx-ct.sm{font-size:18px}
+.sx-cn{margin-top:8px;font:400 12.5px/1.5 var(--text);color:var(--soft)}
+.sx-pin{left:142px;top:32px;width:14px;height:14px;border-radius:50%;background:var(--ink);box-shadow:2px 3px 0 -1px rgba(60,50,35,.22)}
+.sx-pin2{left:430px;top:110px;background:#3D5C52}
+.r2-note{visibility:visible}
+@container (max-width:479px){
+  .sx-lead{left:14px;top:84px;width:min(250px,78%)}
+  .sx-two{left:calc(min(250px,78%) + 40px);top:124px}
+  .sx-pin{left:calc(7px + min(125px,39%));top:70px}
+  .sx-pin2{left:calc(min(250px,78%) + 130px);top:110px}
+}
+
+/* ---- the playground ---- */
+.play{margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+.play-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 28px}
+.play-title{font:500 17px/1.2 var(--disp)}
+.play-title .display-cn{margin-left:6px;font-size:.92em;color:var(--soft)}
+.play-note{margin-top:6px;max-width:640px;font-size:13.5px;line-height:1.5;color:var(--soft)}
+.play-opts{display:flex;flex-wrap:wrap;gap:10px 30px;padding:0 6px 4px}
+.po{position:relative;padding:2px 0;font:400 15px/1.3 var(--text);color:var(--soft)}
+.po .zh{font:400 14px/1.3 var(--text-cn)}
+.po[aria-pressed="true"]{color:var(--ink)}
+.play-f{position:relative;height:340px;margin-top:14px;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:var(--paper);container-type:inline-size}
+.play-t{padding:0;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
+.play-t > *{position:relative}
+.play-t.is-drag{cursor:grabbing}
+.play-t .sx-ic{display:grid}
+.pl-p{left:3%;top:18px;width:31%}
+.pl-h{left:44%;top:22px}.pl-k{left:44%;top:58px}
+.pl-i1{right:calc(3% + 50px);top:20px}.pl-i2{right:3%;top:20px}
+.pl-pin{left:36%;top:44%}
+.pl-c{left:3%;top:56%;width:40%;right:auto}
+.pl-z{left:54%;top:50%;width:40%}
+.pl-n{left:3%;bottom:16px}
+.play-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 20px;margin-top:10px}
+.play-pick{font-size:11.5px;color:var(--ink)}
+.play-audit{margin-top:10px;font-size:11.5px;line-height:1.65;color:var(--soft)}
+.play-audit b{font-weight:500;color:var(--ink)}
+@container (max-width:560px){
+  .pl-p{left:12px;top:14px;width:58%}
+  .pl-i1{right:56px;top:14px}.pl-i2{right:12px;top:14px}
+  .pl-h{left:12px;top:150px}.pl-k{left:12px;top:184px}
+  .pl-pin{left:72%;top:156px}
+  .pl-c{left:12px;top:236px;width:90%}
+  .pl-z{left:12px;top:336px;width:82%}
+  .pl-n{left:12px;bottom:12px}
+}
+
+@media (max-width:900px){
+  .anat{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:620px){
+  .tile-vs,.tile-phone{grid-column:auto}
+  .ptr{padding:16px 14px 20px}
+  .anat-art{height:214px}
+  .play-f{height:480px}
+}

@@ -1,0 +1,20 @@
+/* R3 · board 10 — on top of r2-10-opener.css (stage, options, beats, what-changed strip; loaded unchanged):
+   the flash-audit table and the filmstrips of the new half. */
+.changed-row q.nq{quotes:none;color:var(--soft)}   /* a row that answers a consequence, not a quote */
+.audit{margin-top:28px;padding:16px 18px 6px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.audit-k{font:500 11px/1.4 var(--util);letter-spacing:.1em;color:var(--mark)}
+.audit-k span{margin-left:10px;letter-spacing:.02em;color:var(--pencil);font-weight:400}
+.audit table{width:100%;margin-top:10px;border-collapse:collapse;font:12px/1.5 var(--util),var(--util-cn);color:var(--soft)}
+.audit th,.audit td{padding:8px 10px 8px 0;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+.audit thead th{border-top:0;font-weight:400;color:var(--pencil)}
+.audit tbody th{font-weight:500;color:var(--ink);white-space:nowrap}
+.audit b{color:var(--ink);font-weight:500}
+@media (max-width:760px){.audit table,.audit tbody,.audit tr,.audit th,.audit td{display:block}.audit thead{display:none}.audit td{border-top:0;padding:1px 0}.audit td::before{content:attr(data-k) " · ";color:var(--pencil)}.audit tbody tr{padding:8px 0;border-top:1px solid var(--line)}.audit tbody th{border-top:0}}
+
+.strips{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.strips figure{margin:0}
+.strips img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:var(--paper2)}
+.strips figcaption{margin-top:7px;font:11.5px/1.6 var(--util),var(--util-cn);color:var(--pencil)}
+.strips figcaption b{color:var(--ink);font-weight:500;margin-right:6px}
+/* on a phone each strip scrolls sideways inside its own figure, at a height where the frames can be read */
+@media (max-width:760px){.strips figure{overflow-x:auto;min-width:0}.strips img{width:auto;height:150px;max-width:none}}

@@ -1,0 +1,109 @@
+/* 10 · D — 连锁反应 / the chain-reaction gag. Page = index.html's geometry; .op = the opener layer,
+   drawn in the desk's own coordinate space (percent of the 1448 × 1086 drawing) so every object
+   lands on the pixel it occupies in the live desk underneath. */
+html,body{min-height:100%}
+body{overflow-x:hidden}
+html.opening,html.opening body{overflow:hidden}
+.pg{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 4vw 36px}
+.pg-head{width:min(1180px,100%);display:flex;justify-content:space-between;align-items:flex-start;gap:20px;position:relative;z-index:6}
+.deskbox{position:relative;width:min(1180px,100%,calc((100vh - 240px)*1.3333));aspect-ratio:1448/1086;margin-top:4px;container-type:inline-size;transform-origin:0 0}
+.deskbox .desk{width:100%}
+.mnav{display:none;width:min(1180px,100%);flex-wrap:wrap;gap:8px 26px;margin-top:14px;font:24px/1.3 var(--hand-cn),var(--hand)}
+.mnav a{border-bottom:2px solid var(--mark)}
+.fig{width:min(1180px,100%);margin-top:14px;font:12.5px/1 var(--util);color:var(--pencil)}
+@media (max-width:760px){
+  .desk .navnote,.desk .arrows{display:none!important}
+  .mnav{display:flex}
+}
+
+/* while the gag runs, the page chrome waits; it rises when the desk goes live */
+html.opening .pg-head,html.opening .mnav,html.opening .fig,html.opening .desk .navnote,html.opening .desk .arrows,html.opening .desk .spark{opacity:0}
+.pg-head .site-identity,.mnav,.fig{animation:opRise .7s cubic-bezier(.2,.7,.2,1) both}
+.mnav{animation-delay:.12s}.fig{animation-delay:.2s}
+html.opening .pg-head .site-identity,html.opening .mnav,html.opening .fig{animation:none}
+@keyframes opRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* the episode card: 日常 · ep.NN, stamped once, then it stays as a quiet corner label */
+.ep{align-self:center;display:grid;gap:3px;padding:6px 11px 7px;border:1.5px solid var(--ink);border-radius:4px;background:var(--paper);transform:rotate(-2deg);white-space:nowrap;visibility:hidden}
+.ep.on{visibility:visible}
+.ep-t{display:flex;align-items:baseline;gap:7px;line-height:1}
+.ep-cn{font:400 21px/1 var(--disp-cn);letter-spacing:.04em}
+.ep-no{font:italic 500 17px/1 var(--disp)}
+.ep-sub{font:9px/1.2 var(--util),var(--util-cn);letter-spacing:.08em;color:var(--pencil)}
+@media (max-width:760px){.ep{padding:5px 8px 6px}.ep-cn{font-size:17px}.ep-no{font-size:14px}.ep-sub{font-size:8px}}
+@media (max-width:420px){.ep-sub{display:none}}
+
+/* ---- the opener layer ---- */
+.op{position:absolute;inset:0;z-index:20;background:var(--paper);cursor:pointer;overflow:visible;-webkit-tap-highlight-color:transparent}
+.op-shake{position:absolute;inset:0}
+/* cut layers are full-desk <img>s (same geometry as the live .scene-img) behind binary masks;
+   their src and mask URLs arrive only once the loader has streamed them (no double download) */
+.op-cut{position:absolute;left:0;top:0;width:100%;height:auto;pointer-events:none;-webkit-mask:0 0/100% 100% no-repeat;mask:0 0/100% 100% no-repeat}
+.op-cut.plate{opacity:0}
+.op.set .op-cut.plate,.op.set .op-edge{opacity:1;transition:opacity .16s linear}
+.op-edge{position:absolute;left:0;top:0;width:100%;opacity:0;pointer-events:none}
+.op.g1 .op-cut.plate{-webkit-mask-image:url("assets-gen/10d-mask-plate.png");mask-image:url("assets-gen/10d-mask-plate.png")}
+.op.g1 .op-cut.obj{-webkit-mask-image:url("assets-gen/10d-mask-obj.png");mask-image:url("assets-gen/10d-mask-obj.png")}
+.op.g1 .op-cut.aux{-webkit-mask-image:url("assets-gen/10d-mask-aux.png");mask-image:url("assets-gen/10d-mask-aux.png")}
+.op-body.full,.op-leaf{position:absolute;inset:0}
+/* a landed object covers its restored table edge; the drawing's own pixels take over */
+.op-edge.gone{visibility:hidden}
+.op-leafpatch{position:absolute;inset:0;background:var(--paper);-webkit-mask:0 0/100% 100% no-repeat;mask:0 0/100% 100% no-repeat}
+.op.g1 .op-leafpatch{-webkit-mask-image:url("assets-gen/10d-mask-aux.png");mask-image:url("assets-gen/10d-mask-aux.png")}
+.op.swapped{background:transparent}
+.op.swapped .op-shake>*:not(.op-plant){visibility:hidden}
+.op-body{position:absolute;visibility:hidden}
+.op-body.in{visibility:visible}
+.op-tone{visibility:hidden}.op-tone.in{visibility:visible}
+html.opening .desk .spark{visibility:hidden}
+
+.op-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.op-svg .ln{fill:none;stroke:var(--mark);stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
+.op-svg .tk{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round}
+.op-lbl{position:absolute;right:3.2%;top:77.2%;font:clamp(9px,1.02cqw,12px)/1 var(--util),var(--util-cn);letter-spacing:.04em;color:var(--pencil);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+.op.portrait .op-lbl{right:auto;left:24.5%;font-size:clamp(9px,2.4cqw,12px)}   /* inside the portrait crop */
+.op-book{left:36.04%;top:61.5%;width:21.34%;aspect-ratio:462/355}
+.op-bookface{position:absolute;inset:0;background:0 0/600% 100% no-repeat}
+.op.g2 .op-bookface{background-image:url("../../assets/book-flip2-light.png")}
+.op-frame{left:55.23%;top:33.03%;width:15.54%;aspect-ratio:616/577}
+.op-fframe{position:absolute;inset:0;background:0 0/400% 100% no-repeat}
+.op.g2 .op-fframe{background-image:url("../../assets/frame-exp3-light.png")}
+.op-frame.air .op-fframe{clip-path:polygon(18.2% 1%,83% 4.9%,82% 52%,85.6% 81.5%,77.6% 82.1%,76.9% 91.5%,12.3% 87%)}
+.op-slab{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;display:none}
+.op-frame.flat .op-slab{display:block}.op-frame.flat .op-fframe{visibility:hidden}
+.op-slab path{fill:#FBF7EE;stroke:#3a342d;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.op-slab .kick{fill:none;stroke-width:4}
+
+.op-bird{position:absolute;top:67.5%;width:7%;aspect-ratio:308/317;visibility:hidden}
+.op-bird.in{visibility:visible}
+.op-bpose{position:absolute;inset:0;transform-origin:38% 82%}
+.op-bframe{position:absolute;inset:0;background:0 0/600% 100% no-repeat}
+.op-bird.lean .op-bframe{clip-path:inset(0 0 17.5% 0)}   /* leaning, it stands on the pen line, not on its own ground stroke */
+.op.g1 .op-bframe{background-image:url("../../assets/bird-strip6-light.png")}
+.op-blink{position:absolute;inset:0;width:100%;height:100%;display:none}
+.op-bird.blink .op-blink{display:block}
+
+.op-screen{position:absolute;left:25.8%;top:28%;width:23%;font-family:var(--util);letter-spacing:.02em;font-size:1.75cqw;line-height:1.7;white-space:pre-line;pointer-events:none}
+.op-caret{display:inline-block;width:.55em;height:1.05em;background:var(--mark);vertical-align:-.15em;margin-left:2px;visibility:hidden}
+.op-caret.on{visibility:visible}
+.op-steam{position:absolute;left:26.3%;top:46.5%;width:6.8%;overflow:visible;pointer-events:none}
+.op-steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;opacity:0}
+.op-flash{position:absolute;inset:0;opacity:0;pointer-events:none;background:radial-gradient(circle 21cqw at 76.8% 71%,rgba(255,255,255,1) 0%,rgba(255,255,255,.72) 35%,rgba(255,255,255,0) 100%)}
+.op-cstar{position:absolute;left:74.6%;top:70.7%;width:4.3%;overflow:visible;opacity:0;pointer-events:none}
+.op-kacha{position:absolute;left:79%;top:54.5%;font:2.7cqw/1 var(--hand-cn),var(--hand);color:var(--mark);white-space:nowrap;opacity:0;pointer-events:none}
+
+/* the eyecatch insert: a hard cut to the bird alone on cream — the deadpan register */
+.eye{position:fixed;inset:0;z-index:900;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,3vh,26px);padding-bottom:4vh}
+.eye-bird{position:relative;width:min(40vw,33vh);aspect-ratio:308/317;transform:scaleX(-1)}
+.eye-bird .op-bframe{background-image:url("../../assets/bird-strip6-light.png")}
+.eye-bird .op-blink{display:none}.eye-bird.blink .op-blink{display:block}
+.eye .ep{visibility:visible;transform:rotate(-2deg) scale(1.2)}
+
+/* ---- mockup-only control strip ---- */
+.ctl{position:fixed;left:12px;bottom:10px;z-index:1000;display:flex;flex-wrap:wrap;align-items:center;gap:2px 0;font:11px/1 var(--util);letter-spacing:.03em;color:var(--pencil);opacity:.72}
+.ctl:hover,.ctl:focus-within{opacity:1}
+.ctl button{padding:5px 4px;color:inherit}
+.ctl button:hover{color:var(--ink)}
+.ctl button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.ctl .sep{padding:0 3px;opacity:.6}

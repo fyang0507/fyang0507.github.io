@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>r2 · 01 · The desk becomes the nav — redesign mockups</title>
+<link rel="icon" href="../../favicon.png">
+<link rel="stylesheet" href="shared/mock.css">
+<link rel="stylesheet" href="../../site-nav.css">
+<link rel="stylesheet" href="r2-01-transitions.css">
+<link rel="stylesheet" href="r2-01-pages.css">
+</head><body>
+<main class="board">
+  <header class="board-head">
+    <div><div class="board-no">BOARD 01 · ROUND 2</div><h1 class="board-title">The desk becomes the nav <span class="display-cn">桌子变成导航</span></h1></div>
+    <div><p class="board-why">Round 1’s A carried only the object you clicked into its tab. The site holds a bigger rhyme it never plays: the desk and the subpage header are <b>the same drawing at two sizes</b>, four objects standing on one line, and the table’s front edge is the nav’s 1.5px rule waiting to happen. Every navigation between them is still a hard cut.</p>
+      <p class="evidence">evidence: <code>index.html:131</code> the desk is one raster (laptop and camera baked in) · <code>site-nav.css:31</code> the rule is a masked <code>::after</code> · <code>site-nav.css:43–53</code> 90px slots, sprite 22px above the rule, ×.72 on phones · no <code>@view-transition</code> anywhere</p></div>
+  </header>
+
+  <section class="r2-changed">
+    <div class="k">WHAT CHANGED<br>FROM ROUND 1</div>
+    <div><q>All design looks great; any chance we can combine them together or make the animation even more impressive? … sleek but ordinary … If I have to choose between them I’d say A.</q>
+      <p>A stays the carrier, scaled from one object to <b>the whole desk</b>: all four objects travel, each with its own mass; the table folds into its front edge and that edge becomes the rule; the props with no slot fall away; home runs it back on gravity. Tab→tab keeps A’s sliding folder tab and adds <b>a relay of hops</b>. Round 1’s B (the dolly) is folded into candidate B as a window that stays behind. Every motion is now a retargetable spring or a real throw, so a click mid-flight reverses or redirects it. <b>¼× slow</b> under each stage is for studying the motion.</p></div>
+  </section>
+
+  <section class="cands wide">
+    <article class="cand pick" id="cand-a">
+      <div class="cand-head"><span class="cand-letter">A</span><span class="cand-name">The desk becomes the nav <span class="display-cn">桌子变成导航</span></span><span class="cand-mech">4 carried objects · table → its edge → the rule · props fall · pen tab · relay hops · physics + hand’s clock</span></div>
+      <div class="stage ms-stage"><span class="hint">click any object on the desk ↗</span></div>
+      <div class="cand-foot"><div>Click an object and the whole desk files itself into the header. The one you touched lifts first; the others follow in a ripple, each on an arc with its own mass (the laptop hauls, the frame flits). The table folds up into its front edge; the edge unhooks, straightens and rises, sagging in the middle like a line pulled by both ends, and lands as the 1.5px rule just as the objects set down on it. The mug, the plant and the bird have no slot: a held beat, then they drop. The pen draws the folder tab around your object and the page lands under it. <b>Home</b> reverses on gravity: the rule drops, the table springs open from it, the objects fall onto it and bounce (the laptop thuds), the props drop back in, the pen redraws the notes. <b>Tab→tab</b>: the folder tab slides on a spring while a hop is passed along the row, from the object you leave to the one you open, on held frames.
+        <div class="tradeoff"><b>cross-document build</b> <code>@view-transition{navigation:auto}</code> on all five pages. Named groups <code>obj-laptop · obj-book · obj-frame · obj-camera</code> (desk object ↔ <code>.site-nav-object</code>) and <code>identity</code>; old-only groups <code>desk-table · desk-mug · desk-plant · desk-bird · desk-edge</code> for the parts with nowhere to go, animated by plain CSS keyframes (scaleY→0 about the edge; fall + rotate). The rule has to become a real <code>.site-rule</code> element instead of <code>::after</code>. <b>What needs JS</b> (~150 lines, this board’s <code>r2-01-physics.js</code>): <code>pageswap</code> stores the measured rects in <code>sessionStorage</code>; <code>pagereveal</code> samples each object’s arc and spring into keyframes for <code>::view-transition-group(obj-*)</code> via <code>animate(…, {pseudoElement})</code>, and draws the edge→rule as a live SVG on the new page (a snapshot can’t sag or straighten), then the pen tab and title with WAAPI. Tab→tab needs no JS logic: a <code>tabmark</code> group on a <code>linear()</code> spring, the hops as <code>steps()</code> keyframes on the <code>obj-*</code> groups, delays picked by a view-transition type. <b>Firefox</b> (no cross-document View Transitions) and anything else without them keep today’s hard cut, so nothing breaks. · <b>interrupt</b> this board retargets mid-flight; across real page loads a click mid-transition skips the running one to its end and starts the next. · <b>a11y</b> reduced motion → <code>@view-transition{navigation:none}</code>, an instant swap (switch at the top); input is never blocked; focus lands on the destination tab or desk object. · <b>cost</b> settles in ≤0.97 s, page readable from 0.6–0.73 s; the desk ships as layers (<code>tools/r2-01-cut.py</code>: 590 KB of cutouts replace the 860 KB raster).</div></div>
+        <div class="r2-btns"><button class="replay" data-replay="replayA">↻ replay</button><button class="replay" data-slow="cand-a" aria-pressed="false">¼× slow</button></div></div>
+    </article>
+
+    <article class="cand" id="cand-b">
+      <div class="cand-head"><span class="cand-letter">B</span><span class="cand-name">…and the window stays <span class="display-cn">窗留下</span></span><span class="cand-mech">A + round 1’s dolly: the surface is a window · one fixed point · clip-path</span></div>
+      <div class="stage ms-stage"><span class="hint">click any object on the desk ↗</span></div>
+      <div class="cand-foot"><div>Everything in A, plus the portal. When you click, the laptop’s blank screen (the book’s spread, the portrait’s picture, the camera’s lens) is already showing the destination. The object is lifted off its own screen; the window stays where it was and grows into the page about one fixed point, round 1’s dolly reversed: the page comes out of the object instead of the camera pushing in. Home drains the page back into the surface the object is falling onto.
+        <div class="tradeoff"><b>cross-document build</b> as A, plus the destination main as a named <code>page</code> group whose <code>::view-transition-new(page)</code> starts scaled into the surface and clipped to its outline (polygon, or circle for the lens), keyframes computed in <code>pagereveal</code> from the rects <code>pageswap</code> stored; the objects ship a second cut with the surface removed (<code>r2-01-hole-*</code>). · <b>cost</b> two big motions in the same second: the growing window covers the folding table, so A’s central image, the table turning into the line, is half hidden; type and photos scale up from about 0.2× and read soft for ~150 ms. Readable at 0.6 s for every destination. · <b>a11y</b> a zoom out of a point is exactly what reduced motion removes: instant swap. · <b>support</b> as A.</div></div>
+        <div class="r2-btns"><button class="replay" data-replay="replayB">↻ replay</button><button class="replay" data-slow="cand-b" aria-pressed="false">¼× slow</button></div></div>
+    </article>
+  </section>
+
+  <section class="verdict"><div class="verdict-k">RECOMMENDATION</div><div>
+    <p><b>A — The desk becomes the nav.</b> It is round 1’s A made into one event rather than a new idea: the desk turns into the header it was always drawn to be, so the site explains its own navigation. The surprise is physical and made of Fred’s own objects: the table folding into its edge, the edge becoming the rule, the mug and the plant dropping because their table left. No glow, no particles, no generic effect.</p>
+    <p>B is the more cinematic sibling, and the laptop lifted off its own screen is a real surprise, but it spends a second big motion in the same second and covers A’s best moment; it stays on the board for comparison. Watch in A: the rule must arrive just before the objects set down (they land on the shelf, not in the air); the props must be gone in under 0.4 s so they never compete with the rising line. It runs on every home↔page navigation, so it has to stay under a second and interruptible, and it does. Round 1’s episode card, if kept, should stay rationed to the first visit.</p>
+    <div class="record">执行模式：多阶段（候选 → 等待 Fred 选择）
+表达锚点：桌子就是导航：同一组物件站在同一条线上。点一个，整张桌子收进页眉，物件各归其位，桌沿变成导航线
+动作时钟：物理时钟 — 物件按各自质量沿弧线被弹簧搬运（笔记本沉、相框轻）；桌面折进前沿，前沿被两端拉起、中间下垂、到位一次小过冲；返回按重力抛落、落桌反弹（笔记本落下桌面一震）。手的时钟 — 笔一笔画出文件夹标签、收笔更快；“home”贴纸从线后逐帧探头；换标签的接力跳按 12fps 定格
+映射：点击 → 你碰的物件先被拿起；桌面失去物件 → 折进桌沿；桌沿 → 被拉直、升起成为导航线；杯子、植物、小鸟没有位置 → 停一拍后掉落；物件落到线上 → 笔画出标签、珊瑚点落定、标题落下；home → 线落下，桌子从线里弹开，物件落回反弹；换标签 → 跳跃从离开的物件传到新物件，标签外框随之滑过去
+线条计划：导航线与桌沿是同一条矢量线：桌沿的手绘起伏在上升中被拉直成 1.5px 墨线；标签外框用 pen.js 同一只手（固定种子）1.3px 一笔画成
+色彩计划：珊瑚色唯一持有者仍是激活标签上的圆点，在笔画完成后才出现；过渡中不新增颜色，无渐变、模糊、光泽</div>
+  </div></section>
+</main>
+<script src="../../content/building-projects.js"></script>
+<script src="shared/pen.js"></script><script src="shared/mock.js"></script>
+<script src="r2-01-physics.js"></script>
+<script src="r2-01-pages.js"></script>
+<script src="r2-01-desk.js"></script>
+<script src="r2-01-site.js"></script>
+<script src="r2-01-render.js"></script>
+<script src="r2-01-a.js"></script>
+<script src="r2-01-b.js"></script>
+<script src="r2-01-transitions.js"></script>
+</body></html>

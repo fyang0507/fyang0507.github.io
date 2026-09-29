@@ -1,0 +1,80 @@
+/* 08-reading-ab.css — candidate A (pencil margin) and B (footnotes that point). */
+
+/* stage-level overlays live outside .rd, so they need the page's dark tokens too */
+.rd-stage.is-dark{--paper:#1E1913;--paper2:#282018;--ink:#EFE5D3;--soft:#b0a591;--pencil:#8f8471;--mark:#EE8E72;--line:#37301f;
+  --card-shadow:0 1px 2px rgba(0,0,0,.3),0 14px 30px rgba(0,0,0,.35)}
+
+/* ================= A · Pencil margin ================= */
+.a-rail{position:absolute;z-index:20;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .25s var(--ease-out),visibility 0s .25s}
+#stage-a.a-reading.a-mode-rail .a-rail{opacity:1;visibility:visible;transition:opacity .25s var(--ease-out)}
+#stage-a.a-mode-strip .a-rail{display:none}
+.a-rail:not(.drawn) .a-lab{opacity:0}
+.a-svg{position:absolute;left:0;top:0;overflow:visible;color:var(--line)}
+.a-guide{fill:none;stroke:var(--line);stroke-width:1.5;stroke-linecap:round}
+.a-ink{fill:none;stroke:var(--pencil);stroke-width:1.6;stroke-linecap:round}
+.a-tick{color:var(--line)}
+.a-tick.read{color:var(--pencil)}
+.a-end{fill:none;stroke:var(--pencil);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.a-list{list-style:none;margin:0;padding:0}
+.a-lab{position:absolute;left:0;width:92px;height:24px;display:flex;align-items:center;justify-content:flex-end;padding-right:34px;pointer-events:auto;
+  font:11px/1 var(--util);letter-spacing:.04em;color:var(--pencil);text-decoration:none;transition:color .12s}
+.a-lab.read{color:var(--soft)}
+.a-lab.cur,.a-lab:hover,.a-lab:focus-visible{color:var(--ink)}
+.a-lab:focus-visible{outline:none}
+.a-lab:focus-visible .a-lab-t{outline:1.5px dashed var(--ink);outline-offset:3px}
+.a-lab-t{position:relative;display:inline-block;padding:2px 1px}
+.a-peek{position:absolute;left:84px;width:272px;padding:10px 14px 12px;background:var(--paper);border:1px solid var(--line);border-radius:4px;box-shadow:var(--card-shadow);
+  opacity:0;transform:translateX(-12px) rotate(-.5deg);transform-origin:0 50%;transition:opacity .1s,transform .14s var(--ease-out);pointer-events:none}
+.a-peek.on{opacity:1;transform:translateX(0) rotate(-.5deg);transition:opacity .12s,transform .46s var(--ease-settle)}
+.a-peek-no{display:block;margin-bottom:6px;font:500 10.5px/1 var(--util);letter-spacing:.06em;color:var(--pencil)}
+.a-peek-no::after{content:" · 本节首句 first line"}
+.a-peek-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:14px/1.7 var(--text-cn);color:var(--ink)}
+.rd-stage.is-en .a-peek-t{font:14px/1.55 var(--text)}
+/* the in-body markers become quiet utility headings that answer to the rail */
+#stage-a .rd .post-body .sec-no{font:500 12px/1 var(--util);letter-spacing:.08em;color:var(--pencil);padding-top:10px}
+#stage-a .rd .post-body.zh .sec-no{font:500 12px/1 var(--util)}
+#stage-a .rd .post-body .sec-no::before{content:"§ ";color:var(--line)}
+/* mobile: pencil hairline under the nav + counter */
+.a-hair{position:absolute;left:0;z-index:21;pointer-events:none;display:none;overflow:visible}
+#stage-a.a-mode-strip.a-reading .a-hair{display:block}
+.a-hair-ink{fill:none;stroke:var(--pencil);stroke-width:1.6;stroke-linecap:round}
+#stage-a.a-mode-strip .rd.nav-solid .rnav{border-bottom-color:transparent}
+.a-count{display:none;position:absolute;right:2px;top:50%;transform:translateY(-50%);font:11px/1 var(--util);letter-spacing:.03em;color:var(--pencil);white-space:nowrap;opacity:0;transition:opacity .2s}
+#stage-a.a-mode-strip .a-count{display:block}
+#stage-a.a-mode-strip .a-count.on{opacity:1}
+.a-count-no{position:relative;display:inline-block;padding:1px 2px;color:var(--ink);font-weight:500}
+
+/* ================= B · Footnotes that point ================= */
+/* notes in readable upright text; sources in ink, dates as machine-side facts in utility mono */
+.rd.b-notes .mn{font:13px/1.6 var(--text);color:var(--soft);transform:none;margin:4px -258px 22px 0;transition:color .15s}
+.rd.b-notes .post-body.zh .mn{font:13px/1.75 var(--text-cn)}
+.rd.b-notes .mn .num{position:relative;display:inline-block;margin-right:7px;padding:1px 2px;font:500 11px/1.2 var(--util);color:var(--pencil)}
+.rd.b-notes .mn em{font-style:normal;color:var(--ink)}
+.rd.b-notes .mn a{color:inherit;text-decoration:none}
+.rd.b-notes .mn .d{font:10.5px/1 var(--util);letter-spacing:.02em;color:var(--pencil);white-space:nowrap}
+.rd.b-notes .mn.on{color:var(--ink)}
+.rd.b-notes .fnref a{position:relative;display:inline-block;padding:0 2px;line-height:1.2;color:var(--ink)}
+.rd.b-notes .fnref a:hover{color:var(--ink)}
+.rd.b-notes .fnref a:focus-visible{outline:1.5px dashed var(--ink);outline-offset:2px}   /* the pen line is the coral event */
+.b-wire{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:3}
+.b-wire .b-dots{stroke-dasharray:.01 5.2!important;stroke-dashoffset:0!important}
+
+/* the slip: paper with a hand-cut top edge, on a spring */
+.b-slip{position:absolute;z-index:40;left:10px;right:10px;bottom:0;max-width:560px;margin:0 auto;visibility:hidden;transform:translateY(110%);touch-action:none;
+  filter:drop-shadow(0 -1px 1px rgba(60,50,35,.06)) drop-shadow(0 -10px 22px rgba(60,50,35,.12))}
+.rd-stage.is-dark .b-slip{filter:drop-shadow(0 -1px 1px rgba(0,0,0,.4)) drop-shadow(0 -10px 24px rgba(0,0,0,.45))}
+.b-slip:focus{outline:none}
+.b-slip::before{content:"";position:absolute;inset:0;background:var(--paper2);z-index:-1;
+  clip-path:polygon(0 4px,4% 1.5px,8% 3.5px,13% .8px,18% 3px,24% 1.2px,29% 3.6px,35% 1px,41% 2.8px,47% .6px,53% 3.2px,58% 1.4px,64% 3.4px,70% .9px,76% 2.9px,82% 1.1px,88% 3.3px,94% 1.3px,100% 3px,100% 100%,0 100%)}
+.b-grip{display:block;margin:8px auto 2px;padding:6px 10px;line-height:0}
+.b-grip path{fill:none;stroke:var(--pencil);stroke-width:2;stroke-linecap:round}
+.b-slip-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:6px;padding:8px 18px 4px}
+.b-slip-num{position:relative;justify-self:start;align-self:start;display:inline-block;margin-top:4px;padding:1px 4px;font:500 13px/1.3 var(--util);color:var(--ink)}
+.b-slip-t{font:15px/1.7 var(--text-cn);color:var(--ink);overflow-wrap:anywhere}
+.rd-stage.is-en .b-slip-t{font:15px/1.6 var(--text)}
+.b-slip-t em{font-style:normal}
+.b-slip-t a{text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.b-slip-t .d{font:12px/1 var(--util);color:var(--pencil);white-space:nowrap}
+.b-slip-foot{display:flex;justify-content:space-between;gap:12px;padding:10px 18px 18px 54px;font:10.5px/1.3 var(--util-cn);letter-spacing:.03em;color:var(--pencil)}
+.b-slip-foot a{color:var(--ink)}
+.rd-stage:not(.is-en) .b-slip-foot .en,.rd-stage.is-en .b-slip-foot .zh{display:none}
