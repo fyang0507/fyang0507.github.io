@@ -1,75 +1,79 @@
 #!/usr/bin/env python3
 """Find the landmarks an essay actually has and mark them up for Reading's rail.
 
-A build-time port of design/2026-09-motion/r2-08a-landmarks.js, run by
-generate-content.py as a post-pass over each rendered body. Tiers, in order of
-trust:
+Run by generate-content.py as a post-pass over each rendered body; the design
+lineage is design/2026-09-motion/r2-08a-landmarks.js. Tiers, in order of trust:
 
-1. explicit section markers on a line of their own: <strong>1.0</strong>,
-   plain "1.0", "（一）非建制", "I. Unincorporated", "(3)", 序 / Preface /
-   后记 / Postscript, or an <h2>/<h3> whose whole text is such a number
-2. headings: real <h2>/<h3> and whole-line bold titles ("广州惯性")
+1. section markers at the start of a paragraph, in either language: 1.0,
+   （一）, (3), (IV), IV., bracketed names (（序）, （序一）, (Prologue)), a
+   name alone on its line (前言, Preface), and in bold or a heading tag also
+   bare IV or Prologue II. Each may carry a
+   short title: "（九）致麦麦", "(IX) A Few Small Thoughts", bold "V — Title".
+   A bracketed word that names nothing ("（杂讯）", "(Noise)") counts only
+   among numbered sections.
+2. headings: real <h2>/<h3> and whole-line bold titles
 3. figures and pull quotes, only when there is no tier-1/2 structure
 
 fill: minute ticks at paragraph starts ("3 min") for essays with no structure,
 or inside a stretch structure leaves unmarked (> 40% of the reading time, or
 > 4 min).
 
-The output must stay identical to the board's JS, so string lengths count
-UTF-16 code units, whitespace is JavaScript's, and rounding is Math.round's.
-Check it against the board with node:
+Marker lines become <h2 class="lm lm-sec|lm-head">; the blank lines around a
+heading become its margins, and every other line break is kept. An essay's
+English and Chinese bodies should get the same structure; check them with
 
-    python3 scripts/landmarks.py --parity <posts.js>
-
-using a posts.js whose bodies do not yet carry landmarks, e.g. `git show
-be351de:content/posts.js`. The one deliberate difference: footnotes
-(<section class="foot">) are left out of the scan like the reference appendix,
-where the board would tokenise them and drop their wrapper. No parity body has
-footnotes.
+    python3 scripts/landmarks.py --check
 """
 
 from __future__ import annotations
 
+import html as html_mod
+import json
 import math
 import re
+from pathlib import Path
 
-WS = "\t\n\v\f\r    -     　﻿"
-WS_CHARS = "\t\n\v\f\r   " + "".join(map(chr, range(0x2000, 0x200B))) + "    　﻿"
-S, NS, DOT = f"[{WS}]", f"[^{WS}]", "[^\n\r  ]"
-F = re.ASCII  # JS \d, \b and /i are ASCII-only
-
-NUMBER = r"[0-9]+\.[0-9]+|[（(][一二三四五六七八九十百0-9]{1,4}[）)]"
-WORD_LIST = r"序|跋|后记|尾声|引子|楔子|preface|prologue(?: [IVX]+)?|epilogue|postscript|coda"
-NUM_EXACT = re.compile(rf"^(?:{NUMBER}|[IVXLC]{{1,6}}\.?|{WORD_LIST})\Z", F | re.I)
-NUM_PLAIN = re.compile(rf"^(?:{NUMBER}|[IVXLC]{{1,6}}\.)\Z", F)  # a bare number is enough without bold
-NUM_LEAD = re.compile(rf"^({NUMBER}|[IVXLC]{{1,6}}\.){S}*({NS}{DOT}{{0,52}})\Z", F)  # number + short title
-WORDS = re.compile(rf"^(?:{WORD_LIST})\Z", F | re.I)
-
-MARGIN_NOTE_RE = re.compile(rf'<span class="mn[\s\S]*?</span>{S}*</span>')
-BLOCK_RE = re.compile(r"<(p|h[1-6]|figure|blockquote|ul|ol|pre|div|table)\b([^>]*)>([\s\S]*?)</\1>", F | re.I)
-BR_RE = re.compile(rf"<br{S}*/?>", F | re.I)
-
-
-def js_trim(s: str) -> str:
-    return s.strip(WS_CHARS)
+ROMAN = "[IVXLC]{1,6}"
+NAMED = "(?i:序[一二三四五六七八九十]?|序言|前言|跋|后记|尾声|引子|楔子|preface|prologue(?: [IVX]+| [0-9]+)?|epilogue|postscript|coda)"
+BRACKETED = rf"[（(](?:[一二三四五六七八九十百]{{1,4}}|[0-9]{{1,3}}|{ROMAN}|{NAMED})[）)]"
+PLAIN = rf"[0-9]+\.[0-9]+|{BRACKETED}|{ROMAN}\."  # a marker in plain text
+BARE = rf"{ROMAN}|{NAMED}"                        # a marker that needs bold or a heading tag
+TITLE = r"(\S.{0,79})"
+EXACT_PLAIN = re.compile(rf"(?:{PLAIN})\Z")
+EXACT_BARE = re.compile(rf"(?:{BARE})\Z")
+EXACT_NAMED = re.compile(rf"{NAMED}\Z")
+LEAD_PLAIN = re.compile(rf"({PLAIN})\s*(?:[—–:：]\s*)?{TITLE}\Z")
+LEAD_BARE = re.compile(rf"({BARE})\s*[—–:：.]\s*{TITLE}\Z")
+WEAK = re.compile(r"[（(][^\s（）()]{1,8}[）)]\Z")
+SENTENCE_END = re.compile(r"[。，；,;.]\Z")
+BLOCK_RE = re.compile(r"<(p|h[1-6]|figure|blockquote|ul|ol|pre|div|table)\b([^>]*)>([\s\S]*?)</\1>", re.I)
+BR_RE = re.compile(r"<br\s*/?>", re.I)
+BREAK_TAG = re.compile(r"<br\s*/?>|</?(?:p|li|ul|ol|h[1-6]|div|blockquote|figure|figcaption|pre|table|tr|td|th)\b[^>]*>", re.I)
 
 
-def u16(s: str) -> int:
-    return len(s.encode("utf-16-le", "surrogatepass")) // 2
-
-
-def u16_slice(s: str, n: int) -> str:
-    return s.encode("utf-16-le", "surrogatepass")[: 2 * n].decode("utf-16-le", "surrogatepass")
+def strip_notes(h: str) -> str:
+    """Drop every margin note (<span class="mn ...">, nested spans included) and citation <sup>."""
+    out, i = [], 0
+    for m in re.finditer(r'<span class="mn\b', h):
+        if m.start() < i:
+            continue
+        out.append(h[i:m.start()])
+        depth, j = 0, m.start()
+        for tag in re.finditer(r"<(/?)span\b[^>]*>", h[j:]):
+            depth += -1 if tag.group(1) else 1
+            if depth == 0:
+                i = j + tag.end()
+                break
+        else:
+            i = len(h)
+    out.append(h[i:])
+    return re.sub(r"<sup[\s\S]*?</sup>", "", "".join(out))
 
 
 def text(h: str) -> str:
-    h = MARGIN_NOTE_RE.sub("", h or "")
-    h = re.sub(r"<sup[\s\S]*?</sup>", "", h)
-    h = re.sub(r"<[^>]+>", "", h)
-    for entity, char in (("&nbsp;", " "), ("&amp;", "&"), ("&#x27;", "'"), ("&#39;", "'"),
-                         ("&quot;", '"'), ("&lt;", "<"), ("&gt;", ">")):
-        h = h.replace(entity, char)
-    return js_trim(re.sub(f"{S}+", " ", h))
+    """Readable text: notes dropped, a space at every block and line boundary, entities decoded."""
+    h = BREAK_TAG.sub(" ", strip_notes(h or ""))
+    return re.sub(r"\s+", " ", html_mod.unescape(re.sub(r"<[^>]+>", "", h))).strip()
 
 
 def esc(s: str) -> str:
@@ -81,41 +85,47 @@ def cjk(s: str) -> bool:
 
 
 def clip(s: str, n: int) -> str:
-    return js_trim(u16_slice(s, n - 1)) + "…" if u16(s) > n else s
+    return s[: n - 1].strip() + "…" if len(s) > n else s
 
 
 def short_label(s: str) -> str:
     """A rail label has ~12 mono cells: 6 CJK characters, the part before a colon, or a clipped phrase."""
     if cjk(s):
         return clip(s, 7)
-    head = js_trim(re.split("[:：—–]", s)[0])
-    return clip(head if u16(head) >= 3 else s, 13)
+    head = re.split("[:：—–]", s)[0].strip()
+    return clip(head if len(head) >= 3 else s, 13)
 
 
 def undot(label: str) -> str:
-    return re.sub(r"\.\Z", "", label, count=1)
+    return re.sub(r"\.\Z", "", label)
 
 
-def js_round(x: float) -> int:
-    return math.floor(x + 0.5)
+def marker(t: str, strong: bool, alone: bool = False) -> dict | None:
+    """A section marker, optionally with a title. `strong`: the line is bold or a heading tag;
+    `alone`: it is a paragraph of its own."""
+    if EXACT_PLAIN.match(t) or (strong and EXACT_BARE.match(t)) or (alone and EXACT_NAMED.match(t)):
+        return {"kind": "sec", "label": undot(t), "title": "", "raw": t}
+    m = LEAD_PLAIN.match(t) or (strong and LEAD_BARE.match(t))
+    if m and not SENTENCE_END.search(m.group(2)):
+        return {"kind": "sec", "label": undot(m.group(1)), "title": m.group(2), "raw": m.group(1)}
+    if WEAK.match(t):
+        return {"kind": "sec", "label": t, "title": "", "weak": True}
+    return None
 
 
 def classify(h: str, alone: bool) -> dict | None:
-    """A line that starts a paragraph. Numbered markers only need the blank line before them (poems write
-    "（一）<br>first line"); a bold title must also stand alone."""
+    """A line that starts a paragraph. Markers only need the blank line before them (poems write
+    "（一）<br>first line"); a bold title must also stand alone. Translations run about twice as long
+    as the Chinese, so a Latin title may be twice as long too."""
     t = text(h)
-    if not t or u16(t) > 60:
+    if not t or len(t) > 90:
         return None
-    line = js_trim(h)
-    bold = re.search(r"^<strong>[\s\S]*</strong>\Z", line) or re.search(r"^<b>[\s\S]*</b>\Z", line)
-    if bold and NUM_EXACT.search(t):
-        return {"kind": "sec", "label": undot(t), "title": ""}
-    if not bold and NUM_PLAIN.search(t):
-        return {"kind": "sec", "label": undot(t), "title": ""}
-    m = NUM_LEAD.search(t)
-    if m and not re.search(r"[。，；,;]\Z", m.group(2)):
-        return {"kind": "sec", "label": undot(m.group(1)), "title": m.group(2)}
-    if alone and bold and not WORDS.search(t) and u16(t) <= 32 and not re.search(r"[。，；,;.!?！？]\Z", t):
+    line = h.strip()
+    bold = bool(re.match(r"<(strong|b)>[\s\S]*</\1>\Z", line))
+    found = marker(t, bold, alone)
+    if found:
+        return found
+    if alone and bold and len(t) <= (32 if cjk(t) else 64) and not re.search(r"[。，；,;.!?！？]\Z", t):
         return {"kind": "head", "label": short_label(t), "title": t}
     return None
 
@@ -125,7 +135,7 @@ def tokenize(body: str) -> list[dict]:
     out: list[dict] = []
     last = 0
     for m in BLOCK_RE.finditer(body):
-        gap = js_trim(body[last : m.start()])
+        gap = body[last:m.start()].strip()
         if gap:
             out.append({"k": "p", "lines": BR_RE.split(gap)})
         if m.group(1).lower() == "p":
@@ -133,10 +143,22 @@ def tokenize(body: str) -> list[dict]:
         else:
             out.append({"k": "block", "tag": m.group(1).lower(), "attrs": m.group(2), "inner": m.group(3), "raw": m.group(0)})
         last = m.end()
-    tail = js_trim(body[last:])
+    tail = body[last:].strip()
     if tail:
         out.append({"k": "p", "lines": BR_RE.split(tail)})
     return out
+
+
+def heading(mark: dict, inner: str) -> str:
+    """Every landmark heading has one shape: a section's number and title, or a heading's own markup.
+    A section title keeps its source markup (links, citations) when the number leads it literally."""
+    if mark["kind"] == "sec":
+        lead = re.match(r"\s*" + re.escape(esc(mark.get("raw", ""))) + r"\s*(?:[—–:：]\s*)?", inner) if mark.get("raw") else None
+        title = inner[lead.end():] if lead and mark["title"] else esc(mark["title"])
+        inner = f'<span class="lm-no">{esc(mark["label"])}</span>'
+        inner += f'<span class="lm-t">{title}</span>' if mark["title"] else ""
+        return f'<h2 class="lm lm-sec" id="{mark["id"]}">{inner}</h2>'
+    return f'<h2 class="lm lm-head" id="{mark["id"]}">{inner}</h2>'
 
 
 def build(html: str, reading_min: int, pre: str) -> dict:
@@ -152,21 +174,15 @@ def build(html: str, reading_min: int, pre: str) -> dict:
     for bi, b in enumerate(blocks):
         if b["k"] == "block":
             t = text(b["inner"])
-            if re.search(r"^h[23]\Z", b["tag"]):
-                lead = NUM_LEAD.search(t)
-                if NUM_EXACT.search(t):
-                    b["mark"] = {"kind": "sec", "label": undot(t), "title": ""}
-                elif lead:
-                    b["mark"] = {"kind": "sec", "label": undot(lead.group(1)), "title": lead.group(2)}
-                else:
-                    b["mark"] = {"kind": "head", "label": short_label(t), "title": t}
+            if b["tag"] in ("h2", "h3"):
+                b["mark"] = marker(t, True) or {"kind": "head", "label": short_label(t), "title": t}
                 b["mark"]["at"] = chars
                 found.append(b["mark"])
             elif b["tag"] in ("figure", "blockquote") or re.search(r'class="(?:fig|pull)', b["attrs"]):
                 fig = b["tag"] == "figure" or "fig" in b["attrs"]
                 b["mark"] = {"kind": "fig", "label": "fig. 图" if fig else "“ ”", "title": clip(t, 60), "at": chars}
                 figs.append(b["mark"])
-            chars += u16(t)
+            chars += len(t)
             continue
         b["flags"] = {}
         lines, blank_before = b["lines"], True
@@ -183,12 +199,13 @@ def build(html: str, reading_min: int, pre: str) -> dict:
                 b["flags"][i] = c
             elif blank_before:
                 starts.append({"at": chars, "block": bi, "line": i, "text": t2})
-            chars += u16(t2)
+            chars += len(t2)
             blank_before = False
 
-    total = max(1, chars)
-    minutes_total = max(1, reading_min or js_round(total / 400))
-    # tier 1 needs two markers; a lone "后记" or "序" is a heading-level mark. Tier 3 only when there is no structure.
+    # A bracketed name is a section only among numbered ones; tier 1 needs two markers, and a lone
+    # "后记" or "序" is a heading-level mark. Tier 3 only when there is no structure.
+    if sum(f["kind"] == "sec" and not f.get("weak") for f in found) < 2:
+        found = [f for f in found if not f.get("weak")]
     secs = [f for f in found if f["kind"] == "sec"]
     if len(secs) < 2:
         for f in found:
@@ -197,7 +214,8 @@ def build(html: str, reading_min: int, pre: str) -> dict:
     kind = "sections" if len(secs) >= 2 else "headings" if found else "figures" if figs else "minutes"
 
     # fill: minute ticks inside long unmarked stretches (or everywhere, for essays with no structure)
-    M = minutes_total
+    total = max(1, chars)
+    M = max(1, reading_min or round(total / 400))
     step = 1 if M <= 6 else 2 if M <= 14 else 3 if M <= 24 else 5
 
     def min_at(c: float) -> float:
@@ -205,96 +223,91 @@ def build(html: str, reading_min: int, pre: str) -> dict:
 
     bounds = [0] + [min_at(f["at"]) for f in marks] + [M]
     fill_any, minutes = not marks, []
-    for g in range(len(bounds) - 1):
-        a, z = bounds[g], bounds[g + 1]
+    for a, z in zip(bounds, bounds[1:]):
         if not fill_any and z - a <= max(4, M * 0.4):
             continue
-        m = step
-        while m < M - step * 0.4:
-            edge = 0 if fill_any else step * 0.5
-            if not (m <= a + edge or m >= z - edge):
-                target, best = total * m / M, None
-                for s in starts:
-                    if best is None or abs(s["at"] - target) < abs(best["at"] - target):
-                        best = s
-                if best and not best.get("used") and all(
-                    abs(x["at"] - best["at"]) > total * step / M * 0.45 for x in minutes
-                ):
-                    best["used"] = True
-                    minutes.append({"kind": "min", "label": f"{m} min", "title": clip(best["text"], 64),
-                                    "at": best["at"], "block": best["block"], "line": best["line"], "minute": m})
-            m += step
+        edge = 0 if fill_any else step * 0.5
+        for m in range(step, math.ceil(M - step * 0.4), step):
+            if m <= a + edge or m >= z - edge:
+                continue
+            target = total * m / M
+            best = min(starts, key=lambda s: abs(s["at"] - target), default=None)
+            if best and not best.get("used") and all(abs(x["at"] - best["at"]) > total * step / M * 0.45 for x in minutes):
+                best["used"] = True
+                minutes.append({"kind": "min", "label": f"{m} min", "title": clip(best["text"], 64),
+                                "at": best["at"], "block": best["block"], "line": best["line"], "minute": m})
     marks = sorted(marks + minutes, key=lambda f: f["at"])
     if kind != "minutes" and minutes:
         kind += "+minutes"
     for i, f in enumerate(marks):
         f["id"] = f"{pre}lm{i + 1}"
         if not f.get("minute"):
-            minute = max(0, js_round(min_at(f["at"]) * 10) / 10)
-            f["minute"] = int(minute) if float(minute).is_integer() else minute
+            minute = math.floor(min_at(f["at"]) * 10 + 0.5) / 10
+            f["minute"] = int(minute) if minute.is_integer() else minute
     marked = {id(f) for f in marks}
+    ticks = {(f["block"], f["line"]): f for f in minutes}
 
     def first_line_after(bi: int, li: int) -> str:
         """The first readable line after a section marker: its peek text."""
         for b in range(bi, len(blocks)):
-            block = blocks[b]
-            if block["k"] != "p":
+            if blocks[b]["k"] != "p":
                 continue
-            for i in range(li + 1 if b == bi else 0, len(block["lines"])):
-                t = text(block["lines"][i])
-                if t:
-                    return clip(t, 64)
+            for line in blocks[b]["lines"][li + 1 if b == bi else 0:]:
+                if text(line):
+                    return clip(text(line), 64)
         return ""
 
-    # pass 2: emit. Marker lines become headings; the blank lines around them become the heading's margins.
+    def is_heading(b: dict | None) -> bool:
+        return bool(b and b["k"] == "block" and id(b.get("mark")) in marked and b["mark"]["kind"] != "fig")
+
+    # pass 2: emit. Marker lines become headings; only the blank lines touching a heading are dropped.
     out: list[str] = []
+    after_heading = False
     for bi, b in enumerate(blocks):
         if b["k"] == "block":
             mark = b.get("mark")
-            if mark and id(mark) in marked:
-                cls = "lm lm-sec" if mark["kind"] == "sec" else "lm-fig" if mark["kind"] == "fig" else "lm lm-head"
-
-                def retag(m: re.Match, cls: str = cls, mark: dict = mark) -> str:
-                    tag, attrs = m.group(1), m.group(2)
-                    old = re.search(rf'{S}class="([^"]*)"', attrs)
-                    attrs = re.sub(rf'{S}class="[^"]*"', "", attrs, count=1)
-                    return f'<{tag}{attrs} class="{cls}{" " + old.group(1) if old else ""}" id="{mark["id"]}">'
-
-                out.append(re.sub(r"^<([a-z0-9]+)\b([^>]*)>", retag, b["raw"], count=1, flags=F | re.I))
+            if is_heading(b):
+                out.append(heading(mark, b["inner"]))
                 if mark["kind"] == "sec" and not mark["title"]:
                     mark["peek"] = first_line_after(bi, -1)
+                after_heading = True
+                continue
+            if mark and id(mark) in marked:                      # a figure or pull quote keeps its own markup
+                old = re.search(r'\sclass="([^"]*)"', b["attrs"])
+                attrs = re.sub(r'\sclass="[^"]*"', "", b["attrs"], count=1)
+                cls = "lm-fig" + (" " + old.group(1) if old else "")
+                out.append(f'<{b["tag"]}{attrs} class="{cls}" id="{mark["id"]}">{b["inner"]}</{b["tag"]}>')
             else:
                 out.append(b["raw"])
+            after_heading = False
             continue
-        lines, buf = b["lines"], []
+        buf: list[str] = []
 
-        def flush() -> None:
-            while buf and not text(buf[0]) and "lm-anchor" not in buf[0]:
-                buf.pop(0)
-            while buf and not text(buf[-1]):
-                buf.pop()
+        def flush(before_heading: bool) -> None:
+            nonlocal after_heading
+            if after_heading:
+                while buf and not text(buf[0]) and "lm-anchor" not in buf[0]:
+                    buf.pop(0)
+            if before_heading:
+                while buf and not text(buf[-1]):
+                    buf.pop()
             if buf:
                 out.append("<p>" + "<br>".join(buf) + "</p>")
+                after_heading = False
             buf.clear()
 
-        for i, line in enumerate(lines):
+        for i, line in enumerate(b["lines"]):
             f = b["flags"].get(i)
             if f and id(f) in marked:
-                flush()
-                if f["kind"] == "sec":
-                    inner = f'<span class="lm-no">{esc(f["label"])}</span>'
-                    inner += f'<span class="lm-t">{esc(f["title"])}</span>' if f["title"] else ""
-                else:
-                    inner = re.sub(r"^<(strong|b)>([\s\S]*)</\1>\Z", r"\2", js_trim(line), count=1)
-                out.append(f'<h2 class="lm {"lm-sec" if f["kind"] == "sec" else "lm-head"}" id="{f["id"]}">{inner}</h2>')
+                flush(True)
+                inner = re.sub(r"^<(strong|b)>([\s\S]*)</\1>\Z", r"\2", line.strip())
+                out.append(heading(f, inner))
                 f["peek"] = f["title"] or first_line_after(bi, i)
+                after_heading = True
                 continue
-            tick = None
-            for mk in minutes:
-                if mk["block"] == bi and mk["line"] == i:
-                    tick = mk
+            tick = ticks.get((bi, i))
             buf.append(f'<span class="lm-anchor" id="{tick["id"]}" aria-hidden="true"></span>{line}' if tick else line)
-        flush()
+        flush(is_heading(blocks[bi + 1] if bi + 1 < len(blocks) else None))
     for f in marks:
         f["peek"] = f.get("peek") or f["title"] or ""
     return {"html": "".join(out) + appendix, "marks": marks, "kind": kind, "total": total, "minutes": M}
@@ -306,41 +319,40 @@ def manifest(result: dict) -> dict:
     return {"kind": result["kind"], "marks": [{k: f[k] for k in fields} for f in result["marks"]]}
 
 
-def parity(posts_js: str) -> int:
-    """Compare build() with the board's JS, run in node, over every body in a landmark-free posts.js."""
-    import json
-    import subprocess
-    from pathlib import Path
+# Where an essay's two bodies legitimately differ in structure (the sources are formatted differently).
+EXPLAINED = {
+    "2024-10-23_the-seemingly-innocent": "the English sets Rolland's opening quotation as a pull quote (>); "
+                                         "the Chinese keeps it in a paragraph, so only English gets a quote mark",
+}
 
-    board = Path(__file__).resolve().parents[1] / "design" / "2026-09-motion" / "r2-08a-landmarks.js"
-    source = Path(posts_js).read_text(encoding="utf-8")
-    posts = json.loads(source.split("window.FY_POSTS=", 1)[1].strip().rstrip(";"))
-    jobs = [{"id": p["id"], "html": p[key], "min": p["readingMin"], "pre": pre}
-            for p in posts for key, pre in (("htmlZh", "zh-"), ("htmlEn", "en-")) if p.get(key)]
-    script = (
-        "global.window={};require(process.argv[1]);const J=JSON.parse(require('fs').readFileSync(0,'utf8'));"
-        "process.stdout.write(JSON.stringify(J.map(j=>{const r=window.Landmarks.build(j.html,j.min,j.pre);"
-        "return {html:r.html,kind:r.kind,total:r.total,minutes:r.minutes,marks:r.marks.map(m=>"
-        "({id:m.id,kind:m.kind,label:m.label,title:m.title,peek:m.peek,minute:m.minute,at:m.at}))}})))"
-    )
-    run = subprocess.run(["node", "-e", script, str(board)], input=json.dumps(jobs), capture_output=True,
-                         text=True, check=True)
-    failures = 0
-    for job, want in zip(jobs, json.loads(run.stdout)):
-        got = build(job["html"], job["min"], job["pre"])
-        got = {"html": got["html"], "kind": got["kind"], "total": got["total"], "minutes": got["minutes"],
-               "marks": [{**m, "at": f["at"]} for m, f in zip(manifest(got)["marks"], got["marks"])]}
-        if got != want:
-            failures += 1
-            diff = [k for k in want if got[k] != want[k]]
-            print(f"MISMATCH {job['id']} {job['pre']}: {', '.join(diff)}")
-    print(f"landmark parity: {len(jobs) - failures}/{len(jobs)} bodies identical to the board JS")
-    return 1 if failures else 0
+
+def check(posts_js: Path) -> int:
+    """Every essay's English and Chinese landmarks must agree in kind and in count per mark kind (minute
+    ticks aside, since they follow each language's own text length), or be explained above."""
+    posts = json.loads(posts_js.read_text(encoding="utf-8").split("window.FY_POSTS=", 1)[1].strip().rstrip(";"))
+    unexplained = 0
+    for p in posts:
+        shape = {}
+        for lang in ("En", "Zh"):
+            lm = p["landmarks" + lang]
+            counts = {}
+            for m in lm["marks"]:
+                if m["kind"] != "min":
+                    counts[m["kind"]] = counts.get(m["kind"], 0) + 1
+            shape[lang] = (lm["kind"].split("+")[0], counts)
+        agree = shape["En"] == shape["Zh"] or not (p["htmlEn"] and p["htmlZh"])
+        note = "" if agree else EXPLAINED.get(p["id"], "UNEXPLAINED")
+        unexplained += note == "UNEXPLAINED"
+        print(f"{'ok ' if agree else '!! '}{p['id'][:40]:40} en {shape['En'][0]:9} {shape['En'][1]}  zh {shape['Zh'][0]:9} {shape['Zh'][1]}"
+              + (f"\n     {note}" if note else ""))
+    print(f"{len(posts)} essays; {unexplained} unexplained English/Chinese landmark mismatch(es)")
+    return 1 if unexplained else 0
 
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--parity", metavar="POSTS_JS", required=True, help="a posts.js without landmarks")
-    raise SystemExit(parity(parser.parse_args().parity))
+    parser.add_argument("--check", action="store_true", required=True, help="compare each essay's EN and ZH landmarks")
+    parser.parse_args()
+    raise SystemExit(check(Path(__file__).resolve().parents[1] / "content" / "posts.js"))

@@ -83,29 +83,29 @@ PAGES = [
     "lib/**/*.js", "lib/**/*.css", "assets/fred-agent/fred-agent.css",
 ]
 
-# Which post-derived text reaches which face. Verified against the CSS:
-#   DingTalk JinBuTi  <- .display, .title, .post-body h2/h3   (Reading.dc.html:40,63,78)
-#   MuyaoPleased      <- .hand, .eyebrow, .fig figcaption      (Reading.dc.html:41,61,101)
-#   Noto Sans SC      <- the rail's landmark labels, clipped from the essay's
-#                        <h2 class="lm"> headings (scripts/landmarks.py)
-# `figcaption` is image captions, so the hand face receives arbitrary essay
-# prose - which is exactly why this has to be generated rather than
-# hand-maintained. Margin notes (`.mn`) are set in the body serif now, which
-# the text tier already covers; excerpts are no longer rendered in a hand face.
+# Which post-derived text reaches which face, by the selector that sets it in
+# lib/reading/reading.css (the other pages render no essay text):
+#   DingTalk JinBuTi  <- .title (post titles), .lm-t and .lm-head (the essay's
+#                        landmark headings, scripts/landmarks.py)
+#   MuyaoPleased      <- .eyebrow (subtitles), .fig figcaption (image captions)
+#   Noto Sans SC      <- .lm-no and the rail's labels (landmark labels), h4,
+#                        .appendix-title, .appendix-postscript
+#   Noto Serif SC     <- the whole body, text tier only (margin notes included)
+# Captions put arbitrary essay prose in the hand face - which is exactly why
+# this has to be generated rather than hand-maintained. `html_elements` takes
+# `tag` or `tag.class`; the generator never nests those elements.
 FACES = {
     "DingTalkJinBuTi.woff2": {
         "family": "DingTalk JinBuTi",
         "master": "local",
         "post_fields": ["title", "titleZh"],
-        "html_elements": ["h2", "h3"],
-        "html_classes": [],
+        "html_elements": ["span.lm-t", "h2.lm-head"],
     },
     "MuyaoSuixin.woff2": {
         "family": "MuyaoPleased",
         "master": "local",
         "post_fields": ["subtitle", "subtitleZh"],
         "html_elements": ["figcaption"],
-        "html_classes": [],
     },
     # Body face. The UI tier covers interface Chinese on every page; the text
     # tier adds full essay bodies and is loaded only by Reading.dc.html.
@@ -114,7 +114,6 @@ FACES = {
         "master": "NotoSerifSC",
         "post_fields": [],
         "html_elements": [],
-        "html_classes": [],
     },
     "NotoSerifSC-text.woff2": {
         "family": "Noto Serif SC",
@@ -122,16 +121,15 @@ FACES = {
         "whole_post_body": True,
         "post_fields": ["title", "titleZh", "subtitle", "subtitleZh", "excerpt", "excerptZh"],
         "html_elements": [],
-        "html_classes": [],
     },
-    # Utility face: dates, kickers, meta lines, Chinese h4 and appendix titles
-    # (Reading.dc.html:42,53,59,65,81,107). Interface text only, never bodies.
+    # Utility face: dates, kickers, meta lines, landmark labels, Chinese h4
+    # and the reference appendix's title and postscript. Never bodies.
     "NotoSansSC-ui.woff2": {
         "family": "Noto Sans SC",
         "master": "NotoSansSC",
         "post_fields": [],
-        "html_elements": ["h2", "h4"],
-        "html_classes": ["appendix-title"],
+        "landmark_labels": True,
+        "html_elements": ["h4", "h2.appendix-title", "p.appendix-postscript"],
     },
 }
 
@@ -142,32 +140,11 @@ def strip_tags(fragment: str) -> str:
     return html_mod.unescape(TAG_RE.sub(" ", fragment))
 
 
-def element_text(html: str, tag: str) -> str:
-    return " ".join(
-        strip_tags(m) for m in re.findall(rf"<{tag}\b[^>]*>(.*?)</{tag}>", html, flags=re.S)
-    )
-
-
-def class_text(html: str, cls: str) -> str:
-    """Text inside <span class="mn ..."> ... </span>, nested tags included.
-
-    The generated notes are flat single-level spans, so a non-greedy match to the
-    next </span> would truncate at an inner <span class="num">. Walk instead.
-    """
-    out = []
-    for m in re.finditer(rf'<span class="{cls}\b[^"]*"[^>]*>', html):
-        start = m.end()
-        depth = 1
-        pos = start
-        for tok in re.finditer(r"<(/?)span\b[^>]*>", html[start:]):
-            depth += -1 if tok.group(1) else 1
-            if depth == 0:
-                pos = start + tok.start()
-                break
-        else:
-            pos = len(html)
-        out.append(strip_tags(html[start:pos]))
-    return " ".join(out)
+def element_text(html: str, selector: str) -> str:
+    """Text of every `tag` or `tag.class` element."""
+    tag, _, cls = selector.partition(".")
+    attrs = rf'[^>]*\bclass="(?:[^"]*\s)?{cls}(?:\s[^"]*)?"[^>]*' if cls else r"[^>]*"
+    return " ".join(strip_tags(m) for m in re.findall(rf"<{tag}\b{attrs}>(.*?)</{tag}>", html, flags=re.S))
 
 
 def load_manifest_js(path: Path, global_name: str):
@@ -197,6 +174,9 @@ def face_text(spec: dict, posts: list[dict]) -> str:
         for field in spec["post_fields"]:
             if post.get(field):
                 parts.append(str(post[field]))
+        if spec.get("landmark_labels"):
+            for key in ("landmarksEn", "landmarksZh"):
+                parts.extend(m["label"] for m in (post.get(key) or {}).get("marks", []))
         for key in ("htmlEn", "htmlZh"):
             html = post.get(key) or ""
             if not html:
@@ -205,10 +185,8 @@ def face_text(spec: dict, posts: list[dict]) -> str:
                 # The body face renders the whole article, so take all of it.
                 parts.append(strip_tags(html))
                 continue
-            for tag in spec["html_elements"]:
-                parts.append(element_text(html, tag))
-            for cls in spec["html_classes"]:
-                parts.append(class_text(html, cls))
+            for selector in spec["html_elements"]:
+                parts.append(element_text(html, selector))
     return "".join(parts)
 
 

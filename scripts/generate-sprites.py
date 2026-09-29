@@ -52,6 +52,7 @@ from scipy import ndimage as nd
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 OUT = ASSETS / "derived"
+OWNED_DIRS = ("desk", "strip", "op")                         # plus desk-geo.js, rewritten in place
 PAPER = (251, 247, 238)
 
 BACK_EDGE = (468, 476)   # rows of the table's back-edge pen line (471-472 plus halo)
@@ -435,10 +436,11 @@ def write(files: dict[str, bytes]) -> list[str]:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
         updated.append(rel)
-    for stray in sorted(p for p in OUT.rglob("*") if p.is_file()):
-        if stray.relative_to(OUT).as_posix() not in files:
-            stray.unlink()
-            print(f"pruned {stray.relative_to(ROOT)}")
+    for sub in OWNED_DIRS:                                   # never touch anything else under assets/derived/
+        for stray in sorted(p for p in (OUT / sub).glob("*") if p.is_file()):
+            if stray.relative_to(OUT).as_posix() not in files:
+                stray.unlink()
+                print(f"pruned {stray.relative_to(ROOT)}")
     return updated
 
 

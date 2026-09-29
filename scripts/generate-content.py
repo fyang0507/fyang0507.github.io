@@ -225,13 +225,14 @@ def load_photos() -> list[dict]:
     return photos
 
 
-# Body-sized fields only Reading.dc.html needs. Writing loads the index
-# without them (posts.js is ~800 KB, the index a few percent of that).
-POST_BODY_FIELDS = ("htmlEn", "htmlZh", "landmarksEn", "landmarksZh", "source")
+# Fields only Reading.dc.html reads. Writing loads the index without them
+# (posts.js is ~900 KB, the index a few percent of that).
+READING_ONLY_FIELDS = ("subtitle", "subtitleZh", "excerpt", "excerptZh",
+                       "htmlEn", "htmlZh", "landmarksEn", "landmarksZh", "source")
 
 
 def post_index(posts: list[dict]) -> list[dict]:
-    return [{k: v for k, v in post.items() if k not in POST_BODY_FIELDS} for post in posts]
+    return [{k: v for k, v in post.items() if k not in READING_ONLY_FIELDS} for post in posts]
 
 
 def home_manifest(posts: list[dict], photos: list[dict]) -> dict:
