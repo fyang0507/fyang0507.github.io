@@ -1,0 +1,173 @@
+/* design/2026-09-building · the board: production lib/building/building.css as it is, plus each candidate's preview.
+   Page-only tokens here; shared tokens come from site-tokens.css. Text on wheat and cork is --soft (4.5:1 there). */
+@import url("../../lib/building/building.css");
+:root{--dos-kraft:#D8C29A;--dos-kraft-ink:#6E5A3A}
+.site-top{position:relative;z-index:40}
+
+/* ---- shared: the one figure, drawn as a line of steps ---- */
+.fig-line{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 7px;margin:0;padding:0}
+.fig-step span{display:inline-block;padding:5px 9px 6px;border:1.3px solid var(--ink);border-radius:7px 10px 6px 9px;background:var(--paper);color:var(--ink);font:10px/1.2 var(--util);letter-spacing:.01em;white-space:nowrap}
+.fig-arrow{color:var(--soft);font:12px/1 var(--util)}
+.fig-exit{margin-top:7px;color:var(--soft);font:9.5px/1.3 var(--util)}
+figcaption{color:var(--soft);font:9px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+
+/* =================== A · the back of the card =================== */
+.c-a .swing{perspective:1700px}
+.c-a .flip{position:relative;transform-style:preserve-3d}
+.c-a .flip>.paper{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.pj-back{position:absolute;inset:0;z-index:1;transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;color:var(--ink);
+  filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong))}
+.bk-in{position:relative;display:flex;flex-direction:column;height:100%;padding:28px 34px 36px;background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper));clip-path:var(--torn-wide)}
+.pj-back--featured .bk-in{padding:20px 20px 26px;background:color-mix(in srgb,var(--wash-blue) 55%,var(--paper))}
+.pj-back--instrument .bk-in,.pj-back--standard .bk-in{padding:13px 13px 16px;clip-path:var(--torn-slip);background-color:var(--paper)}
+.pj-back--instrument .bk-in{background-image:repeating-linear-gradient(rgba(207,193,169,.30) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(207,193,169,.30) 0 1px,transparent 1px 9px)}
+.pj-back--instrument .bk-in::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--instrument-hue,var(--ink))}
+.bk-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:9px;border-bottom:1px solid var(--line-strong);color:var(--soft);font:9.5px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.bk-head .unpin-close{padding:4px 0;font-size:10px;text-transform:none}
+.pj-back--instrument .bk-head,.pj-back--standard .bk-head{font-size:7px;padding-bottom:6px}
+.pj-back--instrument .unpin-close,.pj-back--standard .unpin-close{font-size:7.5px}
+.bk-ch{list-style:none;margin:4px 0 0;padding:0}
+.bk-ch li{position:relative}
+.bk-row{display:grid;grid-template-columns:28px minmax(0,148px) 1fr;gap:3px 14px;align-items:baseline;padding:9px 0 10px;border-bottom:1px dashed color-mix(in srgb,var(--line-strong) 80%,transparent)}
+.bk-n{color:var(--soft);font:11px/1 var(--util)}
+.bk-t{font:500 19px/1.12 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.012em}
+.bk-state{display:block;margin-top:3px;color:var(--soft);font:normal 9px/1.2 var(--util);letter-spacing:.04em}
+.bk-l{color:var(--soft);font:10px/1.45 var(--util)}
+.bk-live{color:var(--soft);white-space:nowrap;border-bottom:1px solid var(--line-strong)}
+.pj-back--featured .bk-head{font-size:8px;padding-bottom:7px}
+.pj-back--featured .unpin-close{font-size:8.5px}
+.pj-back--featured .bk-row{grid-template-columns:20px 1fr;gap:1px 8px;padding:6px 0 7px}
+.pj-back--featured .bk-n{font-size:9px}
+.pj-back--featured .bk-t{font-size:14px}
+.pj-back--featured .bk-state{display:inline;margin:0 0 0 6px;font-size:7.5px}
+.pj-back--featured .bk-l{grid-column:2;font-size:7.5px}
+.pj-back--featured .bk-wip{margin:3px 0 2px 28px}
+.pj-back--featured .bk-fig{margin-top:10px}
+.pj-back--featured .bk-fig figcaption{margin-bottom:5px;font-size:7px}
+.pj-back--featured .fig-line{gap:4px}
+.pj-back--featured .fig-step span{padding:3px 4px 4px;font-size:7px;border-width:1.1px}
+.pj-back--featured .fig-arrow{font-size:9px}
+.pj-back--featured .bk-foot{padding-top:10px}
+.pj-back--featured .project-meta{font-size:7.5px;gap:3px 9px}
+.pj-back--featured .project-meta span+span::before{margin-right:9px}
+/* the WIP sticker's static face (the peelable one lives on the project page) */
+.bk-wip,.dos-wip{display:inline-flex;align-items:center;gap:5px;margin:1px 0 6px 22px;padding:3px 8px 3px 5px;border:2px solid #fffdf6;border-radius:7px 11px 6px 10px;background:var(--mark);color:#fffdf6;box-shadow:2px 3px 5px rgba(46,40,34,.18);font:600 8px/1 var(--util);letter-spacing:.06em;text-transform:uppercase;transform:rotate(-1.5deg)}
+.bk-wip b,.dos-wip b{font-size:11px;letter-spacing:-.04em}
+.bk-wip small{font-size:7px}
+.bk-wip-p,.dw-p{width:15px;height:15px;background:#fffdf6;-webkit-mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat;mask:url("../../assets/wip-pusher-mask.png") center/contain no-repeat}
+.bk-fig{margin-top:16px}
+.bk-fig figcaption{margin-bottom:8px}
+.bk-fig--small .fig-step span{padding:4px 6px 5px;font-size:8.5px}
+.pj-back--instrument .bk-fig{margin-top:7px}.pj-back--instrument .bk-fig figcaption{margin-bottom:5px}.pj-back--instrument .fig-step span{font-size:7.5px;padding:3px 5px 3px}
+.pj-back--instrument figcaption{font-size:7px}
+.bk-p{margin-top:6px;color:var(--note-ink);font-size:8px;line-height:1.42}
+.pj-back--standard .bk-p{font-size:8px;line-height:1.42}
+.pj-back--instrument .fig-exit{margin-top:4px;font-size:7.5px}
+.pj-back--instrument .bk-foot,.pj-back--standard .bk-foot{padding-top:8px}
+.bk-last{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2px 10px;margin-top:4px}
+.pj-back--instrument .bk-none{margin-top:0;font-size:7px}
+.pj-back--instrument .bk-repo,.pj-back--standard .bk-repo{margin-top:4px;padding:3px 0;font-size:7.5px}
+.pj-back--instrument .bk-repo svg,.pj-back--standard .bk-repo svg{width:11px;height:11px}
+.bk-foot{margin-top:auto;padding-top:14px}
+.bk-foot .project-meta{margin-top:0}
+.pj-back--instrument .project-meta,.pj-back--standard .project-meta{font-size:7.5px;gap:4px 10px}
+.pj-back--instrument .project-meta span+span::before,.pj-back--standard .project-meta span+span::before{margin-right:10px}
+.bk-go{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:14px}
+.bk-enter{padding:9px 14px}
+.bk-none{margin-top:7px;color:var(--soft);font:8px/1.4 var(--util)}
+.bk-repo{margin-top:8px;font-size:8.5px}
+.pj-back--featured .bk-go{margin-top:10px;gap:10px 16px}
+.pj-back--featured .bk-enter{padding:8px 12px;font-size:9px}
+.c-a .swing.turned .lift{opacity:1}
+/* on a phone the board's lead card is narrow and tall: its back stacks each chapter's line under its title */
+@container (max-width:640px){
+  .pj-back--lead .bk-in{padding:20px 18px 30px}
+  .pj-back--lead .bk-head{font-size:8px}
+  .pj-back--lead .bk-row{grid-template-columns:22px 1fr;gap:2px 8px;padding:7px 0 8px}
+  .pj-back--lead .bk-t{font-size:16px}
+  .pj-back--lead .bk-l{grid-column:2;font-size:8.5px}
+  .pj-back--lead .bk-fig{margin-top:12px}
+  .pj-back--lead .fig-step span{padding:3px 5px 4px;font-size:8px}
+  .pj-back--lead .bk-foot{padding-top:10px}
+  .pj-back--lead .project-meta{font-size:8px;gap:3px 9px}
+  .pj-back--lead .project-meta span+span::before{margin-right:9px}
+  .pj-back--lead .bk-go{margin-top:10px;gap:8px 14px}
+  .pj-back--lead .bk-enter{padding:8px 11px;font-size:9px}
+}
+/* laid flat for the view transition's capture: only the back, facing you */
+.c-a .swing.flat-back .flip>.paper{visibility:hidden}
+.c-a .swing.flat-back .pj-back{transform:none;backface-visibility:visible;-webkit-backface-visibility:visible}
+
+/* =================== B · go in close =================== */
+.cluster{display:grid;flex:none;grid-template-columns:repeat(3,176px);align-content:start;gap:40px 22px;padding-top:6px}
+.cluster--3{grid-template-columns:repeat(4,176px)}
+.slot--figure{width:176px;z-index:4}
+.slot--chapter{width:176px;z-index:5}
+.paper--figure{display:block;min-height:118px;padding:13px 13px 18px;background:var(--paper);clip-path:var(--torn-slip);filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(-5px 9px 10px rgba(60,50,35,.13))}
+.paper--figure .fig-line{flex-direction:column;align-items:flex-start;gap:3px}
+.paper--figure .fig-arrow{padding-left:12px;transform:rotate(90deg);font-size:10px}
+.paper--figure .fig-step span{padding:3px 7px 4px;font-size:8.5px}
+.paper--figure figcaption{margin-bottom:9px}
+.paper--chapter{display:block;color:var(--ink);filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(-5px 10px 10px rgba(60,50,35,.14))}
+.ch-in{display:flex;flex-direction:column;min-height:118px;padding:13px 13px 16px;background:var(--paper);clip-path:var(--torn-slip)}
+.ch-n{color:var(--soft);font:9px/1.2 var(--util);letter-spacing:.06em;text-transform:uppercase}
+.ch-t{margin-top:5px;font:500 18px/1.1 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.015em}
+.ch-h{margin-top:13px;color:var(--soft);font:11.5px/1.3 "Fraunces",serif}
+.fine{color:var(--soft);font:8px/1.5 var(--util);letter-spacing:.01em}
+.ch-l{margin-top:5px}
+.ch-wip{align-self:flex-start;margin-top:6px;padding:2px 6px;border-radius:4px 6px 4px 6px;background:var(--mark);color:#fffdf6;font:600 7px/1.3 var(--util);letter-spacing:.05em;text-transform:uppercase;transform:rotate(-2deg)}
+.ch-wip b{font-size:8.5px}
+.ch-live{margin-top:auto;padding-top:6px;color:var(--soft);font:7.5px/1 var(--util)}
+.slip-fine{margin-top:9px;max-width:34em}
+.c-b .paper--standard .paper-edge{min-height:176px}
+.cam-back{position:fixed;z-index:60;right:22px;bottom:18px;padding:10px 16px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:11px/1 var(--util);letter-spacing:.03em;box-shadow:0 6px 18px rgba(60,50,35,.12)}
+.cam-back[hidden]{display:none}
+.c-b .cork-wrap{transform-origin:0 0;will-change:transform}
+.cam-on .cork-wrap{z-index:30}
+/* the camera scales the wall past the window: nothing may widen the page (a phone would zoom out, and a view
+   transition whose viewport changes between its two captures is aborted) */
+.c-b,.c-b body{overflow-x:clip}
+.cam-on .site-top{background:var(--paper)}
+.cam-on .cork-viewport{cursor:default;overflow:visible}
+@container (max-width:640px){
+  .cluster,.cluster--3{grid-template-columns:repeat(2,calc(50cqw - 34px));gap:30px 16px}
+  .slot--chapter,.slot--figure{width:calc(50cqw - 34px)}
+}
+
+/* =================== C · the dossier =================== */
+.dos-peek{position:absolute;z-index:0;top:44px;right:-17px;display:flex;flex-direction:column;gap:5px;pointer-events:none;transition:opacity .18s var(--ease-out)}
+.slot--featured .dos-peek{top:30px}
+.dos-edge{display:flex;align-items:center;justify-content:flex-end;width:40px;height:25px;padding-right:4px;border:1px solid var(--dos-kraft-ink);border-left:0;border-radius:0 7px 7px 0;background:var(--dos-kraft);color:var(--dos-kraft-ink);font:600 8px/1 var(--util);font-style:normal}
+.dos-peek.out{opacity:0}
+.unpin-panel .dos{position:relative;padding:20px 24px 24px;background:var(--paper);border-top:1px dashed var(--line-strong)}
+.dos-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-bottom:9px;border-bottom:1px solid var(--line-strong);color:var(--soft);font:9px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.dos-head .unpin-close{text-transform:none}
+.dos-list{list-style:none;margin:2px 0 0;padding:0}
+.dos-list a{display:grid;grid-template-columns:28px 1fr;gap:2px 12px;padding:8px 0 9px;border-bottom:1px dashed color-mix(in srgb,var(--line-strong) 80%,transparent);color:var(--ink)}
+.dl-n{grid-row:span 2;color:var(--pencil);font:10.5px/1.5 var(--util)}
+.dl-t{font:500 16px/1.2 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.dl-t em{color:var(--pencil);font:normal 9px/1 var(--util);letter-spacing:.04em}
+.dl-l{color:var(--pencil);font:9.5px/1.45 var(--util)}
+.dos-fig{margin-top:14px}
+.dos-fig figcaption{margin-bottom:8px;color:var(--pencil)}
+.dos-foot{margin-top:14px}
+.dos-foot .project-meta{margin-top:0;color:var(--pencil)}
+.dos-foot .github-link{margin-top:10px}
+.dos-p{margin-top:10px;color:var(--note-ink);font-size:14px;line-height:1.55}
+.dos-wip{margin-left:40px}
+/* the index tabs down the dossier's fore-edge: the way in */
+.dos-tabs{position:absolute;z-index:-1;top:52px;left:100%;display:flex;flex-direction:column;gap:6px}
+.dos-tab{position:relative;display:flex;align-items:center;gap:8px;min-width:118px;height:31px;margin-left:-10px;padding:0 10px 0 18px;border:1px solid var(--dos-kraft-ink);border-left:0;border-radius:0 9px 9px 0;background:var(--dos-kraft);color:var(--ink);font:10.5px/1 var(--util);letter-spacing:.01em;white-space:nowrap}
+.dt-n{color:var(--dos-kraft-ink);font-weight:600}
+.dt-n svg{width:13px;height:13px;vertical-align:-2px}
+.dos-tabs--one .dos-tab{min-width:150px}
+.dos--one .fig-step span{padding:3px 5px 4px;font-size:8.5px}
+/* a short window: the hand's layer scrolls rather than cutting the sheet off */
+.unpin-layer{overflow-y:auto;overscroll-behavior:contain}
+.unpin-scrim{position:fixed}
+@media (max-width:640px){
+  .unpin-panel .dos{display:flex;flex-direction:column}
+  .dos-tabs{order:-1;position:relative;z-index:0;top:auto;left:auto;flex-direction:row;flex-wrap:wrap;gap:6px;margin:-4px -4px 12px}
+  .dos-tab{width:auto;height:30px;margin:0;padding:0 10px;border:1px solid var(--dos-kraft-ink);border-radius:8px 8px 0 0}
+  .dos-tab .dt-t{font-size:10px}
+}
