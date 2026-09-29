@@ -361,10 +361,14 @@ def audit_fonts(root: Path, posts: list[dict], errors: list[str]) -> int:
     return len(faces)
 
 
-def audit_manifests(root: Path, posts: list[dict], photos: list[dict], errors: list[str]) -> None:
+def audit_manifests(
+    root: Path, generator: ModuleType, posts: list[dict], photos: list[dict], errors: list[str]
+) -> None:
     manifests = (
         (root / "content" / "posts.js", "FY_POSTS", posts),
+        (root / "content" / "posts-index.js", "FY_POST_INDEX", generator.post_index(posts)),
         (root / "content" / "photos.js", "FY_PHOTOS", photos),
+        (root / "content" / "home.js", "FY_HOME", generator.home_manifest(posts, photos)),
     )
     for path, global_name, expected in manifests:
         try:
@@ -393,7 +397,7 @@ def main() -> int:
     photos, photo_ids = audit_photos(root, generator, errors)
     derivative_count = audit_derivatives(root, generator, errors)
     font_count = audit_fonts(root, posts, errors)
-    audit_manifests(root, posts, photos, errors)
+    audit_manifests(root, generator, posts, photos, errors)
 
     if errors:
         for error in errors:

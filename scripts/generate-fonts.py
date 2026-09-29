@@ -70,21 +70,28 @@ NOTO_SOURCES = {
     "NotoSansSC": "https://github.com/google/fonts/raw/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
 }
 
-# Pages whose entire text is folded into every subset. They are small and almost
-# all ASCII, so taking all of them costs a handful of glyphs and removes any need
-# to resolve CSS selectors against static markup.
+# Pages, and the scripts and stylesheets that write their interface text, whose
+# entire text is folded into every subset. They are small and almost all ASCII,
+# so taking all of them costs a handful of glyphs and removes any need to
+# resolve CSS selectors against static markup. Globs, relative to the root:
+# page code in lib/ and the shared modules at the root render strings of their
+# own (the opener's 点按跳过, Gallery's hand notes), so they count as pages.
 PAGES = [
     "index.html", "Gallery.dc.html", "Writing.dc.html", "Reading.dc.html",
     "About.dc.html", "Building.dc.html", "404.html", "UnderConstruction.dc.html",
-    "site-nav.css", "fred-agent.css",
+    "site*.css", "site*.js", "pen*.js", "pen.css", "motion.js", "transitions.*",
+    "lib/**/*.js", "lib/**/*.css", "assets/fred-agent/fred-agent.css",
 ]
 
 # Which post-derived text reaches which face. Verified against the CSS:
 #   DingTalk JinBuTi  <- .display, .title, .post-body h2/h3   (Reading.dc.html:40,63,78)
-#   MuyaoPleased      <- .hand, .eyebrow, .mn, .fig figcaption (Reading.dc.html:41,61,96,101)
-# `.mn` is footnote and reference text and `figcaption` is image captions, so
-# both faces receive arbitrary essay prose - which is exactly why this has to be
-# generated rather than hand-maintained.
+#   MuyaoPleased      <- .hand, .eyebrow, .fig figcaption      (Reading.dc.html:41,61,101)
+#   Noto Sans SC      <- the rail's landmark labels, clipped from the essay's
+#                        <h2 class="lm"> headings (scripts/landmarks.py)
+# `figcaption` is image captions, so the hand face receives arbitrary essay
+# prose - which is exactly why this has to be generated rather than
+# hand-maintained. Margin notes (`.mn`) are set in the body serif now, which
+# the text tier already covers; excerpts are no longer rendered in a hand face.
 FACES = {
     "DingTalkJinBuTi.woff2": {
         "family": "DingTalk JinBuTi",
@@ -96,9 +103,9 @@ FACES = {
     "MuyaoSuixin.woff2": {
         "family": "MuyaoPleased",
         "master": "local",
-        "post_fields": ["subtitle", "subtitleZh", "excerpt", "excerptZh"],
+        "post_fields": ["subtitle", "subtitleZh"],
         "html_elements": ["figcaption"],
-        "html_classes": ["mn"],
+        "html_classes": [],
     },
     # Body face. The UI tier covers interface Chinese on every page; the text
     # tier adds full essay bodies and is loaded only by Reading.dc.html.
@@ -123,7 +130,7 @@ FACES = {
         "family": "Noto Sans SC",
         "master": "NotoSansSC",
         "post_fields": [],
-        "html_elements": ["h4"],
+        "html_elements": ["h2", "h4"],
         "html_classes": ["appendix-title"],
     },
 }
@@ -173,13 +180,11 @@ def load_manifest_js(path: Path, global_name: str):
 def base_text() -> str:
     """Static page and stylesheet text, plus every ASCII printable."""
     parts = ["".join(chr(c) for c in range(0x20, 0x7F))]
-    for name in PAGES:
-        p = ROOT / name
-        if p.is_file():
-            # Deliberately unfiltered: .dc.html keeps rendered UI strings inside
-            # its inline component script, so stripping <script> would drop them.
-            parts.append(p.read_text(encoding="utf-8"))
-    for name in ("photos.js", "building-projects.js"):
+    for p in sorted({p for pattern in PAGES for p in ROOT.glob(pattern) if p.is_file()}):
+        # Deliberately unfiltered: .dc.html keeps rendered UI strings inside
+        # its inline component script, so stripping <script> would drop them.
+        parts.append(p.read_text(encoding="utf-8"))
+    for name in ("photos.js", "building-projects.js", "home.js"):
         p = ROOT / "content" / name
         if p.is_file():
             parts.append(p.read_text(encoding="utf-8"))
