@@ -1,0 +1,56 @@
+/* lib/reading/notes.css — footnotes with a body: the margin note is a paper slip with a punched eyelet (board 08b A),
+   the pen's gesture is drawn over it (pen-note.js), and on narrow screens the same slip is pulled out of a slot
+   cut in the page (slip.js). Citations stay in upright serif with utility-mono numbers and dates; never a hand face.
+   Ported from design/2026-09-motion r2-08b-base.css:67–79, r2-08b-slip.css, r2-08b-a.css, r3-08b-note.css. */
+
+/* ---- the margin slip. The float box (.mn) never moves, so its hit area is stable; only the sheet (.mn-in) is pulled ---- */
+.mn{float:right;clear:right;position:relative;width:210px;margin:0 -262px 20px 0;font:13px/1.6 var(--text);color:var(--soft)}
+html.lang-zh .mn{font:13px/1.75 var(--text-cn)}
+.mn .num{display:inline-block;margin-right:6px;font:500 11px/1.2 var(--util);color:var(--pencil)}
+.mn em{font-style:normal;color:var(--ink)}
+.mn a{color:inherit;text-decoration:none}
+.mn .d,.fs-cite .d{font:10.5px/1 var(--util);letter-spacing:.02em;color:var(--pencil);white-space:nowrap}
+.reference-note{overflow-wrap:anywhere}.ref-cite{white-space:nowrap}
+.mn-in{position:relative;display:block;padding:8px 12px 10px 25px;transform-origin:11.5px 14.5px;will-change:transform;
+  filter:drop-shadow(0 1px .8px rgba(60,50,35,.10)) drop-shadow(0 4px 7px rgba(60,50,35,.07));transition:color .15s,filter .3s var(--ease-out)}
+.mn-in::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--slip);
+  clip-path:polygon(0 2px,9% .6px,19% 2.2px,30% .4px,41% 1.9px,52% .5px,63% 2.3px,74% .7px,85% 2px,94% .4px,100% 1.6px,100% calc(100% - 1.5px),91% calc(100% - .3px),80% calc(100% - 2px),68% calc(100% - .5px),57% calc(100% - 2.2px),46% calc(100% - .4px),35% calc(100% - 1.9px),23% calc(100% - .5px),12% calc(100% - 2.1px),0 calc(100% - .6px))}
+.mn-in::after{content:"";position:absolute;left:8px;top:11px;width:7px;height:7px;border-radius:50%;box-sizing:border-box;border:1.3px solid var(--line-strong);background:var(--paper)}
+.mn.on{z-index:4}   /* above the other slips, under the pen (.fn-wire, z 5) */
+.mn.on .mn-in{color:var(--ink);filter:drop-shadow(0 2px 1.5px rgba(60,50,35,.12)) drop-shadow(0 12px 14px rgba(60,50,35,.12))}
+.mn.on .num{color:var(--ink)}
+@media (max-width:1080px){.mn{display:none}}
+
+/* ---- refs: the pen is the coral event, so the number stays ink ---- */
+.fnref{font-family:var(--util);font-size:.7em;position:relative;top:-.5em;vertical-align:baseline}
+.fnref a{position:relative;display:inline-block;padding:0 2px;line-height:1.2;color:var(--ink);font-weight:500;text-decoration:none}
+.fnref a:hover{color:var(--ink)}
+.fn-wire{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:5}
+
+/* ---- phone: the slot, the page's lip and the slip pulled out of it ---- */
+.fs-root{position:fixed;inset:0;z-index:40;pointer-events:none;visibility:hidden}
+.fs-root.open{visibility:visible}
+.fs-well{position:absolute;left:0;right:0;top:0;bottom:26px;overflow:hidden}
+.fs-slip{position:absolute;left:12px;right:12px;bottom:0;max-height:62%;display:flex;flex-direction:column;pointer-events:auto;touch-action:none;
+  transform-origin:50% 100%;transform:translateY(110%);will-change:transform;
+  filter:drop-shadow(0 -1px 1px rgba(60,50,35,.07)) drop-shadow(0 -8px 16px rgba(60,50,35,.10))}
+.fs-slip:focus{outline:none}
+.fs-slip::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--slip);
+  clip-path:polygon(0 4px,5% 1.4px,11% 3.4px,17% .8px,24% 2.9px,31% 1px,38% 3.3px,45% .7px,52% 2.8px,59% 1.1px,66% 3.4px,73% .9px,80% 2.7px,87% 1.2px,94% 3.2px,100% 1.6px,100% 100%,0 100%)}
+.fs-grip{display:block;margin:6px auto 0;padding:6px 12px;line-height:0;border:0;background:none;cursor:pointer}
+.fs-grip path{fill:none;stroke:var(--pencil);stroke-width:2;stroke-linecap:round}
+.fs-head{display:flex;align-items:center;gap:9px;padding:2px 20px 9px 18px}
+.fs-eye{flex:none;width:9px;height:9px;border-radius:50%;box-sizing:border-box;border:1.3px solid var(--line-strong);background:var(--paper);box-shadow:inset 0 1px 1px rgba(60,50,35,.12)}
+.fs-no{font:500 12px/1 var(--util);color:var(--ink)}
+.fs-lab{font:10.5px/1 var(--util);letter-spacing:.06em;color:var(--pencil)}
+.fs-body{overflow:auto;padding:0 22px 6px 36px;font:15px/1.72 var(--text-cn);color:var(--soft);overflow-wrap:anywhere}
+html.lang-en .fs-body{font-family:var(--text);line-height:1.62}
+.fs-cite em{font-style:normal;color:var(--ink)}
+.fs-cite a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-strong);text-decoration-thickness:1px;text-underline-offset:3px}
+.fs-foot{display:flex;justify-content:space-between;gap:12px;padding:10px 20px 32px;font:10.5px/1.3 var(--util);letter-spacing:.03em;color:var(--pencil)}
+.fs-foot a{color:var(--ink)}
+.fs-lip{position:absolute;left:0;right:0;bottom:0;height:26px;background:var(--paper);box-shadow:0 -2px 5px -2px rgba(60,50,35,.22);transform:translateY(100%);transition:transform .2s var(--ease-out)}
+.fs-root.open .fs-lip{transform:none;transition:transform .12s var(--ease-out)}
+.fs-slot{position:absolute;left:0;top:-3px;height:8px;overflow:visible}
+.fs-cut{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round}
+@media (prefers-reduced-motion:reduce){.fs-lip,.fs-root.open .fs-lip,.mn-in{transition:none}}
