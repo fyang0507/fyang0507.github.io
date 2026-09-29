@@ -58,10 +58,10 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - `.site-rule` and `.site-tabmark` stay the last two children of `.site-index`.
   - Put no inline styles, animation classes or `view-transition-name` on header parts.
 - Head order on every `.dc.html` page:
-  1. `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/<page>/<page>.css`
-  2. the `expect` link
-  3. `motion.js` and `transitions.js`, parser-blocking, because a deferred script misses `pagereveal`
-  4. `support.js`
+  1. `support.js`, first, so React's fetch from unpkg starts before the stylesheets claim the connections (the page's largest paint waits for React). Don't preload React: arriving before parsing ends makes support.js wait for DOMContentLoaded.
+  2. `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/<page>/<page>.css`
+  3. the `expect` link
+  4. `motion.js` and `transitions.js` as `defer blocking="render"`: they don't block the parser, but first render waits for them, so `pagereveal` is still heard
   5. deferred: `pen.js`, `pen-tier.js`, `site.js`, `content/*`, then the page's modules
 - Page CSS lives in the head, never in `<helmet>`, so it applies at first paint.
 - `index.html` differs:

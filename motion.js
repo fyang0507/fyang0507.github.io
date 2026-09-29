@@ -1,5 +1,5 @@
-/* motion.js — the site's two clocks, shared by every page. Loaded parser-blocking in each <head>
-   (transitions.js needs it before pagereveal), so loading it only defines window.Motion.
+/* motion.js — the site's two clocks, shared by every page. Loaded `defer blocking="render"` in each <head>,
+   before transitions.js (which needs it at pagereveal), so loading it only defines window.Motion.
 
    Drawings move on the hand's clock: held key poses and stepped keyframes (held()). Paper and chrome
    move on the physics clock: springs with mass, one small overshoot, then settle (Spring, pendulum,

@@ -1,6 +1,7 @@
 /* transitions.js — the desk becomes the nav (board r2-01 A), as cross-document View Transitions between home
-   and the four gateway pages. Parser-blocking in every page's <head>, right after motion.js: pagereveal fires
-   before first paint and a deferred script would miss it.
+   and the four gateway pages. Loaded `defer blocking="render"` right after motion.js (same attributes): it runs
+   after parsing, in order, but before first render, so pagereveal is heard, and it never holds up the parser
+   (support.js, and so React, start at once).
    · pageswap (the page you leave) writes sessionStorage fy-vt {from, to, t}. Home also writes its desk edge and
      each object's ink box, because the page you land on can't measure the page you left.
    · pagereveal (the page you land on) inks the folder tab, then, once the pseudo-tree exists, reads the
@@ -488,5 +489,6 @@
   }
   addEventListener('pagereveal', reveal);
   if (!('onpagereveal' in window)) document.addEventListener('DOMContentLoaded', function () { reveal(null); });
+  else if (performance.getEntriesByType('paint').length) reveal(null);   // painted before this ran (no blocking=render)
   M.onReduced(function (on) { if (on && cur) cur.skipTransition(); });
 })();

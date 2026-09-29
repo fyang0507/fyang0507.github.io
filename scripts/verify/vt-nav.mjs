@@ -1,6 +1,6 @@
-// vt-nav.mjs — the static nav (site-nav.css) on every page that loads it, at 1440 and 390.
+// vt-nav.mjs — the static nav (site-nav.css) on every page that loads it, at 1440, 390 and 320.
 //   node /tmp/fyshot/run.mjs scripts/verify/vt-nav.mjs      env: VT_ORIGIN (after, :4173) · VT_BEFORE (:4174)
-// Checks: labels ≥ 10px (10.5 on desktop), opacity 1, ≥ 4.5:1 on paper, no overflow and no overlap; identity tag
+// Checks: labels ≥ 10px (10.5 on desktop; 9.5 in a header under 280 px, the plan's phone floor), opacity 1, ≥ 4.5:1 on paper, no overflow, ≥ 1px between labels; identity tag
 // and title number ≥ 10.5px; the rule is a real .site-rule and no .site-index::after draws; the current tab is the
 // tabmark (pen-inked where transitions.js runs), with no CSS border or dot on the tab itself; the rule's gap under
 // the current tab matches the before site (origin/main) ±1px, measured in pixels; no horizontal overflow; no
@@ -35,6 +35,7 @@ async function state(page) {
       tabBorder: tab ? parseFloat(cs(tab).borderTopWidth) : 0,
       rule: rule && { h: r(rule).height, bg: cs(rule).backgroundColor, y: r(rule).top },
       tab: tab && [r(tab).left, r(tab).right], tm: tm && { inked: tm.classList.contains('is-inked'), path: !!tm.querySelector('svg path'), box: [r(tm).left, r(tm).right] },
+      hw: q('.site-shell-header') ? r(q('.site-shell-header')).width : innerWidth,
       overflow: document.documentElement.scrollWidth - innerWidth
     };
   });
@@ -70,7 +71,7 @@ export default async (page, ctx) => {
   page.on('console', (m) => { if (m.type() === 'error') errs.push(page.url() + ' ' + m.text()); });
   page.on('response', (r) => { if (r.status() >= 400 && !r.url().endsWith('favicon.ico')) errs.push('HTTP ' + r.status() + ' ' + r.url()); });
   const before = await page.context().browser().newPage();
-  for (const w of [1440, 390]) {
+  for (const w of [1440, 390, 320]) {
     await page.setViewportSize({ width: w, height: w > 500 ? 900 : 844 });
     await before.setViewportSize({ width: w, height: w > 500 ? 900 : 844 });
     for (const p of [...GATEWAY, ...SUBSITES]) {
@@ -80,8 +81,8 @@ export default async (page, ctx) => {
       const s = await state(page), tag = w + ' ' + p, gw = GATEWAY.includes(p);
       if (!s.labels.length) { check(res, tag + ' nav renders', false); continue; }
       const min = Math.min(...s.labels.map((l) => l.size)), lo = Math.min(...s.labels.map((l) => contrast(l.color, s.paper)));
-      const overlap = s.labels.slice(1).some((l, i) => l.x0 < s.labels[i].x1 - 0.5);
-      check(res, tag + ' labels legible', min >= (w > 640 ? 10.5 : 10) && s.labels.every((l) => l.op === 1) && lo >= 4.5 && s.labels.every((l) => l.fits) && !overlap,
+      const overlap = s.labels.slice(1).some((l, i) => l.x0 < s.labels[i].x1 + 1);   // ≥ 1 px of air between labels
+      check(res, tag + ' labels legible', min >= (w > 640 ? 10.5 : s.hw < 280 ? 9.5 : 10) && s.labels.every((l) => l.op === 1) && lo >= 4.5 && s.labels.every((l) => l.fits) && !overlap,
         { minPx: min, contrast: +lo.toFixed(2), overlap });
       check(res, tag + ' identity tag / title number ≥ 10.5px', (s.tag == null ? /Reading/.test(p) : s.tag >= 10.5) && (s.num == null || s.num >= 10.5), { tag: s.tag, num: s.num });
       check(res, tag + ' real .site-rule, no ::after', s.rule && Math.abs(s.rule.h - 1.5) < 0.01 && (s.after === 'none' || s.after === 'normal'), s.rule);

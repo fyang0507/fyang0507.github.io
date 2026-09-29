@@ -8,6 +8,7 @@
 <meta name="description" content="Fred Yang's photography archive, 2015–2025.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
+<script src="./support.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
@@ -17,9 +18,8 @@
 <link rel="stylesheet" href="./transitions.css">
 <link rel="stylesheet" href="./lib/gallery/gallery.css">
 <link rel="expect" href="#site-nav" blocking="render">
-<script src="./motion.js"></script>
-<script src="./transitions.js"></script>
-<script src="./support.js"></script>
+<script src="./motion.js" defer blocking="render"></script>
+<script src="./transitions.js" defer blocking="render"></script>
 <script src="./pen.js" defer></script>
 <script src="./pen-tier.js" defer></script>
 <script src="./site.js" defer></script>
@@ -46,7 +46,12 @@
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector("[data-photo-count]").textContent = `${(window.FY_PHOTOS || []).length} frames · 2015–2025`;
+  // The year range comes from the photos; the static text above is the fallback.
+  const photos = window.FY_PHOTOS || [], years = photos.map((p) => p.date.slice(0, 4)).sort();
+  if (!photos.length) return;
+  const range = `${years[0]}–${years[years.length - 1]}`;
+  document.querySelector("[data-photo-count]").textContent = `${photos.length} frames · ${range}`;
+  document.querySelector('meta[name="description"]').setAttribute("content", `Fred Yang's photography archive, ${range}.`);
 });
 </script>
 <x-dc>
