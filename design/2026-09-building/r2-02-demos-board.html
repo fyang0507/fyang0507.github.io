@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building · round 2 · Demos in the dossier</title>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<style>
+body{margin:0;background:#F6F1E6;color:#2B2722;font:16px/1.6 Georgia,serif}
+main{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:34px;line-height:1.15;margin:0 0 10px}
+h2{margin:48px 0 10px;padding-top:18px;border-top:1px solid #2B2722;font-size:22px}
+p,li{max-width:78ch}
+code,.k{font:13px/1.5 ui-monospace,Menlo,monospace}
+a{color:#2B2722}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:start;margin-top:14px}
+.row.ph{grid-template-columns:2.6fr 1fr}
+figure{margin:0}
+figure img{display:block;width:100%;height:auto;box-shadow:0 0 0 1px #CFC4AE}
+figcaption{margin-top:6px;color:#5F574C;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+table{border-collapse:collapse;margin-top:10px;font-size:15px}
+td,th{padding:7px 12px 7px 0;border-bottom:1px dashed #CFC4AE;text-align:left;vertical-align:top}
+.q{margin-top:48px;padding:18px 20px;border:1.5px solid #2B2722;background:#FBF7EE}
+</style>
+</head>
+<body>
+<main>
+<p class="k">design/2026-09-building · round 2 · C 档案, the dossier</p>
+<h1>Demos in the dossier: the exhibits, and the evidence viewer's focus without the blur</h1>
+<p>Fred picked C. The one chapter the round-1 boards didn't mock and the port plan says needs Fred's eyes is Demos: 4 recorded runs, 1 controlled comparison, and the evidence viewers. This board is that chapter, with the real content, in C's language. Each demo is an exhibit on the dossier's sheet: a typed exhibit label, an evidence stamp ("recorded run", "controlled comparison"), the capture mounted as a print with kraft photo corners and a typed caption strip, and under it a typed legend numbered to the pen's marks on the print. The legend is always there, so the notes read without any interaction, without JavaScript, and with a screen reader.</p>
+<p>Live: <a href="./r2-02-demos.html?f=1">F1 the pen marks it</a> · <a href="./r2-02-demos.html?f=2">F2 tracing paper</a> · <a href="./r2-02-demos.html?f=3">F3 the enlargement</a> · <a href="../../building/fred-agent/demos.html">the live page today</a>. The switcher in the page's lower-left corner changes treatment; "reduced" previews reduced motion.</p>
+
+<h2>The page, 1440 and 390</h2>
+<div class="row ph">
+<figure><img src="shots/r2-demos-top-1440.png" alt="Demos at 1440: the open dossier with its file label, stamps and the exhibits' contents"><figcaption>1440 · the sheethead, three stamps, the exhibits' contents in place of a rail (the prints need the sheet's whole measure)</figcaption></figure>
+<figure><img src="shots/r2-demos-top-390.png" alt="Demos at 390"><figcaption>390 · the fore-edge tabs are the strip above the sheet</figcaption></figure>
+</div>
+<div class="row">
+<figure><img src="shots/r2-demos-exhibit-1440.png" alt="Exhibit 02 at rest: the Trash Patrol capture as a print with numbered marks"><figcaption>An exhibit at rest: the print held by four photo corners, the pen's numbered marks, the stamp</figcaption></figure>
+</div>
+
+<h2>Focus without the blur: three treatments</h2>
+<p>Today's focus mode blurs the capture and floats the notes in glass boxes; on a phone the canvas scrolls sideways (<a href="shots/r2-now-demos-focus-1440.jpg">1440</a>, <a href="shots/r2-now-demos-focus-390.jpg">390</a>). All three treatments share one core: noticing a mark or a legend entry (a mouse, or keyboard focus) has the pen loop the region in coral; choosing it (click, tap, Enter, Space) makes it the one in focus, banded in wheat. What choosing shows is the treatment.</p>
+<div class="row ph">
+<figure><img src="shots/r2-demos-f1-chosen-1440.png" alt="F1 chosen at 1440"><figcaption>F1 · the pen marks it: the loop stays, cooled to the wheat edge, and the legend entry is banded. Nothing else moves. Cheapest; the capture stays small on a phone.</figcaption></figure>
+<figure><img src="shots/r2-demos-f1-chosen-390.png" alt="F1 chosen at 390"><figcaption>F1 · 390</figcaption></figure>
+</div>
+<div class="row ph">
+<figure><img src="shots/r2-demos-f2-chosen-1440.png" alt="F2 chosen at 1440"><figcaption>F2 · tracing paper: a sheet is laid over the print (it dims the capture under paper, never blurs it); every region is a window cut out of it, with its title typed beside it. Click the sheet to lift it. On a phone the typed titles don't fit and are dropped.</figcaption></figure>
+<figure><img src="shots/r2-demos-f2-chosen-390.png" alt="F2 chosen at 390"><figcaption>F2 · 390</figcaption></figure>
+</div>
+<div class="row ph">
+<figure><img src="shots/r2-demos-f3-chosen-1440.png" alt="F3 chosen at 1440"><figcaption>F3 · the enlargement: a print slides out from under the capture, re-cut to the chosen region at size, its note typed under it, ‹ › to step, "put it back · 放回" to return it.</figcaption></figure>
+<figure><img src="shots/r2-demos-f3-chosen-390.png" alt="F3 chosen at 390"><figcaption>F3 · 390: the only treatment that makes a phone's capture legible</figcaption></figure>
+</div>
+
+<h2>Keyboard and touch</h2>
+<table>
+<tr><th>Input</th><th>What happens</th></tr>
+<tr><td>Tab</td><td>One stop per region: the legend entries are the controls (<code>button</code>, <code>aria-expanded</code>, <code>aria-controls</code>). The marks on the print are for pointers and touch, hidden from assistive tech. Focus shows the pen's coral 「 」 and loops the region.</td></tr>
+<tr><td>Enter / Space</td><td>Choose the region (again to clear).</td></tr>
+<tr><td>← → ↑ ↓</td><td>Move between entries; with an enlargement out (F3) or a loop chosen (F1), the choice moves too.</td></tr>
+<tr><td>Esc</td><td>Clear, and return focus to the entry.</td></tr>
+<tr><td>Mouse hover</td><td>A mark or an entry: the pen loops its region in coral, and the entry gets the hover underline.</td></tr>
+<tr><td>Tap</td><td>A mark or an entry chooses it; tap again to clear. No hover state on touch. F2: tap the sheet to lift it. F3: ‹ › and "put it back".</td></tr>
+<tr><td>Reduced motion</td><td>Every state lands at once: no slide, no draw.</td></tr>
+</table>
+
+<h2>How the video and the screenshots sit on the sheets</h2>
+<ul>
+<li>Every capture is a print: paper2 behind it, a hairline edge and a short shadow, four kraft photo corners, and a typed caption strip ("FIG. 02 …") under it.</li>
+<li>The recording (exhibit 01) is a print of its poster with a typed "play the recorded run 0:58" button; play turns the print into the player in place. The video is <code>preload="none"</code>, so none of the 25.8 MB mp4 loads before play.</li>
+<li>Phone captures (Discord intake, the recovery reports) are tall prints beside their legend at 1440, and a narrow print above it on a phone. The recovery exhibit is a contact sheet of three prints.</li>
+<li>The controlled comparison: the prompt on a typed slip, then A and B as two prints side by side; the settei library as three plates.</li>
+</ul>
+
+<h2>What generate-derivatives.py would need (not generated here)</h2>
+<ul>
+<li>A Fred Agent evidence ladder in <code>scripts/generate-content.py</code>: prints at about 640, 960, 1280 and 1760 px wide as WebP (AVIF optional), with the PNGs under <code>building/fred-agent/assets/fred-agent/demo/</code> as the archived originals. Today the page serves about 12 MB of PNGs.</li>
+<li>F3 cuts its enlargement from the print's <code>currentSrc</code>; to read at size it needs the ladder's largest step (the phone captures are 1206 × 2622), fetched only when an enlargement opens.</li>
+<li>The poster stays a 960 × 540 WebP (32 KB); the settei plates and the A/B pelicans (1.2–2.5 MB each) get the same ladder, lazy.</li>
+<li>Entries in <code>content/image-dimensions.json</code> so every print has width and height (no layout shift).</li>
+<li><code>generate-fonts.py</code>'s page list doesn't include <code>building/**</code>; the port adds it (the page's Chinese: 描图纸, 放回).</li>
+</ul>
+
+<h2>Known gaps in this board</h2>
+<ul>
+<li>F3 opens in the flow between the print and the legend, so choosing from the legend moves the legend down by the enlargement's height. The port should keep the chosen entry still (scroll by the difference) or open the enlargement over the legend.</li>
+<li>On a phone the enlargement's counter and its key wrap side by side; stack them.</li>
+<li>The recording's play has no pen treatment beyond the hover underline; the evidence ladder is not built.</li>
+</ul>
+
+<div class="q">
+<p><strong>Question for Fred:</strong> which focus treatment should the Demos evidence viewers ship with: F1 (the pen's loop on the region, nothing else moves), F2 (a sheet of tracing paper with windows cut where the regions are), or F3 (an enlargement print pulled out from under the capture, recommended because it's the only one that makes the captures readable on a phone)?</p>
+</div>
+</main>
+</body>
+</html>
