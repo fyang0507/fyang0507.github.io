@@ -1,7 +1,7 @@
 // Home · the desk's inline geometry equals FY_DESK (desk px), each named object renders once, and its box on screen is
 // its art box scaled by the desk (the contract transitions.js flies against). At 1440 and 390.
 //   node /tmp/fyshot/run.mjs scripts/verify/home-geo.mjs
-const U = (process.env.BASE || 'http://127.0.0.1:4173/') + 'index.html?opener=none';
+const U = (process.env.BASE || 'http://127.0.0.1:4173/') + 'index.html?opx=1&opener=none';
 export default async (page, ctx) => {
   for (const [w, h] of [[1440, 900], [390, 844]]) {
     await page.setViewportSize({ width: w, height: h });

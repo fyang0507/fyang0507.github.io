@@ -8,7 +8,12 @@
   .ep{padding:5px 8px 6px}.ep-cn{font-size:17px}.ep-no{font-size:14px}.ep-sub{display:none}
   .rig{display:block;position:relative;flex:1 1 auto;min-height:0;--vh:clamp(280px,calc(100svh - 340px),540px)}
   .view{display:block;position:absolute;left:0;right:0;top:0;height:var(--vh);overflow:hidden;pointer-events:none}
-  .desk{position:absolute;left:0;top:0;width:1000px;margin:0;transform-origin:0 0;will-change:transform}
+  /* shot 0 (the whole desk), in CSS so the first paint and a view transition's capture are framed before mobile.js
+     runs; mobile.js then drives the same numbers: s = min(W / (vw · 1000), H / (vw · 750 · 0.9)), vw = .70, centre
+     (.52, .575). The layer is 1000 × 750 px. */
+  .desk{position:absolute;left:0;top:0;width:1000px;margin:0;transform-origin:0 0;will-change:transform;
+    --s0:min(tan(atan2(100vw,700px)),tan(atan2(var(--vh),472.5px)));
+    transform:translate(calc(50vw - 520px * var(--s0)),calc(var(--vh) / 2 - 431.25px * var(--s0))) scale(var(--s0))}
   .desk-notes,.hot,.fig{display:none}
   .desk-screen{font-size:18.8px;line-height:1.55;letter-spacing:.01em;white-space:pre-wrap}   /* 13 px of the phone's 1000 px layer */
   .desk-screen .o{color:var(--ink)}
@@ -20,15 +25,16 @@
   .panel{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column}
   .win{display:block;flex:none;height:var(--vh);position:relative}
   .ov-hot{position:absolute;display:block}
-  .ov-hot span{position:absolute;left:50%;white-space:nowrap;font:19px/1 "MuyaoPleased",cursive;color:var(--ink);transform:translateX(var(--ax,-50%)) rotate(-2deg);opacity:var(--ov,1)}
-  .ov-hot[data-lbl="top"] span{bottom:calc(100% + 4px)}
-  .ov-hot[data-lbl="bottom"] span{top:calc(100% + 6px)}
+  .ov-hot>span{position:absolute;left:50%;white-space:nowrap;font:19px/1 "MuyaoPleased",cursive;color:var(--ink);transform:translateX(var(--ax,-50%)) rotate(-2deg);opacity:var(--ov,1)}
+  .ov-hot[data-lbl="top"]>span{bottom:calc(100% + 4px)}
+  .ov-hot[data-lbl="bottom"]>span{top:calc(100% + 6px)}
+  .ov-hot[data-lbl="in"]>span{top:22%}
 
   .copy{flex:1;padding:14px 24px 0}
   .copy .k{font:500 10.5px/1 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.08em;color:var(--pencil)}
   .copy .lbl{display:inline-block;margin-top:10px;font:34px/1 "MuyaoPleased",cursive;color:var(--ink);transform:rotate(-1.5deg);transform-origin:0 50%}
   .copy .lbl::after{content:" →";font-size:.8em;color:var(--soft)}
-  .copy .fact{margin-top:12px;max-width:330px;font:12.5px/1.6 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.02em;color:var(--soft)}
+  .copy .fact{margin-top:14px;max-width:330px;font:12.5px/1.6 "IBM Plex Mono","Noto Sans SC",monospace;letter-spacing:.02em;color:var(--soft)}
   .copy .fact b{font-weight:500;color:var(--ink)}
   .copy .fact .nw{white-space:nowrap}
   .copy .lede{margin-top:10px;font-size:16px;line-height:1.45;color:var(--ink)}
@@ -52,7 +58,14 @@
   .desk.snap .desk-flash{animation:dkFlash .9s linear both}
   .desk.snap .desk-kacha{animation:dkKacha 1s cubic-bezier(.2,.7,.2,1) both}
 }
-/* the narrowest phones have no room beside the identity for the episode label; the eyecatch still shows it */
+/* a phone on its side: too short for the one-screen layout, so the page scrolls, the camera's view is shorter, and each
+   shot fits its height as well as its width (mobile.js frameOf) */
+@media (max-width:760px) and (max-height:520px){
+  html,body{height:auto;overflow-x:hidden;overflow-y:auto}
+  .home{height:auto;min-height:100svh;overflow:visible}
+  .rig{flex:none;--vh:clamp(200px,62svh,320px);height:calc(var(--vh) + 230px)}
+}
+/* the narrowest phones have no room beside the identity for the episode label; the eyecatch still shows its card */
 @media (max-width:380px){.ep{display:none}}
 @keyframes dkBookOnce{0%{--cell:0}16.6%{--cell:1}33.3%{--cell:2}50%{--cell:3}66.6%{--cell:4}83.3%,100%{--cell:0}}
 @media (max-width:760px) and (prefers-reduced-motion:reduce){

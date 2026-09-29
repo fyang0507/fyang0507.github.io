@@ -1,7 +1,8 @@
 # WCAG 2.3.1 flash audit over a captured frame sequence (filenames end in <ms>.png, one every 20 ms). Home's opener
 # is rendered frame by frame on its own clock (lib/home/opener.js, ?opx=1) by scripts/verify/home-seq.mjs.
-#   uv run --with pillow --with numpy scripts/verify/flash-audit.py '/tmp/fyshot/p3-home/seq-first-1440/f-*.png'
-# Ported unchanged in method from the redesign board's tools/r2-10-flash.py.
+#   uv run --with pillow --with numpy scripts/verify/flash-audit.py '/tmp/fyshot/p3-home/seq-first-1440/f-*.png' [--max 2.5]
+# --max: the gate in flashes per second, on both readings (default 3.0, WCAG's limit). Home's plan gates desktop at 2.5
+# and phone and portrait layouts at 2.0.
 # Two readings, both must pass (≤ 3 flashes = ≤ 6 opposing transitions in every 1 s window):
 #  A · area (WCAG's definition): a transition is a change of ≥ 0.10 relative luminance with the darker side
 #      < 0.80; it counts for a 10° field only if pixels changing in the same direction cover ≥ 25 % of that
@@ -17,6 +18,7 @@ import glob, re, sys
 import numpy as np
 from PIL import Image
 
+MAX = float(sys.argv[sys.argv.index('--max') + 1]) if '--max' in sys.argv else 3.0
 files = sorted(glob.glob(sys.argv[1]), key=lambda f: int(re.findall(r'(\d+)\.png$', f)[0]))
 ts = [int(re.findall(r'(\d+)\.png$', f)[0]) for f in files]
 def lin(c):
@@ -77,4 +79,4 @@ print('frames %d · %d–%d ms · field %dx%d px' % (len(files), ts[0], ts[-1], 
 print('A area:      max %d transitions / 1 s → %.1f flashes · %s' % (worstA, worstA / 2, atA))
 print('B tile mean: max %d transitions / 1 s → %.1f flashes · %s' % (worstB, worstB / 2, atB))
 print('red-flash transitions:', red)
-print('PASS' if worstA <= 6 and worstB <= 6 and red == 0 else 'FAIL')
+print(('PASS' if worstA / 2 <= MAX and worstB / 2 <= MAX and red == 0 else 'FAIL') + ' (gate %.1f flashes/s)' % MAX)

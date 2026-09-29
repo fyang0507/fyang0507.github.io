@@ -1,7 +1,7 @@
 // Home · keyboard: Tab through every stop; each focused element shows the pen's coral 「 」 (a FocusMark with both
 // strokes drawn), at 1440 and 390.
 //   node /tmp/fyshot/run.mjs scripts/verify/home-keys.mjs
-const U = (process.env.BASE || 'http://127.0.0.1:4173/') + 'index.html?opener=none';
+const U = (process.env.BASE || 'http://127.0.0.1:4173/') + 'index.html?opx=1&opener=none';
 export default async (page, ctx) => {
   for (const [w, h] of [[1440, 900], [390, 844]]) {
     await page.setViewportSize({ width: w, height: h });

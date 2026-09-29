@@ -12,7 +12,7 @@ export default async (page, ctx) => {
     cdp.on('Network.requestWillBeSent', (e) => { reqs[e.requestId] = { url: e.request.url, type: e.type }; });
     cdp.on('Network.responseReceived', (e) => { const r = reqs[e.requestId]; if (r) { r.status = e.response.status; r.mime = e.response.mimeType; } });
     cdp.on('Network.loadingFinished', (e) => { const r = reqs[e.requestId]; if (r) { r.bytes = e.encodedDataLength; rows.push(r); } });
-    await page.goto(U + '?opener=first', { waitUntil: 'commit' });   // one cold load, the full first visit
+    await page.goto(U + '?opx=1&opener=first', { waitUntil: 'commit' });   // one cold load, the full first visit
     await page.evaluate(() => new Promise((r) => document.addEventListener('opx:done', r, { once: true })));
     await page.waitForTimeout(1500);
     await cdp.send('Network.setCacheDisabled', { cacheDisabled: false });

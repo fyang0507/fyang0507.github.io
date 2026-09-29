@@ -22,26 +22,39 @@
 <link rel="expect" href="#desk" blocking="render">
 <script>
   /* Before first paint: does this landing play the opener? The OP plays only when home is the session's first page
-     reached directly; an internal arrival (a link inside the site, or Back/Forward) gets the view transition instead.
-     A reload, or a later direct landing in the same session, plays only the fall. fy-opener is set either way.
-     Reduced motion: no opener, the static desk. sessionStorage only; nothing is kept across sessions. */
+     reached directly. An internal arrival (a same-origin link or referrer, Back/Forward, a fresh fy-vt record from the
+     page just left, a same-origin navigation.activation) gets the view transition instead, with the desk at rest.
+     A reload, or a later direct landing in the same session, plays only the fall. fy-opener is set either way; reduced
+     motion always means the static desk. ?opx=1&opener=first|returning|none forces a mode, for tests.
+     Failsafe: lib/home/opener.js takes over by setting data-opener-live. Until it does, any input or the 6.5 s cap
+     ends the wait, so a blocked, failed or very late module leaves a plain page, never a stuck one. */
   (function () {
-    var h = document.documentElement, q = new URLSearchParams(location.search), seen = false, nav = '';
-    try { seen = sessionStorage.getItem('fy-opener') === '1'; } catch (e) {}
+    var h = document.documentElement, q = new URLSearchParams(location.search), ss = null, nav = '', ref = false, vt = false, act = false, seen = false;
+    try { ss = window.sessionStorage; seen = ss.getItem('fy-opener') === '1'; } catch (e) {}
     try { nav = performance.getEntriesByType('navigation')[0].type; } catch (e) {}
-    var ref = '';
-    try { ref = document.referrer && new URL(document.referrer).origin === location.origin ? document.referrer : ''; } catch (e) {}
-    var inside = nav === 'back_forward' || (nav !== 'reload' && ref !== '');
-    var mode = /^(first|returning|none)$/.test(q.get('opener')) ? q.get('opener') :
-      matchMedia('(prefers-reduced-motion: reduce)').matches || inside ? 'none' : seen ? 'returning' : 'first';
+    try { ref = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+    try { var v = JSON.parse(ss.getItem('fy-vt')); vt = !!v && v.to === 'home' && Date.now() - v.t < 10000; } catch (e) {}   // peek only: transitions.js consumes it
+    try { var f = navigation.activation.from; act = !!f && !!f.url && new URL(f.url).origin === location.origin; } catch (e) {}
+    var inside = nav !== 'reload' && (nav === 'back_forward' || ref || vt || act);
+    var force = q.get('opx') === '1' && /^(first|returning|none)$/.test(q.get('opener')) ? q.get('opener') : '';
+    var mode = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'none' : force || (inside ? 'none' : seen ? 'returning' : 'first');
     h.dataset.opener = mode;
-    if (mode !== 'none') h.classList.add('opening');
+    try { ss.setItem('fy-opener', '1'); } catch (e) {}
+    if (mode === 'none') return;
+    h.classList.add('opening');
     if (mode === 'returning') h.classList.add('ret');
-    try { sessionStorage.setItem('fy-opener', '1'); } catch (e) {}
+    var evs = ['pointerdown', 'keydown', 'wheel', 'touchstart'];
+    function out() {
+      evs.forEach(function (e) { removeEventListener(e, out, true); });
+      if (h.hasAttribute('data-opener-live')) return;
+      h.classList.remove('opening', 'ret'); h.dataset.opener = 'none';
+    }
+    evs.forEach(function (e) { addEventListener(e, out, true); });
+    setTimeout(out, Math.max(0, 6500 - performance.now()));
   })();
 </script>
-<script src="./motion.js"></script>
-<script src="./transitions.js"></script>
+<script src="./motion.js" defer blocking="render"></script>
+<script src="./transitions.js" defer blocking="render"></script>
 <script defer fetchpriority="high" src="./pen.js"></script>
 <script defer fetchpriority="high" src="./pen-tier.js"></script>
 <script defer fetchpriority="high" src="./content/home.js"></script>
@@ -49,16 +62,15 @@
 <script defer fetchpriority="high" src="./assets/derived/desk-geo.js"></script>
 <link rel="modulepreload" href="./lib/home/desk.js">
 <link rel="modulepreload" href="./lib/home/mobile.js">
-<link rel="modulepreload" href="./lib/home/opener.js">
 <link rel="modulepreload" href="./lib/home/opener-op.js">
 <link rel="modulepreload" href="./lib/home/fall.js">
 <link rel="modulepreload" href="./lib/home/fall-stage.js">
-<script type="module" src="./lib/home/main.js"></script>
+<script type="module" src="./lib/home/opener.js"></script>
 </head>
 <body>
 <main class="home">
   <header class="home-head">
-    <div class="home-id"><a class="site-identity" href="index.html" aria-label="Fred Yang，弗雷德。继续写，继续造。首页">
+    <div class="home-id"><a class="site-identity" href="index.html" aria-label="Fred Yang — home">
       <span class="site-identity-copy">
         <span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span>
         <span class="site-identity-tag" lang="zh">继续写，继续造</span>
@@ -85,7 +97,7 @@
           </div>
           <img class="desk-edge" src="./assets/derived/desk/edge.webp" alt="" style="left:0px;top:909px;width:1448px;height:7px">
           <div class="desk-body desk-frame" data-body="frame" style="left:799.73px;top:358.71px;width:225.02px;height:210.77px">
-            <div class="desk-strip"><img src="./assets/derived/strip/frame-308.webp" srcset="./assets/derived/strip/frame-616.webp 2464w, ./assets/derived/strip/frame-308.webp 1232w, ./assets/derived/strip/frame-154.webp 616w" sizes="(max-width: 760px) 800px, calc(min(1180px, 92vw, 133.33vh - 320px) * .62)" alt="" data-strip="frame"></div>
+            <div class="desk-strip"><img src="./assets/derived/strip/frame-308.webp" srcset="./assets/derived/strip/frame-616.webp 2464w, ./assets/derived/strip/frame-308.webp 1232w, ./assets/derived/strip/frame-154.webp 616w" sizes="(max-width: 760px) 800px, calc(min(1180px, 92vw, 133.33vh - 320px) * .93)" alt="" data-strip="frame"></div>
           </div>
           <div class="desk-body desk-plant" data-body="plant" style="left:1073px;top:275px;width:293px;height:295px">
             <img src="./assets/derived/desk/plant.webp" alt="" style="left:0px;top:0px;width:293px;height:295px">
@@ -100,7 +112,7 @@
             <svg class="desk-steam" viewBox="0 0 100 110" style="left:27.82px;top:-105.01px;width:98.46px" aria-hidden="true"><path class="st1" d="M25 92 q9 -11 0 -22 q-9 -11 0 -22"/><path class="st2" d="M52 100 q10 -12 0 -24 q-10 -12 0 -24 q7 -9 3 -16"/><path class="st3" d="M79 92 q9 -11 0 -22 q-9 -11 0 -22"/></svg>
           </div>
           <div class="desk-body desk-bird" style="left:14%;top:733.05px;width:101.36px;height:104.32px">
-            <div class="desk-strip"><img src="./assets/derived/strip/bird6-154.webp" srcset="./assets/derived/strip/bird6-308.webp 1848w, ./assets/derived/strip/bird6-154.webp 924w, ./assets/derived/strip/bird6-77.webp 462w" sizes="(max-width: 760px) 240px, calc(min(1180px, 92vw, 133.33vh - 320px) * .42)" alt="" data-strip="bird"></div>
+            <div class="desk-strip"><img src="./assets/derived/strip/bird6-154.webp" srcset="./assets/derived/strip/bird6-308.webp 1848w, ./assets/derived/strip/bird6-154.webp 924w, ./assets/derived/strip/bird6-77.webp 462w" sizes="(max-width: 760px) 240px, calc(min(1180px, 92vw, 133.33vh - 320px) * .63)" alt="" data-strip="bird"></div>
           </div>
           <div class="desk-body desk-camera" data-body="camera" style="left:992px;top:691px;width:253px;height:179px">
             <img src="./assets/derived/desk/camera.webp" alt="" style="left:0px;top:0px;width:253px;height:179px">
@@ -117,10 +129,10 @@
             <g class="d4"><path d="M1042 108 Q1035 225 952 342"/><path d="M942 320 l10 24 18 -14"/></g>
             <g class="d5"><path d="M960 1035 Q1030 1000 1040 903"/><path d="M1026 925 l14 -22 9 25"/></g>
           </svg>
-          <a class="navnote nav-write" href="Writing.dc.html" style="left:27%;top:96%"><span class="lbl">在写 writing</span></a>
-          <a class="navnote nav-build" href="Building.dc.html" style="left:23.5%;top:5%"><span class="lbl">在造 building</span></a>
-          <a class="navnote nav-about" href="About.dc.html" style="left:66.5%;top:3.6%"><span class="lbl">关于 about</span></a>
-          <a class="navnote nav-shoot" href="Gallery.dc.html" style="left:60%;top:96%"><span class="lbl">在拍 shooting</span></a>
+          <a class="navnote nav-write" href="Writing.dc.html" style="left:27%;top:96%"><span class="lbl"><span lang="zh">在写</span> writing</span></a>
+          <a class="navnote nav-build" href="Building.dc.html" style="left:23.5%;top:5%"><span class="lbl"><span lang="zh">在造</span> building</span></a>
+          <a class="navnote nav-about" href="About.dc.html" style="left:66.5%;top:3.6%"><span class="lbl"><span lang="zh">关于</span> about</span></a>
+          <a class="navnote nav-shoot" href="Gallery.dc.html" style="left:60%;top:96%"><span class="lbl"><span lang="zh">在拍</span> shooting</span></a>
           <span class="desk-spark" aria-hidden="true">✦</span>
         </div>
 
@@ -131,7 +143,7 @@
           <svg class="desk-cstar" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="var(--mark)" stroke-width="3" stroke-linecap="round"><path d="M20 2 V12"/><path d="M20 28 V38"/><path d="M2 20 H12"/><path d="M28 20 H38"/><path d="M8.5 8.5 L14 14"/><path d="M26 26 L31.5 31.5"/><path d="M31.5 8.5 L26 14"/><path d="M14 26 L8.5 31.5"/></g></svg>
         </a>
         <div class="desk-flash" aria-hidden="true"></div>
-        <div class="desk-kacha" aria-hidden="true">咔嚓 click! ✦</div>
+        <div class="desk-kacha" aria-hidden="true"><span lang="zh">咔嚓</span> click! ✦</div>
       </div>
       <svg class="vf" aria-hidden="true"></svg>
     </div>
@@ -139,10 +151,10 @@
     <div class="track" tabindex="0" role="region" aria-label="The desk, one object at a time. Swipe or use the arrow keys · 左右滑动绕桌一圈">
       <article class="panel" data-i="0">
         <div class="win">
-          <a class="ov-hot" href="Building.dc.html" aria-label="Building — 在造"><span>在造 building</span></a>
-          <a class="ov-hot" href="About.dc.html" aria-label="About — 关于"><span>关于 about</span></a>
-          <a class="ov-hot" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span>在拍 shooting</span></a>
-          <a class="ov-hot" href="Writing.dc.html" aria-label="Writing — 在写"><span>在写 writing</span></a>
+          <a class="ov-hot" href="Building.dc.html" aria-label="Building — 在造"><span><span lang="zh">在造</span> building</span></a>
+          <a class="ov-hot" href="About.dc.html" aria-label="About — 关于"><span><span lang="zh">关于</span> about</span></a>
+          <a class="ov-hot" href="Gallery.dc.html" aria-label="Shooting — 在拍"><span><span lang="zh">在拍</span> shooting</span></a>
+          <a class="ov-hot" href="Writing.dc.html" aria-label="Writing — 在写"><span><span lang="zh">在写</span> writing</span></a>
         </div>
         <div class="copy">
           <p class="k">fig.00 · the desk · <span lang="zh">桌面</span></p>

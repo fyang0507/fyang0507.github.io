@@ -19,10 +19,10 @@ async function rest(page, url, sel) {
 export default async (page, ctx) => {
   for (const [w, h] of [[1440, 900]]) {
     await page.setViewportSize({ width: w, height: h });
-    // today: its bird idles from x=14 facing left; ours rests the same way when nothing has played (?opener=none)
+    // today: its bird idles from x=14 facing left; ours rests the same way when nothing has played (?opx=1&opener=none)
     const a = await rest(page, 'http://127.0.0.1:4174/index.html', '.scene');
     await ctx.shot(`/tmp/fyshot/p3-home/rest-before-${w}.png`);
-    const b = await rest(page, 'http://127.0.0.1:4173/index.html?opener=none', '#desk');
+    const b = await rest(page, 'http://127.0.0.1:4173/index.html?opx=1&opener=none', '#desk');
     await ctx.shot(`/tmp/fyshot/p3-home/rest-after-${w}.png`);
     ctx.log(w, 'desk box before', JSON.stringify(a), 'after', JSON.stringify(b));
     fs.writeFileSync(`/tmp/fyshot/p3-home/rest-${w}.json`, JSON.stringify({ before: a, after: b }));

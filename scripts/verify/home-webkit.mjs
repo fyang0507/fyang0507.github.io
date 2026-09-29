@@ -10,13 +10,13 @@ export default async (_page, ctx) => {
     const c = await browser.newContext({ viewport: { width: w, height: w > 500 ? 900 : 844 } }), p = await c.newPage();
     p.on('pageerror', (e) => errs.push(w + ' pageerror ' + e.message));
     p.on('console', (m) => { if (m.type() === 'error') errs.push(w + ' ' + m.text()); });
-    for (const q of ['?opener=none', '?opener=first', '?opener=returning']) {
+    for (const q of ['?opx=1&opener=none', '?opx=1&opener=first', '?opx=1&opener=returning']) {
       await p.goto(U + q, { waitUntil: 'load' });
-      const d = q === '?opener=none' ? null : await p.evaluate(() => new Promise((r) => document.addEventListener('opx:done', (e) => r(e.detail), { once: true })));
+      const d = q === '?opx=1&opener=none' ? null : await p.evaluate(() => new Promise((r) => document.addEventListener('opx:done', (e) => r(e.detail), { once: true })));
       await p.waitForTimeout(900);
       const s = await p.evaluate(() => ({ scale: getComputedStyle(document.querySelector('.desk-in')).transform, opening: document.documentElement.classList.contains('opening'), ov: document.documentElement.scrollWidth - innerWidth }));
       ctx.log(w, q.padEnd(18), d ? 'done ' + d.ms + ' ms (' + d.score + ')' : 'static', '· plane', s.scale.slice(0, 22), '· opening', s.opening, '· overflow', s.ov);
-      await p.screenshot({ path: `/tmp/fyshot/p3-home/webkit-${w}-${q.slice(8)}.png` });
+      await p.screenshot({ path: `/tmp/fyshot/p3-home/webkit-${w}-${q.split('=').pop()}.png` });
     }
     await c.close();
   }

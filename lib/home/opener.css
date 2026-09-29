@@ -1,24 +1,32 @@
-/* Home · the opener. The OP's posters (from r2-10-op.css and the name beat a), the fall's states on the live desk,
-   the eyecatch, and the skip hint. Every OP shot is a poster: flat field, one giant thing, one bilingual label, one
-   mark family, ≤ 3 colours. Landscape is composed for 1440 × 900; portrait (≤ 5:6) is recomposed, not squashed.
-   The OP's type is the site's own JinBuTi subset and Fraunces italic 500: it adds no font weight. */
+/* Home · the opener: the OP's posters, the fall's states on the live desk, the eyecatch and the skip hint. Every OP
+   shot is a poster: flat field, one giant thing, one bilingual label, one mark family, ≤ 3 colours. Landscape is
+   composed for 1440 × 900; portrait (≤ 5:6) is recomposed, not squashed. The OP's type is the site's own JinBuTi
+   subset and Fraunces italic 500, so it adds no font weight. */
 
-/* ---- while the opener runs, the page waits ---- */
+/* The OP's palette, the one register break: four loud flat fields and a deeper ink; coral and cream are the site's own.
+   The bird's two colours serve the traced close-up and the eyecatch's blink alike. opener-op.js paints only with
+   these names. */
+:root{--op-yolk:#FFC629;--op-pool:#22B8E6;--op-gum:#FF78B4;--op-coral:var(--mark);--op-ink:#1F1B17;--op-cream:var(--paper);
+  --op-bird:#FDEFA8;--op-bird-line:#866E4C}
+
+/* ---- the first paint is derived from the <head>'s class alone, so it is right before any module runs ---- */
 html.opening,html.opening body{overflow:hidden}
+/* the whole page is inert under the opener: a tap or click only skips (opener.js listens on window) */
+html.opening .home{pointer-events:none}
 /* opacity, not visibility: the pen's marks set their own strokes visible, so only opacity hides them with their hosts */
 html.opening .home-head,html.opening .fig,html.opening .desk-notes,html.opening .vf,html.opening .track .copy,html.opening .ov-hot,html.opening .idx{opacity:0}
-html.opening .hot{pointer-events:none}
 html.opening .view{overflow:visible}
 html.opening .desk-steam path,html.opening .desk .desk-strip img,html.opening .desk-flash,html.opening .desk-cstar,html.opening .desk-kacha{animation:none}
 html.opening .desk-steam path{stroke-opacity:0}
 html.opening .desk-caret{animation:none;visibility:hidden}
+/* the empty desk: the objects wait out of frame until they fall (.in), their contact tone until they land, and the
+   back edge they hide is drawn in until they settle (.gone). A first visit shows plain paper until the OP starts. */
+html.opening .desk-body:not(.desk-bird):not(.in),html.opening .desk-tone:not(.in){visibility:hidden}
+html.opening .desk-backedge:not(.gone){display:block}
+html.opening:not(.ret):not([data-opener-live]) .desk-in{visibility:hidden}
 
-/* the fall's states on the live desk (lib/home/fall.js) */
-.desk.fall:not(.set) .desk-in{visibility:hidden}
-.desk.fall .desk-body:not(.in):not(.desk-bird),.desk.fall .desk-tone:not(.in){visibility:hidden}
-.desk.fall .desk-backedge:not(.gone){display:block}
 .desk-slab{display:none;position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
-.desk-slab path{fill:var(--paper);stroke:#3a342d;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.desk-slab path{fill:var(--paper);stroke:var(--ink);stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
 .desk-slab .kick{fill:none;stroke-width:4}
 .desk-frame.flat .desk-slab{display:block}
 .desk-frame.flat .desk-strip{visibility:hidden}
@@ -35,15 +43,17 @@ html.opening .desk-caret{animation:none;visibility:hidden}
 .eye-bird .desk-strip{--n:6}
 .eye-bird .desk-strip img{width:600%}
 .eye-blink{position:absolute;inset:0;width:100%;height:100%;display:none}
+.eye-blink circle{fill:var(--op-bird)}
+.eye-blink path{fill:none;stroke:var(--op-bird-line);stroke-width:4.2;stroke-linecap:round}
 .eye-bird.blink .eye-blink{display:block}
-.eye .ep{visibility:visible;transform:rotate(-2deg) scale(1.35)}
+.eye .ep{display:grid;visibility:visible;transform:rotate(-2deg) scale(1.35)}   /* the card shows here even on phones ≤ 380 px, where the corner label is hidden */
 .eye .ep-sub{display:block}
 
 /* ---- the OP ---- */
-.oc-stage{position:fixed;inset:0;z-index:300;overflow:hidden;display:none;background:#FFC629;cursor:pointer}
-html.opening:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* .fading: a skip fades the OP off, not a jump cut */
+.oc-stage{position:fixed;inset:0;z-index:300;overflow:hidden;display:none;background:var(--op-yolk);cursor:pointer}
+html.opening[data-opener-live]:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* only once opener.js runs it; .fading: a skip fades it off */
 .oc-stage.off{display:none!important}
-.sh{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--f);color:#1F1B17;contain:strict}
+.sh{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--f);color:var(--op-ink);contain:strict}
 .sh.on{visibility:visible}
 .sh .fx{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .sh .p{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));white-space:nowrap;line-height:1;font-style:normal;font-weight:400}
@@ -66,7 +76,7 @@ html.opening:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* .fading: a
 .sh-a-fu .gl{--x:43%;--y:52%;--r:-6deg;font-size:100vh}
 .sh-a-lei .gl{--x:57%;--y:50%;--r:5deg;font-size:114vh}
 .sh-a-de .gl{--x:50%;--y:52%;--r:-3deg;font-size:100vh}
-.sh-a-fred{color:#FBF6EC}
+.sh-a-fred{color:var(--op-cream)}
 .sh-a-fred .word{--x:50%;--y:50%;--r:-5deg;font-size:40vw}
 
 /* the objects (landscape); the whip-in smear ends about where the laptop lands (flash plan) */
@@ -83,7 +93,7 @@ html.opening:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* .fading: a
 .sh-cam .lb-cn{--x:20%;--y:42%;--r:-4deg}
 .sh-cam .lb-en{--x:21%;--y:64%;--r:-4deg}
 .sh-cam .sfx{--x:52%;--y:14%;--r:-7deg;font-size:5.4vw}
-.sh-me{color:#FBF6EC}
+.sh-me{color:var(--op-cream)}
 .sh-me .ob{--x:63%;--y:52%;--r:3deg;--w:30vw;aspect-ratio:362/401;background:0 0/200% 100% no-repeat}
 .sh-me[data-f="1"] .ob{background-position:100% 0}
 .sh-me .lb-cn{--x:23%;--y:40%;--r:-4deg}
@@ -111,4 +121,9 @@ html.opening:not(.ret) .oc-stage,.oc-stage.fading{display:block}   /* .fading: a
   .sh-me .ob{--x:50%;--y:49%;--r:3deg;--w:64vw}
   .sh-me .lb-cn{--x:48%;--y:18%;--r:-3deg}
   .sh-me .lb-en{--x:52%;--y:80%;--r:-3deg}
+}
+/* portrait tablets: 德 sits lower, so the 雷 → 德 cut changes the lower field's luminance by less than WCAG's 0.10 and
+   the fast drum (雷, 德, FRED within 170 ms) reads as one darkening, not two flashes (scripts/verify/flash-audit.py) */
+@media (max-aspect-ratio:5/6) and (min-width:600px){
+  .sh-a-de .gl{--y:52%}
 }

@@ -8,7 +8,7 @@ export default async (page, ctx) => {
   for (const vp of VPS) {
     const [w, h] = vp.split('x').map(Number);
     await page.setViewportSize({ width: w, height: h });
-    await page.goto(U + 'index.html?opener=none&opx=1', { waitUntil: 'load' });
+    await page.goto(U + 'index.html?opx=1&opener=none', { waitUntil: 'load' });
     await page.evaluate(() => OPX.loaded());
     for (const m of MODES) {
       const dir = `/tmp/fyshot/p3-home/seq-${m}-${w}`;

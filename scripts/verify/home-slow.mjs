@@ -10,7 +10,7 @@ export default async (page, ctx) => {
   await cdp.send('Network.enable'); await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
   await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 150, downloadThroughput: kbps * 1024 / 8, uploadThroughput: 750 * 1024 / 8 });
   for (const tap of [false, true]) {
-    await page.goto(U + '?opener=first&opx=1', { waitUntil: 'commit' });
+    await page.goto(U + '?opx=1&opener=first', { waitUntil: 'commit' });
     const done = page.evaluate(() => new Promise((r) => document.addEventListener('opx:done', (e) => r(e.detail), { once: true }))).catch(() => null);
     let fin = null, hintAt = null, tapped = false; done.then((d) => { fin = d; });
     for (let i = 0; i < 120 && !fin; i++) {

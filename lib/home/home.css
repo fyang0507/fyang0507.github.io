@@ -1,12 +1,13 @@
 /* Home: the desk and its page. Every desk layer is an absolutely positioned box whose inline % geometry is its
    box in the 1448 × 1086 drawing (assets/derived/desk-geo.js holds the same numbers for scripts). The desk is one
    DOM for both layouts: in the page flow here, and inside the phone camera rig in mobile.css.
-   Opener states (html.opening, .desk.fall) live in opener.css. */
+   The opener's states (html.opening, set in the <head>) live in opener.css. */
 @font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}   /* the -ui tier (gateway page) */
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Fraunces",Georgia,"Noto Serif SC",serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-/* the paper grain lies over everything, the opener's posters and its eyecatch included (as on the boards Fred approved) */
+/* the paper grain lies over everything, the opener's posters and eyecatch included: its faint darkening is part of the OP's
+   measured flash profile (scripts/verify/flash-audit.py) */
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:950;opacity:.05;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -57,7 +58,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:950;o
 .desk-steam path{fill:none;stroke:var(--ink);stroke-width:5.5;stroke-linecap:round;stroke-opacity:0;stroke-dasharray:34 90;animation:dkOnsen 3.1s ease-in-out infinite}
 .desk-steam .st2{animation-delay:1.05s}.desk-steam .st3{animation-delay:2.1s}
 .desk-screen{position:absolute;font-family:"IBM Plex Mono",monospace;letter-spacing:.02em;font-size:25.34px;line-height:1.7;color:var(--soft);white-space:pre-line}   /* 1.75 % of the drawing, as before */
-.desk-caret{display:inline-block;width:.55em;height:1.05em;background:var(--mark);vertical-align:-.15em;margin-left:2px;animation:dkCaret 1.15s infinite}
+.desk-caret{display:inline-block;width:.55em;height:1.05em;background:var(--ink);vertical-align:-.15em;margin-left:2px;animation:dkCaret 1.15s infinite}
 .desk-bird{transform-origin:50% 88%;transition:left .1s linear}
 
 /* annotations: pen arrows and the four hand labels (desktop only; the phone has its own doors) */
@@ -66,12 +67,13 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:950;o
 .desk-arrows path{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1200;stroke-dashoffset:0}
 .navnote{position:absolute;pointer-events:auto;cursor:pointer}
 .navnote .lbl{display:inline-block;white-space:nowrap;font-family:"MuyaoPleased",cursive;font-size:clamp(18px,3cqw,36px);color:var(--ink)}
-.desk-spark{position:absolute;left:56%;top:12%;color:var(--mark);font:clamp(12px,1.7cqw,20px)/1.5 "Noto Serif SC",serif}
+.desk-spark{position:absolute;left:56%;top:12%;color:var(--pencil);font:clamp(12px,1.7cqw,20px)/1.5 "Noto Serif SC",serif}
 
 /* hotspots: semantic anchors with inline % geometry, over the objects */
 .hot{position:absolute;z-index:12;cursor:pointer}
 
-/* the camera's click: flash, star, 咔嚓 (hover, and once in the opener's fall) */
+/* at rest only the identity is coral; the caret is ink and the spark pencil. The camera's click (flash, star, 咔嚓)
+   is coral, but only while it happens: on hover, and once in the opener's fall. */
 .desk-flash{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:13;background:radial-gradient(circle at 76.8% 71%,rgba(255,255,255,1) 0%,rgba(255,255,255,.7) 20%,rgba(255,255,255,0) 58%)}
 .desk-kacha{position:absolute;left:79%;top:54.5%;z-index:14;font-family:"MuyaoPleased",cursive;font-size:2.7cqw;color:var(--mark);white-space:nowrap;pointer-events:none;opacity:0}
 .desk-cstar{position:absolute;left:34%;top:43%;width:24%;opacity:0;pointer-events:none;overflow:visible}

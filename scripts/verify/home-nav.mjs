@@ -1,7 +1,7 @@
 // Home · the four doors. Desktop (1440): hover then click each object's hotspot and its hand label → Building,
 // Writing, About, Gallery. Phone (390): the overview doors, each panel's link, a touch swipe and the arrow keys.
 //   node /tmp/fyshot/run.mjs scripts/verify/home-nav.mjs
-const B = process.env.BASE || 'http://127.0.0.1:4173/', U = B + 'index.html?opener=none';
+const B = process.env.BASE || 'http://127.0.0.1:4173/', U = B + 'index.html?opx=1&opener=none';
 const MAP = { laptop: 'Building.dc.html', book: 'Writing.dc.html', frame: 'About.dc.html', camera: 'Gallery.dc.html' };
 const NOTE = { laptop: '.nav-build', book: '.nav-write', frame: '.nav-about', camera: '.nav-shoot' };
 async function via(page, sel, how) {
