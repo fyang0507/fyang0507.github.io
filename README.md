@@ -23,4 +23,4 @@ The site is intentionally plain static HTML, CSS, and JavaScript so it can be de
 
 ## License and credits
 
-Original site code is available under the [MIT License](LICENSE). Third-party notices, design-reference credit, and exclusions for personal content, fonts, generated runtimes, and vendored code are in [NOTICE.md](NOTICE.md).
+Original site code is available under the [MIT License](LICENSE). Third-party notices and exclusions for personal content, fonts, and generated runtimes are in [NOTICE.md](NOTICE.md).

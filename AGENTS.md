@@ -144,7 +144,6 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - Gateway pages are light-only. `Reading.dc.html` is the only page with dark mode, which drops its hero's halftone, and it may use paired light/dark navigation artwork; do not add theme switching or dark artwork to other pages.
 - Keep interactive illustration hotspots as semantic anchors with an `href` and an accessible `aria-label`. Their position is controlled by inline percentage geometry.
 - Keep `index.html` as the root entry point. If that convention changes, update every inbound home link in the same change.
-- When a request says to “set section X to WIP,” “mark section X as WIP,” or otherwise apply the site's WIP treatment, use `.agents/skills/set-section-wip/SKILL.md`. “WIP” means the complete reusable treatment—peelable sticker, pusher nudge motif, faded and disabled evidence surface, static fallback, accessibility, and responsive behavior—not merely a label or badge.
 - Building's corkboard cards are pinned by one point, the pin's tip.
   - Each card is a `.slot` holding a rotating `.swing` (the paper) and a `.board-pin` sibling. The pin is never inside the paper.
   - The paper rotates about `var(--pin-left) 14px`, the pin's tip (`top:-24px` plus 90% of its 42px height), and the pin rotates about its own tip.

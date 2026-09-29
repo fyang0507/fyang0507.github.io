@@ -8,16 +8,6 @@ The MIT License applies to Fred Yang's original HTML, CSS, JavaScript, Python, a
 
 `lib/shared/support.js` is generated runtime code and is not relicensed by the top-level MIT license. Its upstream source and license should be confirmed before the file is reused outside this site.
 
-## Sticker Forge and Three.js
-
-The interactive peel effect on the NJJoe APA page uses a vendored build of [Sticker Forge](https://github.com/CatsJuice/sticker-forge), copyright (c) 2026 CatsJuice, under the MIT License. The exact upstream commit and bundle checksum are recorded in [`assets/njjoe/vendor/sticker-forge/SOURCE.md`](assets/njjoe/vendor/sticker-forge/SOURCE.md); its full license is retained in [`LICENSE.txt`](assets/njjoe/vendor/sticker-forge/LICENSE.txt).
-
-That bundle includes Three.js, copyright (c) 2010-2026 three.js authors, under the MIT License. Its full license is retained in [`THREE-LICENSE.txt`](assets/njjoe/vendor/sticker-forge/THREE-LICENSE.txt).
-
-## Transition.dev motion reference
-
-The pusher/nudge motion beside the WIP sticker was inspired by a motion study from [Transition.dev](https://transition.dev). The site reimplements that behavior in its own CSS and JavaScript; no Transition.dev code, media, or other distributable asset is included here. No public license for that reference was available when this notice was added, so this credit records the design reference rather than asserting a license for it.
-
 ## Runtime dependencies loaded from CDNs
 
 `support.js` loads React 18.3.1, ReactDOM 18.3.1, and Babel Standalone 7.29.0 from unpkg at runtime. They are not bundled in this repository. React and Babel are MIT-licensed; their terms remain with their upstream projects.
