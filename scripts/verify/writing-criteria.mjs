@@ -7,7 +7,9 @@
 // (hover a spine → the held book is under the pointer → a click there reaches Reading.dc.html?post=<id>&lang=zh),
 // the phone's tap-tap; the book in your hand is laid out at its size there (its cover and spine are drawn at most
 // 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
-// every device pixel it is drawn at: lib/writing/case.js sh.hand); a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
+// every device pixel it is drawn at: lib/writing/case.js sh.hand); no book keeps that layout once it is back, when a
+// returning book is caught again and let go inside the dwell (the pointer 200 and 350 ms after leaving; the keyboard's
+// Right, Left, Right; a resize while one is held, then a re-hover); a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
@@ -45,6 +47,11 @@ const sharp = (page) => page.evaluate(() => {
   const src = +(img.currentSrc.match(/-(\d+)\.jpg$/) || [0, 0])[1] * 25 / 16, r = [up(f), up(s), src / (up(f) * img.offsetHeight * 1.12 * devicePixelRatio)];
   return r[0] <= 1.1 && r[1] <= 1.1 && r[2] >= 1 ? 'ok' : r.map((v) => v.toFixed(2)).join('/');
 });
+// Books laid out for the hand (lib/writing/case.js sh.hand) though they are not in it: post and --z.
+const stuck = (page) => page.evaluate(() => [...document.querySelectorAll('.book:not(.held)')].filter((b) => +(b.style.getPropertyValue('--z') || 1) !== 1)
+  .map((b) => new URL(b.href).searchParams.get('post') + ' z=' + b.style.getPropertyValue('--z')));
+const hover = async (page, p) => { await page.mouse.move(p.x - 30, p.y + 70); await page.mouse.move(p.x, p.y, { steps: 8 }); await page.waitForTimeout(1400); };
+const at = async (page, t0, ms) => page.waitForTimeout(Math.max(0, ms - (Date.now() - t0)));
 const heldAt = (page, p) => page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y), b = e && e.closest('.book'); return !!(b && b.classList.contains('held')); }, p);
 
 async function pointerPaths(ctx, page, w) {
@@ -81,6 +88,31 @@ async function phoneTaps(ctx, page, w) {
   check(ctx, `phone: the book in your hand is drawn from a raster its size, its cover image sharp (${w})`, crisp.every((g) => g === 'ok'), crisp.join(' · '));
 }
 
+// A book on its way back, caught again and let go inside the 110 ms dwell, must still come home 1:1.
+async function handBack(ctx, page) {
+  const got = [];
+  for (const d of [200, 350]) {
+    await open(page, 1440, 900); await toCase(page);
+    const p = await spine(page, 5); await hover(page, p);
+    const t0 = Date.now(); await page.mouse.move(700, 5); await at(page, t0, d);
+    await page.mouse.move(p.x, p.y); await page.waitForTimeout(30); await page.mouse.move(700, 5); await page.waitForTimeout(2600);
+    got.push(`pointer ${d} ms: ` + ((await stuck(page)).join(', ') || 'ok'));
+  }
+  await open(page, 1440, 900); await toCase(page);
+  await page.evaluate(() => document.querySelector('.bk-hit').focus()); await page.waitForTimeout(300);
+  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(1400);
+  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(150);
+  await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(40);
+  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(2000);
+  got.push('keys: ' + ((await stuck(page)).join(', ') || 'ok'));
+  await open(page, 1440, 900); await toCase(page);
+  const p = await spine(page, 5); await hover(page, p);
+  const t0 = Date.now(); await page.setViewportSize({ width: 1420, height: 900 }); await at(page, t0, 220);
+  const q = await page.evaluate((id) => { const r = document.querySelector('.bk-hit[data-post="' + id + '"]').getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35) }; }, p.id);
+  await page.mouse.move(q.x, q.y); await page.waitForTimeout(30); await page.mouse.move(700, 5); await page.waitForTimeout(2600);
+  got.push('resize: ' + ((await stuck(page)).join(', ') || 'ok'));
+  check(ctx, 'a returning book caught again and let go inside the dwell comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
+}
 export default async (page, ctx) => {
   const errors = [], reqs = [], bad = [];
   if (DRAFT) { const html = fs.readFileSync(DRAFT, 'utf8'); await page.route('**/Writing.dc.html', (r) => r.fulfill({ body: html, contentType: 'text/html; charset=utf-8' })); }
@@ -246,6 +278,7 @@ export default async (page, ctx) => {
   await pointerPaths(ctx, page, 1024);
   await phoneTaps(ctx, page, 390);
   await phoneTaps(ctx, page, 360);
+  await handBack(ctx, page);
 
   ctx.log('— network');
   check(ctx, 'posts-index.js loaded, posts.js never (requests made by Writing)', reqs.some((u) => /content\/posts-index\.js/.test(u)) && !reqs.some((u) => /content\/posts\.js/.test(u)));
