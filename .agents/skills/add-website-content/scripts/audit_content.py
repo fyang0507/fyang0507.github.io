@@ -261,6 +261,7 @@ def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> i
         for width in (*generator.GALLERY_THUMB_WIDTHS, generator.GALLERY_DISPLAY_WIDTH):
             expected.append((label, generator.derivative_url(image_url, "gallery", width)))
 
+    dimensions = generator.load_dimensions()
     for path in sorted((root / "content" / "posts").glob("*.md")):
         try:
             data, _ = generator.parse_frontmatter(path.read_text(encoding="utf-8"))
@@ -272,10 +273,15 @@ def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> i
         label = f"content/posts/{path.name}"
         for width in generator.COVER_WIDTHS:
             expected.append((label, generator.derivative_url(cover, "covers", width)))
+        # Boards stop at the widest one the original holds, read from the dimensions sidecar.
+        if cover not in dimensions:
+            errors.append(f"{cover}: no recorded dimensions; run python3 scripts/generate-derivatives.py")
+            continue
+        for width in generator.board_ladder(dimensions[cover]):
+            expected.append((label, generator.derivative_url(cover, "boards", width)))
 
     # Evidence: the ladder is capped at each original's width, read from the
     # dimensions sidecar, and the loupes' captures add their zoom copy.
-    dimensions = generator.load_dimensions()
     evidence = generator.evidence_originals()
     for name in generator.EVIDENCE_ZOOM:
         if f"{generator.EVIDENCE_DIR}/{name}" not in evidence:

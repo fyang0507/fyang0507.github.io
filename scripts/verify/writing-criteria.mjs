@@ -5,7 +5,13 @@
 // Checks, per width (1440, 1024, 390, 360): no console errors, every request 200, posts-index.js and never
 // posts.js, nothing from /design/, no horizontal overflow, planks (2 / 3 / strip / strip); real pointer paths
 // (hover a spine → the held book is under the pointer → a click there reaches Reading.dc.html?post=<id>&lang=zh),
-// the phone's tap-tap; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
+// the phone's tap-tap; the book in your hand is laid out at its size there (its cover and spine are drawn at most
+// 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
+// every device pixel it is drawn at: lib/writing/case.js sh.hand); no book keeps that layout once it is back, when a
+// returning book is caught again and let go inside the dwell (the pointer 200 and 350 ms after leaving; the keyboard's
+// Right, Left, Right; a resize while one is held, then a re-hover); in 2x and 3x contexts the book in your hand takes
+// the board it needs (480w on a 2x desk, 640w on a 3x phone, the top of a capped ladder) and every board is as wide
+// and tall as its srcset says; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
@@ -36,36 +42,109 @@ async function spine(page, n) {
     return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35), id: a.dataset.post };
   }, n);
 }
+// The book in your hand, drawn from a raster its own size: 'ok', or cover / spine enlargement and image px per device px.
+const sharp = (page) => page.evaluate(() => {
+  const b = document.querySelector('.book.held'); if (!b) return 'none held';
+  const f = b.querySelector('.leaf-front'), s = b.querySelector('.f-spine'), img = b.querySelector('.cv-img img'), up = (e) => e.getBoundingClientRect().height / e.offsetHeight;
+  const src = +(img.currentSrc.match(/-(\d+)\.jpg$/) || [0, 0])[1] * 25 / 16, r = [up(f), up(s), src / (up(f) * img.offsetHeight * 1.12 * devicePixelRatio)];
+  return r[0] <= 1.1 && r[1] <= 1.1 && r[2] >= 1 ? 'ok' : r.map((v) => v.toFixed(2)).join('/');
+});
+// Books laid out for the hand (lib/writing/case.js sh.hand) though they are not in it: post and --z.
+const stuck = (page) => page.evaluate(() => [...document.querySelectorAll('.book:not(.held)')].filter((b) => +(b.style.getPropertyValue('--z') || 1) !== 1)
+  .map((b) => new URL(b.href).searchParams.get('post') + ' z=' + b.style.getPropertyValue('--z')));
+const hover = async (page, p) => { await page.mouse.move(p.x - 30, p.y + 70); await page.mouse.move(p.x, p.y, { steps: 8 }); await page.waitForTimeout(1400); };
+const at = async (page, t0, ms) => page.waitForTimeout(Math.max(0, ms - (Date.now() - t0)));
 const heldAt = (page, p) => page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y), b = e && e.closest('.book'); return !!(b && b.classList.contains('held')); }, p);
 
 async function pointerPaths(ctx, page, w) {
-  const got = [];
+  const got = [], crisp = [];
   for (const n of [1, 5, 9, 14]) {
     await open(page, w, 900); await toCase(page);
     const p = await spine(page, n);
     await page.mouse.move(p.x - 30, p.y + 70); await page.mouse.move(p.x, p.y, { steps: 8 });
     await page.waitForTimeout(1400);
     const under = await heldAt(page, p), held = (await state(page)).held;
+    crisp.push(await sharp(page));
     if (SHOTS && n === 5) await ctx.shot(`${SHOTS}-${w}-held.png`);
     await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), page.mouse.click(p.x, p.y)]);
     const url = page.url(), ok = under && held === p.id && url.endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id) + LANG);
     got.push(ok ? 'ok' : `✗ under=${under} held=${held} id=${p.id} url=${url.split('/').pop()}`);
   }
   check(ctx, `pointer paths: held book under the pointer, click reaches Reading ?post=<id> (${w})`, got.every((g) => g === 'ok'), got.join(' · '));
+  check(ctx, `the book in your hand is drawn from a raster its size, its cover image sharp (${w})`, crisp.every((g) => g === 'ok'), crisp.join(' · '));
 }
 async function phoneTaps(ctx, page, w) {
-  const cdp = await page.context().newCDPSession(page), got = [];
+  const cdp = await page.context().newCDPSession(page), got = [], crisp = [];
   const tap = async (x, y) => { await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] }); await page.waitForTimeout(40); await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); };
   for (const n of [1, 3]) {
     await open(page, w, 844); await toCase(page, 120);
     const p = await spine(page, n);
     await tap(p.x, p.y); await page.waitForTimeout(1500);
     const under = await heldAt(page, p);
+    crisp.push(await sharp(page));
     await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), tap(p.x, p.y)]);
     const ok = under && page.url().endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id) + LANG);
     got.push(ok ? 'ok' : `✗ under=${under} url=${page.url().split('/').pop()}`);
   }
   check(ctx, `phone: tap a spine, tap the book it becomes → Reading ?post=<id> (${w})`, got.every((g) => g === 'ok'), got.join(' · '));
+  check(ctx, `phone: the book in your hand is drawn from a raster its size, its cover image sharp (${w})`, crisp.every((g) => g === 'ok'), crisp.join(' · '));
+}
+
+// A book on its way back, caught again and let go inside the 110 ms dwell, must still come home 1:1.
+async function handBack(ctx, page) {
+  const got = [];
+  for (const d of [200, 350]) {
+    await open(page, 1440, 900); await toCase(page);
+    const p = await spine(page, 5); await hover(page, p);
+    const t0 = Date.now(); await page.mouse.move(700, 5); await at(page, t0, d);
+    await page.mouse.move(p.x, p.y); await page.waitForTimeout(30); await page.mouse.move(700, 5); await page.waitForTimeout(2600);
+    got.push(`pointer ${d} ms: ` + ((await stuck(page)).join(', ') || 'ok'));
+  }
+  await open(page, 1440, 900); await toCase(page);
+  await page.evaluate(() => document.querySelector('.bk-hit').focus()); await page.waitForTimeout(300);
+  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(1400);
+  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(150);
+  await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(40);
+  await page.keyboard.press('ArrowRight'); await page.waitForTimeout(2000);
+  got.push('keys: ' + ((await stuck(page)).join(', ') || 'ok'));
+  await open(page, 1440, 900); await toCase(page);
+  const p = await spine(page, 5); await hover(page, p);
+  const t0 = Date.now(); await page.setViewportSize({ width: 1420, height: 900 }); await at(page, t0, 220);
+  const q = await page.evaluate((id) => { const r = document.querySelector('.bk-hit[data-post="' + id + '"]').getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35) }; }, p.id);
+  await page.mouse.move(q.x, q.y); await page.waitForTimeout(30); await page.mouse.move(700, 5); await page.waitForTimeout(2600);
+  got.push('resize: ' + ((await stuck(page)).join(', ') || 'ok'));
+  check(ctx, 'a returning book caught again and let go inside the dwell comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
+}
+// 2x and 3x: the board the book in your hand fetches, and every board's real size against its srcset.
+async function boards(ctx, browser) {
+  const got = [];
+  for (const [w, h, dpr, key, want] of [[1440, 900, 2, '2015-05-09_go-south-go-south', 480], [390, 844, 3, '2015-05-09_go-south-go-south', 640], [390, 844, 3, '2026-08-29_google-just-wants-to-coast-to-a-win', 600]]) {
+    const c = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dpr, hasTouch: w < 760 }), pg = await c.newPage();
+    await pg.goto(URL, { waitUntil: 'networkidle' }); await pg.waitForSelector('[data-mount=writing][data-ready]', { timeout: 15000 }); await pg.waitForTimeout(700);
+    await toCase(pg, w < 760 ? 120 : 20);
+    const p = await pg.evaluate((key) => {
+      const a = document.querySelector('.bk-hit[data-post="' + key + '"]'), v = document.querySelector('.sh-view');
+      if (v.classList.contains('strip')) { const r = a.getBoundingClientRect(), vr = v.getBoundingClientRect(); v.scrollLeft += r.left + r.width / 2 - (vr.left + vr.width / 2); }
+      const r = a.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35) };
+    }, key);
+    await pg.waitForTimeout(300);
+    if (w < 760) { await pg.touchscreen.tap(p.x, p.y); await pg.waitForTimeout(1600); } else await hover(pg, p);
+    const src = await pg.evaluate(() => { const i = document.querySelector('.book.held .cv-img img'); return i ? +(i.currentSrc.match(/-(\d+)\.jpg$/) || [0, 0])[1] : 0; }), sh = await sharp(pg);
+    got.push(`${w}@${dpr}x ${key.slice(0, 10)}: ${src}w` + (src === want && sh === 'ok' ? '' : ` ✗ want ${want}w, ${sh}`));
+    if (dpr === 3 && want === 600) {
+      const lies = await pg.evaluate(async () => {
+        const bad = [];
+        for (const e of window.FY_POST_INDEX) for (const c of e.boardSrcset.split(', ')) {
+          const [u, d] = c.split(' '), cw = parseInt(d), bm = await createImageBitmap(await (await fetch(u)).blob());
+          if (bm.width !== cw || bm.height !== Math.round(cw * 25 / 16)) bad.push(u.split('/').pop() + ' is ' + bm.width + '×' + bm.height);
+        }
+        return bad;
+      });
+      got.push('boards true to their srcset: ' + (lies.length ? '✗ ' + lies.slice(0, 4).join(', ') : 'ok'));
+    }
+    await c.close();
+  }
+  check(ctx, 'at 2x and 3x the book in your hand takes the board it needs; every board is the size its srcset claims', got.every((g) => !g.includes('✗')), got.join(' · '));
 }
 
 export default async (page, ctx) => {
@@ -233,6 +312,8 @@ export default async (page, ctx) => {
   await pointerPaths(ctx, page, 1024);
   await phoneTaps(ctx, page, 390);
   await phoneTaps(ctx, page, 360);
+  await handBack(ctx, page);
+  await boards(ctx, page.context().browser());
 
   ctx.log('— network');
   check(ctx, 'posts-index.js loaded, posts.js never (requests made by Writing)', reqs.some((u) => /content\/posts-index\.js/.test(u)) && !reqs.some((u) => /content\/posts\.js/.test(u)));
