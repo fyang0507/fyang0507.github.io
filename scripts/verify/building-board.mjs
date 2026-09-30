@@ -6,7 +6,8 @@
 // transition captures the page), the F1 flower on the lead card with an ink pin, no arrow element, no
 // coral stroke at rest, every interactive element reaching coral 「 」 by keyboard, the dialog (Enter
 // unpins, Tab stays inside, Esc re-pins and returns focus), and reduced motion (no running animation
-// after settle, the flower present, hover does nothing). Exit code 1 on any failure.
+// after settle, the flower present, hover does nothing, the cork patch under an unpinned card and the step buttons'
+// disabled fade land at once). Exit code 1 on any failure.
 
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
 const SHOTS = process.env.SHOTS || '/tmp/fyshot/p2b';
@@ -136,6 +137,15 @@ export default async (page0, ctx) => {
     }
     const afterHover = await page.evaluate(() => document.querySelectorAll('.cork .stk').length && document.querySelector('.cork .stk').getAnimations({ subtree: true }).length);
     note(running === 0 && f.flower && !afterHover, `${w} reduced motion: ${running} running animations, flower present, hover presses nothing`);
+    // The cork patch shows at once under an unpinned card, and the step buttons' disabled fade lands at once.
+    const fades = () => page.evaluate(() => ({ running: document.getAnimations().filter((a) => a.playState === 'running' && a.effect.target.closest('.ghost, .cork-btn')).map((a) => a.transitionProperty + '@' + a.effect.target.className.split(' ')[0]),
+      ghost: +getComputedStyle(document.querySelector('.slot--lead .ghost')).opacity, arrows: [...document.querySelectorAll('.cork-btn')].map((b) => +getComputedStyle(b).opacity) }));
+    await page.click('.slot--lead .unpin-trigger'); await page.waitForTimeout(30);
+    const un = await fades();
+    await page.keyboard.press('Escape'); await page.waitForTimeout(300);
+    await page.click('.cork-btn[data-step="1"]'); await page.waitForTimeout(30);
+    const st = await fades();
+    note(!un.running.length && un.ghost === 1 && !st.running.length && st.arrows.every((o) => o === 1 || o === 0.3), `${w} reduced motion: the cork patch and the step buttons land at once (unpin ${JSON.stringify(un)} · step ${JSON.stringify(st)})`);
     note(!bad.length, `${w} reduced motion: 0 errors` + (bad.length ? ' — ' + bad.join(' ; ') : ''));
     await context.close();
   }
