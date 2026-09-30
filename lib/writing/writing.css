@@ -26,6 +26,15 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 
 /* ---- the page body: the bookcase takes the width, the index stands beside it and stays in view ---- */
 .wr{container:wr/inline-size;position:relative;--stick:16px;margin-top:clamp(28px,3.4vw,40px)}
+/* app.js mounts the shelf well after the template paints; until then the empty host holds the height the shelf will
+   take, so fig.01 under it never moves. On a phone that is the switch, the index strip and the 346 px swipe shelf, the
+   same at every width; on the desk it is the index column, which the case beside it only outgrows below the fold (more
+   planks, at narrower widths). The layout rule is app.js's: phone below 760 px. writing-criteria.mjs checks both.
+   The held space is hidden: it draws nothing, and when a face landing in the intro moves it, the browser would
+   otherwise score the whole space as a layout shift. */
+.wr:empty{visibility:hidden}
+.wr:empty::before{content:"";display:block;height:790px}
+@container wr (width < 760px){.wr:empty::before{height:623.22px}}
 /* the language switch heads the index column in a row of its own, so the case and the sticky index still start
    level and the whole ledger fits beside the case */
 .wr-body{display:grid;grid-template-columns:minmax(0,1fr) 312px;gap:14px 30px;align-items:stretch}

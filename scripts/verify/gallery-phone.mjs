@@ -1,7 +1,8 @@
 // gallery-phone.mjs — Gallery at 390 and 360 with touch (CDP): one swipe line per clothesline, vertical scroll still
-// works, tap unclips, swipe in the viewer, a tap on a gliding line only stops it, stringing to all 107, idle loop.
+// works, tap unclips, swipe in the viewer, a tap on a gliding line only stops it, stringing to all 107, idle loop;
+// and the chips wait for the page's faces (Fraunces held back 1.5 s), but no more than 3 s (Fraunces stalled).
 //   node /tmp/fyshot/run.mjs scripts/verify/gallery-phone.mjs
-import { open, load, settle, rafOver, overflow, requestAudit, Report } from './gallery-lib.mjs';
+import { URL as PAGE, open, load, settle, rafOver, overflow, requestAudit, Report } from './gallery-lib.mjs';
 
 async function swipe(cdp, x, y, dx, dy, speed = 900) {
   await cdp.send('Input.synthesizeScrollGesture', { x, y, xDistance: dx, yDistance: dy, speed, gestureSourceType: 'touch', repeatCount: 1 });
@@ -18,6 +19,38 @@ const line = (p, k) => p.evaluate((k) => {
 }, k);
 
 export default async (page, ctx) => {
+  // The gallery is built in its own faces (lib/gallery/app.js): with Fraunces held back, the chips wait for it
+  // rather than wrap in a fallback and re-wrap when it lands, and Plex Mono and Caveat are in too.
+  {
+    const R = Report(ctx, 'faces');
+    const { ctx: bc, page: p } = await open(page, { width: 390, height: 844, touch: true });
+    await bc.route(/fraunces[^?]*\.woff2$/i, async (r) => { await new Promise((ok) => setTimeout(ok, 1500)); await r.continue(); });
+    await bc.addInitScript(() => new MutationObserver((l, mo) => {
+      if (!document.querySelector('.g-chip')) return;
+      mo.disconnect(); window.__faces = ['15px Fraunces', '11px "IBM Plex Mono"', '15px Caveat'].map((f) => document.fonts.check(f));
+    }).observe(document, { childList: true, subtree: true }));
+    await load(p);
+    const f = await p.evaluate(() => window.__faces);
+    R.ok('with Fraunces held back 1.5 s, the chips are built once it, Plex Mono and Caveat are in', !!f && f.every(Boolean), JSON.stringify(f));
+    await bc.close();
+    // The wait is capped (WAIT, 3 s): with Fraunces stalled for good, the gallery is built in the fallback, at most
+    // 3.2 s after the wait began (its first document.fonts.load). The stalled request holds the load event, so this
+    // waits for the chips instead.
+    const s = await open(page, { width: 390, height: 844, touch: true });
+    await s.ctx.route(/fraunces[^?]*\.woff2$/i, () => {});
+    await s.ctx.addInitScript(() => {
+      const load = FontFaceSet.prototype.load;
+      FontFaceSet.prototype.load = function () { if (window.__wait == null) window.__wait = performance.now(); return load.apply(this, arguments); };
+      new MutationObserver(() => { if (window.__chips == null && document.querySelector('.g-chip')) window.__chips = performance.now(); })
+        .observe(document, { childList: true, subtree: true });
+    });
+    await s.page.goto(PAGE, { waitUntil: 'domcontentloaded' });
+    const built = await s.page.waitForSelector('.g-chip', { timeout: 8000 }).then(() => true, () => false);
+    const t = await s.page.evaluate(() => ({ after: Math.round(window.__chips - window.__wait), fraunces: document.fonts.check('15px Fraunces') }));
+    R.ok('with Fraunces stalled, the gallery is built in the fallback within 3.2 s of the wait', built && t.after <= 3200 && !t.fraunces, JSON.stringify(t));
+    R.done();
+    await s.ctx.close();
+  }
   for (const [W, H] of [[390, 844], [360, 780]]) {
     const R = Report(ctx, String(W));
     const { ctx: bc, page: p, errors, requests } = await open(page, { width: W, height: H, touch: true });

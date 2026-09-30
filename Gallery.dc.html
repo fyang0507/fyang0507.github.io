@@ -29,7 +29,7 @@
   <header class="site-shell-header" id="site-nav">
     <div class="site-header-row">
       <a class="site-identity" href="index.html" aria-label="Fred Yang — home"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="./assets/identity-sticker-ghost.png" srcset="./assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="./assets/identity-sticker-blob.png" srcset="./assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
-      <div class="site-header-status" data-photo-count>frames · 2015–2025</div>
+      <div class="site-header-status" data-photo-count>107 frames · 2015–2025</div>
     </div>
     <nav class="site-index" aria-label="Primary navigation">
       <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
@@ -44,7 +44,8 @@
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // The year range comes from the photos; the static text above is the fallback.
+  // The count and year range come from the photos. The static text above says the same, so the header doesn't move
+  // when this runs; in Plex Mono another count with as many digits is as wide.
   const photos = window.FY_PHOTOS || [], years = photos.map((p) => p.date.slice(0, 4)).sort();
   if (!photos.length) return;
   const range = `${years[0]}–${years[years.length - 1]}`;
