@@ -16,7 +16,8 @@
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
-// 50 ms; and an idle page makes no requestAnimationFrame calls. Exit code 1 on any failure.
+// 50 ms; an idle page makes no requestAnimationFrame calls; and on a phone each tab's paper follows its tab while IBM
+// Plex Mono lands late. Exit code 1 on any failure.
 import fs from 'fs';
 
 const BASE = process.env.WRITING_BASE || 'http://127.0.0.1:4173/';
@@ -146,6 +147,26 @@ async function boards(ctx, browser) {
     await c.close();
   }
   check(ctx, 'at 2x and 3x the book in your hand takes the board it needs; every board is the size its srcset claims', got.every((g) => !g.includes('✗')), got.join(' · '));
+}
+
+// The tabs' paper follows each tab's size as the faces land: React 3 s late, IBM Plex Mono 5 s, on a phone (whose tabs
+// are as wide as their labels). Sampled every frame until 4 s after the mount; a mismatch may last one frame.
+async function tabPaper(ctx, browser) {
+  const c = await browser.newContext({ viewport: { width: 390, height: 844 } }), pg = await c.newPage();
+  for (const [re, ms] of [[/unpkg\.com/, 3000], [/IBMPlexMono/, 5000]]) await pg.route(re, async (r) => { await new Promise((x) => setTimeout(x, ms)); r.continue(); });
+  await pg.goto(URL, { waitUntil: 'commit' }); await pg.waitForSelector('[data-mount=writing][data-ready]', { timeout: 20000 });
+  const r = await pg.evaluate(() => new Promise((done) => {
+    const t0 = performance.now(), off = (t) => t.dataset.cat + ' ' + t.offsetWidth + '/' + t.querySelector('.tb-paper').getAttribute('width');
+    let run = 0, worst = 0, at = '';
+    (function f() {
+      const bad = [...document.querySelectorAll('.tb')].filter((t) => Math.abs(t.offsetWidth - t.querySelector('.tb-paper').getAttribute('width')) > 0.5);
+      run = bad.length ? run + 1 : 0; if (run > worst) { worst = run; at = bad.map(off).join(', '); }
+      if (performance.now() - t0 < 4000) requestAnimationFrame(f);
+      else done({ worst, at, plex: [...document.fonts].filter((x) => /Plex/.test(x.family) && x.status === 'loaded').length, end: [...document.querySelectorAll('.tb')].map(off).join(', ') });
+    })();
+  }));
+  await c.close();
+  check(ctx, 'phone: each tab\'s paper follows its tab while IBM Plex Mono lands late (off for at most one frame)', r.worst <= 1 && r.plex > 0, `${r.worst} frames off${r.at ? ' (' + r.at + ')' : ''} · end ${r.end}`);
 }
 
 export default async (page, ctx) => {
@@ -325,6 +346,7 @@ export default async (page, ctx) => {
   await phoneTaps(ctx, page, 360);
   await handBack(ctx, page);
   await boards(ctx, page.context().browser());
+  await tabPaper(ctx, page.context().browser());
 
   ctx.log('— network');
   check(ctx, 'posts-index.js loaded, posts.js never (requests made by Writing)', reqs.some((u) => /content\/posts-index\.js/.test(u)) && !reqs.some((u) => /content\/posts\.js/.test(u)));
