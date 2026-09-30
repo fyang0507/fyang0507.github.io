@@ -1,5 +1,7 @@
 # Building · C to production: the port plan
 
+> **Completed 2026-09-30.** All eight PRs shipped: #23, #24, #26, #28 and #32–#35. `HANDOFF.md` §8 (Shipped) pairs each with its place in the stack below and records its review, and §9 lists what is still open for Fred. The plan is kept as it was written.
+
 The plan for taking Fred's pick, C 档案 the dossier (`HANDOFF.md` §3), to production as a stack of eight PRs, each shippable and verifiable on its own. Nothing here is implemented yet.
 
 Revised 2026-09-29 to answer `PLAN-REVIEW.md`. Every finding is resolved in the plan or deferred with a reason. `(R n)` cites finding n where it is answered, and §12 lists all eighteen. Fred answered the nine questions (`HANDOFF.md` §4) on 2026-09-29, after trying every option live on `r3-decisions.html`; each answer is carried where it lands, as (Q n). Only Q3's amended Demos board waits for his final look.
