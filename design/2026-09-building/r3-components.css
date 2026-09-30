@@ -1,0 +1,35 @@
+/* design/2026-09-building · round 3 · Components in C's language, from the live page's content: five dossier entries,
+   each with its kind typed at the side in plain ink, the contract notes as ruled entries, the example as a typed code
+   slip (mono on paper2, as Reading sets pre) and its source link pen-wired. Q4 (a) keeps the page's own index as a
+   typed contents list (.cm-index); (b) gives it the margin rail instead (03-rail.css). */
+.cm-how{display:flex;align-items:baseline;gap:10px;margin-top:4px!important;color:var(--soft);font:500 12.5px/1.4 var(--util)!important;letter-spacing:.08em;text-transform:uppercase}
+.cm-how .pr-no::before{content:"§ "}
+.cm-index{margin:30px 0 6px;padding-top:12px;border-top:1px solid var(--ink)}
+.cm-index .slip-k{color:var(--soft);font:500 10.5px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.cm-index ol{list-style:none;margin:8px 0 0;padding:0}
+.cm-index li{border-bottom:1px dashed var(--line-strong)}
+.cm-index a{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:baseline;gap:12px;padding:11px 2px 12px;color:var(--ink)}
+.ci-n{color:var(--soft);font:500 12px/1 var(--util)}
+.ci-t{font:500 19px/1.25 "Fraunces","DingTalk JinBuTi",serif}
+.ci-k{color:var(--soft);font:11px/1 var(--util);letter-spacing:.04em}
+.cm{position:relative}
+.cm-side{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:3.2em;padding-top:10px;border-top:1px solid var(--ink);color:var(--soft);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.cm-kind{color:var(--ink)}
+.cm .pr-h{margin-top:.9em}
+.cm-line{font-size:19px!important;line-height:1.55!important}
+.cm-notes{margin:22px 0 0;padding:0}
+.cm-notes>div{padding:13px 0 14px 16px;border-left:1.5px solid var(--ink)}
+.cm-notes>div+div{border-left-color:var(--line-strong)}
+.cm-notes dt{color:var(--soft);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.cm-notes dd{margin:6px 0 0;font-size:16.5px;line-height:1.62}
+.cm-notes ul{margin:0;padding-left:1.1em}
+.cm-notes li+li{margin-top:6px}
+.cm code{font:.86em/1.4 var(--util)}
+.cm-slip{margin:24px 0 0}
+.cm-slip figcaption{color:var(--soft);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.cm-slip pre{margin-top:8px;padding:14px 16px;overflow-x:auto;background:var(--paper2);border:1px solid var(--line);border-left:2px solid var(--ink);font:13px/1.6 var(--util);color:var(--ink)}
+.cm-slip code{font:inherit}
+.cm-src{display:inline-block;margin-top:16px;color:var(--ink);font:12px/1.4 var(--util)}
+.cm-src--none{color:var(--soft)}
+@media (max-width:640px){.cm-index a{grid-template-columns:28px minmax(0,1fr)}.ci-k{grid-column:2}}
+.pj-frame>.pj-main,.pj-read,.pj-prose,.cm-slip{min-width:0}
