@@ -17,7 +17,7 @@ const PAGES = [
   ['About', 'About.dc.html', '[data-mount="about"] [data-ready]'],
   ['Reading', 'Reading.dc.html?post=2026-08-29_google-just-wants-to-coast-to-a-win', '[data-mount="reading"][data-ready]']
 ];
-const FONTS = 'https://fonts.googleapis.com/css2**', SHEETS = '**/*.css', REACT = 'https://unpkg.com/react-dom@**', TOL = 24;
+const SHEETS = '**/*.css', REACT = 'https://unpkg.com/react-dom@**', TOL = 24;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Before any page script: Math.random pinned, so Gallery shuffles its prints the same way in both loads (React draws
@@ -70,9 +70,11 @@ async function load(browser, [, path, sel, script = REACT], w, first, errs) {
   const gate = new Promise((r) => { open = r; });
   const pass = async (route) => { const res = await route.fetch(); await route.fulfill({ response: res }); open(); };
   const hold = async (route) => { const res = await route.fetch(); await gate; await sleep(600); await route.fulfill({ response: res }); };
-  if (first === 'script') { await c.route(script, pass); await c.route(FONTS, hold); await c.route(SHEETS, hold); }
-  else { await c.route(FONTS, pass); await c.route(script, hold); }
+  if (first === 'script') { await c.route(script, pass); await c.route(SHEETS, hold); }
+  else await c.route(script, hold);
   const p = await c.newPage();
+  // The second load's sheets can come from WebKit's memory cache, which no route sees, so a finished sheet opens the gate.
+  if (first === 'sheets') p.on('requestfinished', (r) => { if (r.resourceType() === 'stylesheet') open(); });
   p.on('pageerror', (e) => errs.push(path + ' ' + w + ' pageerror ' + e.message));
   p.on('console', (m) => { if (m.type() === 'error') errs.push(path + ' ' + w + ' ' + m.text()); });
   await p.goto(ORIGIN + '/' + path, { waitUntil: 'load' });

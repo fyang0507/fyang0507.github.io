@@ -12,7 +12,7 @@ The MIT License applies to Fred Yang's original HTML, CSS, JavaScript, Python, a
 
 `support.js` loads React 18.3.1, ReactDOM 18.3.1, and Babel Standalone 7.29.0 from unpkg at runtime. They are not bundled in this repository. React and Babel are MIT-licensed; their terms remain with their upstream projects.
 
-The pages also request Fraunces, Caveat, and IBM Plex Mono from Google Fonts. Those remote font resources are not included in this repository and remain subject to their upstream licenses.
+The `building/` sub-sites request Fraunces, Caveat, and IBM Plex Mono from Google Fonts, and the Fred Agent pages Noto Serif SC and Noto Sans SC as well. Those remote font resources are not included in this repository and remain subject to their upstream licenses. Every other page loads the self-hosted subsets described below.
 
 ### Noto Serif SC and Noto Sans SC
 
@@ -21,6 +21,16 @@ Both are © the Noto Project Authors under the **SIL Open Font License 1.1**, wh
 The masters are fetched into `fonts/upstream-cache/` (gitignored) rather than vendored: they are 41 MB of variable TTF that is never served, and unlike the essays and photographs they are permanently and publicly available. The digest of the bytes used is recorded in `content/font-subsets.json`.
 
 - Upstream: https://github.com/google/fonts/tree/main/ofl/notoserifsc and .../notosanssc
+
+### Fraunces, Caveat and IBM Plex Mono
+
+Fraunces is © 2018 The Fraunces Project Authors, Caveat © 2014 The Caveat Project Authors, and IBM Plex Mono © 2017 IBM Corp., all under the **SIL Open Font License 1.1**. They are no longer requested from Google Fonts: `scripts/generate-fonts.py` fetches the masters Google Fonts serves from, at one google/fonts commit and checked by sha256, cuts them the way Google does (its `latin` / `latin-ext` split, unhinted), and the results are committed to `fonts/derived/`. The masters are cached in `fonts/upstream-cache/` (gitignored), as the Noto masters are.
+
+Each family's licence travels beside its subsets in `fonts/derived/`: `OFL-Fraunces.txt`, `OFL-Caveat.txt` and `OFL-IBMPlexMono.txt`, copied unchanged from google/fonts. Every subset keeps its copyright, trademark, designer and licence name records.
+
+"Plex" is a Reserved Font Name, and OFL 1.1 does not let a modified version of the font, which includes a subset, use it. The Plex Mono subsets therefore carry a different name inside the font: "FY Mono" (`FYMono-Regular`, `FYMono-Medium`) in the family, full, unique and PostScript name records. The copyright notice, IBM's trademark notice, the designer credit and the licence record are unchanged. The stylesheets still declare the family as `font-family: "IBM Plex Mono"`. That is a CSS identifier linking the site's rules to its `@font-face` declarations; readers never see it.
+
+- Upstream: https://github.com/google/fonts/tree/23e54b51ddffbc7713c583748e3bd86f62b1fa4a/ofl/fraunces, .../caveat and .../ibmplexmono
 
 ## Local fonts and original content
 
