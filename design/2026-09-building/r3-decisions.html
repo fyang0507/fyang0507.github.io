@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building · round 3 · the decisions, to try live</title>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<style>
+body{margin:0;background:#F6F1E6;color:#2B2722;font:16px/1.6 Georgia,serif}
+main{max-width:1180px;margin:0 auto;padding:40px 24px 90px}
+h1{font-size:34px;line-height:1.15;margin:0 0 10px}
+h2{margin:0 0 6px;font-size:23px;line-height:1.25}
+p,li{max-width:80ch}
+code,.k{font:13px/1.5 ui-monospace,Menlo,monospace}
+a{color:#2B2722}
+.picks{position:sticky;top:0;z-index:5;margin:22px -24px 0;padding:10px 24px;background:#F6F1E6;border-bottom:1px solid #CFC4AE;font:13px/1.5 ui-monospace,Menlo,monospace}
+.picks b{font-weight:600}
+.q{margin-top:44px;padding-top:18px;border-top:1.5px solid #2B2722;scroll-margin-top:52px}
+.q.done{opacity:.8}
+.how{margin:6px 0 0;color:#4F483F}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin:14px 0 12px}
+.opt{display:grid;grid-template-columns:30px 1fr;gap:4px 10px;align-items:start;padding:11px 13px 12px;border:1.5px solid #CFC4AE;border-radius:10px;background:#FBF7EE;text-decoration:none;cursor:pointer}
+.opt b{grid-row:span 2;display:grid;place-items:center;width:28px;height:28px;border:1.5px solid #2B2722;border-radius:50%;font:600 13px/1 ui-monospace,Menlo,monospace}
+.opt span{font-size:15.5px;line-height:1.4}
+.opt em{grid-column:2;color:#5F574C;font:12.5px/1.45 ui-monospace,Menlo,monospace;font-style:normal}
+.opt em.rec{color:#2B2722}
+.opt em.rec::before{content:"recommended · "}
+.opt[aria-checked="true"]{border-color:#2B2722;background:#fff}
+.opt[aria-checked="true"] b{background:#2B2722;color:#FBF7EE}
+.opt:focus-visible{outline:2px solid #2B2722;outline-offset:2px}
+.frames{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
+.frame{position:relative;flex:1 1 560px;min-width:0}
+.frame--phone{flex:0 0 390px}
+.frame .box{position:relative;overflow:hidden;border:1px solid #CFC4AE;background:#fff}
+.frame iframe{display:block;border:0;transform-origin:0 0}
+.frame .cap{display:flex;justify-content:space-between;gap:10px;margin-top:6px;color:#5F574C;font:12px/1.45 ui-monospace,Menlo,monospace}
+blockquote{margin:12px 0 0;padding:4px 0 4px 16px;border-left:2px solid #CFC4AE}
+blockquote p{margin:6px 0}
+@media (max-width:700px){.frame--phone{flex:1 1 100%}}
+</style>
+<script src="./r3-decisions.js" defer></script>
+</head>
+<body>
+<main>
+<p class="k">design/2026-09-building · round 3 · C 档案, the dossier</p>
+<h1>The open questions, to try before answering</h1>
+<p>Each question in <code>HANDOFF.md</code> §4 has its options here, live. Pick one and the frame below shows it working; "open ↗" opens the same thing full-size in a tab, where the view transitions run as they will on the site. Every pick is in the address (<code>?q2=a&amp;q6=b…</code>), so this page can be shared as your answer. The line at the top keeps the tally.</p>
+<p class="how">Inside a full-size page, the corner bar switches that page's options too (☰ comes back here). The pages share your picks for this browser session.</p>
+<div class="picks" aria-live="polite">Your picks: <span data-picks></span></div>
+
+<section class="q done" id="q1">
+<h2>Q1 · A click on a card: answered, (a)</h2>
+<p class="how">A click unpins the card, it comes to your hand, and the dossier slides out with its chapter tabs: C as you picked it. Every frame below works this way.</p>
+</section>
+
+<section class="q" id="q2" data-q="q2">
+<h2>Q2 · Coming back to the board</h2>
+<p class="how">Try it: drag the board (or press →) until NJJoe sits at the left edge, open NJJoe (take the card down and choose a tab, or use its "Open field studies →"), maybe step to another chapter, then come back with "← Building board". Round 1's mock always came back at the start.</p>
+<div class="opts" role="radiogroup" aria-label="Q2">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>The board brings the card you came back from into view, pinned in its place.</span><em class="rec">worked out from the page you left, so nothing new is remembered; it finds the card whichever way you arrived</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>The board exactly where you left it, remembered for the session.</span><em>a new session key; the exact scroll, even if the card has since scrolled out of view</em></a>
+</div>
+<div class="frames"><div class="frame" data-page="r3-board.html" data-w="1280" data-h="840"><div class="box"><iframe title="Q2: the board" loading="lazy"></iframe></div><div class="cap"><span>the board at 1280</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q3" data-q="q3">
+<h2>Q3 · Demos' evidence viewers</h2>
+<p class="how">The round-2 board, <a href="./r2-02-demos-board.html">r2-02-demos-board.html</a>, explains the three. The frame opens Demos at Exhibit 02: choose a numbered note under the capture. The magnifiers go, so two captions change; approve them as written or edit them in your answer:</p>
+<blockquote><p><b>Fig. 02</b> "The numbers on the capture are the notes below it. Choose one to look closer; Esc puts it back."</p><p><b>Fig. 04</b> "The numbers mark the auto-investigation rule and the task → error → fixed loop; the second report shows the same recovery pattern again."</p><p class="k">Written for F3; with F1 or F2, "look closer" changes.</p></blockquote>
+<div class="opts" role="radiogroup" aria-label="Q3">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>F1 · the pen's loop on the region; nothing else moves.</span><em>cheapest; the capture stays small on a phone</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>F2 · tracing paper laid over the print, windows cut where the regions are.</span><em>on a phone its typed titles don't fit and are dropped</em></a>
+<a class="opt" data-v="c" role="radio"><b>C</b><span>F3 · an enlargement pulled out from under the capture.</span><em class="rec">the only one that makes a capture readable on a phone</em></a>
+</div>
+<div class="frames"><div class="frame" data-page="r2-02-demos.html" data-hash="#trash-patrol" data-w="1280" data-h="860"><div class="box"><iframe title="Q3: Demos" loading="lazy"></iframe></div><div class="cap"><span>Demos at 1280</span><a data-open target="_blank">open ↗</a></div></div>
+<div class="frame frame--phone" data-page="r2-02-demos.html" data-hash="#trash-patrol" data-w="390" data-h="780"><div class="box"><iframe title="Q3: Demos on a phone" loading="lazy"></iframe></div><div class="cap"><span>at 390</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q4" data-q="q4">
+<h2>Q4 · Components and the margin rail</h2>
+<p class="how">Components wasn't mocked before; this is a light one in C's language, with the live page's text and repository links. Scroll it: with (b) the rail appears in the left margin once you are in the entries.</p>
+<div class="opts" role="radiogroup" aria-label="Q4">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>No rail: the "Component index" stays the page's index, typed as a contents list.</span><em class="rec">your brief was "restyle, keep structure", and the boards showed the rail only on Principles</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>The index becomes the margin rail, with a landmark per component.</span><em>the same rail as Principles; on a phone its ticks and counter ride the tab strip</em></a>
+</div>
+<div class="frames"><div class="frame" data-page="r3-components.html" data-w="1440" data-h="900"><div class="box"><iframe title="Q4: Components" loading="lazy"></iframe></div><div class="cap"><span>Components at 1440</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q5" data-q="q5">
+<h2>Q5 · The board's typeface</h2>
+<p class="how">The real card data. Look at the card notes and the dossier's lines (take a card down).</p>
+<div class="opts" role="radiogroup" aria-label="Q5">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>No change: the cards' English stays in Noto Serif SC's Latin letters, as today.</span><em class="rec">the content is plain ASCII, so the full-width punctuation can't show; a switch restyles every card and risks a slower first paint</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>Fraunces first, then Noto Serif SC for Chinese.</span><em>its own small PR, with before/after shots and a speed run</em></a>
+</div>
+<div class="frames"><div class="frame" data-page="r3-board.html" data-w="1280" data-h="840"><div class="box"><iframe title="Q5: the board" loading="lazy"></iframe></div><div class="cap"><span>the board at 1280</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q6" data-q="q6">
+<h2>Q6 · The current chapter tab</h2>
+<p class="how">Principles, desktop and phone. The current tab is 03. (Both options already use the darker tab ink, which passes 4.5:1 on kraft.)</p>
+<div class="opts" role="radiogroup" aria-label="Q6">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>Paper, pulled out and banded in wheat, while the other tabs stay kraft.</span><em class="rec">the wheat band on kraft measures 1.11:1, too faint to see</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>Kraft with the wheat band, as the boards drew it.</span><em>the band all but disappears into the kraft</em></a>
+</div>
+<div class="frames"><div class="frame" data-page="r3-principles.html" data-w="1440" data-h="900"><div class="box"><iframe title="Q6: Principles at 1440" loading="lazy"></iframe></div><div class="cap"><span>at 1440</span><a data-open target="_blank">open ↗</a></div></div>
+<div class="frame frame--phone" data-page="r3-principles.html" data-w="390" data-h="780"><div class="box"><iframe title="Q6: Principles at 390" loading="lazy"></iframe></div><div class="cap"><span>at 390</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q7" data-q="q7">
+<h2>Q7 · Tabs on a phone</h2>
+<p class="how">A 390 px phone. Scroll Principles to see the reading counter. Either way, the phone board's cards narrow by 22 px so the tabs peeking behind them sit inside the cork (the board frame, right).</p>
+<div class="opts" role="radiogroup" aria-label="Q7">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>Every tab shows: numbers only, the current tab with its name, and the reading counter on the line under the tabs.</span><em class="rec">in the round-1 mock, tabs 04–05 were cut off and the counter sat on tab 03</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>Names on every tab, in a strip that scrolls sideways, the counter at its end (round 1).</span><em>some tabs are off-screen until you swipe the strip</em></a>
+</div>
+<div class="frames"><div class="frame frame--phone" data-page="r3-principles.html" data-w="390" data-h="780"><div class="box"><iframe title="Q7: Principles at 390" loading="lazy"></iframe></div><div class="cap"><span>Principles at 390</span><a data-open target="_blank">open ↗</a></div></div>
+<div class="frame frame--phone" data-page="r3-board.html" data-w="390" data-h="780"><div class="box"><iframe title="Q7: the board at 390" loading="lazy"></iframe></div><div class="cap"><span>the board at 390 (the same either way)</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q8" data-q="q8">
+<h2>Q8 · The card's direct link</h2>
+<p class="how">Try it without taking the card down: click "Enter the field notes →" on Fred Agent's card, or "Open field studies →" on NJJoe's. The move needs a full-size tab to be seen as it will be ("open ↗"); a frame may cut.</p>
+<div class="opts" role="radiogroup" aria-label="Q8">
+<a class="opt" data-v="a" role="radio"><b>A</b><span>The tabs peeking behind the card fly to the page's fore-edge, as a dossier tab's do.</span><em class="rec">the way back run forward, so nothing new to build, though the boards never showed it</em></a>
+<a class="opt" data-v="b" role="radio"><b>B</b><span>No flight: a plain cut into the page.</span><em>the link behaves like any other link</em></a>
+</div>
+<div class="frames"><div class="frame" data-page="r3-board.html" data-w="1280" data-h="840"><div class="box"><iframe title="Q8: the board" loading="lazy"></iframe></div><div class="cap"><span>the board at 1280</span><a data-open target="_blank">open ↗</a></div></div></div>
+</section>
+
+<section class="q" id="q9">
+<h2>Q9 · The email demo's images</h2>
+<p class="how">Nothing to see here: both options look the same today. <code>building/njjoe/email-demo/buyer.html</code> shows four images (1.29 MB) that it loads from Joe's server, <code>apa.njjoegroup.com</code>. (a) <b>Copy them into the repo</b> as derived images, so the evidence stays exactly as sent and can't break or change when his site does; recommended, if Joe is fine with copies of his logo, cover, gift card and photo living in your public repository. (b) <b>Keep loading them from his server</b>, and exempt that one host from the site's "every request returns 200" check; the demo then depends on his site staying up and unchanged. The question is really one for Joe: may his images live in your repo?</p>
+</section>
+</main>
+</body>
+</html>

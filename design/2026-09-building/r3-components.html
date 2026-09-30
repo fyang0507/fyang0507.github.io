@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-r3-qs="q4 q6 q7" data-role="project" data-project="fred-agent" data-chapter="04" data-now="../../building/fred-agent/components.html">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<title>Components · Fred Agent · 04 components · Building design · round 3 · decisions</title>
+<script src="./r3-kit.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./00-live.css">
+<link rel="stylesheet" href="./02-project.css">
+<link rel="stylesheet" href="./02-a.css">
+<link rel="stylesheet" href="./02-b.css">
+<link rel="stylesheet" href="./02-c.css">
+<link rel="stylesheet" href="./03-rail.css">
+<link rel="stylesheet" href="./04-map.css">
+<link rel="stylesheet" href="./00-vt.css">
+<link rel="stylesheet" href="./00-kit.css">
+<link rel="stylesheet" href="./r3.css">
+<link rel="stylesheet" href="./r3-components.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="./00-live.js" data-extra="content/building-projects.js"></script>
+<script src="./r3-vt.js" defer blocking="render"></script>
+<script type="module" src="./r3-components.js" blocking="render"></script>
+<script type="module" src="./02-project.js" blocking="render"></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="../../index.html" aria-label="Fred Yang — home"><span class="site-identity-copy"><span class="site-identity-names"><span class="site-identity-name site-identity-name--en">Fred Yang</span><span class="site-identity-name site-identity-name--zh" lang="zh">弗雷德</span></span><span class="site-identity-tag" lang="zh">继续写，继续造</span><span class="site-identity-stickers" aria-hidden="true"><img class="site-identity-sticker site-identity-sticker--ghost" src="../../assets/identity-sticker-ghost.png" srcset="../../assets/identity-sticker-ghost@2x.png 2x" alt=""><img class="site-identity-sticker site-identity-sticker--blob" src="../../assets/identity-sticker-blob.png" srcset="../../assets/identity-sticker-blob@2x.png 2x" alt=""></span></span></a>
+      <div class="site-header-status">fred-agent · field notes</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="../../index.html"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="../../Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="./r3-board.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="../../Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="../../About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
+    </nav>
+  </header>
+</div>
+
+<div class="pj" data-paper="cream">
+  <div class="pj-frame">
+    <header class="pj-head">
+      <div class="pj-cover" data-card="fred-agent"></div>
+      <div class="pj-sheethead">
+        <div class="pj-label"><span class="pj-n">04 · components</span><span class="pj-file">field notes · Fred Agent · 04 / 05</span></div>
+        <div class="pj-eyebrow">Fred Agent · Component Field Guide</div>
+        <h1 class="pj-title">Interfaces Beyond the Chatbox</h1>
+        <p class="pj-deck">Three CLIs, one privacy policy module, and one recovery protocol give a general-purpose agent durable handles into time, communication, state, personal context, and unattended execution.</p>
+        <div class="pj-meta"><span>03 public CLIs</span><span>01 policy module</span><span>01 recovery protocol</span><span>real commands included</span></div>
+      </div>
+    </header>
+
+    <nav class="pj-strip pj-tabs" aria-label="Fred Agent chapters · 章节">
+      <a href="./r3-overview.html"><span class="pn">01</span><span class="pt"><span class="pen-t">overview</span></span></a>
+      <a href="./r3-system.html"><span class="pn">02</span><span class="pt"><span class="pen-t">system</span></span></a>
+      <a href="./r3-principles.html"><span class="pn">03</span><span class="pt"><span class="pen-t">principles</span></span></a>
+      <a href="./r3-components.html" aria-current="page"><span class="pn">04</span><span class="pt"><span class="pen-t">components</span></span></a>
+      <a href="./r2-02-demos.html"><span class="pn">05</span><span class="pt"><span class="pen-t">demos</span></span></a>
+    </nav>
+    <a class="pj-back" href="./r3-board.html"><span class="pen-t">← Building board · <span lang="zh">回到板上</span></span></a>
+
+    <main id="main-content" class="pj-main">
+      <div class="pj-read">
+        <div class="rail-col"></div>
+        <article class="pj-prose">
+        <div class="pj-prose-intro">
+          <p class="cm-how"><span class="pr-no">00</span> How to read</p>
+          <p>Default agent harnesses stop at the session boundary. They can reason and invoke tools while a session is open, but future presence, authenticated delivery, durable state, privacy-scoped context, and post-session recovery need explicit infrastructure.</p>
+          <p>Each entry names the missing capability, the narrow interface that supplies it, and the concrete command or protocol an agent can use.</p>
+          <nav class="cm-index" aria-label="Component index"><span class="slip-k">component index · 5</span><ol><li><a href="#sundial"><span class="ci-n">01</span><span class="ci-t"><span class="pen-t">Sundial</span></span><span class="ci-k">time · CLI</span></a></li><li><a href="#outreach"><span class="ci-n">02</span><span class="ci-t"><span class="pen-t">Outreach</span></span><span class="ci-k">reach · CLI</span></a></li><li><a href="#notion-gateway"><span class="ci-n">03</span><span class="ci-t"><span class="pen-t">Notion Gateway</span></span><span class="ci-k">state · CLI</span></a></li><li><a href="#whoami"><span class="ci-n">04</span><span class="ci-t"><span class="pen-t">Whoami</span></span><span class="ci-k">context · policy</span></a></li><li><a href="#headless-recovery"><span class="ci-n">05</span><span class="ci-t"><span class="pen-t">Headless Recovery</span></span><span class="ci-k">recovery · protocol</span></a></li></ol></nav>
+        </div>
+        <section id="sundial" class="pj-pr cm" aria-labelledby="sundial-t"><div class="cm-side"><span class="cm-area">Time and presence</span><span class="cm-kind">time · CLI</span><span class="cm-role">atomic handle</span></div><h2 class="pr-h" id="sundial-t"><span class="pr-no">01</span><span class="pr-t">Sundial</span></h2><p class="cm-line">A command-agnostic scheduler that lets an agent create reliable work for its future self.</p><dl class="cm-notes"><div><dt>Why the harness falls short</dt><dd>Most built-in schedulers are cron-like: useful for fixed clock times, but too rigid for real-life events such as sunrise, a changing condition, or a one-off moment with readiness gates.</dd></div><div><dt>Interface contract</dt><dd>Sundial persists cron, solar, poll, and one-time triggers, runs any shell command, and keeps execution state portable across daemon restarts.</dd></div><div><dt>Design choices</dt><dd><ul><li>Daemon wired to a macOS LaunchAgent plist, wrapped in <code>caffeinate -i</code> to hold a sleep assertion and keep firing through system sleep</li><li>A crash or reboot triggers launchd's <code>KeepAlive</code>; the daemon replays the same reconcile-then-catch-up sequence either way, so no fire is silently lost</li><li>Desired state lives in a git data repo — a push that fails from lost network still lands locally and retries at the next reconciliation point</li><li>A daemon-wide active-hours window defers any fire outside human waking hours to the next opening, rather than dropping it or calling at 3am</li></ul></dd></div></dl><figure class="cm-slip"><figcaption>Poll until a real-life condition is ready</figcaption><pre><code>$ sundial add poll --name "wait for approval" \
+  --trigger 'test -f ./approval.received' \
+  --interval 2m --timeout 72h --once \
+  --command "codex exec 'approval arrived — continue'"</code></pre></figure><a class="cm-src pj-link" href="https://github.com/fyang0507/sundial" target="_blank" rel="noopener noreferrer"><span class="pen-t">View Sundial on GitHub</span> ↗</a></section>
+        <section id="outreach" class="pj-pr cm" aria-labelledby="outreach-t"><div class="cm-side"><span class="cm-area">Communication and reach</span><span class="cm-kind">reach · CLI</span><span class="cm-role">atomic handle</span></div><h2 class="pr-h" id="outreach-t"><span class="pr-no">02</span><span class="pr-t">Outreach</span></h2><p class="cm-line">A utility interface for calls, messages, email, Discord, and per-channel history.</p><dl class="cm-notes"><div><dt>Why the harness falls short</dt><dd>A model can draft words, but drafting is not authenticated delivery. Calls, messages, email, and channel history each need a real recipient, transport, and verifiable result.</dd></div><div><dt>Interface contract</dt><dd>Outreach exposes channel-specific commands with explicit recipients and objectives. Workflow policy decides whether, when, and why to contact someone.</dd></div><div><dt>Design choices</dt><dd><ul><li>Bridges Twilio Media Streams straight to Gemini Live instead of a scripted STT→LLM→TTS pipeline — cuts round-trip latency to ~0.5–1.0s per turn against 1.5–3s for the scripted approach</li><li>Gemini runs the live turn as an autonomous subagent from a system prompt, objective, and persona — not the calling agent itself</li><li><code>outreach call steer</code> lets the main agent inject a drift-tolerant <code>nudge</code> or a forced near-verbatim <code>say</code> line without taking the call over outright</li><li>Twilio's answering-machine detection reports whether a human or machine picked up</li><li>Gemini's own <code>send_dtmf</code>/<code>end_call</code> tool calls let it navigate an IVR menu and hang up cleanly on its own</li></ul></dd></div></dl><figure class="cm-slip"><figcaption>A live call: init, place, listen, steer</figcaption><pre><code>$ outreach call init
+$ outreach call place --to "+1…" \
+  --objective "Confirm the appointment time."
+$ outreach call listen --id &lt;call-id&gt;
+$ outreach call steer --id &lt;call-id&gt; \
+  --text "Ask whether Friday works."</code></pre></figure><a class="cm-src pj-link" href="https://github.com/fyang0507/outreach-cli" target="_blank" rel="noopener noreferrer"><span class="pen-t">View Outreach on GitHub</span> ↗</a></section>
+        <section id="notion-gateway" class="pj-pr cm" aria-labelledby="notion-gateway-t"><div class="cm-side"><span class="cm-area">Shared durable state</span><span class="cm-kind">state · CLI</span><span class="cm-role">atomic handle</span></div><h2 class="pr-h" id="notion-gateway-t"><span class="pr-no">03</span><span class="pr-t">Notion Gateway</span></h2><p class="cm-line">A schema-aware bridge between a human Notion workspace and agent-readable commands.</p><dl class="cm-notes"><div><dt>Why the harness falls short</dt><dd>A context window is temporary, and Notion’s visual workspace is shaped for humans. Agents need stable IDs, live schemas, bounded writes, and compact receipts.</dd></div><div><dt>Interface contract</dt><dd>Notion Gateway discovers approved databases, validates live schemas before writes, supports dry runs, and fails closed on unknown destinations or properties.</dd></div><div><dt>Design choices</dt><dd><ul><li>Trusts exactly one registry — the Gateway page in Notion, read by <code>ntn-gateway show</code> as the sole source of approved databases, so an agent never rediscovers workspace structure or guesses scope</li><li>Every write validates against the live schema first; an unknown property, invalid status, or not-yet-live select value comes back with the valid options listed inline, so the next command can self-correct without a human in the loop</li><li>Responses stay token-efficient by default — compact JSON, normalized summaries instead of full API echoes</li><li><code>aggregate pages</code> fans out across every approved database in one command, grouping by live status and capping/sorting by recency instead of a query per database</li></ul></dd></div></dl><figure class="cm-slip"><figcaption>Discover and aggregate the durable workspace</figcaption><pre><code>$ ntn-gateway show
+$ ntn-gateway aggregate pages \
+  --status "Not started,In progress"</code></pre></figure><a class="cm-src pj-link" href="https://github.com/fyang0507/ntn-gateway" target="_blank" rel="noopener noreferrer"><span class="pen-t">View Notion Gateway on GitHub</span> ↗</a></section>
+        <section id="whoami" class="pj-pr cm" aria-labelledby="whoami-t"><div class="cm-side"><span class="cm-area">Personal context and privacy</span><span class="cm-kind">context · policy</span><span class="cm-role">policy module</span></div><h2 class="pr-h" id="whoami-t"><span class="pr-no">04</span><span class="pr-t">Whoami</span></h2><p class="cm-line">A privacy-aware router that reveals only the category of personal context needed for the task.</p><dl class="cm-notes"><div><dt>Why the harness falls short</dt><dd>Generic memory either withholds needed context or exposes an undifferentiated biography. Personal facts need purpose-aware routing before they enter a task.</dd></div><div><dt>Interface contract</dt><dd>Whoami routes a request to the smallest relevant category—identity, contact, home, family, or life history. Knowing a fact never becomes permission to act on it.</dd></div></dl><figure class="cm-slip"><figcaption>Agent route</figcaption><pre><code>$whoami &gt; contact.md</code></pre></figure><span class="cm-src cm-src--none">Private policy module</span></section>
+        <section id="headless-recovery" class="pj-pr cm" aria-labelledby="headless-recovery-t"><div class="cm-side"><span class="cm-area">Unattended reliability</span><span class="cm-kind">recovery · protocol</span><span class="cm-role">cross-cutting protocol</span></div><h2 class="pr-h" id="headless-recovery-t"><span class="pr-no">05</span><span class="pr-t">Headless Recovery</span></h2><p class="cm-line">A failure protocol that preserves retry state, attempts bounded repair, and makes any unresolved problem visible.</p><dl class="cm-notes"><div><dt>Why the harness falls short</dt><dd>When no one is watching, an exception can disappear with the process. The next session may not know what failed, what changed, or whether retrying is safe.</dd></div><div><dt>Interface contract</dt><dd>The protocol preserves retry state, records sanitized evidence, posts a concise status, and dispatches one guarded investigation that can repair or escalate.</dd></div></dl><figure class="cm-slip"><figcaption>Recovery path</figcaption><pre><code>execution fails
+  → preserve retry state
+  → report concise status
+  → investigate once
+  → recover or escalate</code></pre></figure><span class="cm-src cm-src--none">Cross-cutting protocol</span></section>
+        <section id="composition" class="pj-pr cm-close" aria-labelledby="composition-t">
+          <h2 class="pr-h" id="composition-t"><span class="pr-no">06</span><span class="pr-t">Interfaces become a system only inside a workflow.</span></h2>
+          <p>Consider a scheduled follow-up: Sundial wakes the command, Notion Gateway loads the canonical task state, and Outreach delivers the result. The workflow decides what counts as complete and whether silence, a digest, or an interruption is appropriate.</p>
+          <p>Now consider the same run failing after the session closes: the recovery protocol preserves the retry, records evidence, and attempts one bounded investigation. No single CLI owns either experience; the workflow supplies the purpose, order, policy, and stopping condition.</p>
+          <p class="pj-pull">The parts supply handles. Composition supplies the human outcome.</p>
+        </section>
+        </article>
+      </div>
+      <nav class="pj-pagenav" aria-label="Fred Agent chapter navigation">
+        <a href="./r3-principles.html"><span>← previous</span><strong><span class="pen-t">03 · Principles</span></strong></a>
+        <a href="./r2-02-demos.html"><span>next</span><strong><span class="pen-t">05 · Demos</span></strong></a>
+      </nav>
+      <footer class="pj-foot"><span>© 2026 Fred Yang · Fred Agent</span><span><a href="./r3-overview.html">Overview</a> · <a href="./r3-board.html">All building</a> · <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">GitHub ↗</a></span></footer>
+    </main>
+  </div>
+</div>
+</body>
+</html>
