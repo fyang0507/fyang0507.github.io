@@ -9,7 +9,9 @@
 // 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
 // every device pixel it is drawn at: lib/writing/case.js sh.hand); no book keeps that layout once it is back, when a
 // returning book is caught again and let go inside the dwell (the pointer 200 and 350 ms after leaving; the keyboard's
-// Right, Left, Right; a resize while one is held, then a re-hover); a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
+// Right, Left, Right; a resize while one is held, then a re-hover); in 2x and 3x contexts the book in your hand takes
+// the board it needs (480w on a 2x desk, 640w on a 3x phone, the top of a capped ladder) and every board is as wide
+// and tall as its srcset says; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
@@ -113,6 +115,38 @@ async function handBack(ctx, page) {
   got.push('resize: ' + ((await stuck(page)).join(', ') || 'ok'));
   check(ctx, 'a returning book caught again and let go inside the dwell comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
 }
+// 2x and 3x: the board the book in your hand fetches, and every board's real size against its srcset.
+async function boards(ctx, browser) {
+  const got = [];
+  for (const [w, h, dpr, key, want] of [[1440, 900, 2, '2015-05-09_go-south-go-south', 480], [390, 844, 3, '2015-05-09_go-south-go-south', 640], [390, 844, 3, '2026-08-29_google-just-wants-to-coast-to-a-win', 600]]) {
+    const c = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dpr, hasTouch: w < 760 }), pg = await c.newPage();
+    await pg.goto(URL, { waitUntil: 'networkidle' }); await pg.waitForSelector('[data-mount=writing][data-ready]', { timeout: 15000 }); await pg.waitForTimeout(700);
+    await toCase(pg, w < 760 ? 120 : 20);
+    const p = await pg.evaluate((key) => {
+      const a = document.querySelector('.bk-hit[data-post="' + key + '"]'), v = document.querySelector('.sh-view');
+      if (v.classList.contains('strip')) { const r = a.getBoundingClientRect(), vr = v.getBoundingClientRect(); v.scrollLeft += r.left + r.width / 2 - (vr.left + vr.width / 2); }
+      const r = a.getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35) };
+    }, key);
+    await pg.waitForTimeout(300);
+    if (w < 760) { await pg.touchscreen.tap(p.x, p.y); await pg.waitForTimeout(1600); } else await hover(pg, p);
+    const src = await pg.evaluate(() => { const i = document.querySelector('.book.held .cv-img img'); return i ? +(i.currentSrc.match(/-(\d+)\.jpg$/) || [0, 0])[1] : 0; }), sh = await sharp(pg);
+    got.push(`${w}@${dpr}x ${key.slice(0, 10)}: ${src}w` + (src === want && sh === 'ok' ? '' : ` ✗ want ${want}w, ${sh}`));
+    if (dpr === 3 && want === 600) {
+      const lies = await pg.evaluate(async () => {
+        const bad = [];
+        for (const e of window.FY_POST_INDEX) for (const c of e.boardSrcset.split(', ')) {
+          const [u, d] = c.split(' '), cw = parseInt(d), bm = await createImageBitmap(await (await fetch(u)).blob());
+          if (bm.width !== cw || bm.height !== Math.round(cw * 25 / 16)) bad.push(u.split('/').pop() + ' is ' + bm.width + '×' + bm.height);
+        }
+        return bad;
+      });
+      got.push('boards true to their srcset: ' + (lies.length ? '✗ ' + lies.slice(0, 4).join(', ') : 'ok'));
+    }
+    await c.close();
+  }
+  check(ctx, 'at 2x and 3x the book in your hand takes the board it needs; every board is the size its srcset claims', got.every((g) => !g.includes('✗')), got.join(' · '));
+}
+
 export default async (page, ctx) => {
   const errors = [], reqs = [], bad = [];
   if (DRAFT) { const html = fs.readFileSync(DRAFT, 'utf8'); await page.route('**/Writing.dc.html', (r) => r.fulfill({ body: html, contentType: 'text/html; charset=utf-8' })); }
@@ -279,6 +313,7 @@ export default async (page, ctx) => {
   await phoneTaps(ctx, page, 390);
   await phoneTaps(ctx, page, 360);
   await handBack(ctx, page);
+  await boards(ctx, page.context().browser());
 
   ctx.log('— network');
   check(ctx, 'posts-index.js loaded, posts.js never (requests made by Writing)', reqs.some((u) => /content\/posts-index\.js/.test(u)) && !reqs.some((u) => /content\/posts\.js/.test(u)));
