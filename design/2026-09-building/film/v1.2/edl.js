@@ -11,7 +11,12 @@
    cam9: every shot framed again for 9:16 (h is the frame's height in page px there too), not a crop of the 16:9. */
 import * as V11 from '../v1.1/edl.js';
 
-export const EDL = V11.EDL;
+// the new essay (The God in the Edit): the pulled book's board is the cover's middle 16:25, and Reading's hero is the whole
+// cover at the page's width, so the board's picture (page px 208–376 wide, from 428 down) is the hero's 416–864 from 0:
+// 2.67×, the board's centre (292, 509) landing on (640, 216). The footnote, an LA Times citation, is framed with its slip.
+const WRITING = [[8.4, 640, 520, 1160], [9.3, 700, 470, 780], [10.9, 700, 470, 780], [11.6, 330, 560, 520], [12.45, 292, 509, 300], [13.2, 292, 509, 300]];
+const READING = [[13.2, 640, 216, 800, 'cut'], [13.6, 640, 216, 800], [14.4, 640, 470, 1160], [17.3, 640, 470, 1160], [18.6, 840, 590, 520], [20.7, 840, 590, 520], [21.4, 640, 520, 1160], [22.95, 700, 470, 1060]];
+export const EDL = V11.EDL.map((sh) => sh.k === 'play' && sh.u0 === 8.40 ? Object.assign({}, sh, { cam: WRITING }) : sh.k === 'play' && sh.u0 === 13.20 ? Object.assign({}, sh, { cam: READING }) : sh);
 export const CHAPTERS = V11.CHAPTERS, NOTES = V11.NOTES, TIMED_NOTES = V11.TIMED_NOTES;
 export const NOTES9 = { desk: [760, 540], tabs: [850, 760], print: [300, 300], home: [420, 690] };
 

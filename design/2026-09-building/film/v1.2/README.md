@@ -10,7 +10,7 @@ v1 and v1.1 are kept as they were.
 |---|---|---|
 | `film-30s-16x9.mp4` | the 30 s cut, rebuilt around four comparisons | 0:26.9 |
 | `film-30s-9x16.mp4` | the same, reframed shot by shot for 9:16 (1080×1920), not cropped | 0:26.9 |
-| `film-v1.2.mp4` | the long film, with another essay in Reading | see below |
+| `film-v1.2.mp4` | the long film, with another essay in Reading, and the BEFORE / AFTER stamps at its seven lifts | see the numbers |
 
 ## The comparison, made legible
 
@@ -53,5 +53,29 @@ The cuts use v1.1's take (`take11`, recorded on main at 321ee2c). None of their 
 |---|---|---|---|---|---|---|---|
 | `film-30s-16x9.mp4` | 0:26.9 | 6.2 MB | −16.7 LUFS | 5.6 LU | −2.8 dBTP | none | 0 / 1 |
 | `film-30s-9x16.mp4` | 0:26.9 | 6.0 MB | −16.7 LUFS | 5.6 LU | −2.8 dBTP | none | 0 / 1 |
+| `film-v1.2.mp4` | 1:35.9 | 28.0 MB | −17.0 LUFS | 7.4 LU | −2.1 dBTP | none | 0 / 0 / 1 |
 
-The one zero-diff frame is the gravity return replay's first frame, before its motion starts.
+The one zero-diff frame is the gravity return replay's first frame, before its motion starts. The long film's mux asks loudnorm for −3.9 dBTP (`TP=-3.9 python3 v1.2/finish.py film-v1.2`).
+
+## The long film: another essay in Reading
+
+**The God in the Edit (被剪辑的神, 2 May 2026, commentary, "A Short History of the GOAT Narrative")**, recorded as `take12` on main at 321ee2c (`cap/scenarios/take-v12.mjs`). Every beat keeps v1.1's time, so the rest of the cut is v1.1's. The before side's windows are unchanged, and `take12-before` is `take11-before`.
+
+Why this essay:
+- **The match cut.** The pulled book's board is the cover's middle 16:25, and Reading's hero is the whole cover at the page's width. The board's picture maps onto the hero at 2.67×, its centre (292, 509) landing on (640, 216), so the cut lands on the same illustration at the same place and scale.
+- **The footnote.** Its first footnote comes 161 words in: Anderson's line about number 45, and the slip "1 Mark Heisler, 'It's Err Jordan—No Bull,' Los Angeles Times, 1995-05-08." It's a clean, pretty close-up, framed with its slip, at DPR 3.
+
+Every line on screen in the Writing → Reading segment, checked:
+- **The pulled book:** "The God in the Edit / 被剪辑的神 / 2026-05 · ~15 min / commentary · 杂文 / a long one 长文".
+- **The hero:** "COMMENTARY · May 2, 2026 · 15 min read · 中 / EN", the title, and "A Short History of the GOAT Narrative".
+- **The text as it scrolls:** "In May 1995, Michael Jordan stood in Orlando.", then the paragraphs on the 1995 Jordan, Game 1 against the Magic and Nick Anderson's remark, down to "a losing ticket stub pressed inside a Bible" and "It was a crack."
+- **The slip:** the citation above.
+
+Nothing in them is unfit for a public promo.
+
+The ones I passed over:
+- **Hawaiʻi Has No Anger:** it has an early clean footnote, but its opening quotes a wartime slur.
+- **Salvation Mountain:** its first footnote is 745 words in, past the take's scroll.
+- **The rest:** no footnotes, or none early.
+
+**One call for Fred.** The cover art, and so Reading's hero, draws the Jumpman silhouette and LeBron's logo in the essay's own illustration. It's editorial, on his own site. If he'd rather a promo showed no brand marks, the take can be re-shot on another essay with the same beats.
