@@ -4,7 +4,8 @@
    in place (?q2=a&q3=c…, shareable) and reloads only that question's frames. Q3 maps a|b|c to round 2's ?f=1|2|3. */
 (function () {
   'use strict';
-  var Q = ['q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'], DEF = { q2: 'a', q3: 'c', q4: 'a', q5: 'a', q6: 'a', q7: 'a', q8: 'a' };
+  var Q = ['q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'], DEF = { q2: 'a', q3: 'c', q4: 'b', q5: 'b', q6: 'b', q7: 'a', q8: 'a' };   // Fred's answers, 2026-09-29 (FRED marks them)
+  var FRED = DEF;
   var url = new URLSearchParams(location.search), pick = {};
   Q.forEach(function (k) { var v = (url.get(k) || '').toLowerCase(); pick[k] = /^[abc]$/.test(v) ? v : DEF[k]; });
   var F = { a: '1', b: '2', c: '3' };
@@ -42,6 +43,7 @@
     var k = sec.getAttribute('data-q');
     sec.querySelectorAll('.opt').forEach(function (o) {
       var on = o.getAttribute('data-v') === pick[k];
+      if (FRED[k] === o.getAttribute('data-v') && !o.querySelector('.fred')) o.insertAdjacentHTML('beforeend', '<em class="fred">Fred\u2019s pick</em>');
       o.setAttribute('aria-checked', String(on));
       o.tabIndex = on ? 0 : -1;
       o.href = '?' + k + '=' + o.getAttribute('data-v') + '#' + sec.id;
@@ -49,7 +51,7 @@
   }
   function tally() {
     var t = document.querySelector('[data-picks]');
-    if (t) t.innerHTML = '<b>1a</b> · ' + Q.map(function (k) { return '<b>' + k.slice(1) + pick[k] + '</b>'; }).join(' · ') + ' · 9 ?';
+    if (t) t.innerHTML = '<b>1a</b> · ' + Q.map(function (k) { return '<b>' + k.slice(1) + pick[k] + '</b>'; }).join(' · ') + ' · <b>9a</b>';
     var p = new URLSearchParams(location.search);
     Q.forEach(function (k) { p.set(k, pick[k]); });
     history.replaceState(null, '', '?' + p.toString() + location.hash);

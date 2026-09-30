@@ -77,9 +77,18 @@
     pa('new', 'root', [{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: 70, easing: 'cubic-bezier(0,0,.2,1)' });
   }
   function tabs(A, spring, relay) { for (var n = 1; n <= 5; n++) carry(A, 'pj-tab-' + n, spring[0], spring[1], relay * (n - 1)); }
+  // the card in play (r3-board.js, .r3-card): its own group above the tabs, so a tab under the card at rest is under it
+  // in every frame; it holds still and crosses with the page it belongs to, on the paper swap's own timing
+  function card(A, part) {
+    var name = 'pj-board-card';
+    if (!A['::view-transition-group(' + name + ')']) return;
+    kill(A, name, ['old', 'new']);
+    if (part === 'old') pa('old', name, [{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: 'cubic-bezier(.4,0,1,1)' });
+    else pa('new', name, [{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: 70, easing: 'cubic-bezier(0,0,.2,1)' });
+  }
   var MOVES = {
-    in: function (A) { paperSwap(A); tabs(A, [170, 20], 26); },
-    out: function (A) { paperSwap(A); tabs(A, [190, 22], 18); },
+    in: function (A) { paperSwap(A); card(A, 'old'); tabs(A, [170, 20], 26); },
+    out: function (A) { paperSwap(A); card(A, 'new'); tabs(A, [190, 22], 18); },
     chapter: function (A, rec) {
       var later = HERE.n > rec.from.n, y = ruleY(), slot = 'inset(' + f2(y) + 'px 0 0 0)', W = innerWidth;
       kill(A, 'root', ['old', 'new']);

@@ -4,7 +4,7 @@ Last updated 2026-09-29. Read this first after a context compaction or in a new 
 
 ## 1. Status in one paragraph
 
-Round 1 (`README.md`, the board index at `index.html`) audited the Building board's preview and the Fred Agent and NJJoe sub-sites, then built three complete candidates from board to project: A the back of the card, B go in close, C the dossier. On 2026-09-29 Fred picked **C 档案, the dossier**, and answered the WIP question: no WIP anywhere on the live site (#20 has since removed the treatment). Round 2 drew Demos in C with three focus treatments. An adversarial review of the port plan (`PLAN-REVIEW.md`) found 1 blocking, 11 significant and 6 minor problems; `PORT-PLAN.md` now answers each one and splits the port into seven PRs. Three of them (1a, R, E) can start now; the rest wait on the nine questions in §4. Nothing is ported yet. The branch `design/building` is rebased onto `cca4134`, where #20, #21 and #22 have merged.
+Round 1 (`README.md`, the board index at `index.html`) audited the Building board's preview and the Fred Agent and NJJoe sub-sites, then built three complete candidates from board to project: A the back of the card, B go in close, C the dossier. On 2026-09-29 Fred picked **C 档案, the dossier**, and answered the WIP question: no WIP anywhere on the live site (#20 has since removed the treatment). Round 2 drew Demos in C with three focus treatments. An adversarial review of the port plan (`PLAN-REVIEW.md`) found 1 blocking, 11 significant and 6 minor problems; `PORT-PLAN.md` now answers each one and splits the port into eight PRs. Fred answered all nine questions after trying them live on the round-3 board (§4); only Q3's amended Demos board waits for his final look. Nothing is ported yet. The branch `design/building` is rebased onto `cca4134`, where #20, #21 and #22 have merged.
 
 ## 2. How to look
 
@@ -48,55 +48,45 @@ Fred, 2026-09-29: "There shouldn't be any WIP sticker in the live website, if th
 - `1e157d1`: Fred Agent is `2025—now` everywhere, the card included. The dossier data and the mocks' text agree; the round-1 screenshots predate the fix.
 - `583969b`: the overview's "Watch it operate" card reads "Five outcome-first scenarios, each with the evidence behind it." The port carries this sentence, not the promise of placeholders that `02-overview.html` still shows.
 
-## 4. Awaiting Fred
+## 4. The port's questions: answered 2026-09-29
 
-Every question has a recommendation, so "all recommended" is a complete answer; otherwise answer by number and letter ("2a, 3c, 4b…"). 1a, R and E (`PORT-PLAN.md` §1) wait on none of these. Every option of Q2–Q8 can be tried live on `r3-decisions.html` (§2).
+Fred tried every option on `r3-decisions.html` and answered all nine. `PORT-PLAN.md` carries each answer; the one thing still to see is the round-3 Demos board (Q3).
 
-1. **A click on a card. Answered 2026-09-29: (a).** A click unpins the card, it comes to your hand, and the dossier slides out with its chapter tabs: C as picked. 1b is unblocked, and `PORT-PLAN.md` §5's "If a click goes straight in" no longer applies.
-2. **Coming back to the board.** (a) The board brings the card you came back from into view, pinned in its place. *Recommended: it's worked out from the page you left, so nothing new is remembered.* (b) The board exactly where you left it, remembered for the session.
-   Blocks only PR 3, which builds (a) unless you say (b).
-3. **Demos' evidence viewers** (`r2-02-demos-board.html`). (a) F1, the pen's loop on the region. (b) F2, tracing paper with windows cut out. (c) F3, an enlargement pulled out from under the capture. *Recommended: F3, the only one that makes a capture readable on a phone.* The magnifiers go, so two captions change. Approve them as written or edit them here:
-   - Fig. 02: "The numbers on the capture are the notes below it. Choose one to look closer; Esc puts it back."
-   - Fig. 04: "The numbers mark the auto-investigation rule and the task → error → fixed loop; the second report shows the same recovery pattern again."
+1. **A click on a card: (a).** It unpins, the card comes to your hand, and the dossier slides out with its chapter tabs: C as picked. 1b builds it.
+2. **Coming back to the board: (a).** The board brings the card you came back from into view, worked out from the page you left, with no storage. Fred found one bug in the mock: the returning tabs were drawn over the card for the whole move, then snapped under it as it ended ("the order of layer should be correct at the first place"). Fixed in round 3: the card in play is its own view-transition group above the tabs, so whatever sits under the card at rest is under it in every frame. `r3-layers.mjs` checks it pose by pose, and PR 3 carries the rule and the check.
+3. **Demos: (c) F3, amended.** The enlargement is overlaid on the capture itself, in its frame, instead of sliding out below it, with ← → stepping through the regions and much bigger, unmissable markers. Agent demos-r3 is drawing it as `r3-demos*` on `design/demos-r3`, to be cherry-picked here. **Awaiting Fred's final look at that board.** The two draft captions (Fig. 02, Fig. 04) are settled with it.
+4. **Components and the margin rail: (b).** "Let it be consistent": Components gets the rail, five landmarks, one per component, like Principles.
+5. **The board's typeface: (b).** Fraunces first on the board. It becomes its own small PR, T, after the self-hosted fonts land, so the Fraunces subset can be preloaded; LCP no worse.
+6. **The current chapter tab: (b).** Kraft with the wheat band, as the boards drew it, chosen with the 1.11:1 number in view. The concept stays; the band's own darker wheat edge carries the state on kraft (3.56:1, `PORT-PLAN.md` §7).
+7. **Tabs on a phone: (a).** Every tab shows: numbers only, the current one named, the reading counter on the line below. The phone board's cards narrow so the peeking tabs sit inside the cork.
+8. **The card's direct link: (a).** The tabs peeking behind the card fly to the page's fore-edge, and they start under the card (Q2's layering rule).
+9. **The email demo's images: (a).** "Keep everything into our own and with no NJJoe dependency": `buyer.html`'s four images become copies in the repo, archived and derived like the evidence. The evidence-ladder PR (E, `building/evidence-ladder`) takes them on.
 
-   They're written for F3; with F1 or F2, "look closer" changes. Blocks PR 2's Demos page; everything else goes ahead.
-4. **Components and the margin rail.** (a) No rail: its "Component index" stays the page's index, typed as a contents list. *Recommended: your brief for Fred Agent was "restyle, keep structure", and the boards showed the rail only on Principles.* (b) The index becomes the margin rail, with five landmarks.
-   Blocks PR 2's Components page only.
-5. **The board's typeface.** (a) No change: the cards' English stays in Noto Serif SC's Latin letters, as today. *Recommended: the content is plain ASCII, so the full-width punctuation the audit found can't show, and a switch would restyle every card and risk a slower first paint.* (b) Fraunces first, as its own small PR, with before/after shots and a speed run.
-   Blocks nothing.
-6. **The current chapter tab.** (a) Paper, pulled out and banded in wheat, while the other tabs stay kraft. *Recommended: the wheat band on kraft measures 1.11:1, too faint to see.* (b) Kraft with the wheat band, as the boards drew it.
-   Blocks PR 2's fore-edge tabs.
-7. **Tabs on a phone.** (a) Every tab shows: numbers only, the current tab with its name, and the reading counter ("05 / 11") on the line under the tabs. *Recommended: in the mock at 390, tabs 04–05 were cut off and the counter sat on tab 03.* (b) Names on every tab, in a strip that scrolls sideways with some tabs off-screen.
-   Either way, the phone board's cards narrow by 22 px so the peeking tabs sit inside the cork, not clipped to slivers. Blocks PR 2's phone strip only.
-8. **The card's direct link** ("Enter the field notes →", "Open field studies →"). (a) The tabs peeking behind the card fly to the page's fore-edge, as a dossier tab's do. *Recommended: it's the way back run forward, so nothing new to build, though the boards never showed it.* (b) No flight: a plain cut into the page.
-   Blocks PR 3 only.
-9. **The email demo's images.** `building/njjoe/email-demo/buyer.html` loads four images (1.29 MB) from Joe's server, `apa.njjoegroup.com`. (a) Copy them into the repo as derived images, so the evidence can't change or break when his site does. *Recommended, if Joe is fine with copies in your public repo.* (b) Keep loading them from his server, and exempt that one host from the checks.
-   Blocks PR 4 only.
-
-Decided for you, unless you object: Building becomes a static page, so a card can fly back into its slot; NJJoe's chapters number 00–02, after its "Case 01 / Case 02"; the unmocked pages (Components, the microsite, APA) are designed in C's language and shown as before/after screenshots in their PRs; the fixes in §5.
+Decided for Fred and not objected to: Building becomes a static page; NJJoe's chapters number 00–02; the unmocked pages are designed in C's language and shown as before/after screenshots in their PRs; the fixes in §5.
 
 ## 5. What the boards got wrong (fixed in the port)
 
-- **Kraft inks.** The tabs' `#6E5A3A` reads 3.80:1 on kraft, under 4.5; tab text is `--ink` (7.57:1). The pen's coral multiplied by kraft reads 2.86:1, under 3; on kraft the pen is `--mark-deep` (3.45:1). The wheat band on kraft reads 1.11:1, hence Q6.
+- **Kraft inks.** The tabs' `#6E5A3A` reads 3.80:1 on kraft, under 4.5; tab text is `--ink` (7.57:1). The pen's coral multiplied by kraft reads 2.86:1, under 3; on kraft the pen is `--mark-deep` (3.45:1). The wheat band on kraft reads 1.11:1; Fred kept it (Q6), so its darker wheat edge carries the state on kraft.
 - **Phones.** The dossier's tabs read as buttons; they sit on its top edge as tabs. The project strip cut tabs off and put the counter on a tab (Q7). The peeking tabs were clipped by the cork at 390, and the way back ended by popping from five tabs to slivers; the cards narrow so they fit.
 - **The way back returned the board to its start.** `fy-vt` lasts one hop, so the mock's board lost its position and tucked tabs behind an off-screen card; the port brings the card into view (Q2).
+- **The way back drew the tabs over the card**, then snapped them under it at the end, because every named group paints above the page's snapshot; the card in play is its own group above the tabs (Q2, round 3).
 - The paperclip on the card is CSS borders; it is drawn as one pen line.
 - On short phones, the hand's layer has to scroll for the dossier to fit.
 - The boards load the shared runtime through `00-live.css` and `00-live.js`; production pages load it directly, in the documented head order.
-- The type stack's Noto-before-Fraunces order is kept for now (Q5).
+- The type stack puts Noto Serif SC before Fraunces; Fraunces goes first in PR T (Q5).
 
 ## 6. Files
 
 - `README.md`: the audit, all three candidates, their records and costs, and the round-1 question.
-- `PORT-PLAN.md`: C's port as seven PRs, with the review's findings answered in §11.
+- `PORT-PLAN.md`: C's port as eight PRs, Fred's answers carried in, and the review's findings answered in §12.
 - `PLAN-REVIEW.md`: the adversarial review of the first plan.
 - `index.html`, `01-*`–`05-*`: the boards (C's code is `01-dossier.js`, `02-c.css`, and the `c` branches of `00-vt.js`, `01-board.*`, `04-map.*`).
 - `shots/`: the audit (`now-*`) and every candidate's frames (`c-*` for the pick).
 - Round 2: `r2-02-demos-board.html` (the board and the question), `r2-02-demos.html` with `r2-02-demos.css`, `r2-02-demos.js` and `r2-kit.js` (`?f=1|2|3`), and `shots/r2-*`.
-- Round 3: `r3-decisions.html` with `r3-decisions.js` (the switches); `r3-kit.js` (the picks, in sessionStorage `fy-r3`), `r3-vt.js` (C's moves and Q8's cut), `r3-board.js` (Q2's two returns, Q8's naming), `r3.css` (the kraft inks, the phone peek, Q5–Q7), `r3-components.*` (the Components mock and Q4); the r3 pages are copies of round 1's markup with those loaded.
+- Round 3: `r3-decisions.html` with `r3-decisions.js` (the switches); `r3-kit.js` (the picks, in sessionStorage `fy-r3`), `r3-vt.js` (C's moves and Q8's cut), `r3-board.js` (Q2's two returns, Q8's naming), `r3.css` (the kraft inks, the phone peek, Q5–Q7), `r3-components.*` (the Components mock and Q4), `r3-layers.mjs` (the layering check for the moves); the r3 pages are copies of round 1's markup with those loaded.
 
 ## 7. Next actions
 
-1. Fred tries `r3-decisions.html`, then answers §4 in one message.
-2. Without waiting: 1a (Building static), R (the rail extracted) and E (the evidence ladder), in parallel.
-3. Then, as `PORT-PLAN.md` §1 orders them: 1b after Q1; PR 2 after Q3, Q4, Q6, Q7, the identity port and the fonts branch; PR 3; PR 4 after Q9.
+1. Fred looks at the round-3 Demos board (`r3-demos*`, from `design/demos-r3`) and confirms it, with the Fig. 02 and Fig. 04 captions.
+2. Without waiting: 1a (Building static), R (the rail extracted), E (the evidence ladder, in progress, now with `buyer.html`'s images) and 1b (the dossier).
+3. Then, as `PORT-PLAN.md` §1 orders them: 1b; T after the fonts branch; PR 2 after the identity port, the fonts branch and the Demos board; PR 3; PR 4.

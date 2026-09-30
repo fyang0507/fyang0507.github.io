@@ -6,7 +6,8 @@
 (function () {
   'use strict';
   var html = document.documentElement, q = new URLSearchParams(location.search);
-  var DEF = { q2: 'a', q4: 'a', q5: 'a', q6: 'a', q7: 'a', q8: 'a' }, OK = { a: 1, b: 1 }, S = {};
+  // the defaults are Fred's answers (2026-09-29)
+  var DEF = { q2: 'a', q4: 'b', q5: 'b', q6: 'b', q7: 'a', q8: 'a' }, OK = { a: 1, b: 1 }, S = {};
   try { S = JSON.parse(sessionStorage.getItem('fy-r3')) || {}; } catch (e) { S = {}; }
   Object.keys(DEF).forEach(function (k) { var v = (q.get(k) || '').toLowerCase(); if (OK[v]) S[k] = v; if (!OK[S[k]]) S[k] = DEF[k]; html.setAttribute('data-' + k, S[k]); });
   try { sessionStorage.setItem('fy-r3', JSON.stringify(S)); } catch (e) { /* storage off */ }
