@@ -46,7 +46,7 @@ window.BUILDING_PROJECTS = Object.freeze([
     chapters: [
       { n: "00", tab: "overview", title: "The problem lived between the tools.", line: "with Joe Costello · May 2026—now", href: "./building/njjoe/" },
       { n: "01", tab: "listing microsite", title: "One house, four interfaces.", line: "shipped · one listing microsite live · June 2026", href: "./building/njjoe/microsite.html" },
-      { n: "02", tab: "apa campaign", title: "The campaign Joe could not run by calling harder.", line: "active pilot · 248 drafts verified · Sep 5, 2026", href: "./building/njjoe/apa.html" }
+      { n: "02", tab: "APA campaign", title: "The campaign Joe could not run by calling harder.", line: "active pilot · 248 drafts verified · Sep 5, 2026", href: "./building/njjoe/apa.html" }
     ],
     figure: { caption: "the common pattern", steps: ["fragmented systems", "agent assembles", "human judgment", "one experience"] },
     status: ["one live workflow + one active pilot", "May 2026—now"],

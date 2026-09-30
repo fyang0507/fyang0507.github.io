@@ -62,7 +62,8 @@ function measure([MIN, RATIO, scope]) {
 
 export default async (page, ctx) => {
   const base = process.env.PEN_BASE || 'http://127.0.0.1:4173/';
-  const chapters = ['index', 'system', 'principles', 'components', 'demos'].map((c) => 'building/fred-agent/' + c + '.html').join(',');
+  const chapters = ['index', 'system', 'principles', 'components', 'demos'].map((c) => 'building/fred-agent/' + c + '.html')
+    .concat(['index', 'microsite', 'apa'].map((c) => 'building/njjoe/' + c + '.html')).join(',');
   const pages = (process.env.PEN_PAGES || 'scripts/verify/pen-harness.html,index.html,Writing.dc.html,Building.dc.html,Gallery.dc.html,About.dc.html,Reading.dc.html,' + chapters).split(',');
   const widths = (process.env.PEN_W || '1440,390').split(',').map(Number);
   let total = 0, bad = 0;

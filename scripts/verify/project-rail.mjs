@@ -1,7 +1,8 @@
 // project-rail.mjs — Reading's pencil margin on the long chapters (Principles, Components), and every section link on
-// every chapter opened fresh (design/2026-09-building, PORT-PLAN §7, PR 2, R9).
+// every chapter of both sub-sites opened fresh (design/2026-09-building, PORT-PLAN §7 and §9, PRs 2 and 4, R9).
 //   node /tmp/fyshot/run.mjs scripts/verify/project-rail.mjs
-//   env: BASE (default http://127.0.0.1:4173/) · RAIL_W (1440,390) · FRAG=0 skips the fresh section links
+//   env: BASE (default http://127.0.0.1:4173/) · RAIL_W (1440,390) · RAIL=0 skips the rail · FRAG=0 skips the fresh
+//        section links · FRAG_PAGES (comma list, default Fred Agent's five and NJJoe's three)
 //        SHOTS (screenshot prefix, default /tmp/fyshot/pjrail)
 // The rail (reading-rail.mjs's criteria), at 1440 in the margin and at 390 on the strip:
 //   · every landmark (section.fa-pr[id]) has a tick on the rail and on the strip, and a label linking to it;
@@ -12,13 +13,16 @@
 //     its section stands in the column, and the ink ending between the current landmark's tick and the next one's,
 //     mid-page, after the window resizes (a phone's URL bar) and on a section link opened fresh.
 // Fresh section links: on a cold cache (a new context per link) and vt-lcp's Fast 4G, every section, article and
-// heading id on every chapter, Demos' #trash-patrol and #unattended-recovery among them, lands between the bottom of
+// heading id on every chapter, Demos' #trash-patrol and #unattended-recovery and the NJJoe microsite's and APA
+// campaign's sections (under the archive capture and the email demo) among them, lands between the bottom of
 // whatever sticks at the top (the strip on phones, nothing on desktop) and 40 px below it, or, near the page's end,
 // with the page scrolled to its end; so does the skip link, from the keyboard. 0 console or page errors throughout.
 // Exit code 1 on any failure.
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
 const DIR = 'building/fred-agent/';
-const RAIL = ['principles', 'components'], ALL = ['index', 'system', 'principles', 'components', 'demos'];
+const RAIL = ['principles', 'components'];
+const ALL = (process.env.FRAG_PAGES || ['index', 'system', 'principles', 'components', 'demos'].map((p) => DIR + p + '.html')
+  .concat(['index', 'microsite', 'apa'].map((p) => 'building/njjoe/' + p + '.html')).join(',')).split(',');
 const WIDTHS = (process.env.RAIL_W || '1440,390').split(',').map(Number);
 const res = [];
 const check = (name, ok, detail) => { res.push({ name, ok: !!ok }); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail !== undefined ? '  · ' + (typeof detail === 'string' ? detail : JSON.stringify(detail)) : '')); };
@@ -146,9 +150,9 @@ async function rail(browser, w, name) {
 async function fragments(browser, w) {
   const bad = [], errs = [];
   let n = 0;
-  for (const name of ALL) {
-    const probe = await context(browser, w);
-    await probe.page.goto(BASE + DIR + name + '.html', { waitUntil: 'load' });
+  for (const path of ALL) {
+    const probe = await context(browser, w), name = path.split('/').slice(-2).join('/');
+    await probe.page.goto(BASE + path, { waitUntil: 'load' });
     const ids = await probe.page.evaluate(() => ['main-content', ...[...document.querySelectorAll('.pj-sheet :is(section, article, h1, h2)[id]')].map((e) => e.id)]);
     // the skip link, from the keyboard: the sheet lands under the strip too
     await probe.page.keyboard.press('Tab'); await probe.page.keyboard.press('Enter'); await sleep(600);
@@ -157,7 +161,7 @@ async function fragments(browser, w) {
     await probe.ctx.close();
     for (const id of ids) {
       const { ctx, page, errors } = await context(browser, w, { throttle: true });
-      await page.goto(BASE + DIR + name + '.html#' + id, { waitUntil: 'load', timeout: 60000 });
+      await page.goto(BASE + path + '#' + id, { waitUntil: 'load', timeout: 60000 });
       await sleep(2500);   // fonts and the images above the section come in; nothing above it may move it
       const at = await page.evaluate((id) => {
         const t = document.getElementById(id).getBoundingClientRect(), tabs = document.querySelector('.pj-tabs'), strip = getComputedStyle(tabs).flexDirection === 'row';
@@ -170,14 +174,14 @@ async function fragments(browser, w) {
       await ctx.close();
     }
   }
-  check(w + ': every section link opened fresh lands under the strip, within 40 px (' + n + ' links)', bad.length === 0 && n > 40, bad.slice(0, 6));
+  check(w + ': every section link opened fresh lands under the strip, within 40 px (' + n + ' links)', bad.length === 0 && n > (process.env.FRAG_PAGES ? 0 : 40), bad.slice(0, 6));
   check(w + ': fresh section links: 0 console or page errors', errs.length === 0, errs.slice(0, 3));
 }
 
 export default async (page) => {
   const browser = page.context().browser();
   for (const w of WIDTHS) {
-    for (const name of RAIL) await rail(browser, w, name);
+    if (process.env.RAIL !== '0') for (const name of RAIL) await rail(browser, w, name);
     if (process.env.FRAG !== '0') await fragments(browser, w);
   }
   const failed = res.filter((r) => !r.ok);

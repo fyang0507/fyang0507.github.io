@@ -66,7 +66,7 @@
    28 px below it. A page with the reading rail carries an empty .pj-count in its tabs, the rail's phone strip and
    counter (project-rail.js), so the strip has its height at first paint. */
 .pj{--pj-pad:clamp(26px,4vw,60px);--pj-stick:0px;padding:0 4vw 60px}
-.pj-frame{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"sheet tabs";width:min(1180px,100%);margin:0 auto;padding-top:30px}
+.pj-frame{position:relative;display:grid;grid-template-columns:minmax(0,1fr) var(--pj-tabs-w,150px);grid-template-areas:"sheet tabs";width:min(1180px,100%);margin:0 auto;padding-top:30px}
 .pj-sheet{grid-area:sheet;position:relative;min-width:0;background:var(--paper);border:1px solid var(--line-strong);border-right-width:1.5px}
 .pj-sheet::before{content:"";position:absolute;left:-1px;right:-1.5px;top:-10px;height:9px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:6px 26px 0 0;background:var(--kraft);clip-path:polygon(0 0,34% 0,37% 100%,0 100%)}
 .pj-sheet,.pj-sheet [id]{scroll-margin-top:calc(var(--pj-stick) + 28px)}   /* the sheet itself: the skip link's landing */
@@ -82,12 +82,13 @@
 .pj-meta span:first-child{border-color:var(--ink);color:var(--ink);transform:rotate(-1.2deg)}
 /* the card's box, held before it arrives: the lead card at its board size (700 × 470) × 0.3, clipped on at a tilt */
 .pj-cover{position:relative;grid-column:2;grid-row:1;align-self:start;width:210px;height:141px;margin:-6px 6px 0 0;transform:rotate(2.4deg)}
+.pj-cover.pj-cover--featured{width:117px;height:108px}   /* the featured card (390 × 360) × 0.3, at every width */
 /* the card is laid out in a board-wide container (its sizes are the board's cqw), scaled; the frame clips that
    container 20 px round the card, so its empty width never widens the page */
 .pj-cover-frame{position:absolute;inset:-20px;overflow:hidden;pointer-events:none}
 .pj-cover-board{position:absolute;left:20px;top:20px;width:1180px;container-type:inline-size;transform-origin:0 0}
 .pj-cover-board .slot{margin-top:0}
-.pj-cover-clip{position:absolute;z-index:3;left:24%;top:-13px;width:16px;height:38px;overflow:visible;pointer-events:none}
+.pj-clip{position:absolute;z-index:3;left:24%;top:-13px;width:16px;height:38px;overflow:visible;pointer-events:none}
 /* the fore-edge: the tabs off the sheet's right edge; the current one pulled out further and banded (pen.css) */
 .pj-tabs{grid-area:tabs;position:sticky;top:26px;z-index:2;align-self:start;display:flex;flex-direction:column;gap:7px;margin-top:58px}
 .pj-tabs .dos-tab{margin-left:-1px;padding:0 12px 0 14px;font-size:11.5px;transition:transform .38s var(--ease-settle)}
@@ -96,6 +97,7 @@
 .pj-tabs .dos-tab[aria-current="page"]:hover{transform:translateX(10px)}
 .pj-count{display:none}
 .pj-back{grid-area:tabs;align-self:end;justify-self:start;margin:0 0 30px 16px;color:var(--soft);font:10.5px/1.4 var(--util);letter-spacing:.02em}
+.pj-back [lang="zh"]{white-space:nowrap}   /* 回到板上 breaks as a whole */
 .skip-link{position:fixed;z-index:500;left:14px;top:12px;padding:9px 13px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:11px/1 var(--util);transform:translateY(-160%)}
 .skip-link:focus{transform:none}
 

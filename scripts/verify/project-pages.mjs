@@ -1,10 +1,14 @@
-// project-pages.mjs — the Building sub-sites' chapters as the open dossier (design/2026-09-building, PORT-PLAN §7, PR 2).
+// project-pages.mjs — the Building sub-sites' chapters as the open dossier (design/2026-09-building, PORT-PLAN §7 and
+// §9, PRs 2 and 4).
 //   node /tmp/fyshot/run.mjs scripts/verify/project-pages.mjs
-//   env: BASE (default http://127.0.0.1:4173/) · PJ_PAGES (comma list, default Fred Agent's five) · PJ_W (1440,390,360)
-//        SHOTS (screenshot prefix, default /tmp/fyshot/pj)
+//   env: BASE (default http://127.0.0.1:4173/) · PJ_PAGES (comma list, default Fred Agent's five and NJJoe's three)
+//        PJ_W (1440,390,360) · SHOTS (screenshot prefix, default /tmp/fyshot/pj)
 // Every chapter at 1440×900, 390×844 and 360×800:
 //   · 0 console or page errors and every request 200; nothing from Google Fonts, no font master (fonts/*.woff2 outside
 //     fonts/derived/), no Noto Serif SC text tier, no <base>, nothing from design/;
+//   · every request, the email demo's frame included, stays on the site's own origin: nothing from apa.njjoegroup.com
+//     or any other host;
+//   · no WIP anywhere in the page (text, attributes, classes): only finished sections ship;
 //   · the static header is Building.dc.html's, part for part and link for link, bar its status line;
 //   · no text gradient, no backdrop-filter, and no CSS animation running once it has loaded (no entrance);
 //   · contrast: every visible text ≥ 4.5:1 against its composited background; the pen's hover line and 「 」 ≥ 3:1
@@ -21,7 +25,8 @@
 // Exit code 1 on any failure.
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
 const SHOTS = process.env.SHOTS || '/tmp/fyshot/pj';
-const PAGES = (process.env.PJ_PAGES || ['index', 'system', 'principles', 'components', 'demos'].map((p) => 'building/fred-agent/' + p + '.html').join(',')).split(',');
+const PAGES = (process.env.PJ_PAGES || ['index', 'system', 'principles', 'components', 'demos'].map((p) => 'building/fred-agent/' + p + '.html')
+  .concat(['index', 'microsite', 'apa'].map((p) => 'building/njjoe/' + p + '.html')).join(',')).split(',');
 const SIZES = [[1440, 900], [390, 844], [360, 800]].filter(([w]) => (process.env.PJ_W || '1440,390,360').split(',').map(Number).includes(w));
 const CORAL = ['rgb(217, 105, 90)', 'rgb(165, 69, 58)', 'rgb(203, 94, 73)', 'rgb(200, 94, 71)'];
 const res = [];
@@ -64,6 +69,9 @@ async function open(browser, path, w, h) {
   await page.goto(BASE + path, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(1800);   // the card is clipped on after first paint, the rail arrives, the band settles
+  // down the page and back, so every lazy image and the email demo's frame have loaded (and made their requests)
+  for (let y = 0, H = await page.evaluate(() => document.documentElement.scrollHeight); y < H; y += h) { await page.evaluate((y) => scrollTo(0, y), y); await page.waitForTimeout(150); }
+  await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(900);
   await page.evaluate(LIB);
   return { context, page, bad, reqs };
 }
@@ -203,6 +211,10 @@ export default async (page) => {
       const f = await facts(p), hp = await headerParts(p);
       const off = reqs.filter((u) => /fonts\.googleapis\.com|fonts\.gstatic\.com|\/fonts\/[^/]+\.woff2|NotoSerifSC-text|\/design\//.test(u));
       check(tag + ': no <base>, nothing from Google Fonts, no font master, no text tier, nothing from design/', !f.base && off.length === 0, off.join(', ') || 'none');
+      const away = reqs.filter((u) => /^https?:/.test(u) && new URL(u).origin !== new URL(BASE).origin);
+      check(tag + ': every request on the site\'s own origin (nothing from apa.njjoegroup.com or elsewhere)', away.length === 0, away.slice(0, 4).join(', ') || 'none');
+      const wip = await p.evaluate(() => (document.documentElement.outerHTML.match(/.{0,30}(\bwip\b|work in progress|sticker-forge).{0,30}/gi) || []).slice(0, 3));
+      check(tag + ': no WIP in the page', wip.length === 0, wip.join(' … ') || 'none');
       check(tag + ': the static header is the gateway pages\' (bar its status line)', hp.length === gateway.length && hp.every((x, i) => x === gateway[i]), hp.length + ' parts vs ' + gateway.length + (hp.find((x, i) => x !== gateway[i]) ? ' · first difference: ' + hp.find((x, i) => x !== gateway[i]) : ''));
       check(tag + ': no text gradient, no backdrop-filter, no CSS animation once loaded', !f.gradients.length && !f.blur.length && !f.cssAnims.length, { gradients: f.gradients, blur: f.blur, anims: f.cssAnims });
       check(tag + ': every visible text ≥ 4.5:1 on its background (' + f.texts + ' texts)', f.lowN === 0, f.low);
