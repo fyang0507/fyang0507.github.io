@@ -197,7 +197,7 @@ After a change:
    - `home-*` for home, plus `flash-audit.py` and `home-diff.py`;
    - `writing-*`, `building-*`, `gallery-*`, `about-*` and `reading-*` for their pages.
    - `evidence.mjs` for the Building sub-sites' evidence images and their bytes;
-   - `project-*` for the sub-sites' chapters (Fred Agent's five, NJJoe's three): `project-pages.mjs` (the shell, contrast, the pen, the tabs, CLS and bytes, nothing off the site's origin, no WIP, and nothing out of its column at 1440, 390, 360 and a tablet's 768, 820, 1024 and 1180), `project-rail.mjs` (the rail and every section link opened fresh), `project-map.mjs` (System's map) and `project-webkit.mjs`.
+   - `project-*` for the sub-sites' chapters (Fred Agent's five, NJJoe's three): `project-pages.mjs` (the shell, contrast, the pen, the tabs, CLS and bytes, nothing off the site's origin, no WIP, and nothing out of its column at 1440, 390, 360 and a tablet's 768, 820, 1024 and 1180), `project-rail.mjs` (the rail and every section link opened fresh), `project-map.mjs` (System's map), `project-demos.mjs` (Demos' play control and evidence viewer at 1440, 1024, 820, 390 and 360) and `project-webkit.mjs`.
 
    Each script's header lists what it checks and its environment variables. They run in the isolated Chromium runner from `design/2026-09-motion/tools/shot-runner.mjs`:
 

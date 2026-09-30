@@ -206,8 +206,8 @@ async function keyboard(page) {
         const b = marks[0].getBoundingClientRect(), under = document.elementsFromPoint(b.left + 1, b.top + 1).find((e) => !(e instanceof SVGElement));
         pen = window.__ratio(window.__rgba(getComputedStyle(marks[0]).stroke), window.__bg(under || a));
       }
-      // the shared header's focus is site.js's; a mark over an evidence capture lands on a photograph, not a paper
-      return { key, link: a.matches('a[href], button') && !a.closest('#site-nav'), drawn, pen, photo: !!a.closest('.fa-evidence-stage') };
+      // the shared header's focus is site.js's; a mark over a print (Demos' play control) lands on a photograph, not a paper
+      return { key, link: a.matches('a[href], button') && !a.closest('#site-nav'), drawn, pen, photo: !!a.closest('.print') };
     });
     if (!s || seen.has(s.key)) break;
     seen.add(s.key); stops.push(s);
