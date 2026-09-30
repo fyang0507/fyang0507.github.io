@@ -94,6 +94,14 @@ export async function webkit() {
   const pw = await import(req.resolve('playwright-core'));
   return (pw.webkit || pw.default.webkit).launch({ headless: true });
 }
+// The runner's Chromium with the back/forward cache on: Playwright launches it with --disable-back-forward-cache, and a
+// Back on a phone usually restores the page from that cache
+export async function bfcache() {
+  const req = createRequire(process.argv[1]);
+  const pw = await import(req.resolve('playwright-core'));
+  const exe = process.env.HOME + '/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+  return (pw.chromium || pw.default.chromium).launch({ executablePath: exe, headless: true, ignoreDefaultArgs: ['--disable-back-forward-cache'] });
+}
 
 export function check(results, name, ok, detail) {
   results.push({ name, ok: !!ok, detail });
