@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parents[1]
 THUMB_QUALITY = 82
 DISPLAY_QUALITY = 74
 COVER_QUALITY = 78
-# Evidence captures carry small UI text; the loupes' zoom copy gets more headroom.
+# Evidence captures carry small UI text; the Demos enlargement's zoom copy gets more headroom.
 EVIDENCE_QUALITY = 86
 ZOOM_QUALITY = 90
 
