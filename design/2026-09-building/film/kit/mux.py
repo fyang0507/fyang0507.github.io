@@ -7,7 +7,8 @@ import sys
 
 FF = '/opt/homebrew/bin/ffmpeg'
 pic, wav, out = sys.argv[1:4]
-I, TP, LRA = -16, -3.2, 11   # -3.2 in the mix leaves room for the AAC encoder's overshoot, so the file lands under -1.5 dBTP
+import os
+I, TP, LRA = -16, float(os.environ.get('TP', -3.2)), 11   # -3.2 in the mix leaves room for the AAC encoder's overshoot, so the file lands under -1.5 dBTP
 
 p = subprocess.run([FF, '-hide_banner', '-nostats', '-i', wav, '-af', f'loudnorm=I={I}:TP={TP}:LRA={LRA}:print_format=json', '-f', 'null', '-'],
                    capture_output=True, text=True)

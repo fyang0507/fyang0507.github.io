@@ -21,12 +21,12 @@ def lum(f):
     return np.asarray(im, dtype=np.float32)
 
 prev = None; diffs = []
-for f, t, fps in fr:
+for f, t, fps, *_ in fr:
     a = lum(f)
     diffs.append(0.0 if prev is None else float(np.mean(np.abs(a - prev))))
     prev = a
 diffs = np.array(diffs)
-ts = np.array([t for _, t, _ in fr])
+ts = np.array([f[1] for f in fr])
 print('frames', len(fr), 'mean diff', round(float(diffs.mean()), 3))
 for a, b in wins:
     sel = (ts >= a) & (ts <= b)
@@ -37,7 +37,7 @@ sp = [round(float(ts[i]), 3) for i in range(2, len(diffs) - 2) if diffs[i] > 3 a
 print('spikes', sp[:20])
 if strip:
     a, b = float(strip[1]), float(strip[2])
-    sel = [f for f, t, _ in fr if a <= t <= b]
+    sel = [f[0] for f in fr if a <= f[1] <= b]
     ims = [Image.open(os.path.join(d, 'f', f)).convert('RGB').resize((320, 250)) for f in sel[:48]]
     cols = 8; rows = (len(ims) + cols - 1) // cols
     sh = Image.new('RGB', (320 * cols, 250 * rows), 'white')

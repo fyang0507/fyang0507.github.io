@@ -1,0 +1,916 @@
+{
+ "dur": 95.94000000000001,
+ "fps": 60,
+ "timeline": [
+  {
+   "k": "cover",
+   "name": "",
+   "t0": 0,
+   "t1": 1
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 1,
+   "t1": 4.3,
+   "u0": 0,
+   "u1": 3.3
+  },
+  {
+   "k": "lift",
+   "name": "seals",
+   "t0": 4.3,
+   "t1": 5.75,
+   "at": 3.3
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 5.75,
+   "t1": 9.75,
+   "u0": 3.3,
+   "u1": 7.3
+  },
+  {
+   "k": "lift",
+   "name": "flight",
+   "t0": 9.75,
+   "t1": 11.5,
+   "at": 7.3
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 11.5,
+   "t1": 12.6,
+   "u0": 7.3,
+   "u1": 8.4
+  },
+  {
+   "k": "replay",
+   "name": "",
+   "t0": 12.6,
+   "t1": 14.43,
+   "u0": 7.49,
+   "u1": 8.1
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 14.43,
+   "t1": 19.23,
+   "u0": 8.4,
+   "u1": 13.2
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 19.23,
+   "t1": 28.98,
+   "u0": 13.2,
+   "u1": 22.95
+  },
+  {
+   "k": "lift",
+   "name": "building",
+   "t0": 28.98,
+   "t1": 30.58,
+   "at": 22.95
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 30.58,
+   "t1": 36.18,
+   "u0": 22.95,
+   "u1": 28.55
+  },
+  {
+   "k": "lift",
+   "name": "card",
+   "t0": 36.18,
+   "t1": 37.78,
+   "at": 28.55
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 37.78,
+   "t1": 41.33,
+   "u0": 28.55,
+   "u1": 32.1
+  },
+  {
+   "k": "replay",
+   "name": "",
+   "t0": 41.33,
+   "t1": 42.56,
+   "u0": 31.54,
+   "u1": 31.95
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 42.56,
+   "t1": 56.31,
+   "u0": 32.1,
+   "u1": 45.85
+  },
+  {
+   "k": "lift",
+   "name": "back",
+   "t0": 56.31,
+   "t1": 57.91,
+   "at": 45.85
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 57.91,
+   "t1": 66.71,
+   "u0": 45.85,
+   "u1": 54.65
+  },
+  {
+   "k": "lift",
+   "name": "print",
+   "t0": 66.71,
+   "t1": 68.31,
+   "at": 54.65
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 68.31,
+   "t1": 80.91,
+   "u0": 54.65,
+   "u1": 67.25
+  },
+  {
+   "k": "lift",
+   "name": "home",
+   "t0": 80.91,
+   "t1": 82.51,
+   "at": 67.25
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 82.51,
+   "t1": 83.81,
+   "u0": 67.25,
+   "u1": 68.55
+  },
+  {
+   "k": "replay",
+   "name": "",
+   "t0": 83.81,
+   "t1": 86.69,
+   "u0": 67.44,
+   "u1": 68.4
+  },
+  {
+   "k": "play",
+   "name": "",
+   "t0": 86.69,
+   "t1": 88.14,
+   "u0": 68.55,
+   "u1": 70
+  },
+  {
+   "k": "end",
+   "name": "",
+   "t0": 88.14,
+   "t1": 95.94
+  }
+ ],
+ "cues": [
+  {
+   "t": 0.45,
+   "type": "cover-open"
+  },
+  {
+   "t": 1,
+   "type": "site",
+   "kind": "nav",
+   "name": "home",
+   "what": "a fresh session opens home",
+   "u": 0
+  },
+  {
+   "t": 1.3,
+   "type": "chapter",
+   "name": "home",
+   "dur": 0.75
+  },
+  {
+   "t": 4.299999999999992,
+   "type": "site",
+   "kind": "event",
+   "name": "op-done",
+   "what": "the OP ends: the motto is written, then the seals stamped",
+   "u": 3.2999999999999923
+  },
+  {
+   "t": 4.3,
+   "type": "lift",
+   "name": "seals"
+  },
+  {
+   "t": 5.33,
+   "type": "drop",
+   "name": "seals"
+  },
+  {
+   "t": 9.75,
+   "type": "lift",
+   "name": "flight"
+  },
+  {
+   "t": 10,
+   "type": "before",
+   "kind": "click",
+   "name": "click-book"
+  },
+  {
+   "t": 11.08,
+   "type": "drop",
+   "name": "flight"
+  },
+  {
+   "t": 11.5,
+   "type": "site",
+   "kind": "click",
+   "name": "click-book",
+   "what": "the book: after, the desk becomes the nav; before, a hard cut",
+   "u": 7.3
+  },
+  {
+   "t": 12.25,
+   "type": "chapter",
+   "name": "writing",
+   "dur": 0.75
+  },
+  {
+   "t": 12.600000000000001,
+   "type": "replay",
+   "name": "desk",
+   "dur": 1.8299999999999983
+  },
+  {
+   "t": 16.13,
+   "type": "site",
+   "kind": "click",
+   "name": "switch-en",
+   "what": "中文 → EN: the spines retitle",
+   "u": 10.1
+  },
+  {
+   "t": 17.83,
+   "type": "site",
+   "kind": "hover",
+   "name": "pull-book",
+   "what": "the latest essay pulled toward you, its cover turned out under the obi",
+   "u": 11.8
+  },
+  {
+   "t": 19.03,
+   "type": "site",
+   "kind": "click",
+   "name": "open-book",
+   "what": "the book in your hand opens Reading (a same-tab cut on the site)",
+   "u": 13
+  },
+  {
+   "t": 19.279999999999998,
+   "type": "chapter",
+   "name": "reading",
+   "dur": 0.75
+  },
+  {
+   "t": 20.33,
+   "type": "site",
+   "kind": "scroll",
+   "name": "scroll-hero",
+   "what": "off the cover: the hero dissolves into halftone, the title flies into the header",
+   "u": 14.3
+  },
+  {
+   "t": 25.33,
+   "type": "site",
+   "kind": "hover",
+   "name": "footnote",
+   "what": "a footnote: the pen brackets the claim, loops the number, the slip is tugged over",
+   "u": 19.3
+  },
+  {
+   "t": 27.029999999999998,
+   "type": "site",
+   "kind": "scroll",
+   "name": "to-top",
+   "what": "back up to the head of the page",
+   "u": 21
+  },
+  {
+   "t": 28.979999999999997,
+   "type": "lift",
+   "name": "building"
+  },
+  {
+   "t": 29.229999999999997,
+   "type": "before",
+   "kind": "nav",
+   "name": "click-building"
+  },
+  {
+   "t": 30.159999999999997,
+   "type": "drop",
+   "name": "building"
+  },
+  {
+   "t": 30.58,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-building",
+   "what": "building: after, the tab move and the board arriving, the flower pressed; before, a hard cut",
+   "u": 22.95
+  },
+  {
+   "t": 31.13,
+   "type": "chapter",
+   "name": "building",
+   "dur": 0.75
+  },
+  {
+   "t": 33.129999999999995,
+   "type": "site",
+   "kind": "drag",
+   "name": "fling",
+   "what": "the board flung, and brought back: the cards swing on their pins",
+   "u": 25.5
+  },
+  {
+   "t": 36.18,
+   "type": "lift",
+   "name": "card"
+  },
+  {
+   "t": 36.43,
+   "type": "before",
+   "kind": "click",
+   "name": "take-card"
+  },
+  {
+   "t": 37.36,
+   "type": "drop",
+   "name": "card"
+  },
+  {
+   "t": 37.78,
+   "type": "site",
+   "kind": "click",
+   "name": "take-card",
+   "what": "after: the pin pops, the card comes to your hand, the dossier slides out; before: a hard cut into the old field notes",
+   "u": 28.55
+  },
+  {
+   "t": 40.58,
+   "type": "site",
+   "kind": "nav",
+   "name": "open-principles",
+   "what": "the tabs fly to the chapter's fore-edge (#35), the rail is drawn",
+   "u": 31.35
+  },
+  {
+   "t": 41.33,
+   "type": "replay",
+   "name": "tabs",
+   "dur": 1.2300000000000004
+  },
+  {
+   "t": 44.76,
+   "type": "site",
+   "kind": "scroll",
+   "name": "down-rail",
+   "what": "down the chapter: the graphite follows, the loop moves down the rail",
+   "u": 34.3
+  },
+  {
+   "t": 48.01,
+   "type": "site",
+   "kind": "nav",
+   "name": "open-demos",
+   "what": "05 demos: the chapter move, the sheet in front pulled aside",
+   "u": 37.55
+  },
+  {
+   "t": 50.96,
+   "type": "site",
+   "kind": "hover",
+   "name": "corners",
+   "what": "a region noticed: the pen marks its four corners in coral",
+   "u": 40.5
+  },
+  {
+   "t": 51.36,
+   "type": "site",
+   "kind": "click",
+   "name": "enlarge",
+   "what": "chosen: the enlargement grows out of the region's own place over the capture, its corners in coral",
+   "u": 40.9
+  },
+  {
+   "t": 52.660000000000004,
+   "type": "site",
+   "kind": "click",
+   "name": "step",
+   "what": "N →: the capture pans under the window to the next region, its note sliding in",
+   "u": 42.2
+  },
+  {
+   "t": 53.86,
+   "type": "site",
+   "kind": "click",
+   "name": "put-back",
+   "what": "put it back · 放回: the opening reversed, landing on the capture pixel for pixel",
+   "u": 43.4
+  },
+  {
+   "t": 54.56,
+   "type": "site",
+   "kind": "scroll",
+   "name": "to-top",
+   "what": "back up to the nav",
+   "u": 44.1
+  },
+  {
+   "t": 56.31,
+   "type": "lift",
+   "name": "back"
+  },
+  {
+   "t": 56.56,
+   "type": "before",
+   "kind": "nav",
+   "name": "way-back"
+  },
+  {
+   "t": 57.49,
+   "type": "drop",
+   "name": "back"
+  },
+  {
+   "t": 57.910000000000004,
+   "type": "site",
+   "kind": "nav",
+   "name": "way-back",
+   "what": "after: the way back, the card brought into view, the tabs tuck under it, the pin pressed in; before: a hard cut",
+   "u": 45.85
+  },
+  {
+   "t": 61.160000000000004,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-shooting",
+   "what": "shooting: the tab move; the prints develop on their lines",
+   "u": 49.1
+  },
+  {
+   "t": 61.660000000000004,
+   "type": "chapter",
+   "name": "shooting",
+   "dur": 0.75
+  },
+  {
+   "t": 64.46000000000001,
+   "type": "site",
+   "kind": "hover",
+   "name": "pass-line",
+   "what": "a fast pass along the first line: the prints swing",
+   "u": 52.4
+  },
+  {
+   "t": 66.71000000000001,
+   "type": "lift",
+   "name": "print"
+  },
+  {
+   "t": 66.96000000000001,
+   "type": "before",
+   "kind": "click",
+   "name": "open-print"
+  },
+  {
+   "t": 67.89,
+   "type": "drop",
+   "name": "print"
+  },
+  {
+   "t": 68.31,
+   "type": "site",
+   "kind": "click",
+   "name": "open-print",
+   "what": "after: unclipped into the viewer with its peg, the rope springs up; before: the dark lightbox",
+   "u": 54.65
+  },
+  {
+   "t": 71.06,
+   "type": "site",
+   "kind": "click",
+   "name": "close-print",
+   "what": "it flies home and clips back onto the rope",
+   "u": 57.4
+  },
+  {
+   "t": 73.26,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-about",
+   "what": "about: the tab move",
+   "u": 59.6
+  },
+  {
+   "t": 73.66,
+   "type": "chapter",
+   "name": "about",
+   "dur": 0.75
+  },
+  {
+   "t": 75.56,
+   "type": "site",
+   "kind": "drag",
+   "name": "pull-card",
+   "what": "the specimen card pulled out of its sleeve: stick, the lip catches, it pops free",
+   "u": 61.9
+  },
+  {
+   "t": 79.06,
+   "type": "site",
+   "kind": "hover",
+   "name": "tilt",
+   "what": "in the hand: a small tilt shows the card's thickness",
+   "u": 65.4
+  },
+  {
+   "t": 80.91,
+   "type": "lift",
+   "name": "home"
+  },
+  {
+   "t": 81.16,
+   "type": "before",
+   "kind": "nav",
+   "name": "click-home"
+  },
+  {
+   "t": 82.08999999999999,
+   "type": "drop",
+   "name": "home"
+  },
+  {
+   "t": 82.50999999999999,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-home",
+   "what": "home: after, the nav falls back into a desk; before, a hard cut",
+   "u": 67.25
+  },
+  {
+   "t": 83.16,
+   "type": "chapter",
+   "name": "home again",
+   "dur": 0.75
+  },
+  {
+   "t": 83.80999999999999,
+   "type": "replay",
+   "name": "home",
+   "dur": 2.880000000000024
+  },
+  {
+   "t": 88.14000000000001,
+   "type": "pull",
+   "dur": 1.4
+  },
+  {
+   "t": 89.69000000000001,
+   "type": "stroke",
+   "dur": 0.017096969497499736
+  },
+  {
+   "t": 89.7124415641681,
+   "type": "stroke",
+   "dur": 0.021353077161128775
+  },
+  {
+   "t": 89.73913923599983,
+   "type": "stroke",
+   "dur": 0.009197925290316935
+  },
+  {
+   "t": 89.75368175596074,
+   "type": "stroke",
+   "dur": 0.0035102148415565894
+  },
+  {
+   "t": 89.76253656547289,
+   "type": "stroke",
+   "dur": 0.0045606484760959895
+  },
+  {
+   "t": 89.77244180861958,
+   "type": "stroke",
+   "dur": 0.01110394349186676
+  },
+  {
+   "t": 89.78889034678204,
+   "type": "stroke",
+   "dur": 0.019418693290225813
+  },
+  {
+   "t": 89.81365363474286,
+   "type": "stroke",
+   "dur": 0.009246599966804494
+  },
+  {
+   "t": 89.82824482938027,
+   "type": "stroke",
+   "dur": 0.006939183885320377
+  },
+  {
+   "t": 89.84052860793618,
+   "type": "stroke",
+   "dur": 0.03761833305411766
+  },
+  {
+   "t": 89.8834915356609,
+   "type": "stroke",
+   "dur": 0.017096971196500624
+  },
+  {
+   "t": 89.90593310152798,
+   "type": "stroke",
+   "dur": 0.021353080559130558
+  },
+  {
+   "t": 89.9326307767577,
+   "type": "stroke",
+   "dur": 0.009197926989317824
+  },
+  {
+   "t": 89.94717329841762,
+   "type": "stroke",
+   "dur": 0.011792138243726727
+  },
+  {
+   "t": 89.96431003133195,
+   "type": "stroke",
+   "dur": 0.006235360449026751
+  },
+  {
+   "t": 89.97588998645156,
+   "type": "stroke",
+   "dur": 0.01852094461813696
+  },
+  {
+   "t": 89.9997555257403,
+   "type": "stroke",
+   "dur": 0.004033791273467332
+  },
+  {
+   "t": 90.00913391168436,
+   "type": "stroke",
+   "dur": 0.003790773406965694
+  },
+  {
+   "t": 90.01826927976191,
+   "type": "stroke",
+   "dur": 0.016603888857307528
+  },
+  {
+   "t": 90.04021776328982,
+   "type": "stroke",
+   "dur": 0.017380378136901225
+  },
+  {
+   "t": 90.06294273609731,
+   "type": "stroke",
+   "dur": 0.00945601286995954
+  },
+  {
+   "t": 90.07774334363786,
+   "type": "stroke",
+   "dur": 0.003684905688280096
+  },
+  {
+   "t": 90.08677284399674,
+   "type": "stroke",
+   "dur": 0.02504572986871545
+  },
+  {
+   "t": 90.11716316853605,
+   "type": "stroke",
+   "dur": 0.013391492731197989
+  },
+  {
+   "t": 90.13589925593784,
+   "type": "stroke",
+   "dur": 0.03870611837371555
+  },
+  {
+   "t": 90.17994996898216,
+   "type": "stroke",
+   "dur": 0.015883509082094495
+  },
+  {
+   "t": 90.20117807273485,
+   "type": "stroke",
+   "dur": 0.006670705640986901
+  },
+  {
+   "t": 90.21319337304642,
+   "type": "stroke",
+   "dur": 0.017186766791520366
+  },
+  {
+   "t": 90.23572473450854,
+   "type": "stroke",
+   "dur": 0.02169415668672852
+  },
+  {
+   "t": 90.26276348586586,
+   "type": "stroke",
+   "dur": 0.009300265458405397
+  },
+  {
+   "t": 90.27740834599486,
+   "type": "stroke",
+   "dur": 0.0032780627228695906
+  },
+  {
+   "t": 90.28603100338833,
+   "type": "stroke",
+   "dur": 0.004633158436064436
+  },
+  {
+   "t": 90.29600875649498,
+   "type": "stroke",
+   "dur": 0.011262933446618799
+  },
+  {
+   "t": 90.3126162846122,
+   "type": "stroke",
+   "dur": 0.01924383891466668
+  },
+  {
+   "t": 90.33720471819746,
+   "type": "stroke",
+   "dur": 0.009092469154596855
+  },
+  {
+   "t": 90.35164178202265,
+   "type": "stroke",
+   "dur": 0.006822744558349159
+  },
+  {
+   "t": 90.36380912125159,
+   "type": "stroke",
+   "dur": 0.03760703809620327
+  },
+  {
+   "t": 90.40676075401839,
+   "type": "stroke",
+   "dur": 0.017186765092519474
+  },
+  {
+   "t": 90.4292921137815,
+   "type": "stroke",
+   "dur": 0.02169415668672852
+  },
+  {
+   "t": 90.45633086513882,
+   "type": "stroke",
+   "dur": 0.009300265458405397
+  },
+  {
+   "t": 90.47097572526782,
+   "type": "stroke",
+   "dur": 0.011774031991245736
+  },
+  {
+   "t": 90.48809435192966,
+   "type": "stroke",
+   "dur": 0.006235360449026751
+  },
+  {
+   "t": 90.49967430704929,
+   "type": "stroke",
+   "dur": 0.018501985467209364
+  },
+  {
+   "t": 90.52352088718709,
+   "type": "stroke",
+   "dur": 0.00404882955509184
+  },
+  {
+   "t": 90.53291431141278,
+   "type": "stroke",
+   "dur": 0.0037907708584643597
+  },
+  {
+   "t": 90.54204967694184,
+   "type": "stroke",
+   "dur": 0.016595145798729394
+  },
+  {
+   "t": 90.56398941741116,
+   "type": "stroke",
+   "dur": 0.017404357835457736
+  },
+  {
+   "t": 90.58673836991721,
+   "type": "stroke",
+   "dur": 0.0094958977653445
+  },
+  {
+   "t": 90.60157886235315,
+   "type": "stroke",
+   "dur": 0.009486374865358017
+  },
+  {
+   "t": 90.6164098318891,
+   "type": "stroke",
+   "dur": 0.013084832415121204
+  },
+  {
+   "t": 90.63483925897482,
+   "type": "stroke",
+   "dur": 0.017873234508976002
+  },
+  {
+   "t": 90.6580570881544,
+   "type": "stroke",
+   "dur": 0.011045497011762386
+  },
+  {
+   "t": 90.67444717983675,
+   "type": "stroke",
+   "dur": 0.007135028992120906
+  },
+  {
+   "t": 90.68692680349946,
+   "type": "stroke",
+   "dur": 0.019638618761385562
+  },
+  {
+   "t": 90.71191001693144,
+   "type": "stroke",
+   "dur": 0.011053282683339202
+  },
+  {
+   "t": 90.72830789428538,
+   "type": "stroke",
+   "dur": 0.004719529270040865
+  },
+  {
+   "t": 90.73837201822602,
+   "type": "stroke",
+   "dur": 0.0186527768931684
+  },
+  {
+   "t": 90.76236938978977,
+   "type": "stroke",
+   "dur": 0.02228601553964404
+  },
+  {
+   "t": 91.44000000000001,
+   "type": "stamp",
+   "k": 1
+  },
+  {
+   "t": 91.76000000000002,
+   "type": "stamp",
+   "k": 0.6
+  },
+  {
+   "t": 92.29000000000002,
+   "type": "line"
+  },
+  {
+   "t": 92.71000000000002,
+   "type": "line"
+  },
+  {
+   "t": 93.13000000000002,
+   "type": "line"
+  },
+  {
+   "t": 93.55000000000003,
+   "type": "line"
+  },
+  {
+   "t": 93.97000000000003,
+   "type": "line"
+  }
+ ]
+}

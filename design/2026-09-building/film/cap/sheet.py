@@ -16,7 +16,7 @@ W, H = 320, 250
 rows = (len(pick) + cols - 1) // cols
 sh = Image.new('RGB', (W * cols, (H + 18) * rows), 'white')
 dr = ImageDraw.Draw(sh)
-for i, (f, tt, _) in enumerate(pick):
+for i, (f, tt, *_) in enumerate(pick):
     im = Image.open(d + '/f/' + f).convert('RGB').resize((W, H))
     x, y = (i % cols) * W, (i // cols) * (H + 18)
     sh.paste(im, (x, y)); dr.text((x + 4, y + H + 3), f'{tt:.2f}', fill='black')

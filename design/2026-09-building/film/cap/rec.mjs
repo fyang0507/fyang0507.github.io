@@ -23,7 +23,7 @@ fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(out + '/f', { rec
 const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--disable-smooth-scrolling', '--disable-renderer-backgrounding', '--disable-background-timer-throttling'] });
 const context = await browser.newContext({ viewport: { width: 1280, height: 1000 }, deviceScaleFactor: DPR });
 await context.addInitScript({ path: path.join(here, 'vclock.js') });
-await context.addInitScript({ path: path.join(here, 'cursor.js') });
+if (process.env.CURSOR !== '0') await context.addInitScript({ path: path.join(here, 'cursor.js') });   // CURSOR=0: the film draws the hand itself, from the pointer track
 if (mod.init) await context.addInitScript(mod.init);
 const page = await context.newPage();
 const cdp = await context.newCDPSession(page);
@@ -34,7 +34,10 @@ page.on('response', (r) => { if (r.status() >= 400) errors.push('http ' + r.stat
 
 let T = 0;              // film time, ms
 let FPS = 60, SHOOT = true, n = 0, navPending = null;
-const frames = [];      // [file, t ms, fps]
+const frames = [];      // [file, t s, fps, pointer x, pointer y, pressed]
+const presses = [];     // t s of every press (the film's impact ticks)
+const regions = {};     // name → { rect, frames: [[file, t]] }: high-resolution crops, for close-ups
+let REGION = null;
 const beats = [];
 const pos = [640, 620];
 page.on('framenavigated', (f) => { if (f === page.mainFrame() && navPending === null) navPending = page.waitForLoadState('load').catch(() => {}); });
@@ -51,12 +54,24 @@ async function step() {
   const dt = 1000 / FPS;
   T += dt;
   await settleNav();
-  try { await page.evaluate((t) => window.__vtick && window.__vtick(t), T); } catch (e) { await settleNav(); try { await page.evaluate((t) => window.__vtick && window.__vtick(t), T); } catch {} }
+  // the tick returns the scroll, because a screenshot's clip is in page coordinates
+  const tick = (t) => { if (window.__vtick) window.__vtick(t); return [scrollX, scrollY]; };
+  let sc = [0, 0];
+  try { sc = await page.evaluate(tick, T); } catch (e) { await settleNav(); try { sc = await page.evaluate(tick, T); } catch {} }
   if (SHOOT) {
-    const r = await cdp.send('Page.captureScreenshot', { format: 'jpeg', quality: Q, optimizeForSpeed: true });
+    // the viewport at DPR device pixels: Page.captureScreenshot returns CSS pixels unless the clip asks for a scale
+    // (v1's footage, shot without it, is 1280 × 1000 whatever the context's deviceScaleFactor said)
+    const r = await cdp.send('Page.captureScreenshot', { format: 'jpeg', quality: Q, optimizeForSpeed: true, clip: { x: sc[0], y: sc[1], width: 1280, height: 1000, scale: DPR } });
     const f = String(n++).padStart(6, '0') + '.jpg';
     fs.writeFileSync(path.join(out, 'f', f), Buffer.from(r.data, 'base64'));
-    frames.push([f, +(T / 1000).toFixed(5), FPS]);
+    frames.push([f, +(T / 1000).toFixed(5), FPS, Math.round(pos[0] * 10) / 10, Math.round(pos[1] * 10) / 10, held ? 1 : 0]);
+    if (REGION) {
+      const { name, x, y, w, h, scale } = REGION;
+      const rr = await cdp.send('Page.captureScreenshot', { format: 'jpeg', quality: 92, optimizeForSpeed: true, clip: { x: sc[0] + x, y: sc[1] + y, width: w, height: h, scale } });
+      const rf = name + '-' + String(n - 1).padStart(6, '0') + '.jpg';
+      fs.mkdirSync(path.join(out, 'r'), { recursive: true }); fs.writeFileSync(path.join(out, 'r', rf), Buffer.from(rr.data, 'base64'));
+      (regions[name] = regions[name] || { rect: [x, y, w, h], scale, frames: [] }).frames.push([rf, +(T / 1000).toFixed(5)]);
+    }
   }
 }
 const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -85,7 +100,10 @@ const s = {
     }
     pos[0] = x; pos[1] = y;
   },
-  async press() { held = true; await mouse('mousePressed', pos[0], pos[1], { button: 'left', buttons: 1, clickCount: 1 }); },
+  async press() { held = true; presses.push(+(T / 1000).toFixed(4)); await mouse('mousePressed', pos[0], pos[1], { button: 'left', buttons: 1, clickCount: 1 }); },
+  async key(key, code, vk) { await cdp.send('Input.dispatchKeyEvent', { type: 'rawKeyDown', key, code, windowsVirtualKeyCode: vk }); await step(); await cdp.send('Input.dispatchKeyEvent', { type: 'keyUp', key, code, windowsVirtualKeyCode: vk }); },
+  // region(name, [x, y, w, h], scale): also shoot that part of the page at DPR × scale, until region(null)
+  region(name, rect, scale = 1.5) { REGION = name ? { name, x: rect[0], y: rect[1], w: rect[2], h: rect[3], scale } : null; },
   async release() { held = false; await mouse('mouseReleased', pos[0], pos[1], { button: 'left', buttons: 0, clickCount: 1 }); },
   async click(x, y, sec = .6) { if (x != null) await s.move(x, y, sec); await s.hold(.1); await s.press(); await s.hold(.09); await s.release(); },
   // a click that navigates: the clock waits at the release until the next document has committed and settled
@@ -105,5 +123,8 @@ const s = {
 const t0 = Date.now();
 try { await mod.default(s); } catch (e) { errors.push('STEP ERROR: ' + e.message); console.log(e.stack); }
 await browser.close();
-fs.writeFileSync(path.join(out, 'meta.json'), JSON.stringify({ side, dpr: DPR, frames, beats, errors, dur: T / 1000, wall: (Date.now() - t0) / 1000 }, null, 1));
+fs.writeFileSync(path.join(out, 'meta.json'), JSON.stringify({ side, dpr: DPR, frames, beats, presses, regions, errors, dur: T / 1000, wall: (Date.now() - t0) / 1000 }, null, 1));
+// A view transition the site meant to play but that was skipped (a race in real time, not in the clock: 2 of 4 runs of
+// take-v11 lost #35's flight into Principles this way) is a failed take: say so, and exit non-zero, so it gets re-shot.
+if (errors.some((e) => /Transition was skipped/.test(e))) { console.log('WARNING: a view transition was skipped; re-record this take'); process.exitCode = 2; }
 console.log(side, 'frames', frames.length, 'film', (T / 1000).toFixed(2), 's in', ((Date.now() - t0) / 1000).toFixed(0), 's wall', errors.length ? '\nERRORS:\n' + errors.slice(0, 12).join('\n') : 'no errors');
