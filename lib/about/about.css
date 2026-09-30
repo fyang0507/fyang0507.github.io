@@ -183,8 +183,10 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;op
 .soc-zh{font:11.5px/1 "Noto Sans SC",sans-serif;color:var(--soft);letter-spacing:.02em}
 .soc-wx{position:relative;display:inline-flex}
 .qr-slip{position:absolute;right:-18px;bottom:calc(100% + 14px);z-index:30;width:152px;padding:12px 12px 9px;background:var(--slip);border:1px solid var(--slip-edge);box-shadow:3px 4px 0 rgba(51,48,43,.1);text-align:center;
-  opacity:0;visibility:hidden;transform:translateY(12px) rotate(-7deg) scale(.94);transform-origin:70% 100%;transition:transform .5s var(--ease-settle),opacity .12s linear,visibility 0s linear .5s}
-.qr-slip.on{opacity:1;visibility:visible;transform:rotate(-2deg);transition:transform .5s var(--ease-settle),opacity .1s linear,visibility 0s}
+  display:none;opacity:0;transform:translateY(12px) rotate(-7deg) scale(.94);transform-origin:70% 100%;transition:transform .5s var(--ease-settle),opacity .12s linear,display .5s allow-discrete}
+.qr-slip.on{display:block;opacity:1;transform:rotate(-2deg);transition:transform .5s var(--ease-settle),opacity .1s linear,display 0s allow-discrete}
+/* Out of layout while closed, so its lazy QR loads only on the first open; the fold still plays both ways. */
+@starting-style{.qr-slip.on{opacity:0;transform:translateY(12px) rotate(-7deg) scale(.94)}}
 .qr-slip::before{content:"";position:absolute;left:50%;top:-9px;width:54px;height:18px;margin-left:-27px;background:var(--tape);transform:rotate(3deg)}
 .qr-slip img{display:block;width:126px;height:126px;object-fit:cover;margin:0 auto}
 .qr-cap{display:block;margin-top:6px;font:9.5px/1.3 "IBM Plex Mono","Noto Sans SC",monospace;color:var(--pencil)}

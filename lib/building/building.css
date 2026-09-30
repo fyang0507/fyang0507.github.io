@@ -113,7 +113,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .unpin-close .pen-t{border-bottom:1px solid var(--ink)}
 
 @media (prefers-reduced-motion:reduce){
-  .unpin-scrim{transition:none!important}
+  .unpin-scrim,.cork-btn{transition:none!important}
 }
 @media (forced-colors:active){
   .cork,.cork-btn{border-color:CanvasText}

@@ -10,13 +10,15 @@
 // 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
 // every device pixel it is drawn at: lib/writing/case.js sh.hand); no book keeps that layout once it is back, when a
 // returning book is caught again and let go inside the dwell (the pointer 200 and 350 ms after leaving; the keyboard's
-// Right, Left, Right; a resize while one is held, then a re-hover); in 2x and 3x contexts the book in your hand takes
+// Right, Left, Right; a resize while one is held, then a re-hover) or when a filter clicked with no pointer move
+// takes it off the shelf on its way back and all brings it back; in 2x and 3x contexts the book in your hand takes
 // the board it needs (480w on a 2x desk, 640w on a 3x phone, the top of a capped ladder) and every board is as wide
 // and tall as its srcset says; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
-// 50 ms; and an idle page makes no requestAnimationFrame calls. Exit code 1 on any failure.
+// 50 ms; an idle page makes no requestAnimationFrame calls; and on a phone each tab's paper follows its tab while IBM
+// Plex Mono lands late. Exit code 1 on any failure.
 import fs from 'fs';
 
 const BASE = process.env.WRITING_BASE || 'http://127.0.0.1:4173/';
@@ -114,7 +116,16 @@ async function handBack(ctx, page) {
   const q = await page.evaluate((id) => { const r = document.querySelector('.bk-hit[data-post="' + id + '"]').getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35) }; }, p.id);
   await page.mouse.move(q.x, q.y); await page.waitForTimeout(30); await page.mouse.move(700, 5); await page.waitForTimeout(2600);
   got.push('resize: ' + ((await stuck(page)).join(', ') || 'ok'));
-  check(ctx, 'a returning book caught again and let go inside the dwell comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
+  // A filter clicked with no pointer move takes the book in your hand off the shelf on its way back; all brings it back.
+  await open(page, 1440, 900); await page.mouse.move(2, 2);
+  await page.focus('.site-tab--about'); await page.keyboard.press('Tab');
+  while (await page.evaluate(() => window.FY_POST_INDEX.find((e) => e.id === document.activeElement.dataset.post).tags.includes('travel log'))) await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(1500);
+  const id = await page.evaluate(() => document.querySelector('[data-mount=writing]').dataset.held);
+  for (const cat of ['travel log', 'all']) { await page.evaluate((c) => document.querySelector('.tb[data-cat="' + c + '"]').click(), cat); await page.waitForTimeout(2500); }
+  const tz = await page.evaluate((id) => new DOMMatrix(getComputedStyle(document.querySelector('.book[href*="' + id + '"]')).transform).m43, id);
+  got.push('filtered off and back: ' + (id && Math.abs(tz) < 1 ? (await stuck(page)).join(', ') || 'ok' : `${id} at dz ${tz.toFixed(1)}`));
+  check(ctx, 'a returning book caught again and let go inside the dwell, or filtered off the shelf and back, comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
 }
 // 2x and 3x: the board the book in your hand fetches, and every board's real size against its srcset.
 async function boards(ctx, browser) {
@@ -146,6 +157,26 @@ async function boards(ctx, browser) {
     await c.close();
   }
   check(ctx, 'at 2x and 3x the book in your hand takes the board it needs; every board is the size its srcset claims', got.every((g) => !g.includes('✗')), got.join(' · '));
+}
+
+// The tabs' paper follows each tab's size as the faces land: React 3 s late, IBM Plex Mono 5 s, on a phone (whose tabs
+// are as wide as their labels). Sampled every frame until 4 s after the mount; a mismatch may last one frame.
+async function tabPaper(ctx, browser) {
+  const c = await browser.newContext({ viewport: { width: 390, height: 844 } }), pg = await c.newPage();
+  for (const [re, ms] of [[/unpkg\.com/, 3000], [/IBMPlexMono/, 5000]]) await pg.route(re, async (r) => { await new Promise((x) => setTimeout(x, ms)); r.continue(); });
+  await pg.goto(URL, { waitUntil: 'commit' }); await pg.waitForSelector('[data-mount=writing][data-ready]', { timeout: 20000 });
+  const r = await pg.evaluate(() => new Promise((done) => {
+    const t0 = performance.now(), off = (t) => t.dataset.cat + ' ' + t.offsetWidth + '/' + t.querySelector('.tb-paper').getAttribute('width');
+    let run = 0, worst = 0, at = '';
+    (function f() {
+      const bad = [...document.querySelectorAll('.tb')].filter((t) => Math.abs(t.offsetWidth - t.querySelector('.tb-paper').getAttribute('width')) > 0.5);
+      run = bad.length ? run + 1 : 0; if (run > worst) { worst = run; at = bad.map(off).join(', '); }
+      if (performance.now() - t0 < 4000) requestAnimationFrame(f);
+      else done({ worst, at, plex: [...document.fonts].filter((x) => /Plex/.test(x.family) && x.status === 'loaded').length, end: [...document.querySelectorAll('.tb')].map(off).join(', ') });
+    })();
+  }));
+  await c.close();
+  check(ctx, 'phone: each tab\'s paper follows its tab while IBM Plex Mono lands late (off for at most one frame)', r.worst <= 1 && r.plex > 0, `${r.worst} frames off${r.at ? ' (' + r.at + ')' : ''} · end ${r.end}`);
 }
 
 export default async (page, ctx) => {
@@ -325,6 +356,7 @@ export default async (page, ctx) => {
   await phoneTaps(ctx, page, 360);
   await handBack(ctx, page);
   await boards(ctx, page.context().browser());
+  await tabPaper(ctx, page.context().browser());
 
   ctx.log('— network');
   check(ctx, 'posts-index.js loaded, posts.js never (requests made by Writing)', reqs.some((u) => /content\/posts-index\.js/.test(u)) && !reqs.some((u) => /content\/posts\.js/.test(u)));

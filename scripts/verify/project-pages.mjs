@@ -24,7 +24,8 @@
 //     past the sheet's), and no text wider than its own box (a word or a code string that doesn't break), except inside
 //     what scrolls sideways;
 //   · the fore-edge tabs link where the board's dossier does (content/building-projects.js), in order, each 200;
-//   · every link and button reaches 「 」 by keyboard;
+//   · every link and button reaches 「 」 by keyboard, and the way back comes after the sheet in focus order, as it sits
+//     at its foot;
 //   · italic text is set in a real Fraunces italic; the Latin faces the first screen sets are preloaded: Fraunces
 //     roman and both IBM Plex Mono weights the tabs use (their labels 400, their numbers 500);
 // and on a cold load under vt-lcp's Fast 4G: CLS under 0.01, and Demos under 1.5 MB transferred before any scroll.
@@ -287,6 +288,9 @@ export default async (page) => {
         const ks = await keyboard(p), links = ks.filter((s) => s.link), missing = links.filter((s) => !s.drawn), weak = ks.filter((s) => s.drawn && !s.photo && s.pen < 3);
         check(tag + ': every link and button on the page reaches 「 」 by keyboard (' + links.length + ')', links.length > 5 && missing.length === 0, missing.slice(0, 4).map((s) => s.key));
         check(tag + ': every 「 」 ≥ 3:1 on its paper', weak.length === 0, weak.slice(0, 3).map((s) => s.key + ' ' + s.pen));
+        // Focus follows the DOM here (no positive tabindex), and the walk above stops in Demos' <video> controls.
+        const order = await p.evaluate(() => { const b = document.querySelector('.pj-back'), s = document.querySelector('.pj-sheet'); return { afterSheet: !!(s.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) && !s.contains(b), positiveTabindex: [...document.querySelectorAll('[tabindex]')].filter((e) => e.tabIndex > 0).length }; });
+        check(tag + ': the way back comes after the sheet in focus order, as it sits at its foot', order.afterSheet && order.positiveTabindex === 0, order);
         await p.evaluate(() => scrollTo(0, 0));
         await p.screenshot({ path: shot(path, w) });
       }

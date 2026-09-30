@@ -127,7 +127,7 @@
 .stk--unapplied{visibility:hidden}   /* until it has been applied (first view per session), the card has no flower */
 
 @media (prefers-reduced-motion:reduce){
-  .lift,.morph-icon{transition:none!important}
+  .lift,.morph-icon,.ghost{transition:none!important}
 }
 @media (forced-colors:active){
   .morph-toggle,.project-cta{border-color:CanvasText}

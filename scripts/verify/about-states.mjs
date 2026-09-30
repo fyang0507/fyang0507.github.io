@@ -1,5 +1,6 @@
 // scripts/verify/about-states.mjs — keyboard, the focus-only put-back, the cue's once-per-session rule, reduced motion,
-// no infinite animations, an idle page (0 rAF callbacks at rest) and no overflow, on the production About page.
+// no infinite animations, an idle page (0 rAF callbacks at rest), no overflow, and the WeChat QR fetched only when its
+// slip first opens, on the production About page.
 import { URL, sleep, open, S, settle, pullOut, docW } from './about-lib.mjs';
 
 export default async (page0, ctx) => {
@@ -90,6 +91,19 @@ export default async (page0, ctx) => {
     check(`[${w}] the sleeve steps aside to the left strip (≥ 44 px showing, left of the card)`, sl.right >= 44 && sl.left < 0 && sl.right <= sl.cardLeft, JSON.stringify(sl));
     check(`[${w}] the card stays inside the page`, sl.cardRight <= w - 2, sl.cardRight.toFixed(1));
     check(`[${w}] no horizontal overflow`, await docW(p) <= w);
+    await c.close();
+  }
+
+  /* ---- 4 · the WeChat QR comes with its slip (1440, 390): out of layout while closed, so lazy defers it ---- */
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    c = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1 }); p = await c.newPage();
+    const qr = [];
+    p.on('request', r => { if (/wechat-qr/.test(r.url())) qr.push(r.url()); });
+    await open(p, w, h); await sleep(1500);
+    const before = qr.length;
+    await p.click('.soc-wx .soc'); await sleep(700);
+    const img = await p.evaluate(() => { const i = document.querySelector('.qr-slip img'); return i.complete ? i.naturalWidth : 0; });
+    check(`[${w}] the WeChat QR is fetched only when its slip first opens`, before === 0 && qr.length === 1 && img > 0, `${before} before, ${qr.length} after, ${img} px`);
     await c.close();
   }
   ctx.log(`about-states: ${pass}/${pass + fail} pass`);
