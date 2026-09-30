@@ -23,7 +23,7 @@ This is a dependency-free static personal website exported as standalone `.dc.ht
 - CJK font subset generator: `scripts/generate-fonts.py`
 - Headless checks: `scripts/verify/`
 - Design lineage (never served): `design/`
-- Full-resolution originals (archive, never served): `images/gallery/`, `images/blog/covers/`
+- Full-resolution originals (archive, never served): `images/gallery/`, `images/blog/covers/`, `images/evidence/<project>/` (the Building sub-sites' captures, plates and email images)
 - Complete font masters (archive, never served): `fonts/*.woff2`
 - Generated assets that pages actually load: `images/derived/`, `fonts/derived/`, `assets/derived/`
 
@@ -141,6 +141,10 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - Pages load only subset fonts from `fonts/derived/`, never the masters in `fonts/`. The local masters are complete ~6,900-glyph typefaces; the site renders a few hundred of those glyphs. Shipping them made the font the slowest thing on the site — `Gallery.dc.html`'s LCP element is its `<h1 class="display">`, and because `font-display: swap` repaints that heading when the real face arrives, the 985 KB download *became* the LCP at ~2.9 s on Fast 4G. Adding Chinese to a heading, footnote, reference, image caption, page, shared module or `lib/` file changes the required glyph set, so rerun `generate-fonts.py`; the audit fails and names the missing characters if you forget.
 - Noto Serif SC and Noto Sans SC are self-hosted subsets too, not Google Fonts requests. Only Fraunces, Caveat and IBM Plex Mono still come from Google. Noto Serif SC ships in two sizes and **the split is the one thing to keep straight**: `lib/reading/reading.css` references `NotoSerifSC-text.woff2` (every essay body, ~1,087 KB; one subset shared by all essays even though Reading loads one body file at a time) and every other page's CSS references `NotoSerifSC-ui.woff2` (interface Chinese only, ~148 KB). A new page should use the `-ui` tier unless it renders essay bodies. Collapsing to one file would put 1,196 KB on every gateway page, a 3× regression against the ~391 KB they used to fetch from Google.
 - Add photos and covers at full resolution and never hand-resize them. Pages load only `images/derived/`; serving the originals cost 51 MB and a 54-second load on the gallery before this split existed. Size ladders live in `scripts/generate-content.py`; changing one requires `generate-derivatives.py --force --prune`. Because the deploy deletes `scripts/`, derivatives and sprites are built locally and committed, never in CI.
+- The sub-sites' evidence images follow the same rule. Add a capture at full resolution to `images/evidence/<project>/` and run `generate-derivatives.py`: it writes `images/derived/evidence/<project>/<stem>-<w>.jpg` at 640, 960, 1280 and 1760 px, capped at the original's width, at quality 86 (the photos' 74 blurs small UI text), plus `<stem>-zoom.jpg` at full width and quality 90 for each capture in `EVIDENCE_ZOOM`, which only an opened Demos loupe fetches.
+  - Every evidence `<img>` carries `srcset` and `sizes` fitted to its box, and `width` and `height` from `content/image-dimensions.json`, so nothing above a section moves when it loads. The email demo keeps its display size in `width` and `height`, as email clients read them.
+  - In a `support.js` template, write `loading="lazy"` before `src`: React sets attributes in order, and an image whose `src` is set first loads at once.
+  - Where the email demo's originals came from is in `NOTICE.md`; no page requests anything from `apa.njjoegroup.com`.
 - Load generated manifests, stylesheets and modules unversioned (`./content/posts-index.js`, `./lib/shared/site-nav.css`). Do not add a `?v=` cache-buster: GitHub Pages already serves everything with `max-age=600` and an ETag, so a manual stamp buys nothing and goes stale when someone forgets to bump it.
 - Do not hand-edit `support.js`; it is generated runtime code.
 - Preserve relative URLs so the site works from a simple local server and static hosting.
@@ -174,6 +178,7 @@ After a change:
    - `pen-*` for pen states and spacing, on `pen-harness.html`;
    - `home-*` for home, plus `flash-audit.py` and `home-diff.py`;
    - `writing-*`, `building-*`, `gallery-*`, `about-*` and `reading-*` for their pages.
+   - `evidence.mjs` for the Building sub-sites' evidence images and their bytes.
 
    Each script's header lists what it checks and its environment variables. They run in the isolated Chromium runner from `design/2026-09-motion/tools/shot-runner.mjs`:
 

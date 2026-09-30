@@ -403,7 +403,6 @@ img{max-width:100%}
 .fa-evidence-mode-hint{position:absolute;left:50%;top:14px;z-index:7;padding:7px 10px;border:1px solid rgba(251,246,236,.72);border-radius:999px;background:rgba(36,35,33,.86);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:8px;font-weight:500;line-height:1;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;opacity:0;transform:translate(-50%,-7px);pointer-events:none;transition:opacity .22s ease,transform .3s var(--ease-out)}
 .fa-evidence-shot-wrap.is-focus-mode .fa-evidence-mode-hint{opacity:1;transform:translate(-50%,0)}
 .fa-evidence-shot{position:relative;z-index:1;display:block;width:max-content;border:1px solid rgba(51,48,43,.34);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);overflow:hidden}
-.fa-evidence-shot picture{display:block}
 .fa-evidence-shot img{display:block;width:auto;max-width:none;height:var(--evidence-shot-height);transition:filter .34s ease,transform .34s var(--ease-out)}
 .fa-evidence-shot-wrap.is-focus-mode .fa-evidence-shot img{filter:blur(4px) brightness(.56) saturate(.68);transform:scale(1.012)}
 .fa-evidence-annotations{position:absolute;inset:0;z-index:4;pointer-events:none}
@@ -423,9 +422,6 @@ img{max-width:100%}
 .fa-recovery-shot-wrap{width:100%}
 .fa-recovery-shot{width:100%;border-radius:7px;box-shadow:none}
 .fa-recovery-panel img,.fa-recovery-shot img{display:block;width:100%;max-width:100%;height:auto;border:1px solid var(--line);border-radius:7px;background:#fff}
-.fa-recovery-panel--contract .fa-evidence-loupe{background-image:url("./demo/auto-recover.png")}
-.fa-recovery-panel--report .fa-evidence-loupe{background-image:url("./demo/auto-recover-evidence.png")}
-.fa-recovery-panel--intake .fa-evidence-loupe{background-image:url("./demo/auto-recover-evidence-2.png")}
 .fa-evidence-annotation--recovery-dispatch{--scope-x:52%;--scope-y:81.5%;--scope-width:550px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.7}
 .fa-evidence-annotation--recovery-task{--scope-x:50%;--scope-y:20.7%;--scope-width:350px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.2}
 .fa-evidence-annotation--recovery-error{--scope-x:50%;--scope-y:27.5%;--scope-width:340px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.35}
@@ -439,8 +435,7 @@ img{max-width:100%}
 .fa-evidence-annotation--discord-audio{--scope-x:35.5%;--scope-y:23.2%;--scope-width:238px;--scope-height:116px;--scope-radius:58px;--scope-zoom:1.35}
 .fa-evidence-annotation--discord-status{--scope-x:22.5%;--scope-y:33.2%;--scope-width:142px;--scope-height:142px;--scope-radius:50%;--scope-zoom:1.55}
 .fa-evidence-annotation--discord-link{--scope-x:57%;--scope-y:47.2%;--scope-width:410px;--scope-height:168px;--scope-radius:25px;--scope-zoom:1.08}
-.fa-evidence-loupe{position:relative;width:100%;height:100%;padding:0;appearance:none;border:2px solid var(--mark);border-radius:var(--scope-radius);background-color:var(--paper-3);background-image:url("./demo/trash-patrol.png");background-repeat:no-repeat;background-origin:border-box;box-shadow:0 10px 24px rgba(25,24,22,.3);cursor:zoom-in;transition:transform .28s var(--ease-out),box-shadow .28s ease}
-.fa-evidence-canvas--discord .fa-evidence-loupe{background-image:url("./demo/discord-intake.png")}
+.fa-evidence-loupe{position:relative;width:100%;height:100%;padding:0;appearance:none;border:2px solid var(--mark);border-radius:var(--scope-radius);background-color:var(--paper-3);background-repeat:no-repeat;background-origin:border-box;box-shadow:0 10px 24px rgba(25,24,22,.3);cursor:zoom-in;transition:transform .28s var(--ease-out),box-shadow .28s ease}
 .fa-evidence-canvas--discord .fa-evidence-scope-cta{pointer-events:none}
 .fa-evidence-loupe:hover{outline:none;transform:scale(1.025);box-shadow:0 14px 30px rgba(25,24,22,.34)}
 .fa-evidence-loupe:focus-visible{outline:2px solid var(--mark-deep);outline-offset:3px;transform:scale(1.025);box-shadow:0 14px 30px rgba(25,24,22,.34)}

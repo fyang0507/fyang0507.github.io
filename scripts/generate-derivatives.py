@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Generate web-sized derivatives of the canonical gallery photos and blog covers.
+"""Generate web-sized derivatives of the canonical gallery photos, blog covers and
+the Building sub-sites' evidence images.
 
-The full-resolution files under `images/gallery/` and `images/blog/covers/` stay
-canonical and append-only: add originals there and never hand-resize them. This
-script derives everything the pages actually serve into `images/derived/`, which
-is a generated artifact in the same category as `content/photos.js` — commit it.
+The full-resolution files under `images/gallery/`, `images/blog/covers/` and
+`images/evidence/` stay canonical and append-only: add originals there and never
+hand-resize them. This script derives everything the pages actually serve into
+`images/derived/`, which is a generated artifact in the same category as
+`content/photos.js` — commit it.
 
 `.github/workflows/deploy-pages.yml` deletes `scripts/` before deploying, so
 derivatives cannot be built in CI. They must be generated locally and committed.
@@ -37,6 +39,9 @@ ROOT = Path(__file__).resolve().parents[1]
 THUMB_QUALITY = 82
 DISPLAY_QUALITY = 74
 COVER_QUALITY = 78
+# Evidence captures carry small UI text; the loupes' zoom copy gets more headroom.
+EVIDENCE_QUALITY = 86
+ZOOM_QUALITY = 90
 
 
 def load_contract() -> ModuleType:
@@ -139,7 +144,7 @@ def collect_jobs(contract: ModuleType) -> tuple[list[tuple], list[str], dict[str
     stems: dict[tuple[str, str], str] = {}
     originals: dict[str, Path] = {}
 
-    def register(group: str, image_url: str, label: str) -> Path | None:
+    def register(group: str, image_url: str, label: str, alpha_ok: bool = False) -> Path | None:
         relative = image_url.lstrip("./").lstrip("/")
         source = ROOT / relative
         if not source.is_file():
@@ -154,7 +159,9 @@ def collect_jobs(contract: ModuleType) -> tuple[list[tuple], list[str], dict[str
             )
             return None
         stems[key] = relative
-        if source.suffix.lower() == ".png" and has_alpha(source):
+        # sips composites transparency over white, which evidence captures can take:
+        # their only transparent pixels are the phone screenshots' rounded corners.
+        if not alpha_ok and source.suffix.lower() == ".png" and has_alpha(source):
             errors.append(
                 f"{label}: {relative} has an alpha channel; JPEG derivatives would "
                 f"flatten transparency to black. Flatten the original first."
@@ -199,6 +206,24 @@ def collect_jobs(contract: ModuleType) -> tuple[list[tuple], list[str], dict[str
         for width in contract.COVER_WIDTHS:
             target = ROOT / contract.derivative_url(cover, "covers", width).lstrip("./")
             jobs.append(("width", source, target, width, COVER_QUALITY))
+
+    # Evidence: every file archived under images/evidence/<project>/.
+    evidence = contract.evidence_originals()
+    for name in contract.EVIDENCE_ZOOM:
+        if f"{contract.EVIDENCE_DIR}/{name}" not in evidence:
+            errors.append(f"EVIDENCE_ZOOM names {name}, which is not in {contract.EVIDENCE_DIR}/")
+    for relative in evidence:
+        group = contract.evidence_group(relative)
+        source = register(group, relative, relative, alpha_ok=True)
+        if source is None:
+            continue
+        width, _ = sips_dimensions(source)
+        for step in contract.evidence_ladder(width):
+            target = ROOT / contract.derivative_url(relative, group, step).lstrip("./")
+            jobs.append(("width", source, target, step, EVIDENCE_QUALITY))
+        if Path(relative).relative_to(contract.EVIDENCE_DIR).as_posix() in contract.EVIDENCE_ZOOM:
+            target = ROOT / contract.derivative_url(relative, group, "zoom").lstrip("./")
+            jobs.append(("width", source, target, width, ZOOM_QUALITY))
 
     return jobs, errors, originals
 

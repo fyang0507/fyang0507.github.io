@@ -31,8 +31,9 @@ PHOTOS_SOURCE = ROOT / "content" / "photos-source.ts"
 
 # Derived-image contract, shared by scripts/generate-derivatives.py (which writes
 # the files) and the skill's audit_content.py (which verifies they exist).
-# The originals under images/gallery/ and images/blog/covers/ stay canonical and
-# are never served to browsers; pages reference these derivatives only.
+# The originals under images/gallery/, images/blog/covers/ and images/evidence/
+# stay canonical and are never served to browsers; pages reference these
+# derivatives only.
 DERIVED_DIR = "images/derived"
 # Gallery thumbnails are pre-cropped to the 4:3 box the gallery CSS already
 # center-crops to, so the browser never decodes a full frame for a 132px slot.
@@ -47,6 +48,21 @@ GALLERY_DISPLAY_WIDTH = 2560
 # ~340px mobile card, and Reading.dc.html's full-bleed 100vw hero.
 COVER_WIDTHS = (320, 560, 900, 1600)
 COVER_DEFAULT_WIDTH = 560
+# Evidence: the captures and plates on the Building sub-sites, archived under
+# images/evidence/<project>/. Captures carry small UI text that the photo
+# ladders' quality blurs, so the display ladder is encoded at 86 and capped at
+# the original's own width.
+EVIDENCE_DIR = "images/evidence"
+EVIDENCE_WIDTHS = (640, 960, 1280, 1760)
+# The captures the Demos loupes magnify get one more copy, at full width and
+# quality 90, which only an opened loupe fetches: <stem>-zoom.jpg.
+EVIDENCE_ZOOM = (
+    "fred-agent/auto-recover-evidence-2.png",
+    "fred-agent/auto-recover-evidence.png",
+    "fred-agent/auto-recover.png",
+    "fred-agent/discord-intake.png",
+    "fred-agent/trash-patrol.png",
+)
 
 
 def derived_stem(image_url: str) -> str:
@@ -58,12 +74,32 @@ def derived_stem(image_url: str) -> str:
     return Path(image_url).stem
 
 
-def derivative_url(image_url: str, group: str, width: int) -> str:
+def derivative_url(image_url: str, group: str, width: int | str) -> str:
     return f"./{DERIVED_DIR}/{group}/{derived_stem(image_url)}-{width}.jpg"
 
 
 def srcset(image_url: str, group: str, widths) -> str:
     return ", ".join(f"{derivative_url(image_url, group, w)} {w}w" for w in widths)
+
+
+def evidence_originals() -> list[str]:
+    """Every archived evidence original, as a repository-relative path."""
+    return sorted(
+        path.relative_to(ROOT).as_posix()
+        for path in (ROOT / EVIDENCE_DIR).glob("*/*")
+        if path.suffix.lower() in {".png", ".jpg", ".jpeg"}
+    )
+
+
+def evidence_group(relative: str) -> str:
+    """images/evidence/<project>/x.png derives into images/derived/evidence/<project>/."""
+    return f"evidence/{Path(relative).parent.name}"
+
+
+def evidence_ladder(width: int) -> list[int]:
+    """Display widths for an original `width` px wide: the steps below it, then its own."""
+    top = min(width, EVIDENCE_WIDTHS[-1])
+    return [w for w in EVIDENCE_WIDTHS if w < top] + [top]
 
 
 def load_dimensions() -> dict[str, list[int]]:

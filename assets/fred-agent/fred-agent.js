@@ -39,6 +39,9 @@
   function layoutEvidenceScopeImage(image){
     var wrap=image.closest('.fa-evidence-shot-wrap');
     if(!wrap||!image.clientWidth||!image.clientHeight)return;
+    // At rest a loupe magnifies the file the image already shows; once opened, the zoom tier lies over it.
+    var source=image.currentSrc?'url("'+image.currentSrc+'")':'';
+    if(source&&image.fredAgentZoom)source='url("'+image.getAttribute('data-zoom-src')+'"),'+source;
     Array.prototype.forEach.call(wrap.querySelectorAll('.fa-evidence-loupe[data-scope-target-x]'),function(scope){
       var annotation=scope.closest('.fa-evidence-annotation');
       var zoom=parseFloat(getComputedStyle(annotation).getPropertyValue('--scope-zoom'))||1;
@@ -48,6 +51,7 @@
       var backgroundHeight=image.clientHeight*zoom;
       var offsetX=scope.offsetWidth/2-targetX*backgroundWidth;
       var offsetY=scope.offsetHeight/2-targetY*backgroundHeight;
+      if(source)scope.style.backgroundImage=source;
       scope.style.backgroundSize=backgroundWidth+'px '+backgroundHeight+'px';
       scope.style.backgroundPosition=offsetX+'px '+offsetY+'px';
     });
@@ -76,6 +80,11 @@
     var wraps=group?group.querySelectorAll('.fa-evidence-shot-wrap'):[wrap];
     Array.prototype.forEach.call(wraps,function(targetWrap){
       targetWrap.classList.toggle('is-focus-mode',isActive);
+      var image=targetWrap.querySelector('.fa-evidence-shot img[data-zoom-src]');
+      if(isActive&&image&&!image.fredAgentZoom){
+        image.fredAgentZoom=true;
+        layoutEvidenceScopeImage(image);
+      }
       Array.prototype.forEach.call(targetWrap.querySelectorAll('.fa-evidence-loupe'),function(trigger){
         trigger.setAttribute('aria-expanded',isActive?'true':'false');
       });

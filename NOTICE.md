@@ -43,3 +43,12 @@ This is deliberately the **2021-06-28 rebuild**. The author reissued the font th
 - Author-designated download and licence certificate: https://www.maoken.com/freefonts/1323.html
 
 The essays, photographs, illustrations, and other original site assets are not offered under the MIT License. Please request permission before reusing them.
+
+## NJJoe Group email images
+
+The four images in the NJJoe email demo (`building/njjoe/email-demo/buyer.html`) are NJJoe Group's: its logo, the Annual Property Analysis cover, the Preferred Client gift card and Joe Costello's portrait. They were downloaded once, on 2026-09-30 at 02:30 UTC, from the email's asset host, and are archived unchanged in `images/evidence/njjoe/`, so the site no longer requests anything from that host. Like the site's own assets, they are not offered under the MIT License.
+
+- https://apa.njjoegroup.com/email-assets/logo-20260905.png
+- https://apa.njjoegroup.com/email-assets/apa-cover.png
+- https://apa.njjoegroup.com/email-assets/giftcard.png
+- https://apa.njjoegroup.com/email-assets/joe-20260905.png
