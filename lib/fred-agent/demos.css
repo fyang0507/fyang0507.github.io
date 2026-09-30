@@ -1,9 +1,10 @@
-/* Fred Agent · Demos' five exhibits (building/fred-agent/demos.html), on the dossier's sheet. The evidence viewer is
-   main's as it was (evidence.js: a loupe per region, focus mode, the notes), temporary until Demos' own design round
-   (design/2026-09-building, r3 and r4 Demos boards) lands. What changed with the move: each capture is a plate across
-   the sheet, bled to its edges; the trash capture keeps the viewer's compact tier at every width, and the Discord
-   capture its wide one only where the sheet is 1027 px inside (from 1283 px); the markers are paper rings with an ink
-   hairline instead of coral, which reads on the light and the dark captures; no coral text, no glass blur, no reveal. */
+/* Fred Agent · Demos' five exhibits (building/fred-agent/demos.html), on the dossier's sheet. The recording and the
+   captures follow the round-4 Demos board (design/2026-09-building, r4-demos*), with Fred's corners: each is a print
+   held on the sheet by four kraft photo corners; the recording's play control sits at its poster's centre; a capture's
+   regions carry B's paper tokens, and its legend is the controls (evidence.js), whose enlargement lies over the
+   capture's own frame, the region and its note as a pair. No blur, no gradient, no entrance; coral only while the pen
+   notices something, and on the corners of the region an enlargement shows (Fred's exception, AGENTS.md); for what is
+   open, the wheat band. */
 
 /* ---- an exhibit ---- */
 .fa-demo{padding:64px 0;border-top:1px dashed var(--line-strong)}
@@ -30,13 +31,138 @@
 .fa-flow-chip{position:relative;z-index:2;width:fit-content;max-width:100%;padding:6px 10px 6px 11px;border:1px solid var(--line-strong);border-radius:5px;background:var(--paper);box-shadow:2px 2px 0 rgba(207,193,169,.38);font:9.5px/1.35 var(--util)}
 .fa-recipe-flow li:last-child .fa-flow-chip{border-color:var(--ink)}
 
-/* ---- the recording: a print of its poster until it plays (preload none) ---- */
-.fa-media-slot--video{margin:0;border:1px solid var(--line-strong);border-radius:6px;background:#181716;overflow:hidden}
-.fa-demo-video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#181716}
-.fa-media-slot--video figcaption{display:flex;gap:10px;align-items:baseline;padding:11px 14px 12px;background:var(--paper2);color:var(--soft);font:9.5px/1.5 var(--util);letter-spacing:.035em}
-.fa-media-slot--video figcaption span,.fa-evidence-canvas figcaption span,.fa-taste-comparison figcaption span,.fa-settei-library figcaption span{flex:none;color:var(--ink);text-transform:uppercase}
+/* ---- a print, held on the sheet by four photo corners, and its caption ---- */
+.ex-fig{margin:0}
+.print{position:relative;display:block;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong),-5px 10px 18px rgba(60,50,35,.12)}
+.print img,.print video{display:block;width:100%;height:auto}
+.pc{position:absolute;z-index:4;width:26px;height:26px;background:var(--kraft);pointer-events:none}
+.pc-tl{left:-7px;top:-7px;clip-path:polygon(0 0,100% 0,0 100%)}
+.pc-tr{right:-7px;top:-7px;clip-path:polygon(0 0,100% 0,100% 100%)}
+.pc-bl{left:-7px;bottom:-7px;clip-path:polygon(0 0,0 100%,100% 100%)}
+.pc-br{right:-7px;bottom:-7px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.ex-cap{display:flex;gap:12px;margin-top:16px;padding-top:9px;border-top:1px dashed var(--line-strong);color:var(--soft);font:12px/1.55 var(--util)}
+.ex-cap>span{flex:none;color:var(--ink);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+
+/* ---- the recording: the poster is the print, and play sits where people look for it, at its centre ----
+   A paper disc with an ink ring and an ink triangle, B's halo, hairline and shadow, and the typed label under it:
+   paper and ink, never a player's red. A flat ink veil holds the poster back until it plays (its call screen is full
+   of round buttons, and without it the disc read as one more), no gradient. The disc lifts a little under a mouse on
+   the settle curve (one small overshoot), the label takes the pen's hover line, focus the 「 」. Nothing downloads
+   until it's pressed (preload="none"); the poster itself starts it too. */
+.print--video{background:#1f1d1a}
+.print--video video{cursor:pointer}
+.print--video::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(31,29,26,.4);pointer-events:none}
+.print--video.playing::after,.print--video.playing .ex-play{display:none}
+.ex-play{position:absolute;z-index:5;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 8px;color:var(--ink);font:12px/1 var(--util);letter-spacing:.02em;transform:translate(-50%,-50%)}
+.ex-play-d{display:grid;place-items:center;width:72px;height:72px;border:2.5px solid var(--ink);border-radius:50%;background:var(--paper);box-shadow:0 0 0 4px var(--paper),0 0 0 5.25px rgba(51,48,43,.42),0 3px 5px rgba(20,18,15,.32),0 12px 26px rgba(20,18,15,.3);transition:transform .38s var(--ease-settle)}
+.ex-play-b{width:0;height:0;margin-left:7px;border-left:23px solid var(--ink);border-top:14px solid transparent;border-bottom:14px solid transparent}
+/* the pen's hover line is a z -1 layer in the control: the slip sits under it (z -2), or its paper would hide it */
+.ex-play-l{position:relative;z-index:-2;display:inline-flex;align-items:baseline;gap:10px;white-space:nowrap;padding:8px 13px 9px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);box-shadow:0 3px 8px rgba(20,18,15,.22)}
+.ex-play-t{color:var(--soft)}
+.ex-play:hover .ex-play-d{transform:scale(1.07)}
+.ex-play:active .ex-play-d{transform:scale(.97);transition-duration:.12s}
+
+/* ---- a capture: its prints, the regions' tokens, the typed legend ---- */
+.viewer{position:relative;display:flex;flex-direction:column}
+.prints{position:relative;z-index:2}
+.viewer--sheet .prints{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:28px;align-items:start}
+.viewer--tall{display:grid;grid-template-columns:minmax(240px,360px) minmax(0,1fr);gap:0 38px;align-items:start}
+.viewer--tall .prints{grid-row:1/span 3}
+.ex-notes{list-style:none;order:3;margin-top:24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;border-top:1px solid var(--ink)}
+.viewer--sheet .ex-notes{grid-template-columns:repeat(2,minmax(0,1fr))}
+.viewer--tall .ex-notes{order:0;grid-template-columns:1fr;margin-top:0}
+.ex-note{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 10px;width:100%;padding:13px 0 15px;border-bottom:1px dashed var(--line-strong);text-align:left}
+.en-k{display:block;color:var(--pencil);font:500 10px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.en-t{display:block;margin-top:6px;font:500 17px/1.25 var(--disp);letter-spacing:-.01em}
+/* the text sits ≥ 10 px and ≥ 2× the pen's drop under the title's hover line (scripts/verify/pen-spacing.mjs) */
+.en-p{display:block;margin-top:11px;color:var(--soft);font-size:14.5px;line-height:1.55}
+/* a region, in % of its print; the pen's corners are drawn round it (corners.js) */
+.rg{position:absolute;z-index:3;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);pointer-events:none}
+
+/* ---- the token: B, the paper token, tuned to hold on any capture ----
+   A paper disc, an ink numeral and a 2.5 px ink ring, a paper halo with an ink hairline outside it (so it keeps an
+   edge on white UI) and a two-part contact shadow (so it sits on the capture, not in it). The legend uses the same
+   token; open, it takes the wheat band. No coral. */
+.mk{--mk:30px;position:relative;display:inline-grid;place-items:center;flex:none;width:var(--mk);height:var(--mk);border:2.5px solid var(--ink);border-radius:50%;background:var(--paper);color:var(--ink);font:600 15.5px/1 var(--disp);font-variant-numeric:lining-nums;letter-spacing:0;
+  box-shadow:0 0 0 3px var(--paper),0 0 0 4.25px rgba(51,48,43,.4),0 2px 3px rgba(20,18,15,.3),0 6px 14px rgba(20,18,15,.2)}
+.mk>span{display:block;transform:translateY(.5px)}
+.mk.on,.ex-note[aria-expanded="true"] .mk{background:var(--hl);border-color:var(--hl-ink)}
+.mk[hidden]{display:none}
+/* on the capture: centred on its region's top-left corner, a 46 px target round a 30 px token; of two close together
+   on a small print, the later one steps along its region's top edge (--nx, evidence.js) */
+.rg-m{position:absolute;z-index:1;left:calc(var(--mk) / -2 + var(--nx, 0px));top:calc(var(--mk) / -2);pointer-events:auto;cursor:pointer}   /* over its corners */
+.rg-m::after{content:"";position:absolute;inset:-8px;border-radius:50%}
+.ex-note .mk{--mk:28px;margin-top:-4px;font-size:14.5px}
+
+/* ---- the pen at a region's four corners (corners.js), coral: bare while it's noticed; chosen, the region an
+   enlargement shows, on a thin paper halo that lifts it off the dark captures and the busy ones ---- */
+.cn{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.cn path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.cn-ink{stroke:var(--pen);stroke-width:3.4px}
+.cn-case{display:none;stroke:var(--paper);stroke-width:5.8px}
+.cn[data-state="2"] .cn-case{display:inline}
+
+/* ---- the enlargement: a print laid over the capture's frame, the region and its note as a pair ----
+   Placed by evidence.js over the capture's frame (the print; the contact sheet; a phone capture and the legend beside
+   it), and on a phone across the screen's width. data-layout: side (the window, the note in a column beside it),
+   band (the window, the note in a band under it), stack (phones: the window over the note). */
+.zm{position:absolute;z-index:6;left:0;top:0;display:grid;padding:8px;transform-origin:0 0;outline:none}
+/* its paper, and the window's under it, are one layer of their own, so they fold away while what the window shows
+   stays solid (evidence.js puts it back) */
+.zm-paper{position:absolute;inset:0;background:var(--paper);box-shadow:0 0 0 1px var(--line-strong),-8px 16px 28px rgba(60,50,35,.22);pointer-events:none}
+.zm-well{position:absolute;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong)}
+.zm.putting{pointer-events:none}
+.zm.putting .zm-win{scrollbar-color:transparent transparent}
+.zm[hidden]{display:none}
+.zm[data-layout="side"]{grid-template-columns:minmax(0,1fr) var(--nw,340px);grid-template-rows:minmax(0,1fr)}
+.zm[data-layout="band"]{grid-template-rows:minmax(0,1fr) auto}
+.zm[data-layout="stack"]{grid-template-rows:auto auto;padding-bottom:0}
+.zoomed .prints .rg-m{visibility:hidden}   /* under the enlargement; none peeks out past its edge */
+.zm-win{position:relative;z-index:1;min-width:0;min-height:0;display:flex;overflow:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+.zm-win.pan{cursor:grab}
+.zm-win.grab{cursor:grabbing}
+.zm-size{position:relative;flex:none;margin:auto}
+/* the zoom tier over the file the print already shows (its background, set by evidence.js), until it arrives */
+.zm-img{position:absolute;inset:0;transform-origin:0 0;background-size:100% 100%}
+.zm-img img{display:block;width:100%;height:100%;max-width:none;-webkit-user-drag:none;user-select:none}
+.zm-rg{position:absolute;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);pointer-events:none}
+.zm-rg .mk{position:absolute;z-index:1;left:calc(var(--mk) / -2 + var(--zx, 0px));top:calc(var(--mk) / -2 + var(--zy, 0px))}
+/* put back (evidence.js): the capture's own tokens under its way, and the region's corners, held over the
+   enlargement where they are, each in its region's box */
+.zm-home{position:absolute;inset:0;z-index:7;pointer-events:none}
+.zm-at{position:absolute}
+.zm-home .rg-m{pointer-events:none}
+/* the note: its token and key, its title, its text, then ← n / N → and put it back */
+.zm-note{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0;min-height:0}
+.zm-txt{min-width:0}
+.zm-k{display:flex;align-items:center;gap:12px;color:var(--pencil);font:500 10.5px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.zm-k .mk{--mk:28px;font-size:14.5px;letter-spacing:0}
+.zm-t{margin-top:12px;font:500 21px/1.25 var(--disp);letter-spacing:-.012em}
+.zm-p{margin-top:10px;max-width:34em;color:var(--soft);font-size:16px;line-height:1.6}
+.zm-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:auto;padding-top:18px}
+.zm-steps{display:flex;align-items:center;gap:4px}
+/* the controls take no pen line: under a mouse they lift a little on the settle curve and their ring firms up; a
+   keyboard's focus still gets the pen's 「 」 (lib/building/project.js) */
+.zm-bar button{display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 14px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:13px/1 var(--util);touch-action:manipulation;transition:transform .38s var(--ease-settle)}
+@media (hover:hover){.zm-bar button:hover{box-shadow:0 0 0 .8px var(--ink),0 3px 6px rgba(20,18,15,.14);transform:translateY(-1.5px)}}
+.zm-bar button:active{box-shadow:0 0 0 .8px var(--ink);transform:scale(.97);transition-duration:.12s}
+.zm-bar .zm-prev,.zm-bar .zm-next{width:44px;padding:0;font-size:17px}
+.zm-n{min-width:56px;color:var(--ink);font:500 12.5px/1 var(--util);letter-spacing:.04em;text-align:center;white-space:nowrap}
+.zm-x{margin-left:auto}
+.zm[data-layout="side"] .zm-note{overflow:auto;padding:16px 12px 4px 30px}
+.zm[data-layout="side"] .zm-t{margin-top:16px;font-size:24px;line-height:1.2}
+.zm[data-layout="side"] .zm-p{margin-top:12px;font-size:17px;line-height:1.62}
+.zm[data-layout="band"] .zm-note{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 40px;align-items:end;padding:18px 10px 10px}
+.zm[data-layout="band"] .zm-bar{padding-top:0;flex-wrap:nowrap}
+.zm[data-layout="band"] .zm-t{font-size:22px}
+.zm[data-layout="band"] .zm-p{font-size:16.5px}
+.zm[data-layout="stack"] .zm-note{padding:14px 4px 12px}
+.zm[data-layout="stack"] .zm-t{margin-top:10px;font-size:19px}
+.zm[data-layout="stack"] .zm-p{font-size:15px;line-height:1.55}
+.zm[data-layout="stack"] .zm-bar{padding-top:14px}
 
 /* ---- the controlled comparison and the settei library ---- */
+.fa-taste-comparison figcaption span,.fa-settei-library figcaption span{flex:none;color:var(--ink);text-transform:uppercase}
 .fa-taste-comparison{margin:0}
 .fa-taste-prompt{display:grid;grid-template-columns:128px minmax(0,1fr);gap:18px;align-items:start;padding:18px 20px;border:1px solid var(--line-strong);border-bottom:0;border-radius:6px 6px 0 0;background:var(--paper2)}
 .fa-taste-prompt span{padding-top:3px;color:var(--pencil);font:500 9px/1.35 var(--util);letter-spacing:.08em;text-transform:uppercase}
@@ -68,97 +194,24 @@
 .fa-settei-card small{margin-top:4px;color:var(--soft);font:8.5px/1.45 var(--util);letter-spacing:.02em}
 .fa-settei-library figcaption{display:flex;gap:12px;align-items:baseline;padding:11px 14px 12px;color:var(--soft);font:9.5px/1.5 var(--util);letter-spacing:.035em}
 
-/* ---- the evidence viewer (evidence.js): a capture on a plate across the sheet, a loupe on each region ---- */
-.fa-evidence-canvas{--evidence-canvas-width:1000px;--evidence-shot-height:760px;margin:0 calc(-1 * var(--pj-pad))}
-.fa-evidence-scroll{width:100%;padding-bottom:8px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-inline:contain;scrollbar-color:var(--pencil) var(--paper2);scrollbar-width:thin;-webkit-overflow-scrolling:touch}
-.fa-evidence-scroll-hint{display:none;align-items:center;justify-content:space-between;gap:14px;margin:0 var(--pj-pad) 9px;color:var(--soft);font:9px/1.4 var(--util);letter-spacing:.05em;text-transform:uppercase}
-.fa-evidence-stage{position:relative;isolation:isolate;width:max(100%,var(--evidence-canvas-width));padding:18px;border-block:1px solid var(--line-strong);background:var(--paper2);overflow:hidden}
-.fa-evidence-stage::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.32;background-image:radial-gradient(circle,var(--line-strong) .8px,transparent .9px);background-size:18px 18px}
-.fa-evidence-canvas figcaption{display:flex;gap:12px;align-items:baseline;margin:11px var(--pj-pad) 0;color:var(--soft);font:9.5px/1.5 var(--util);letter-spacing:.035em}
-.fa-evidence-shot-wrap{position:relative;width:max-content;margin:0 auto}
-.fa-evidence-shot-wrap::after{content:"";position:absolute;inset:0;z-index:2;border-radius:10px;background:rgba(25,24,22,.2);opacity:0;pointer-events:none;transition:opacity .28s ease}
-.fa-evidence-shot-wrap.is-focus-mode{cursor:zoom-out}
-.fa-evidence-shot-wrap.is-focus-mode::after{opacity:1}
-.fa-evidence-mode-hint{position:absolute;left:50%;top:14px;z-index:7;padding:7px 10px;border:1px solid rgba(251,246,236,.72);border-radius:999px;background:rgba(36,35,33,.86);color:var(--paper);font:500 8px/1 var(--util);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;opacity:0;transform:translate(-50%,-7px);pointer-events:none;transition:opacity .22s ease,transform .3s var(--ease-out)}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-mode-hint{opacity:1;transform:translate(-50%,0)}
-.fa-evidence-shot{position:relative;z-index:1;display:block;width:max-content;border:1px solid rgba(51,48,43,.34);border-radius:10px;background:var(--paper);box-shadow:0 1px 2px rgba(60,50,35,.05),0 16px 38px rgba(60,50,35,.08);overflow:hidden}
-.fa-evidence-shot img{display:block;width:auto;max-width:none;height:var(--evidence-shot-height);transition:filter .34s ease,transform .34s var(--ease-out)}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-shot img{filter:blur(4px) brightness(.56) saturate(.68);transform:scale(1.012)}
-.fa-evidence-annotations{position:absolute;inset:0;z-index:4;pointer-events:none}
-.fa-evidence-annotation{--scope-width:140px;--scope-height:140px;--scope-radius:999px;--scope-zoom:1.5;position:absolute;left:var(--scope-x);top:var(--scope-y);z-index:4;width:var(--scope-width);height:var(--scope-height);transform:translate(-50%,-50%);pointer-events:auto}
-.fa-evidence-annotation--capture{--scope-x:6.9%;--scope-y:54.2%;--scope-width:160px;--scope-height:160px;--scope-radius:50%;--scope-zoom:2.15}
-.fa-evidence-annotation--delivery{--scope-x:75.5%;--scope-y:31%;--scope-width:388px;--scope-height:155px;--scope-radius:22px;--scope-zoom:1.3}
-.fa-evidence-annotation--schedule{--scope-x:74.5%;--scope-y:74.5%;--scope-width:180px;--scope-height:245px;--scope-radius:88px;--scope-zoom:1.85}
-.fa-evidence-canvas--discord{--evidence-canvas-width:840px;--evidence-shot-height:700px}
-.fa-evidence-canvas--discord .fa-evidence-stage{padding-block:20px}
-.fa-evidence-annotation--discord-audio{--scope-x:35.5%;--scope-y:23.2%;--scope-width:171px;--scope-height:84px;--scope-radius:42px;--scope-zoom:1.35}
-.fa-evidence-annotation--discord-status{--scope-x:22.5%;--scope-y:33.2%;--scope-width:104px;--scope-height:104px;--scope-radius:50%;--scope-zoom:1.55}
-.fa-evidence-annotation--discord-link{--scope-x:57%;--scope-y:47.2%;--scope-width:299px;--scope-height:120px;--scope-radius:19px;--scope-zoom:1.08}
-.fa-evidence-canvas--recovery{--evidence-canvas-width:1480px}
-.fa-evidence-canvas--recovery .fa-evidence-scroll-hint{display:flex}
-.fa-recovery-board{display:grid;grid-template-columns:620px 390px 390px;gap:14px}
-.fa-recovery-panel{min-width:0;padding:10px;border:1px solid rgba(51,48,43,.34);border-radius:10px;background:var(--paper);box-shadow:0 1px 2px rgba(60,50,35,.05),0 16px 38px rgba(60,50,35,.08)}
-.fa-recovery-panel-label{display:flex;align-items:center;gap:8px;padding:2px 2px 10px;color:var(--soft);font:500 9px/1.3 var(--util);letter-spacing:.055em;text-transform:uppercase}
-.fa-recovery-panel-label span{display:inline-grid;width:21px;height:21px;place-items:center;border:1px solid var(--ink);border-radius:50%;color:var(--ink);font-size:8px}
-.fa-recovery-shot-wrap{width:100%}
-.fa-recovery-shot{width:100%;border-radius:7px;box-shadow:none}
-.fa-recovery-panel img,.fa-recovery-shot img{display:block;width:100%;max-width:100%;height:auto;border:1px solid var(--line);border-radius:7px;background:#fff}
-.fa-evidence-annotation--recovery-dispatch{--scope-x:52%;--scope-y:81.5%;--scope-width:550px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.7}
-.fa-evidence-annotation--recovery-task{--scope-x:50%;--scope-y:20.7%;--scope-width:350px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.2}
-.fa-evidence-annotation--recovery-error{--scope-x:50%;--scope-y:27.5%;--scope-width:340px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.35}
-.fa-evidence-annotation--recovery-fixed{--scope-x:46%;--scope-y:48.4%;--scope-width:300px;--scope-height:46px;--scope-radius:13px;--scope-zoom:1.5}
-/* the loupe: a paper ring with an ink hairline, its region magnified inside (evidence.js) */
-.fa-evidence-loupe{position:relative;width:100%;height:100%;padding:0;appearance:none;border:2px solid var(--paper);border-radius:var(--scope-radius);background-color:var(--paper2);background-repeat:no-repeat;background-origin:border-box;box-shadow:0 0 0 1px var(--ink),0 10px 24px rgba(25,24,22,.3);cursor:zoom-in;transition:transform .28s var(--ease-out),box-shadow .28s ease}
-.fa-evidence-loupe:hover,.fa-evidence-loupe:focus-visible{transform:scale(1.025);box-shadow:0 0 0 1px var(--ink),0 14px 30px rgba(25,24,22,.34)}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-loupe{cursor:zoom-out;transform:scale(1.025);box-shadow:0 0 0 1px var(--ink),0 15px 32px rgba(15,14,13,.42)}
-.fa-evidence-scope-cta{position:absolute;left:50%;top:-12px;display:inline-flex;align-items:stretch;overflow:hidden;border:1px solid rgba(251,246,236,.72);border-radius:999px;background:rgba(36,35,33,.86);color:var(--paper);font:600 8px/1 var(--util);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;box-shadow:0 5px 14px rgba(25,24,22,.2);transform:translate(-50%,-50%);transition:opacity .2s ease,transform .3s var(--ease-out)}
-.fa-evidence-canvas--discord .fa-evidence-scope-cta{pointer-events:none}
-.fa-evidence-scope-cta>span:first-child{padding:7px 9px 6px}
-.fa-evidence-scope-action{display:flex;align-items:center;border-left:1px solid rgba(251,246,236,.32)}
-.fa-evidence-scope-action i,.fa-evidence-scope-action b{padding:8px 8px 7px;font:inherit}
-.fa-evidence-scope-action b{display:none}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-scope-action i{display:none}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-scope-action b{display:block}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-scope-cta{opacity:0;transform:translate(-50%,calc(-50% + 5px))}
-/* the notes, shown with focus mode */
-.fa-evidence-note-body{position:absolute;top:50%;display:grid;width:260px;min-width:0;scroll-margin-inline:12px;grid-template-rows:0fr;opacity:0;visibility:hidden;transform:translateY(calc(-50% + 9px)) scale(.98);transform-origin:center;pointer-events:none;transition:grid-template-rows .32s var(--ease-out),opacity .2s ease,transform .32s var(--ease-out),visibility 0s linear .32s}
-.fa-evidence-annotation--capture .fa-evidence-note-body{left:calc(50% + 70px);top:calc(100% + 13px);transform:translate(-50%,9px) scale(.98)}
-.fa-evidence-annotation--delivery .fa-evidence-note-body,.fa-evidence-annotation--schedule .fa-evidence-note-body{right:calc(100% + 13px)}
-.fa-evidence-annotation--discord-audio .fa-evidence-note-body{left:calc(100% + 164px);top:calc(50% - 72px)}
-.fa-evidence-annotation--discord-status .fa-evidence-note-body{right:168px}
-.fa-evidence-annotation--discord-link .fa-evidence-note-body{left:calc(100% + 8px);top:calc(50% + 52px)}
-.fa-evidence-annotation--recovery-dispatch .fa-evidence-note-body{left:50%;top:auto;bottom:calc(100% + 12px);width:320px;transform:translate(-50%,9px) scale(.98)}
-.fa-evidence-annotation--recovery-task .fa-evidence-note-body{left:50%;top:calc(100% + 130px);width:270px;transform:translate(-50%,calc(-50% + 9px)) scale(.98)}
-.fa-evidence-annotation--recovery-error .fa-evidence-note-body{left:50%;top:calc(100% + 300px);width:270px;transform:translate(-50%,calc(-50% + 9px)) scale(.98)}
-.fa-evidence-annotation--recovery-fixed .fa-evidence-note-body{left:50%;top:calc(100% + 110px);width:270px;transform:translate(-50%,calc(-50% + 9px)) scale(.98)}
-.fa-evidence-note-body>div{min-height:0;overflow:hidden;padding:14px 15px 13px;border:1px solid var(--line-strong);border-radius:10px;background:var(--paper);box-shadow:0 8px 22px rgba(60,50,35,.12)}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-note-body>div{border-color:var(--ink);box-shadow:0 12px 28px rgba(20,19,17,.28)}
-.fa-evidence-annotation--delivery .fa-evidence-note-body>div{border-left:3px solid var(--ink)}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-annotation{z-index:6}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-note-body{grid-template-rows:1fr;opacity:1;visibility:visible;transform:translateY(-50%) scale(1);pointer-events:auto;transition-delay:0s}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-annotation--capture .fa-evidence-note-body,.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-annotation--recovery-dispatch .fa-evidence-note-body{transform:translate(-50%,0) scale(1)}
-.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-annotation--recovery-task .fa-evidence-note-body,.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-annotation--recovery-error .fa-evidence-note-body,.fa-evidence-shot-wrap.is-focus-mode .fa-evidence-annotation--recovery-fixed .fa-evidence-note-body{transform:translate(-50%,-50%) scale(1)}
-.fa-evidence-note-index{display:block;color:var(--pencil);font:500 8.5px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
-.fa-evidence-note-body strong{display:block;margin-top:7px;font:600 clamp(18px,1.7vw,24px)/1.02 var(--hand)}
-.fa-evidence-note-body p{margin-top:8px;color:var(--soft);font-size:clamp(11px,1.05vw,14px);line-height:1.42}
-
-@media (min-width:1283px){
-  .fa-evidence-canvas--discord{--evidence-canvas-width:1020px;--evidence-shot-height:980px}
-  .fa-evidence-canvas--discord .fa-evidence-stage{padding-block:26px}
-  .fa-evidence-annotation--discord-audio{--scope-width:238px;--scope-height:116px;--scope-radius:58px}
-  .fa-evidence-annotation--discord-status{--scope-width:142px;--scope-height:142px}
-  .fa-evidence-annotation--discord-link{--scope-width:410px;--scope-height:168px;--scope-radius:25px}
-  .fa-evidence-annotation--discord-audio .fa-evidence-note-body{left:calc(100% + 187px)}
-  .fa-evidence-annotation--discord-status .fa-evidence-note-body{right:calc(100% + 44px)}
-  .fa-evidence-annotation--discord-link .fa-evidence-note-body{left:calc(100% + 4px)}
-}
-@media (max-width:1282px){
-  .fa-evidence-scroll-hint{display:flex}
-  .fa-evidence-stage::before{opacity:.22}
-}
 @media (max-width:760px){
   .fa-demo-head{flex-direction:column}
   .fa-demo-copy--split{grid-template-columns:1fr}
+  .ex-notes,.viewer--sheet .ex-notes{grid-template-columns:1fr}
+  .viewer--tall{display:flex}
+  .viewer--tall .prints{width:min(250px,76%);margin:0 auto}
+  .viewer--tall .ex-notes{order:3;margin-top:24px}
+  .viewer--sheet .prints{grid-template-columns:1.2fr 1fr 1fr;gap:12px}
+  .pc{width:18px;height:18px}
+  .pc-tl,.pc-tr{top:-5px}.pc-bl,.pc-br{bottom:-5px}.pc-tl,.pc-bl{left:-5px}.pc-tr,.pc-br{right:-5px}
+  /* a 32 px token is the tap target's floor; the ::after takes it to 48 */
+  .mk{--mk:32px;font-size:16px}
+  .zm{padding:6px}
+  /* a comfortable thumb target, still clear of the call screen's own round buttons */
+  .ex-play{gap:10px}
+  .ex-play-d{width:64px;height:64px}
+  .ex-play-b{margin-left:6px;border-left-width:20px;border-top-width:12px;border-bottom-width:12px}
+  .ex-play-l{padding:7px 11px 8px;font-size:11.5px}
   .fa-taste-prompt{grid-template-columns:1fr;gap:8px}
   .fa-taste-comparison-grid{grid-template-columns:1fr;gap:1px;padding:1px;border:0;background:var(--line-strong)}
   .fa-taste-panel{padding:14px;background:var(--paper)}
@@ -167,5 +220,13 @@
   .fa-settei-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){
-  .fa-evidence-shot-wrap::after,.fa-evidence-mode-hint,.fa-evidence-shot img,.fa-evidence-loupe,.fa-evidence-scope-cta,.fa-evidence-note-body{transition:none!important}
+  .ex-play-d,.zm-bar button{transition:none}
+}
+@media (forced-colors:active){
+  .mk,.ex-play-d{border:2px solid CanvasText;forced-color-adjust:none;background:Canvas;color:CanvasText}
+  .cn-ink{stroke:CanvasText}
+  .cn-case{stroke:Canvas}
+}
+@media print{
+  .ex-play,.print--video::after,.zm{display:none!important}
 }

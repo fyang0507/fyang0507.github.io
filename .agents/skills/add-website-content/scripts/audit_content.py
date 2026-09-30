@@ -281,7 +281,7 @@ def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> i
             expected.append((label, generator.derivative_url(cover, "boards", width)))
 
     # Evidence: the ladder is capped at each original's width, read from the
-    # dimensions sidecar, and the loupes' captures add their zoom copy.
+    # dimensions sidecar, and the captures Demos enlarges add their zoom copy.
     evidence = generator.evidence_originals()
     for name in generator.EVIDENCE_ZOOM:
         if f"{generator.EVIDENCE_DIR}/{name}" not in evidence:

@@ -63,8 +63,8 @@ COVER_BOARD_DEFAULT_WIDTH = 480
 # the original's own width.
 EVIDENCE_DIR = "images/evidence"
 EVIDENCE_WIDTHS = (640, 960, 1280, 1760)
-# The captures the Demos loupes magnify get one more copy, at full width and
-# quality 90, which only an opened loupe fetches: <stem>-zoom.jpg.
+# The captures Demos enlarges get one more copy, at full width and quality 90,
+# which only an opened enlargement fetches: <stem>-zoom.jpg.
 EVIDENCE_ZOOM = (
     "fred-agent/auto-recover-evidence-2.png",
     "fred-agent/auto-recover-evidence.png",
