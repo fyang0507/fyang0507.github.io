@@ -12,6 +12,7 @@
 //        page scrolled 40 px, the header strip, identity and rule ride down together and no object jumps; into each
 //        of the four pages, every animation transitions-tab.js makes changes only transform and opacity, so the
 //        compositor runs it whatever the page is doing on the main thread
+// Every move that should carry a view transition checks that it did, and its kind, so a page without the opt-in fails.
 // none   reduced motion, same tab (Writing ↔ Reading), 404, direct load and reload get no transition; fy-vt is
 //        consumed every time. Plus: no console errors, no horizontal overflow after each move.
 import { ORIGIN, hook, seek, xy, check, drawn, deskBoxes, gap } from './vt-lib.mjs';
@@ -70,7 +71,7 @@ export default async (page, ctx) => {
     r = await arrive(page, await clickVisible(page, 'a[href="Writing.dc.html"][aria-label]'));
     await seek(page, 0);
     const lift = gap(await drawn(page, OBJS, 'old'), onDesk);
-    check(res, T('enter · each object starts where the desk drew it (≤ 1 px)'), lift <= 1, +lift.toFixed(2) + ' px');
+    check(res, T('enter · frozen: a transition, kind enter, each object starts where the desk drew it (≤ 1 px)'), r.vt && r.kind === 'enter' && lift <= 1, { kind: r.kind, px: +lift.toFixed(2) });
     await seek(page, 750);
     const at = await page.evaluate(() => {
       const labs = [...document.querySelectorAll('.site-index .site-nav-label')].map((l) => +getComputedStyle(l).opacity);
@@ -96,7 +97,7 @@ export default async (page, ctx) => {
     r = await arrive(page, await clickVisible(page, '.site-home'));
     await seek(page, Math.max(...r.anims.map((a) => a.dur || 0)));
     const land = gap(await drawn(page, OBJS, 'new'), await deskBoxes(page));
-    check(res, T('leave · each object lands where the desk lays it out (≤ 1 px)'), land <= 1, +land.toFixed(2) + ' px');
+    check(res, T('leave · frozen: a transition, kind leave, each object lands where the desk lays it out (≤ 1 px)'), r.vt && r.kind === 'leave' && land <= 1, { kind: r.kind, px: +land.toFixed(2) });
     await page.evaluate(() => document.getAnimations().forEach((a) => { if (a.effect && a.effect.pseudoElement) a.finish(); }));   // the desk's own loops never finish
 
     // tab
