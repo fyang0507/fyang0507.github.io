@@ -1,5 +1,23 @@
 {
  "faces": {
+  "Caveat-latin-ext.woff2": {
+   "chars": 229,
+   "family": "Caveat",
+   "fingerprint": "5bb2d1ff4a555a0a",
+   "masterBytes": 403648,
+   "subsetBytes": 28676,
+   "unicodeRange": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF",
+   "url": "./fonts/derived/Caveat-latin-ext.woff2"
+  },
+  "Caveat-latin.woff2": {
+   "chars": 226,
+   "family": "Caveat",
+   "fingerprint": "1406312b8d4b507d",
+   "masterBytes": 403648,
+   "subsetBytes": 74504,
+   "unicodeRange": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+   "url": "./fonts/derived/Caveat-latin.woff2"
+  },
   "DingTalkJinBuTi.woff2": {
    "chars": 568,
    "charset": "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~§©°±²·×éüʻζθφω–—’“”…₀⅓←↑→↓↔↗↘↺−∝≈≡≤≥⌜⌟◐✦、。「」〿くつづ㐀一三上下不与世东个中为么之乎也书了事二于些交人什从他代们件价任份众会伦估似你侦信值儿先光克入全公六兰共关再写凑出击分切列别到制剪力加务动勿华南卡卷历去参双反受叠句只右号合后吧吸呼命和咔咖响哪唤啡嚓四回困围图圈圣在圳场型城士声处复夏多夜大天夷夹奈套好如威字存安实审家察对寺封小尔层履山岁州巡工左巴布席常年广库建异弗张形往得微德心必志忘态怎怒思性惯想愤我或所打托技把折抽拆拉拍拖按换接插播收放故救文斯新方无日时是显晕晾更替月有期木未本术杂来杨杯林架标样根格框桌桥森模欢歌正殊段沙没注活流测海深清港游湖滑满滩漠瀛点照片物特狂狷猫玉现珞理瑞生用电画界留白的目看知短码示礼社神积空竟章笔第篇类系索線繁红约纳纽线绕给继续绳维缺翻考者而耐职胡能脊腐腰自致色艺节芜花英范荒荧药莞莱萨藏行被西要见观解言让记许证词诗话语请诺读谷象赎赢赫走起越趣路跳身躺车辑输辜达过迎这进逆造道遗那部都醒释里重野量金钉钟银错镜长门间阁阅阿除随集雷非面页项顿题食首香验鸟麦黎鿿！（），：；？",
@@ -9,6 +27,87 @@
    "masterBytes": 1008032,
    "subsetBytes": 67140,
    "url": "./fonts/derived/DingTalkJinBuTi.woff2"
+  },
+  "Fraunces-Italic-latin-ext.woff2": {
+   "chars": 285,
+   "family": "Fraunces",
+   "fingerprint": "18684be3b69ff609",
+   "masterBytes": 414904,
+   "subsetBytes": 72480,
+   "unicodeRange": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF",
+   "url": "./fonts/derived/Fraunces-Italic-latin-ext.woff2"
+  },
+  "Fraunces-Italic-latin.woff2": {
+   "chars": 223,
+   "family": "Fraunces",
+   "fingerprint": "c959091bb949c1d9",
+   "masterBytes": 414904,
+   "subsetBytes": 84448,
+   "unicodeRange": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+   "url": "./fonts/derived/Fraunces-Italic-latin.woff2"
+  },
+  "Fraunces-Italic500-latin.woff2": {
+   "chars": 223,
+   "family": "Fraunces",
+   "fingerprint": "aab0ef17ff922764",
+   "masterBytes": 414904,
+   "subsetBytes": 43528,
+   "unicodeRange": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+   "url": "./fonts/derived/Fraunces-Italic500-latin.woff2"
+  },
+  "Fraunces-latin-ext.woff2": {
+   "chars": 285,
+   "family": "Fraunces",
+   "fingerprint": "06374b335f08dc71",
+   "masterBytes": 360440,
+   "subsetBytes": 60048,
+   "unicodeRange": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF",
+   "url": "./fonts/derived/Fraunces-latin-ext.woff2"
+  },
+  "Fraunces-latin.woff2": {
+   "chars": 224,
+   "family": "Fraunces",
+   "fingerprint": "78d3d31296a7dbbc",
+   "masterBytes": 360440,
+   "subsetBytes": 70108,
+   "unicodeRange": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+   "url": "./fonts/derived/Fraunces-latin.woff2"
+  },
+  "IBMPlexMono-Medium-latin-ext.woff2": {
+   "chars": 201,
+   "family": "IBM Plex Mono",
+   "fingerprint": "2fe8240dfee9a36a",
+   "masterBytes": 136704,
+   "subsetBytes": 8996,
+   "unicodeRange": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF",
+   "url": "./fonts/derived/IBMPlexMono-Medium-latin-ext.woff2"
+  },
+  "IBMPlexMono-Medium-latin.woff2": {
+   "chars": 227,
+   "family": "IBM Plex Mono",
+   "fingerprint": "2fe091b0b144988b",
+   "masterBytes": 136704,
+   "subsetBytes": 10040,
+   "unicodeRange": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+   "url": "./fonts/derived/IBMPlexMono-Medium-latin.woff2"
+  },
+  "IBMPlexMono-Regular-latin-ext.woff2": {
+   "chars": 201,
+   "family": "IBM Plex Mono",
+   "fingerprint": "49a7acc06ac62df3",
+   "masterBytes": 135580,
+   "subsetBytes": 8948,
+   "unicodeRange": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF",
+   "url": "./fonts/derived/IBMPlexMono-Regular-latin-ext.woff2"
+  },
+  "IBMPlexMono-Regular-latin.woff2": {
+   "chars": 227,
+   "family": "IBM Plex Mono",
+   "fingerprint": "eaf5092c097197e3",
+   "masterBytes": 135580,
+   "subsetBytes": 10108,
+   "unicodeRange": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+   "url": "./fonts/derived/IBMPlexMono-Regular-latin.woff2"
   },
   "MuyaoSuixin.woff2": {
    "chars": 464,
@@ -53,6 +152,11 @@
  },
  "note": "Generated by scripts/generate-fonts.py; do not hand-edit.",
  "upstreamMasters": {
+  "Caveat": "0bdb6b660482d31531b3945849fba5916b3ef8695da7024a9e6b9ee3c4157988",
+  "Fraunces": "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb",
+  "Fraunces-Italic": "b24448c43702fac4ee856781d461a0dfba8d8e594b6e8e190234b75fed2c0e01",
+  "IBMPlexMono-Medium": "a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755",
+  "IBMPlexMono-Regular": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46",
   "NotoSansSC": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
   "NotoSerifSC": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9"
  }
