@@ -97,7 +97,7 @@ $ ntn-gateway aggregate pages \
   → report concise status
   → investigate once
   → recover or escalate</code></pre></figure><span class="cm-src cm-src--none">Cross-cutting protocol</span></section>
-        <section id="composition" class="pj-pr cm-close" aria-labelledby="composition-t">
+        <section id="composition" class="cm-close" aria-labelledby="composition-t">
           <h2 class="pr-h" id="composition-t"><span class="pr-no">06</span><span class="pr-t">Interfaces become a system only inside a workflow.</span></h2>
           <p>Consider a scheduled follow-up: Sundial wakes the command, Notion Gateway loads the canonical task state, and Outreach delivers the result. The workflow decides what counts as complete and whether silence, a digest, or an interruption is appropriate.</p>
           <p>Now consider the same run failing after the session closes: the recovery protocol preserves the retry, records evidence, and attempts one bounded investigation. No single CLI owns either experience; the workflow supplies the purpose, order, policy, and stopping condition.</p>

@@ -5,10 +5,17 @@
        (a) the card you came back from is brought into view, worked out from the page you came from
            (navigation.activation.from, else document.referrer): no storage;
        (b) the board is exactly where you left it: sessionStorage fy-r3-board {x}, written as you leave.
-     Both run in the pagereveal handler, where the sheets have applied in every engine (PORT-PLAN §7).
+     Both run in the pagereveal handler, where the sheets have applied in every engine (PORT-PLAN §8).
    · Q8, the card's direct link: its peeking tabs are named for the flight (a), or r3-vt.js cuts (b).
    · The dossier and chapter links point at the r3 pages, so a way in and a way back stay in round 3.
-   · The pin is hidden and pressed only when a transition runs (R17). */
+   · The pin is hidden and pressed only when a transition runs (R17).
+   · The layering (Fred, on Q2: "the order of layer should be correct at the first place"). The tabs are named
+     view-transition groups, and every group paints above the page's own snapshot, so on the way back they were drawn
+     over the card for the whole move and slid under it only when it ended. The card in play now gets its own group
+     too: its swing, so the paper and its tape travel as one (.r3-card, pj-board-card in r3.css), ordered above the tabs and faded with the page by r3-vt.js, so whatever
+     sits under the card at rest is under it in every frame: the way back, the way in from the dossier, and the direct
+     link's flight. One card carries the name at a time; stale names from a page restored from the back/forward cache
+     are cleared before anything is named. */
 import { build, sortProjects } from '../../lib/building/cards.js';
 import { Physics } from '../../lib/building/physics.js';
 import { mountFlower, flowerCues } from '../../lib/building/flower.js';
@@ -83,7 +90,9 @@ function maxX() {
   const cs = getComputedStyle(k.viewport);
   return Math.max(0, k.track.offsetWidth + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) - k.viewport.clientWidth);
 }
+function clearNames() { document.querySelectorAll('.r3-card, .vt-tabs').forEach((n) => n.classList.remove('r3-card', 'vt-tabs')); }
 function arrive(e) {
+  clearNames();
   const from = cameFrom();
   if (!from) return;
   const i = slotOf(from.project), s = k.slots[i];
@@ -98,10 +107,11 @@ function arrive(e) {
   if (s && e && e.viewTransition && !(window.BD && BD.reduced())) {   // the way back: the tabs tuck behind this card, then its pin goes in
     s.pin.style.visibility = 'hidden';
     if (s.peek) s.peek.classList.add('vt-tabs');
+    s.swing.classList.add('r3-card');
     s.r3Back = true;
   }
 }
-if ('onpagereveal' in window) addEventListener('pagereveal', arrive, { once: true }); else arrive(null);
+if ('onpagereveal' in window) addEventListener('pagereveal', arrive); else arrive(null);
 
 // ---- what r3-vt.js asks of this page ----
 window.BD_PAGE = {
@@ -111,18 +121,23 @@ window.BD_PAGE = {
     if (!to || to.role !== 'project') return;
     rec.id = to.project;
     const st = U && U.current();
-    if (st && st.panel) { const t = st.panel.querySelector('.dos-tabs'); if (t) t.classList.add('vt-tabs'); return; }
+    if (st && st.panel) {   // the way in from the dossier in your hand: its tabs, under the card in your hand
+      const t = st.panel.querySelector('.dos-tabs');
+      if (t) t.classList.add('vt-tabs');
+      st.s.swing.classList.add('r3-card');
+      return;
+    }
     const l = window.BDVT && BDVT.link(), sw = l && l.closest('.swing');   // the card's own direct link (Q8)
     if (!sw) return;
     rec.direct = true;
     const s = k.slots.find((x) => x.swing === sw);
-    if (s && s.peek && BD.r3.q8 === 'a') s.peek.classList.add('vt-tabs');
+    if (s && s.peek && BD.r3.q8 === 'a') { s.peek.classList.add('vt-tabs'); s.swing.classList.add('r3-card'); }
   },
   landed(rec, kind, vt) {
     const i = k.slots.findIndex((s) => s.r3Back), s = k.slots[i];
     if (!s) return;
     s.r3Back = false;
-    if (s.peek) s.peek.classList.remove('vt-tabs');
+    clearNames();
     if (vt) whenWired(() => U.repin(i)); else s.pin.style.visibility = '';
   }
 };
