@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>identity · round 2 · frame</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<!-- Round 2's live context: a page's static header with the re-carved B lockup (R2.link(), the markup production
+     bakes), the lockup alone, its four pen states, or the white-text seal large beside round 1's.
+     ?view=header|solo|states|seal · page=writing|building|gallery|about · state=rest|hover|focus|press · rm=1
+     LIVE FILES: lib/shared/site-tokens.css, pen.css, motion.js, pen.js, pen-tier.js, and lib/home/identity.js (the
+     arrival, the production module). The nav comes from the frozen 00-site-nav.css, the lockup from r2-identity.css. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="00-site-nav.css">
+<link rel="stylesheet" href="../../lib/shared/pen.css">
+<link rel="stylesheet" href="r2-identity.css">
+<style>
+  html,body{background:var(--paper)}
+  body.solo{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center}
+  body.solo .site-top{padding:0}
+  body.states{margin:0;min-height:100vh;display:flex;align-items:center}
+  body.states .site-top{flex-direction:row;justify-content:space-around;align-items:center;width:100%;padding:0 12px;gap:12px}
+  .st-cell{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .st-cell b,.sl b{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;color:var(--pencil)}
+  body.seal{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;gap:56px}
+  .sl{display:flex;flex-direction:column;gap:12px;align-items:center}
+  .sl svg{width:280px;height:280px;overflow:visible}
+</style>
+<script src="../../lib/shared/motion.js"></script>
+<script src="../../lib/shared/pen.js"></script>
+<script src="../../lib/shared/pen-tier.js"></script>
+<script src="01-kit.js"></script>
+<script src="01-glyphs.js"></script>
+<script src="r2-seal.js"></script>
+</head>
+<body>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="../../index.html"></a>
+      <div class="site-header-status"></div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="../../index.html"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="#" data-p="writing"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="#" data-p="building"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="#" data-p="gallery"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="#" data-p="about"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
+    </nav>
+  </header>
+</div>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), page = q.get('page') || 'writing', view = q.get('view') || 'header';
+  if (q.get('rm') === '1') Motion.reduced = function () { return true; };
+  var STATUS = { writing: '27 essays · 2015–2026', building: 'on the board · 7 件', gallery: 'frames · 2015–2025', about: 'field guide · vol. 01' };
+  document.querySelector('.site-header-status').textContent = STATUS[page];
+  document.querySelectorAll('.site-tab').forEach(function (a) { if (a.dataset.p === page) a.setAttribute('aria-current', 'page'); });
+  document.addEventListener('click', function (e) { if (e.target.closest('a')) e.preventDefault(); }, true);
+  var link = document.querySelector('.site-identity'), top = document.querySelector('.site-top');
+  link.outerHTML = R2.link('../../index.html');
+  link = document.querySelector('.site-identity');
+  // the pen's states, wired the way lib/shared/site.js wires every page's identity
+  function wire(a) { return Tier.wire(a, { target: '.site-identity-mark', focus: { on: 'host', gap: 1, gy: 1 } }); }
+  var wires = [];
+  if (view === 'solo') { document.body.classList.add('solo'); top.textContent = ''; top.appendChild(link); }
+  if (view === 'seal') {
+    document.body.classList.add('seal'); top.remove();
+    document.body.insertAdjacentHTML('beforeend', '<div class="sl"><b>round 1 · 弗雷 | 德</b>' + R2.round1Mark() + '</div><div class="sl"><b>round 2 · 雷德 | 弗</b>' + R2.mark() + '</div>');
+  }
+  if (view === 'states') {
+    document.body.classList.add('states'); top.textContent = '';
+    var NAMES = { rest: 'rest', hover: 'pen hover', focus: 'keyboard focus', press: 'press · the chosen band' };
+    ['rest', 'hover', 'focus', 'press'].forEach(function (s) {
+      var cell = document.createElement('div'), l = link.cloneNode(true);
+      cell.className = 'st-cell'; cell.innerHTML = '<b>' + NAMES[s] + '</b>'; cell.appendChild(l); top.appendChild(cell);
+      wires.push({ s: s, w: wire(l) });
+    });
+  } else if (view !== 'seal') wires.push({ s: q.get('state'), w: wire(link) });
+  window.FRAME = { link: link, arrive: function () { return window.FY_ARRIVE ? window.FY_ARRIVE(link) : 0; } };
+  document.fonts.ready.then(function () {
+    wires.forEach(function (x) {
+      x.w.mark.build();
+      if (x.s === 'hover') x.w.mark.to(1, 'instant');
+      if (x.s === 'press') x.w.mark.to(2, 'instant');
+      if (x.s === 'focus' && x.w.focus) x.w.focus.set(true, true);
+    });
+    document.documentElement.setAttribute('data-ready', '');
+  });
+})();
+</script>
+<script type="module">
+  import { arrive } from '../../lib/home/identity.js';
+  window.FY_ARRIVE = arrive;
+</script>
+</body>
+</html>

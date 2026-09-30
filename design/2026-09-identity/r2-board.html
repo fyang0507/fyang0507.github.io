@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identity · round 2 · design/2026-09-identity</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="01-board.css">
+<style>
+  .call{border-left:3px solid var(--mark);padding:2px 0 2px 16px;margin:14px 0 0;max-width:940px;font-size:17px}
+  .call b{font-weight:500}
+  .facts{font-size:15px;color:var(--soft);max-width:940px}
+  .facts li{margin:3px 0}
+</style>
+<script src="01-kit.js"></script>
+<script src="01-glyphs.js"></script>
+<script src="r2-seal.js"></script>
+<script src="r2-board.js" defer></script>
+</head>
+<body>
+<div class="bd-top">
+  <b>design/2026-09-identity</b><span>round 2 · B <span class="zh">印</span>, re-carved · the two open questions</span>
+  <nav><a href="#carve">re-carve</a><a href="#context">in context</a><a href="#states">states</a><a href="#motion">arrival</a><a href="#qa">a · Reading</a><a href="#qb">b · status line</a><a href="index.html">round 1</a><a href="HANDOFF.md">HANDOFF</a></nav>
+  <label><input type="checkbox" id="rm"> reduced motion</label>
+</div>
+<main class="bd">
+  <h1>The seals, re-carved <span class="zh">· 重刻白文</span></h1>
+  <p class="lede">Fred picked B <span class="zh">印</span>, with one change: “let <span class="zh">弗</span> be on one col and <span class="zh">雷德</span> on the other.” Read the seal the way seals are read, right column first, top to bottom: <span class="zh">弗</span> alone fills the right column, <span class="zh">雷</span> over <span class="zh">德</span> the left. Everything else in B stands: FRED YANG, the written motto, the pen’s states, the arrival, the accessible name.</p>
+  <p class="lede">This lockup is also what production now carries: the markup in every static header is baked from <code>r2-seal.js</code>.</p>
+
+  <section id="carve">
+    <div class="sec-head"><h2>The re-carve</h2><p>Drawn large, beside round 1’s carving, then at 1:1.</p></div>
+    <div class="fr" data-src="r2-frame.html?view=seal" data-w="900" data-h="420" data-eager data-title="round 1 and round 2 white-text seals"></div>
+    <ul class="facts">
+      <li><b>Columns:</b> <span class="zh">雷德</span> share the dense column, cut wider (51 units of 100); <span class="zh">弗</span>, five strokes, takes the narrow one (31) and runs the full height, its <span class="zh">撇</span> and <span class="zh">竖</span> continuing under the <span class="zh">弓</span>.</li>
+      <li><b>Knife:</b> <span class="zh">疏密</span>, the sparse column cut a knife wider (4.5 units against 3.2), so its four verticals keep about as much red between them as <span class="zh">雷德</span>’s densest strokes do (about 4 units).</li>
+      <li><b>Border:</b> one margin all round, about 3.5 units of red to the stone’s edge, and the same red between the columns. The stone keeps round 1’s hand-cut edge and its one nick; each impression keeps its tilt.</li>
+      <li><b>At 66 px:</b> <span class="zh">雷</span> and <span class="zh">德</span> hold at 1×; <span class="zh">弗</span>’s narrow column reads fully at 2×, and at 1× as a seal’s texture. The accessible name carries the text either way.</li>
+    </ul>
+    <h3>1:1 · round 1’s B, then round 2’s</h3>
+    <div class="row">
+      <div class="fr" data-src="01-frame.html?c=B&amp;view=solo" data-w="640" data-h="130" data-eager data-title="round 1 B"></div>
+      <div class="fr" data-replay data-src="r2-frame.html?view=solo" data-w="640" data-h="130" data-eager data-title="round 2 B"></div>
+    </div>
+  </section>
+
+  <section id="context">
+    <div class="sec-head"><h2>In context</h2><p>The Writing header (the longest status line), then home.</p></div>
+    <h3>Writing header · 1440</h3>
+    <div class="fr" data-replay data-src="r2-frame.html?page=writing" data-w="1440" data-h="205" data-scale=".93" data-title="1440"></div>
+    <h3>Phones · 390 and 320 · home at 390 and 1440 (the live page)</h3>
+    <div class="row">
+      <div class="col">
+        <div class="fr" data-replay data-src="r2-frame.html?page=writing" data-w="390" data-h="240" data-title="390"></div>
+        <div class="fr" data-replay data-src="r2-frame.html?page=writing" data-w="320" data-h="240" data-title="320"></div>
+      </div>
+      <div class="fr" data-home="1" data-w="390" data-h="844" data-scale=".5" data-title="home at 390"></div>
+      <div class="fr" data-home="1" data-w="1440" data-h="900" data-scale=".47" data-title="home at 1440"></div>
+    </div>
+  </section>
+
+  <section id="states">
+    <div class="sec-head"><h2>States</h2><p>The site’s pen, wired by <code>Tier.wire</code> as on every nav link.</p></div>
+    <div class="fr" data-src="r2-frame.html?view=states" data-w="1340" data-h="140" data-title="states"></div>
+  </section>
+
+  <section id="motion">
+    <div class="sec-head"><h2>The arrival</h2><p>One cause: the end of a first visit’s OP. The pen writes the inscription, then the two seals land on held frames with the pin’s impact ticks, 1.6 s. The frames here run production’s <code>lib/home/identity.js</code>.</p></div>
+    <div class="ctl"><button data-play="1">replay the arrival (every frame on this board)</button><button data-op="1440">play the real opener on home (1440): it ends in the arrival</button><button data-op="390">and on the phone (390)</button></div>
+  </section>
+
+  <section id="qa">
+    <div class="sec-head"><h2>a · Reading’s compact header</h2><p>Today it shows the favicon portrait at 34 px (30 on phones), over the essay’s cover. Against it, the white-text seal alone.</p></div>
+    <h3>390 · light and dark · portrait, then seal</h3>
+    <div class="row">
+      <div class="fr" data-reading="portrait" data-theme="light" data-w="390" data-h="844" data-crop="70" data-title="portrait, light"></div>
+      <div class="fr" data-reading="seal" data-theme="light" data-w="390" data-h="844" data-crop="70" data-title="seal, light"></div>
+      <div class="fr" data-reading="portrait" data-theme="dark" data-w="390" data-h="844" data-crop="70" data-title="portrait, dark"></div>
+      <div class="fr" data-reading="seal" data-theme="dark" data-w="390" data-h="844" data-crop="70" data-title="seal, dark"></div>
+    </div>
+    <h3>1440 · light · portrait, then seal</h3>
+    <div class="row">
+      <div class="fr" data-reading="portrait" data-theme="light" data-w="1440" data-h="900" data-crop="90" data-scale=".46" data-title="portrait at 1440"></div>
+      <div class="fr" data-reading="seal" data-theme="light" data-w="1440" data-h="900" data-crop="90" data-scale=".46" data-title="seal at 1440"></div>
+    </div>
+    <p class="call"><b>Recommendation: the seal.</b> Every other header now carries it, so an essay is stamped with the same mark as the page it came from, in both themes (dark mode’s coral and paper recolour it). The portrait is a 512 px drawing shrunk to 34 px, the rescale the visual guide warns about, and it stays where it belongs, as the favicon. At this size the seal reads as the mark rather than as characters; its name is “Fred Yang”, as the portrait’s was. Ported in its own commit, so it can be dropped alone.</p>
+  </section>
+
+  <section id="qb">
+    <div class="sec-head"><h2>b · The status line beside the identity on phones</h2><p>The header row already wraps only when it must. The seals are narrow enough that the status fits beside them from 344 px on Writing and About (328 on Building, 352 on Gallery), so on every common phone from 360 up; at 320 it wraps, as today.</p></div>
+    <div class="row">
+      <div class="fr" data-src="r2-frame.html?page=writing" data-w="390" data-h="200" data-title="390"></div>
+      <div class="fr" data-src="r2-frame.html?page=writing" data-w="360" data-h="200" data-title="360"></div>
+      <div class="fr" data-src="r2-frame.html?page=writing" data-w="344" data-h="200" data-title="344"></div>
+      <div class="fr" data-src="r2-frame.html?page=writing" data-w="320" data-h="240" data-title="320"></div>
+    </div>
+    <p class="call"><b>Recommendation: let it sit beside wherever it fits.</b> It gives a phone header back a line (about 35 px) without a new rule, and nothing is hidden or shrunk: the status keeps its 10.5 px, and at 320 it wraps under the identity as before.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Round 2’s calls</h2><p>Recorded in <a href="HANDOFF.md">HANDOFF.md</a>, with the port and its verification.</p></div>
+  </section>
+</main>
+</body>
+</html>

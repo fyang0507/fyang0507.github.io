@@ -1,5 +1,5 @@
 // Home · the network budget: a cold first visit at 1440 (DPR 1) and 390. No posts.js / photos.js / support.js / unpkg /
-// design/ requests; images from assets/derived only (the identity stickers and favicon are the shared header's);
+// design/ requests; images from assets/derived only (the favicon is the shared header's; the identity is inline SVG);
 // image bytes ≤ 1.2 MB at 1440.
 //   node /tmp/fyshot/run.mjs scripts/verify/home-net.mjs
 const U = (process.env.BASE || 'http://127.0.0.1:4173/') + 'index.html';
