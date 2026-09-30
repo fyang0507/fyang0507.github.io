@@ -2,12 +2,15 @@
 // every chapter opened fresh (design/2026-09-building, PORT-PLAN §7, PR 2, R9).
 //   node /tmp/fyshot/run.mjs scripts/verify/project-rail.mjs
 //   env: BASE (default http://127.0.0.1:4173/) · RAIL_W (1440,390) · FRAG=0 skips the fresh section links
+//        SHOTS (screenshot prefix, default /tmp/fyshot/pjrail)
 // The rail (reading-rail.mjs's criteria), at 1440 in the margin and at 390 on the strip:
 //   · every landmark (section.fa-pr[id]) has a tick on the rail and on the strip, and a label linking to it;
 //   · End reaches the last landmark and the end tick; overscroll past either end (a rubber band) un-draws nothing;
 //   · the current landmark carries the pen's loop in the chosen wheat, not coral;
 //   · 1440: a label moves the focus to its landmark; 390: the counter reads "k / N" at every point, on its own line
-//     under the chapter tabs, inside the window, with the strip's ink on the line between them.
+//     under the chapter tabs, inside the window, with the strip's ink on the line between them; each strip tick where
+//     its section stands in the column, and the ink ending between the current landmark's tick and the next one's,
+//     mid-page, after the window resizes (a phone's URL bar) and on a section link opened fresh.
 // Fresh section links: on a cold cache (a new context per link) and vt-lcp's Fast 4G, every section, article and
 // heading id on every chapter, Demos' #trash-patrol and #unattended-recovery among them, lands between the bottom of
 // whatever sticks at the top (the strip on phones, nothing on desktop) and 40 px below it, or, near the page's end,
@@ -19,6 +22,20 @@ const WIDTHS = (process.env.RAIL_W || '1440,390').split(',').map(Number);
 const res = [];
 const check = (name, ok, detail) => { res.push({ name, ok: !!ok }); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail !== undefined ? '  · ' + (typeof detail === 'string' ? detail : JSON.stringify(detail)) : '')); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const SHOTS = process.env.SHOTS || '/tmp/fyshot/pjrail';
+// the strip against the page: each tick stands where its section is in the column (from the column's top to the
+// article's end, across the strip's width), and the ink, which runs left to right, ends between the current landmark's
+// tick and the next one's
+const ink = (page) => page.evaluate(() => {
+  const top = (e) => e.getBoundingClientRect().top + scrollY, col = document.querySelector('.fa-read'), art = col.querySelector('.fa-prose');
+  const t0 = top(col), t1 = top(art) + art.offsetHeight, w = +document.querySelector('.rail-strip').getAttribute('width');
+  const want = [...art.querySelectorAll('.fa-pr[id]')].map((e) => (top(e) - t0) / (t1 - t0) * w);
+  const p = document.querySelector('.strip-ink'), L = p.getTotalLength(), off = parseFloat(getComputedStyle(p).strokeDashoffset) || 0, end = (1 - off / L) * w;
+  const xs = [...document.querySelectorAll('.strip-tick')].map((t) => parseFloat(t.getAttribute('d').slice(1))), cur = +document.querySelector('.rail').dataset.cur;
+  const placed = xs.length === want.length && xs.every((x, i) => Math.abs(x - want[i]) <= 2);
+  const lo = cur < 0 ? 0 : xs[cur], hi = cur + 1 < xs.length ? xs[cur + 1] : w;
+  return { ok: placed && end >= lo - 2 && end <= hi + 2, placed, cur, end: Math.round(end), between: [Math.round(lo), Math.round(hi)], firstTick: [Math.round(xs[0]), Math.round(want[0])], count: document.querySelector('.rc-no').textContent + document.querySelector('.rc-of').textContent };
+});
 
 async function context(browser, w, opts = {}) {
   const ctx = await browser.newContext({ viewport: { width: w, height: w > 500 ? 900 : 844 }, deviceScaleFactor: 1 });
@@ -72,6 +89,12 @@ async function rail(browser, w, name) {
       return { tabsBottom: Math.max(...tabs.map((t) => t.bottom)), count: [c.left, c.top, c.right, c.bottom], ink: [ink.left, ink.top, ink.bottom], line: line.top, vw: innerWidth, stuck: document.querySelector('.pj-tabs').getBoundingClientRect().top };
     });
     check(tag + ': the counter on its own line under the tabs, inside the window, the ink on the line between them', g.stuck === 0 && g.count[1] >= g.tabsBottom - 0.5 && g.count[2] <= g.vw && g.count[0] >= 0 && g.ink[1] <= g.line + 1 && g.ink[2] >= g.line - 1, g);
+    const mid = await ink(page);
+    check(tag + ': mid-page, the ink ends between the current landmark\'s tick and the next', mid.ok, mid);
+    await page.setViewportSize({ width: w, height: 700 }); await sleep(500);
+    await page.setViewportSize({ width: w, height: 844 }); await sleep(800);
+    const again = await ink(page);
+    check(tag + ': after the window resizes (a phone\'s URL bar), the ink still ends there', again.ok && again.cur === mid.cur, again);
   }
   await scroll(page, max, 1200);
   const end = await state(page);
@@ -95,9 +118,21 @@ async function rail(browser, w, name) {
   await scroll(page, 0, 900); await band(page, -80); await sleep(300);
   const top = await state(page);
   check(tag + ': a rubber band at the top reads as the top', !top.done && top.cur <= 0, top);
-  await page.screenshot({ path: '/tmp/building-2/suite/rail-' + name + '-' + w + '.png' });
+  await page.screenshot({ path: SHOTS + '-' + name + '-' + w + '.png' });
   check(tag + ': 0 console or page errors', errors.length === 0, errors.slice(0, 3));
   await ctx.close();
+  if (top0.mode === 'strip') {   // a section link opened fresh: the strip's origin must not be the landing's scroll
+    const fresh = await context(browser, w), id = name === 'principles' ? 'attention' : 'whoami';
+    await fresh.page.goto(BASE + DIR + name + '.html#' + id, { waitUntil: 'load' });
+    await fresh.page.evaluate(() => document.fonts.ready); await sleep(1500);
+    const f = await ink(fresh.page);
+    check(tag + ': #' + id + ' opened fresh: the ink ends between its tick and the next', f.ok && f.cur >= 0, f);
+    await fresh.page.setViewportSize({ width: w, height: 700 }); await sleep(500);
+    await fresh.page.setViewportSize({ width: w, height: 844 }); await sleep(800);
+    const f2 = await ink(fresh.page);
+    check(tag + ': #' + id + ', after a resize, still', f2.ok && f2.cur === f.cur, f2);
+    await fresh.ctx.close();
+  }
 }
 
 async function fragments(browser, w) {
