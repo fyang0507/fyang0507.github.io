@@ -11,15 +11,19 @@
 //   · choosing it lays the enlargement over the capture's frame (the prints' box inside it; the screen's width on a
 //     phone) and moves nothing on the page: no layout shift, every later part of the page where it was;
 //   · the window fetches that print's zoom tier (200) and no other, and no zoom file is fetched before an enlargement opens;
-//   · its region's four corners sit on the region's boundary, in ink at 3 px in a 7.5 px paper casing, ≥ 3:1 (ink or
-//     casing: ink and paper are 12:1 apart, so one of them always is) against the capture all along them; its texts
-//     ≥ 4.5:1;
+//   · its region's four corners sit on the region's boundary, in the same coral at 3.4 px on a 5.8 px paper halo, ≥ 3:1
+//     (coral or halo) against the capture under two thirds of them; while it's open they are the only coral in the
+//     figures (Fred's exception to "no coral at rest", AGENTS.md), and nothing else is; its texts ≥ 4.5:1;
+//   · its ← → and "put it back" take no pen line under a mouse (they lift a little, 1.5 px) and the pen's 「 」 by keyboard;
 //   · → and ← step with an "n / N" counter, wrapping both ways, the note and the corners moving with it; on a phone a
 //     swipe steps too;
-//   · Esc puts it back and returns focus to the entry;
+//   · putting it back (Esc on Fig. 02, the button on Fig. 03, a click outside on Fig. 04) is opening reversed: as it
+//     lands, its region lies on the capture's and its image on the print's, within 1 px; its paper and note are gone,
+//     the region's corners and token wait there over it; then it is gone, nothing of it is left, and focus is on the
+//     entry;
 //   · no horizontal overflow, at rest and open.
 // The recording: nothing of it fetched before play; the play disc (72 px, 64 on phones) at the poster's centre; pressing it
-// plays in place with the player's controls. Reduced motion (1440, 390): opening, stepping and closing land at once.
+// plays in place with the player's controls. Reduced motion (1440, 390): opening, stepping and putting back land at once.
 // Exit code 1 on any failure.
 import { check } from './vt-lib.mjs';
 
@@ -37,16 +41,17 @@ const LIB = () => {
   window.__dm = {
     ratio, rgb,
     // what shows coral: a visible stroke or fill, or an element's colour, border or outline, inside the figures
-    coral() {
+    coralEls() {
       const hits = [];
       document.querySelectorAll('.ex-fig *').forEach((e) => {
         const cs = getComputedStyle(e);
         if (cs.visibility === 'hidden' || cs.display === 'none' || !e.getClientRects().length) return;
-        if (e instanceof SVGElement) { if (e.tagName !== 'svg' && e.tagName !== 'g' && (CORAL.includes(cs.stroke) || CORAL.includes(cs.fill))) hits.push(e.getAttribute('class') || e.tagName); return; }
-        if ([cs.color, cs.backgroundColor, cs.borderTopColor, cs.outlineStyle !== 'none' ? cs.outlineColor : ''].some((c) => CORAL.includes(c))) hits.push(e.className || e.tagName);
+        if (e instanceof SVGElement) { if (e.tagName !== 'svg' && e.tagName !== 'g' && (CORAL.includes(cs.stroke) || CORAL.includes(cs.fill))) hits.push(e); return; }
+        if ([cs.color, cs.backgroundColor, cs.borderTopColor, cs.outlineStyle !== 'none' ? cs.outlineColor : ''].some((c) => CORAL.includes(c))) hits.push(e);
       });
       return hits;
     },
+    coral() { return this.coralEls().map((e) => (e.getAttribute('class') || e.tagName)); },
     // the pixels under a corner set's strokes, from the image under them (the print's, or the enlargement's), paper
     // where they leave it; the ratio of each to the stroke (ink) or the better of ink and casing (cased)
     contrast(host, img, box) {
@@ -74,7 +79,7 @@ const LIB = () => {
     corners(host) {
       const svg = host.querySelector(':scope > svg.cn'), inks = [...svg.querySelectorAll('.cn-ink')], cs = inks.map((p) => getComputedStyle(p));
       const v = inks.map((p) => { const n = p.getAttribute('d').match(/-?[\d.]+/g).map(Number); return [n[2], n[3]]; });
-      return { shown: cs.every((c) => c.visibility === 'visible'), state: svg.dataset.state, ink: parseFloat(cs[0].strokeWidth), casing: parseFloat(getComputedStyle(svg.querySelector('.cn-case')).strokeWidth), cased: getComputedStyle(svg.querySelector('.cn-case')).display !== 'none', v, w: host.offsetWidth, h: host.offsetHeight };
+      return { shown: cs.every((c) => c.visibility === 'visible'), state: svg.dataset.state, ink: parseFloat(cs[0].strokeWidth), stroke: cs[0].stroke, casing: parseFloat(getComputedStyle(svg.querySelector('.cn-case')).strokeWidth), cased: getComputedStyle(svg.querySelector('.cn-case')).display !== 'none', v, w: host.offsetWidth, h: host.offsetHeight };
     },
     // where every part of the page after the capture sits, in document px
     after(fig) {
@@ -131,6 +136,7 @@ async function viewer(res, page, reqs, w, id) {
   const zoomsBefore = reqs.filter((r) => /-zoom\.jpg/.test(r.url()));
   await page.click(note);
   await sleep(1300);
+  await page.mouse.move(1, 1); await sleep(400);   // no pointer over an entry: what's coral now is at rest
   const o = await page.evaluate((fig) => {
     const v = document.querySelector(fig), zm = v.querySelector('.zm'), z = zm.getBoundingClientRect(), p = v.querySelector('.prints').getBoundingClientRect();
     const box = [...zm.querySelectorAll('.zm-rg')].find((b) => !b.hidden && !b.querySelector('.mk').hidden), size = zm.querySelector('.zm-size'), img = zm.querySelector('.zm-img img');
@@ -138,6 +144,7 @@ async function viewer(res, page, reqs, w, id) {
     const low = [...zm.querySelectorAll('.zm-k, .zm-t, .zm-p, .zm-n, .zm-bar button')].map((e) => ({ e: e.className, r: __dm.ratio(__dm.rgb(getComputedStyle(e).color), [251, 246, 236]) })).filter((x) => x.r < 4.5);
     return { shown: !zm.hidden, layout: zm.dataset.layout, z: [z.left, z.top, z.right, z.bottom], p: [p.left, p.top, p.right, p.bottom], vw: document.documentElement.clientWidth,
       n: zm.querySelector('.zm-n').textContent, t: zm.querySelector('.zm-t').textContent, want: v.querySelector('.ex-note[data-n="1"] .en-t').textContent, focus: zm.contains(document.activeElement),
+      only: (() => { const hits = __dm.coralEls(); return { n: hits.length, all: hits.every((e) => box.contains(e) && e.classList.contains('cn-ink')), what: hits.map((e) => e.getAttribute('class') || e.className).slice(0, 6) }; })(),
       c: __dm.corners(box), lim, k: img.complete && img.naturalWidth ? __dm.contrast(box, img, size.getBoundingClientRect()) : null, zoom: img.src, low, overflow: document.documentElement.scrollWidth - innerWidth };
   }, fig);
   const after = await page.evaluate((fig) => __dm.after(document.querySelector(fig).closest('figure')), fig), cls = await page.evaluate(() => window.__cls);
@@ -146,9 +153,21 @@ async function viewer(res, page, reqs, w, id) {
   check(res, `${tag}: nothing on the page moves as it opens`, cls === 0 && before.length === after.length && before.every((y, i) => Math.abs(y - after[i]) <= 0.5), { cls, moved: before.map((y, i) => y - after[i]).filter((d) => Math.abs(d) > 0.5).slice(0, 4) });
   const zooms = reqs.filter((r) => /-zoom\.jpg/.test(r.url()) && !zoomsBefore.includes(r)), got = zooms.find((r) => r.url() === o.zoom), st = got && (await got.response()) ? (await got.response()).status() : 0;
   check(res, `${tag}: the window fetches its print's zoom tier (${o.zoom.split('/').pop()}), 200, and no other`, !zoomsBefore.some((r) => r.url() === o.zoom) && zooms.length === 1 && st === 200, { opened: zooms.map((r) => r.url().split('/').pop()), st });
-  check(res, `${tag}: its corners sit on the region's boundary, in ink at 3 px in a 7.5 px paper casing, ≥ 3:1 all along them`,
-    o.c.shown && o.c.state === '2' && Math.abs(o.c.ink - 3) < 0.01 && o.c.cased && Math.abs(o.c.casing - 7.5) < 0.01 && onBoundary(o.c, o.lim) && o.k && o.k.share === 1, { v: o.c.v.map((p) => p.map(Math.round)), w: o.c.w, h: o.c.h, k: o.k });
+  check(res, `${tag}: its corners sit on the region's boundary, in coral at 3.4 px on a 5.8 px paper halo, ≥ 3:1 on the capture under ⅔ of them`,
+    o.c.shown && o.c.state === '2' && o.c.stroke === noticed.k.ink && Math.abs(o.c.ink - 3.4) < 0.01 && o.c.cased && Math.abs(o.c.casing - 5.8) < 0.01 && onBoundary(o.c, o.lim) && o.k && o.k.share >= 2 / 3, { stroke: o.c.stroke, v: o.c.v.map((p) => p.map(Math.round)), w: o.c.w, h: o.c.h, k: o.k });
+  check(res, `${tag}: while it's open the only coral in the figures is its region's four corners`, o.only.n === 4 && o.only.all, o.only);
   check(res, `${tag}: the enlargement's texts ≥ 4.5:1, no horizontal overflow while it's open`, o.low.length === 0 && o.overflow <= 0, { low: o.low, overflow: o.overflow });
+  // its controls: no pen line under a mouse, a small lift; the pen's 「 」 by keyboard
+  const lines = await page.$$eval(`${fig} .zm-bar button`, (bs) => bs.filter((b) => b.querySelector('svg.tm')).length);
+  let lift = null;
+  if (!phone) {
+    await page.hover(`${fig} .zm-x`); await sleep(600);
+    lift = await page.evaluate((fig) => ({ t: new DOMMatrix(getComputedStyle(document.querySelector(fig + ' .zm-x')).transform).f, coral: __dm.coralEls().filter((e) => e.closest('.zm-bar')).length }), fig);
+    await page.mouse.move(1, 1); await sleep(300);
+  }
+  await page.keyboard.press('Tab'); await sleep(400);
+  const kb = await page.evaluate((fig) => { const a = document.activeElement, m = [...a.querySelectorAll(':scope > svg.fm path')]; return { on: a.className, zm: !!a.closest(fig + ' .zm-bar'), drawn: m.length === 2 && m.every((p) => getComputedStyle(p).visibility !== 'hidden') }; }, fig);
+  check(res, `${tag}: its ← → and put back take no pen line${phone ? '' : ' under a mouse, but lift 1.5 px'}, and the pen's 「 」 by keyboard`, lines === 0 && (phone || (Math.abs(lift.t + 1.5) < 0.01 && lift.coral === 0)) && kb.zm && kb.drawn, { lines, lift, kb });
   // step through, and wrap both ways
   const seen = [];
   for (let i = 0; i < N; i++) {
@@ -170,11 +189,31 @@ async function viewer(res, page, reqs, w, id) {
     const n = await page.$eval(`${fig} .zm-n`, (e) => e.textContent);
     check(res, `${tag}: a swipe left on the note steps on (${N} / ${N} → 1 / ${N})`, n === `1 / ${N}`, n);
   }
-  // put it back
-  const at = await page.$eval(`${fig} .zm-n`, (e) => e.textContent.split(' / ')[0]);
-  await page.keyboard.press('Escape'); await sleep(600);
-  const shut = await page.evaluate(([fig, i]) => { const v = document.querySelector(fig), n = v.querySelectorAll('.ex-note')[i - 1]; return { hidden: v.querySelector('.zm').hidden, focus: document.activeElement === n, expanded: [...v.querySelectorAll('.ex-note')].some((b) => b.getAttribute('aria-expanded') === 'true') }; }, [fig, +at]);
-  check(res, `${tag}: Esc puts it back and returns focus to entry ${at}`, shut.hidden && shut.focus && !shut.expanded, shut);
+  // put it back, each figure its own way, held where it lands
+  const at = await page.$eval(`${fig} .zm-n`, (e) => e.textContent.split(' / ')[0]), how = { 'trash-patrol': 'Esc', 'discord-intake': 'the button', 'unattended-recovery': 'a click outside' }[id];
+  await page.evaluate((fig) => document.querySelector(fig + ' .zm').focus({ preventScroll: true }), fig);
+  if (how === 'Esc') await page.keyboard.press('Escape');
+  else if (how === 'the button') { await page.$eval(`${fig} .zm-x`, (b) => b.scrollIntoView({ block: 'nearest' })); await sleep(200); await page.click(`${fig} .zm-x`); }
+  else await page.mouse.click(4, (await page.evaluate(() => innerHeight)) - 4);
+  await page.evaluate((fig) => {
+    const v = document.querySelector(fig);
+    window.__put = document.getAnimations().filter((a) => a.effect && a.effect.target && a.effect.target.closest && (a.effect.target.closest(fig + ' .zm') || a.effect.target.closest(fig + ' .zm-home')));
+    const end = Math.max(...window.__put.map((a) => a.effect.getComputedTiming().endTime));
+    window.__put.forEach((a) => { a.pause(); a.currentTime = end; });
+  }, fig);
+  await sleep(450);   // the pen draws the region's corners where it lands meanwhile
+  const land = await page.evaluate(([fig, i]) => {
+    const v = document.querySelector(fig), zm = v.querySelector('.zm'), rg = v.querySelector(`.rg[data-n="${i}"]`), d = (a, b) => Math.max(Math.abs(a.left - b.left), Math.abs(a.top - b.top), Math.abs(a.right - b.right), Math.abs(a.bottom - b.bottom));
+    const box = [...zm.querySelectorAll('.zm-rg')].find((b) => !b.hidden && !b.querySelector('.mk').hidden), home = v.querySelector('.zm-home'), at = home && [...home.querySelectorAll('.zm-at')].find((x) => x.querySelector('svg.cn'));
+    return { region: +d(box.getBoundingClientRect(), rg.getBoundingClientRect()).toFixed(2), image: +d(zm.querySelector('.zm-img').getBoundingClientRect(), rg.closest('.print').querySelector('img').getBoundingClientRect()).toFixed(2),
+      paper: +getComputedStyle(zm.querySelector('.zm-paper')).opacity, note: +getComputedStyle(zm.querySelector('.zm-note')).opacity, zm: +getComputedStyle(zm).opacity,
+      home: !!at && __dm.corners(at).shown && __dm.corners(at).state === '2' && d(at.getBoundingClientRect(), rg.getBoundingClientRect()) < 0.5 };
+  }, [fig, +at]);
+  await page.evaluate(() => window.__put.forEach((a) => a.finish())); await sleep(300);
+  const shut = await page.evaluate(([fig, i]) => { const v = document.querySelector(fig), n = v.querySelectorAll('.ex-note')[i - 1]; return { hidden: v.querySelector('.zm').hidden, left: !!v.querySelector('.zm-home'), focus: document.activeElement === n, expanded: [...v.querySelectorAll('.ex-note')].some((b) => b.getAttribute('aria-expanded') === 'true') }; }, [fig, +at]);
+  check(res, `${tag}: ${how} puts it back: as it lands its region is on the capture's and its image on the print's within 1 px, its paper and note gone, the region's corners waiting there`,
+    land.region <= 1 && land.image <= 1 && land.paper === 0 && land.note === 0 && land.zm === 1 && land.home, land);
+  check(res, `${tag}: then nothing of it is left, and focus is on entry ${at}`, shut.hidden && !shut.left && shut.focus && !shut.expanded, shut);
 }
 
 export default async (page0) => {
@@ -208,8 +247,8 @@ export default async (page0) => {
     await page.keyboard.press('ArrowRight');
     const b = await page.evaluate(() => { const zm = document.querySelector('#trash-patrol-zm'), box = [...zm.querySelectorAll('.zm-rg')].find((x) => !x.hidden && !x.querySelector('.mk').hidden); return { n: zm.querySelector('.zm-n').textContent, anims: zm.querySelector('.zm-img').getAnimations().length + zm.querySelector('.zm-txt').getAnimations().length, corners: [...box.querySelectorAll('.cn-ink')].every((p) => getComputedStyle(p).visibility === 'visible' && parseFloat(p.style.strokeDasharray) >= p.getTotalLength() - 0.5) }; });
     await page.keyboard.press('Escape');
-    const c = await page.evaluate(() => document.querySelector('#trash-patrol-zm').hidden);
-    check(res, `${w} reduced motion: it opens, steps (the corners drawn whole) and closes at once`, a.shown && a.anims === 0 && a.tf === 'none' && b.n === '3 / 3' && b.anims === 0 && b.corners && c, { a, b, closed: c });
+    const c = await page.evaluate(() => document.querySelector('#trash-patrol-zm').hidden && !document.querySelector('.zm-home'));
+    check(res, `${w} reduced motion: it opens, steps (the corners drawn whole) and is put back at once`, a.shown && a.anims === 0 && a.tf === 'none' && b.n === '3 / 3' && b.anims === 0 && b.corners && c, { a, b, closed: c });
     await context.close();
   }
   const failed = res.filter((r) => !r.ok);
