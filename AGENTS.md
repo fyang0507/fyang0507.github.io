@@ -11,7 +11,7 @@ This is a dependency-free static personal website exported as standalone `.dc.ht
   - Header and object-tab nav: `site-nav.css` (the `building/` sub-sites load it too)
   - Motion and pen modules: `motion.js` (`window.Motion`: the two clocks, springs, sleeping loops, reduced motion), `pen.js` (`window.Pen`: seeded hand strokes and the point arrow), `pen-tier.js` (`TierMark`, `FocusMark`, `Tier.wire`: the pen's states), `pen.css`
   - Page glue: `site.js` (`FY.mount`, `FY.styled`, the nav's pen marks)
-  - Cross-document view transitions: `transitions.js` (home ↔ page, and the shared plumbing), `transitions-tab.js` (page → page), `transitions.css`
+  - Cross-document view transitions: `transitions.js` (home ↔ page, and the shared plumbing), `transitions-tab.js` (page → page: tab to tab, and the Building board ↔ a project's pages and its chapters), `transitions.css`
 - Page code: `lib/<page>/` (`home`, `writing`, `building`, `gallery`, `about`, `reading`, and `fred-agent` and `njjoe` for Building's two sub-sites), each with its own `<page>.css`
 - Local fonts: `fonts/`
 - Illustrations and decorative images: `assets/`
@@ -75,11 +75,12 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - One change to the order: `content/building-projects.js` and `board.js` come before `pen.js`, `pen-tier.js` and `site.js`. A module runs only after every deferred script before it, and first render waits for `board.js`, so this keeps first render from waiting on the pen's downloads, which nothing needs until the board is wired.
   - `lib/building/board.js` loads as `type="module" blocking="render"` and builds the board as it evaluates, so every card exists at first render and at `pagereveal`, where a view transition captures the page.
   - Building the markup measures nothing. What measures (the physics, unpin, the flower, the pen) waits for `FY.styled`, because WebKit runs deferred scripts and modules before the head's stylesheets apply. `board.js` asks for it at `DOMContentLoaded`, once `site.js` has run.
+  - The board's side of the moves to and from a project's pages is `board.js`'s. At `pageswap` it names the tabs in play (`.fy-vt-tabs`): the dossier's in your hand, with the card and the dossier's sheet above them (`.fy-vt-card`, `.fy-vt-sheet`), or, from a card's own link, the tabs peeking behind it, with the card, pin and all. At `pagereveal`, where every engine has applied the sheets, it brings the card of the project you came from into view (from `navigation.activation.from`, else `document.referrer`; no storage), and the physics starts from there. While the way back plays (`html[data-vt=out]`) the card and its peek are named and its pin is out, pushed in once the move has landed; without a view transition the card is simply pinned. A board back from the back/forward cache with its dossier out pins that card back at once first.
 - The Building sub-sites' chapters (Fred Agent's five, `building/fred-agent/*.html`, and NJJoe's three, `building/njjoe/*.html`) are static pages too, each one open dossier (design/2026-09-building, candidate C). NJJoe's email demo (`building/njjoe/email-demo/buyer.html`) is not a chapter: it is the email itself, with its own inline styles, shown in the APA chapter's frame.
   - The header is a gateway page's static header, copied with its paths made relative (`../../`). No `<base>`: every `href` and `src` is a plain relative path, and a fragment is a plain `#id`.
   - The head keeps the order above without `support.js`. The CSS is `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/building/dossier.css`, `lib/reading/rail.css` where the chapter carries the rail, the sub-site's own `lib/fred-agent/fred-agent.css` (and `lib/fred-agent/demos.css` on Demos) or `lib/njjoe/njjoe.css`. Then the preloads (`Fraunces-latin`, IBM Plex Mono `Regular-latin` and `Medium-latin`; on Demos, from 1001 px, the recording's poster, the first screen's largest paint there; not DingTalk JinBuTi, which nothing on a chapter sets since the seal), the `expect` link on `#site-nav`, the three render-blocking scripts, and deferred `pen.js`, `pen-tier.js`, `site.js`, `content/building-projects.js` and the modules: `lib/building/project.js` on every chapter, then the chapter's own (Fred Agent's `map.js`, `project-rail.js`, `evidence.js`; NJJoe has none).
   - Nothing measures before `FY.styled`. The board's card is clipped to the sheet after first paint (`lib/building/cover.js`), into a box `dossier.css` holds for it, so it never moves the page. The card brings its stylesheet: `cover.js` inserts `lib/building/card.css` as it evaluates (script-inserted, so never render-blocking) and builds the card once it applies. Nothing else on a chapter needs it, so it stays out of the head, and first render waits for one stylesheet fewer (on python's six-connection server, a round trip: about 80 ms of LCP).
-  - A chapter change is a plain navigation, a hard cut until the chapter move lands.
+  - A chapter change is a cross-document move (`FYProject` in `transitions-tab.js`): the tabs settle on a spring, and the sheet in front is pulled aside to a later chapter or put back from the left for an earlier one. From the board, the tabs you touched travel to the fore-edge; back to it, the page's tabs tuck behind the card.
 - support.js takes the page template from the first literal `<x-dc>` in the raw page text. Never write that string anywhere before the real element: not in a head comment, a script or the static header.
 - Keep mount hosts out of any `sc-if` that can flip. A re-render replaces the host, and the module mounts again from scratch.
 - `transitions.css` assigns every view-transition name. Set `view-transition-name` nowhere else, and render one element per name per document:
@@ -90,6 +91,8 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - home's old/new-only groups: `desk-table` (`.desk-plate`), `desk-edge`, `desk-mug`, `desk-plant`, `desk-bird`, `desk-notes`
   - `rule-live`, the transient line transitions.js draws
   - `tab-edge`, `tab-caret`, `tab-flash`, `tab-kacha`: the marks a page answers a tab move with (`.fy-tab-*`, added by transitions-tab.js for that one move and removed when it ends)
+  - `pj-tab-1` … `pj-tab-5`: the index tabs in play between the board and a project's pages, or between its chapters (`.fy-vt-tabs`: a project page's fore-edge, the dossier's tabs or one card's peek on the board); `pj-card` and `pj-sheet`: on the board, the card they belong to and the dossier's sheet in your hand (`.fy-vt-card`, `.fy-vt-sheet`), their groups above the tabs', so what sits over a tab at rest sits over it in every frame. Each is named only for the move it travels in; a page back from the back/forward cache takes stale ones off at `pagereveal`.
+- Pages resolve against the site root (the home link's directory); a page under `building/<id>/` is a project's, and counts as the building tab for every other move.
 - These moves get no view transition: same-tab moves (Writing ↔ Reading), other pages, and reduced motion. Engines without cross-document view transitions keep a hard cut.
 
 ## Motion, pen and colour
@@ -98,7 +101,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Every motion has a cause, and loops sleep when nothing moves (`Motion.Loop`).
   - Do not add ambient loops, gradients, gloss, shimmer, glass blur, parallax or fade-and-rise entrances.
   - The home opener is the one sanctioned register break.
-- **Transitions run on the compositor.** A view-transition animation changes only transform and opacity; a clip may be set but holds still. The new page mounts while its move plays, and anything on the main thread (a changing clip-path, width or height, `composite: 'add'`, SVG redrawn per frame) stops for as long as the page is busy. `vt-moves.mjs` checks every tab move; see `design/2026-09-tab-moves/`.
+- **Transitions run on the compositor.** A view-transition animation changes only transform and opacity; a clip may be set but holds still. The new page mounts while its move plays, and anything on the main thread (a changing clip-path, width or height, `composite: 'add'`, SVG redrawn per frame) stops for as long as the page is busy. `vt-moves.mjs` checks every tab move, and `vt-project.mjs` every move between the Building board and a project's pages from Chrome's own trace; see `design/2026-09-tab-moves/`.
 - **Reduced motion** goes through `Motion.reduced()` / `Motion.onReduced()`. Turning it on finishes running tweens, and `transitions.css` switches view transitions off.
 - **The pen is the only highlighter.** Wire states with `Tier.wire`:
   - hover: a coral underline hung from the text's baseline (baseline + max(3 px, 0.18 em)), level, with a blunt end;
@@ -111,7 +114,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 - **Tokens.** Shared tokens live only in `site-tokens.css`. Page-only tokens live in the page's own CSS; do not redeclare shared ones there. The one exception is Reading's `html.dark` palette in `lib/reading/reading.css`.
 - **Storage.** The site keeps session memory only. sessionStorage keys:
   - `fy-opener`: the full opener plays once per session;
-  - `fy-vt`: the transition hand-off between pages;
+  - `fy-vt`: the transition hand-off between pages, one hop long (a project page adds `pj`: its project and chapter, and where you are going);
   - `fy-point-<key>`: a spent point arrow;
   - `fy-flower-<id>`: Building's flower has been applied;
   - `fy-gallery-dev`: developed prints;
@@ -188,7 +191,7 @@ After a change:
 4. For home navigation changes, hover and click the laptop, book, portrait, and camera, and at phone width tap the overview doors and the panel links, confirming all four destination URLs.
 5. Confirm edited asset and page requests return HTTP 200.
 6. Run the headless suites in `scripts/verify/` that cover the change:
-   - `vt-*` for transitions and the nav;
+   - `vt-*` for transitions and the nav (`vt-project.mjs` for the Building board ↔ a project's pages and its chapters, with the back/forward cache on);
    - `pen-*` for pen states and spacing, on `pen-harness.html`;
    - `home-*` for home, plus `flash-audit.py` and `home-diff.py`;
    - `writing-*`, `building-*`, `gallery-*`, `about-*` and `reading-*` for their pages.

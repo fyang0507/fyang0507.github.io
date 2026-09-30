@@ -70,3 +70,23 @@ html[data-vt=leave]::view-transition-old(site-rule){animation:none;opacity:0}
 .fy-tab-flash{view-transition-name:tab-flash;width:92px;height:92px;border-radius:50%;background:#FFFDF6;box-shadow:inset 0 0 0 1.2px var(--ink)}
 .fy-tab-kacha{view-transition-name:tab-kacha;font:22px/1 "DingTalk JinBuTi",serif;color:var(--ink);white-space:nowrap}
 ::view-transition-group(tab-edge),::view-transition-group(tab-caret),::view-transition-group(tab-flash),::view-transition-group(tab-kacha){z-index:4}
+
+/* ---- the Building board ↔ a project's pages, and its chapters (FYProject, transitions-tab.js): the index tabs in play
+   (.fy-vt-tabs: the dossier's in your hand or one card's peeking tabs on the board, the fore-edge on a project page),
+   the card they belong to (.fy-vt-card: the card in your hand, or the card at rest with its pin) and, in your hand,
+   the dossier's sheet their edges tuck under (.fy-vt-sheet), on the board only, named only for the move they travel
+   in. The card's and the sheet's groups are above the tabs', as at rest, so a tab under them at rest is under them in
+   every frame. A tab's group keeps its new box, never sized, and its images fill it; FYProject scales the old one
+   back to its own size ---- */
+.fy-vt-tabs>:is(.dos-tab,.dos-edge):nth-child(1){view-transition-name:pj-tab-1}
+.fy-vt-tabs>:is(.dos-tab,.dos-edge):nth-child(2){view-transition-name:pj-tab-2}
+.fy-vt-tabs>:is(.dos-tab,.dos-edge):nth-child(3){view-transition-name:pj-tab-3}
+.fy-vt-tabs>:is(.dos-tab,.dos-edge):nth-child(4){view-transition-name:pj-tab-4}
+.fy-vt-tabs>:is(.dos-tab,.dos-edge):nth-child(5){view-transition-name:pj-tab-5}
+.fy-vt-card{view-transition-name:pj-card}
+.fy-vt-sheet{view-transition-name:pj-sheet}
+::view-transition-group(pj-tab-1),::view-transition-group(pj-tab-2),::view-transition-group(pj-tab-3),::view-transition-group(pj-tab-4),::view-transition-group(pj-tab-5){z-index:4}
+::view-transition-group(pj-sheet){z-index:5}
+::view-transition-group(pj-card){z-index:6}
+::view-transition-old(pj-tab-1),::view-transition-new(pj-tab-1),::view-transition-old(pj-tab-2),::view-transition-new(pj-tab-2),::view-transition-old(pj-tab-3),::view-transition-new(pj-tab-3),
+::view-transition-old(pj-tab-4),::view-transition-new(pj-tab-4),::view-transition-old(pj-tab-5),::view-transition-new(pj-tab-5){height:100%}
