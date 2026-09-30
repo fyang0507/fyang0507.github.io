@@ -1,5 +1,5 @@
 // pen-api.mjs — the P1-pen success criteria (PORT-PLAN §2), on scripts/verify/pen-harness.html, and Pen.annotate:
-// its layer adds no layout box.
+// its layer adds no layout box, and hide() never sweeps a stroke through.
 //   node /tmp/fyshot/run.mjs scripts/verify/pen-api.mjs        (exit code 1 if any check fails)
 // Screenshots: /tmp/fyshot/p1pen-*.png
 
@@ -156,6 +156,19 @@ export default async (page, ctx) => {
     a.destroy(); el.remove(); return r;
   });
   check('annotate adds no layout box: a loop at the right edge leaves the page as wide as the window', wide[0] === wide[1], `scrollWidth ${wide[0]} · window ${wide[1]} · svg ${wide[2]}`);
+
+  const hides = await page.evaluate(async () => {
+    const el = HX.word('left:40px'), a = Pen.annotate(el, 'loop', { manual: true, duration: 400 }), max = (s) => Math.max(...s.map((x) => x[1])), o = {};
+    await HX.frames(3); a.hide(); o.never = max(await HX.sample(a, 300));
+    a.rebuild(); a.hide(); o.rebuiltNew = max(await HX.sample(a, 300));
+    a.show(); await new Promise((r) => setTimeout(r, 600)); a.hide(); const end = await HX.sample(a, 500); o.shownEnd = end[end.length - 1][1];
+    a.rebuild(); a.hide(); o.rebuilt = max(await HX.sample(a, 300));
+    a.show(); await new Promise((r) => setTimeout(r, 120)); const at = HX.vis(a); a.hide(); o.mid = [+at.toFixed(3), max(await HX.sample(a, 300))];
+    a.destroy(); el.remove(); return o;
+  });
+  check('hide() never sweeps a stroke through: never shown, rebuilt or half drawn, it shows no more than it did',
+    hides.never === 0 && hides.rebuiltNew === 0 && hides.rebuilt === 0 && hides.shownEnd === 0 && hides.mid[1] <= hides.mid[0] + 0.02,
+    `max shown: never shown ${hides.never} · rebuilt before a show ${hides.rebuiltNew} · rebuilt after a hide ${hides.rebuilt} · half drawn ${hides.mid[0]} → ${hides.mid[1]} · a shown stroke ends at ${hides.shownEnd}`);
 
   // destroy leaves nothing behind
   const gone = await page.evaluate(() => { HX.w.twin.destroy(); const h = document.querySelector('#twin'); return [h.querySelectorAll('svg').length, h.hasAttribute('data-pen-tier'), h.hasAttribute('data-pen-t'), h.hasAttribute('data-pen-focus')]; });
