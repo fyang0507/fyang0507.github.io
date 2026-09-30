@@ -1,6 +1,6 @@
 /* Building · the corkboard page (design/2026-09-motion, boards r2-05 → r4-05). Loaded in the head, so it
    applies at first paint. Sizes on the board use container units (cqw) against .cork-wrap, so the board
-   lays itself out from its own width.
+   lays itself out from its own width. The dossier behind a card (lib/building/dossier.js) is its own section.
 
    The pin-pivot invariant: each card is a .slot holding a rotating .swing (the paper) and a .board-pin
    SIBLING that never rotates with it. The paper pivots on the pin's tip — transform-origin
@@ -16,6 +16,7 @@
   --note-ink:#504A42;--featured-ink:#575149;     /* body text on the lead / field note, and on the featured card */
   --pin-green:#3D5C52;--pin-mustard:#A5822C;     /* pin heads */
   --hue-audio:#3E6274;--hue-publish:#7A4A63;     /* an instrument's one hue: its accent band, pin head and motif */
+  --kraft:#D8C29A;--kraft-edge:#6E5A3A;          /* the dossier's kraft stock and its cut edge (3.8:1, an edge, never text) */
 }
 
 /* ---- page ---- */
@@ -135,7 +136,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .github-link{display:inline-flex;align-items:center;gap:8px;color:var(--ink);font:10px/1.45 "IBM Plex Mono",monospace;letter-spacing:.025em}
 .github-link svg{width:15px;height:15px;flex:none}
 .github-link--card{padding:7px 0;font-size:8.5px}
-.github-link--panel{margin-top:16px}
 .morph-toggle{position:relative;z-index:3;flex:none;width:26px;height:26px;border:1.5px solid var(--ink);border-radius:50%;background:var(--ink);color:var(--paper);box-shadow:0 3px 7px rgba(60,50,35,.15);cursor:pointer}
 .morph-icon{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);transition:transform .33s var(--ease-settle)}
 .morph-icon::before,.morph-icon::after{content:"";position:absolute;left:50%;top:50%;border-radius:2px;background:currentColor;transform:translate(-50%,-50%)}
@@ -171,15 +171,19 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @container (max-width:900px){
   .slot--lead{width:min(680px,78cqw)} .slot--featured{width:min(380px,62cqw)} .slot--instrument{width:min(276px,42cqw)} .slot--standard{width:min(184px,29cqw)}
 }
+/* On a phone a card whose dossier peeks behind it narrows by the peek (--peek-room), so the tabs sit inside the cork
+   rather than clipped to slivers at its edge. At the track's end they need nothing more: the peek's 17 px fit in its
+   12 px padding and the viewport's 15. In your hand the dossier is sized from the card before it narrowed. */
 @container (max-width:640px){
   .cork{background-size:24px 24px}
   .cork-track{gap:36px;min-height:640px;padding-right:12px}
-  .slot--lead{--tilt:-1.2deg;--drop:12px;width:calc(100cqw - 32px)}
+  .slot--peek{--peek-room:22px}
+  .slot--lead{--tilt:-1.2deg;--drop:12px;width:calc(100cqw - 32px - var(--peek-room,0px))}
   .paper--lead .paper-body{min-height:540px;padding:30px 22px 26px}
   .highlighted-title{font-size:clamp(50px,18cqw,74px)}
   .highlighted-note{font-size:16px}
   .highlighted-footer{display:block}
-  .slot--featured{--tilt:1.8deg;--drop:76px;width:82cqw}
+  .slot--featured{--tilt:1.8deg;--drop:76px;width:calc(82cqw - var(--peek-room,0px))}
   .paper--featured .paper-body{min-height:390px;padding:28px 23px}
   .slot--instrument{width:min(286px,78cqw)}
   .slot--standard{width:min(190px,50cqw)}
@@ -196,11 +200,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pin-ticks g{opacity:0}
 .pin-ticks path{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round}
 
-/* ---- unpin: the card in hand and its field note ---- */
-.unpin-layer{position:fixed;inset:0;z-index:800}
+/* ---- unpin: the card in hand and its dossier ---- */
+/* A card and its dossier taller than the window: the layer scrolls rather than cutting the sheet off. */
+.unpin-layer{position:fixed;inset:0;z-index:800;overflow:hidden auto;overscroll-behavior:contain}
 .unpin-layer[hidden]{display:none}
 .unpin-layer.leaving{pointer-events:none}
-.unpin-scrim{position:absolute;inset:0;background:rgba(251,246,236,.68);opacity:0;transition:opacity .45s var(--ease-out) .16s}
+.unpin-scrim{position:fixed;inset:0;background:rgba(251,246,236,.68);opacity:0;transition:opacity .45s var(--ease-out) .16s}
 .unpin-scrim.on{opacity:1}
 .unpin-layer.leaving .unpin-scrim{transition:opacity .34s var(--ease-out)}
 .unpin-fly{position:absolute;left:0;top:0;z-index:2;container-type:inline-size;pointer-events:none}
@@ -208,21 +213,60 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .unpin-card .swing{cursor:default}
 .unpin-card .lift{transition-duration:.5s}
 .unpin-card .morph-icon{transform:translate(-50%,-50%) rotate(45deg)}
-.unpin-panel{position:absolute;z-index:1;opacity:0;transform-origin:50% 0;filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-6px 16px 20px rgba(60,50,35,.14))}
+/* The panel holds still and clips at its own top edge, tucked under the card (8 px, or the slide's overshoot on a tall
+   sheet: dossier.js tuck()), so the dossier inside shows only once it has slid out from behind the card. */
+.unpin-panel{position:absolute;z-index:1;opacity:0;clip-path:inset(0 -100vw -120px)}
 .unpin-panel.open{opacity:1}
-.unpin-panel-paper{padding:28px 26px 34px;background:var(--paper);border-top:1px dashed var(--line-strong);clip-path:polygon(0 0,100% 0,100% 96%,94% 100%,84% 97%,74% 100%,64% 96%,54% 100%,44% 97%,34% 100%,24% 96%,14% 100%,5% 97%,0 100%)}
-.unpin-panel--lead .unpin-panel-paper{background:color-mix(in srgb,var(--wash-wheat) 46%,var(--paper))}
-.unpin-panel--featured .unpin-panel-paper{background:color-mix(in srgb,var(--wash-blue) 55%,var(--paper))}
-.unpin-panel--instrument .unpin-panel-paper{background-color:var(--paper);background-image:repeating-linear-gradient(rgba(207,193,169,.3) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(207,193,169,.3) 0 1px,transparent 1px 9px)}
-.unpin-kicker{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:10px;border-bottom:1px solid var(--line-strong);font:8.5px/1.2 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
 .unpin-close{display:inline-flex;gap:6px;align-items:center;flex:none;padding:6px 0;font:500 10px/1 var(--util);letter-spacing:.04em;text-transform:none;color:var(--ink)}
 .unpin-close>span[aria-hidden]{font-size:14px}
 .unpin-close .pen-t{border-bottom:1px solid var(--ink)}
-.unpin-title{margin-top:16px;font:500 24px/1.15 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.02em}
-.unpin-note{margin-top:12px;color:var(--note-ink);font-size:15.5px;line-height:1.62}
-.unpin-panel .project-meta{margin-top:16px}
-.unpin-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:20px}
-.unpin-cta{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);font:10px/1 var(--util);letter-spacing:.035em}
+
+/* ---- the dossier behind a card (lib/building/dossier.js; design/2026-09-building, candidate C) ----
+   At rest its index tabs peek past the card's right edge; in your hand it slides out from under the card, open at its
+   contents sheet, with the tabs down its fore-edge, or on its top edge where the window has no room beside it.
+   Kraft is the tabs' paper. Every small text on it is --ink (7.57:1; --soft and --pencil read 3.31 and 3.07:1 there),
+   and the pen on it is --mark-deep (3.45:1, pen.css: the coral multiplied by kraft is 2.86:1). The wheat band's wash is
+   1.11:1 on kraft; on the board nothing is current, so nothing on kraft is banded here (on the project pages the
+   current tab is, and its darker edge carries the state: PR 2). */
+/* ---- at rest: the index tabs peek from behind the card, one per chapter, numbers only ---- */
+.dos-peek{position:absolute;z-index:0;top:44px;right:-17px;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.slot--featured .dos-peek{top:30px}
+.dos-edge{display:flex;align-items:center;justify-content:flex-end;width:40px;height:25px;padding-right:4px;border:1px solid var(--kraft-edge);border-left:0;border-radius:0 7px 7px 0;background:var(--kraft);color:var(--ink);font:600 8px/1 var(--util);font-style:normal}
+.dos-peek.out{transform:translateX(-26px)}   /* the dossier is out: its tabs went with it, tucked behind the card (dossier.js) */
+
+/* ---- in your hand: the contents sheet ---- */
+.dos{position:relative;filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-6px 16px 20px rgba(60,50,35,.14))}
+.dos-sheet{position:relative;padding:20px 24px 24px;background:var(--paper);border-top:1px dashed var(--line-strong)}
+.dos-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-bottom:9px;border-bottom:1px solid var(--line-strong);color:var(--soft);font:9px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.dos-list{list-style:none;margin:2px 0 0;padding:0}
+.dos-list a{display:grid;grid-template-columns:28px 1fr;column-gap:12px;padding:8px 0 9px;border-bottom:1px dashed color-mix(in srgb,var(--line-strong) 80%,transparent);color:var(--ink)}
+.dl-n{grid-row:span 2;color:var(--pencil);font:10.5px/1.5 var(--util)}
+.dl-t{font:500 16px/1.2 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+/* the line sits ≥ 10 px and ≥ 2× the pen's drop under the title's hover line (scripts/verify/pen-spacing.mjs) */
+.dl-l{margin-top:12px;color:var(--pencil);font:9.5px/1.45 var(--util)}
+.dos-fig{margin-top:14px}
+.dos-fig figcaption{margin-bottom:8px;color:var(--pencil);font:9px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.fig-line{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 7px;margin:0;padding:0}
+.fig-step span{display:inline-block;padding:5px 9px 6px;border:1.3px solid var(--ink);border-radius:7px 10px 6px 9px;background:var(--paper);color:var(--ink);font:10px/1.2 var(--util);letter-spacing:.01em;white-space:nowrap}
+.dos--one .fig-step span{padding:3px 5px 4px;font-size:8.5px}
+.fig-arrow{color:var(--soft);font:12px/1 var(--util)}
+.fig-exit{margin-top:7px;color:var(--soft);font:9.5px/1.3 var(--util)}
+.dos-p{margin-top:10px;color:var(--note-ink);font-size:14px;line-height:1.55}
+.dos-foot{margin-top:14px}
+.dos-foot .project-meta{margin-top:0;color:var(--pencil)}
+.dos-foot .github-link{margin-top:10px}
+
+/* ---- the index tabs down the fore-edge, tucked 10 px under the sheet: each a way into its chapter ---- */
+.dos-tabs{position:absolute;z-index:-1;top:52px;left:100%;display:flex;flex-direction:column;gap:6px}
+.dos-tab{display:flex;align-items:center;gap:8px;min-width:118px;height:31px;margin-left:-10px;padding:0 10px 0 18px;border:1px solid var(--kraft-edge);border-left:0;border-radius:0 9px 9px 0;background:var(--kraft);color:var(--ink);font:10.5px/1 var(--util);letter-spacing:.01em;white-space:nowrap}
+.dos--one .dos-tab{min-width:150px}
+.dos-tab svg{width:13px;height:13px;flex:none}
+.dt-n{font-weight:600}
+/* no room beside the sheet: the tabs stand on its top edge, their feet under it; a chapter tab shows its number only */
+.dos--top{display:flex;flex-direction:column;padding-top:12px}
+.dos--top .dos-tabs{position:relative;top:auto;left:auto;order:-1;flex-direction:row;gap:5px;margin:0 0 -5px 16px}
+.dos--top .dos-tab{min-width:0;height:31px;margin:0;padding:0 11px 5px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:8px 8px 0 0}
+.dos--top .dt-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 
 /* ---- the 小红花 on the lead card (lib/building/flower.js) ---- */
 .stk{position:absolute;z-index:2;pointer-events:none;transform:rotate(var(--rot));filter:drop-shadow(-.5px .8px 0 rgba(60,50,35,.2))}
@@ -235,9 +279,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .lift,.unpin-scrim,.morph-icon{transition:none!important}
 }
 @media (forced-colors:active){
-  .cork,.cork-btn,.morph-toggle,.project-cta,.unpin-cta{border-color:CanvasText}
+  .cork,.cork-btn,.morph-toggle,.project-cta{border-color:CanvasText}
   .paper-edge{background:CanvasText;forced-color-adjust:none}
-  .paper-inner,.paper-body,.unpin-panel-paper{background:Canvas;forced-color-adjust:none}
+  .paper-inner,.paper-body{background:Canvas;forced-color-adjust:none}
   .project-label-dot{background:CanvasText}
   .board-pin .pin-head{fill:CanvasText}
   .unpin-trigger:focus-visible,.cork-viewport:focus-visible{outline:2px solid CanvasText}

@@ -3,7 +3,7 @@
    Coral (--pen) is the pen's live attention: the notice line, the focus 「 」 and the pointer. It is one
    ink drawn as each paper shows it: it reads 3.19:1 on cream, but flat on cork or the lead card's
    wheat it drops under the 3:1 a state mark needs, so on those papers the same coral is drawn
-   multiplied by the paper (≥ 3:1). Mark a surface with data-paper="cork | wheat | cream".
+   multiplied by the paper (≥ 3:1). Mark a surface with data-paper="cork | wheat | cream | kraft".
    Chosen is the wheat band (--hl) with its darker edge (--hl-ink): no coral at rest. */
 
 /* Each per-paper value (site-tokens.css) is the cream coral multiplied by that paper:
@@ -11,6 +11,9 @@
 [data-paper="cream"]{--pen:var(--pen-cream)}
 [data-paper="cork"]{--pen:var(--pen-cork)}
 [data-paper="wheat"]{--pen:var(--pen-wheat)}
+/* Kraft (Building's dossier tabs, #D8C29A) is the one paper where the multiplied coral fails: #B85036 reads 2.86:1
+   there. The pen on kraft is --mark-deep, 3.45:1. */
+[data-paper="kraft"]{--pen:var(--mark-deep)}
 
 /* TierMark: the wheat layer multiplies with whatever paper it lands on; the coral layer does not */
 .tm{mix-blend-mode:multiply}

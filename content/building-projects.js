@@ -1,3 +1,7 @@
+/* The Building board's projects (lib/building/cards.js), and home's latest one. A project with pages also carries its
+   dossier (lib/building/dossier.js): contents (the sheet's label), chapters (n, tab, the chapter's own title, one line,
+   href), figure (caption, steps, exit), status and source, every line taken from its pages. A slip may carry a figure
+   and lines, shown instead of its note. */
 window.BUILDING_PROJECTS = Object.freeze([
   {
     id: "fred-agent",
@@ -12,7 +16,18 @@ window.BUILDING_PROJECTS = Object.freeze([
     repo: "https://github.com/fyang0507/fred-agent",
     sortDate: "2026-04-07",
     order: 2,
-    updated: "2026-07-18"
+    updated: "2026-07-18",
+    contents: "5 chapters",
+    chapters: [
+      { n: "01", tab: "overview", title: "A Life With Handles", line: "The capability already exists. The opportunity does not.", href: "./building/fred-agent/" },
+      { n: "02", tab: "system", title: "From existing capability to real opportunity", line: "4 outcomes · 4 protocols · 5 handles · 1 policy", href: "./building/fred-agent/system.html" },
+      { n: "03", tab: "principles", title: "Eleven principles", line: "portability, attention, shared state, privacy, failure", href: "./building/fred-agent/principles.html" },
+      { n: "04", tab: "components", title: "Interfaces Beyond the Chatbox", line: "Sundial · Outreach · Notion Gateway · Whoami · Headless Recovery", href: "./building/fred-agent/components.html" },
+      { n: "05", tab: "demos", title: "The System in Motion", line: "4 recorded runs · 1 controlled comparison", href: "./building/fred-agent/demos.html" }
+    ],
+    figure: { caption: "the system, in one line", steps: ["atomic handles", "workflow protocols", "real-life outcomes"] },
+    status: ["active system", "2025—now", "last revised July 2026"],
+    source: "source · private working repository"
   },
   {
     id: "njjoe",
@@ -26,7 +41,16 @@ window.BUILDING_PROJECTS = Object.freeze([
     repo: null,
     sortDate: "2026-05-12",
     order: 1,
-    updated: "2026-07-23"
+    updated: "2026-07-23",
+    contents: "2 cases",
+    chapters: [
+      { n: "00", tab: "overview", title: "The problem lived between the tools.", line: "with Joe Costello · May 2026—now", href: "./building/njjoe/" },
+      { n: "01", tab: "listing microsite", title: "One house, four interfaces.", line: "shipped · one listing microsite live · June 2026", href: "./building/njjoe/microsite.html" },
+      { n: "02", tab: "apa campaign", title: "The campaign Joe could not run by calling harder.", line: "active pilot · 248 drafts verified · Sep 5, 2026", href: "./building/njjoe/apa.html" }
+    ],
+    figure: { caption: "the common pattern", steps: ["fragmented systems", "agent assembles", "human judgment", "one experience"] },
+    status: ["one live workflow + one active pilot", "May 2026—now"],
+    source: "collaborator · Joe Costello"
   },
   {
     id: "audio-processing-cli",
@@ -45,7 +69,9 @@ window.BUILDING_PROJECTS = Object.freeze([
     repo: "https://github.com/fyang0507/audio-processing-cli",
     sortDate: "2026-08-10",
     order: 6,
-    updated: "2026-08-29"
+    updated: "2026-08-29",
+    figure: { caption: "what one run does", steps: ["measure", "resolve", "render", "verify"], exit: "abstain" },
+    lines: ["Reports what it measured, which versioned rule matched, and the exact DSP parameters it resolved.", "Abstains on tracks it can't change safely."]
   },
   {
     id: "publish-cli",
@@ -64,7 +90,9 @@ window.BUILDING_PROJECTS = Object.freeze([
     repo: "https://github.com/fyang0507/publish-cli",
     sortDate: "2026-06-30",
     order: 7,
-    updated: "2026-08-29"
+    updated: "2026-08-29",
+    figure: { caption: "what one draft becomes", steps: ["one draft", "each platform's contract", "native drafts"], exit: "never posts" },
+    lines: ["Only the draft endpoints are ever called: the never-publishes boundary is structural, not a guard rail."]
   },
   {
     id: "instant-bookmark",
