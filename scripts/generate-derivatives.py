@@ -206,8 +206,8 @@ def collect_jobs(contract: ModuleType) -> tuple[list[tuple], list[str], dict[str
         for width in contract.COVER_WIDTHS:
             target = ROOT / contract.derivative_url(cover, "covers", width).lstrip("./")
             jobs.append(("width", source, target, width, COVER_QUALITY))
-        for width in contract.COVER_BOARD_WIDTHS:
-            aspect_w, aspect_h = contract.COVER_BOARD_ASPECT
+        aspect_w, aspect_h = contract.COVER_BOARD_ASPECT
+        for width in contract.board_ladder(sips_dimensions(source)):
             height = round(width * aspect_h / aspect_w)
             target = ROOT / contract.derivative_url(cover, "boards", width).lstrip("./")
             jobs.append(("crop", source, target, width, height, COVER_QUALITY))

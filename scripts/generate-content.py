@@ -52,7 +52,8 @@ COVER_DEFAULT_WIDTH = 560
 # (object-fit: cover, zoomed 1.12), so that copy is pre-cropped to the board, as
 # the gallery thumbnails are to their box: a landscape wash would otherwise need
 # its 1600w copy to stay sharp there at 2x. The board draws 224px wide on a
-# desk and 177px on a phone: 240w at 1x, 480w at 2x, 640w on a 3x phone.
+# desk and 177px on a phone: 240w at 1x, 480w at 2x, 640w on a 3x phone. Like
+# the evidence ladder, it stops at the widest board the original holds.
 COVER_BOARD_ASPECT = (16, 25)
 COVER_BOARD_WIDTHS = (240, 480, 640)
 COVER_BOARD_DEFAULT_WIDTH = 480
@@ -108,6 +109,13 @@ def evidence_ladder(width: int) -> list[int]:
     """Display widths for an original `width` px wide: the steps below it, then its own."""
     top = min(width, EVIDENCE_WIDTHS[-1])
     return [w for w in EVIDENCE_WIDTHS if w < top] + [top]
+
+
+def board_ladder(size) -> list[int]:
+    """Board widths for an original `size` (w, h) px: the steps under the widest board it holds, then that board."""
+    aspect_w, aspect_h = COVER_BOARD_ASPECT
+    top = min(size[0], size[1] * aspect_w // aspect_h, COVER_BOARD_WIDTHS[-1])
+    return [w for w in COVER_BOARD_WIDTHS if w < top] + [top]
 
 
 def load_dimensions() -> dict[str, list[int]]:
@@ -193,6 +201,7 @@ def slugify(title: str) -> str:
 
 def load_posts() -> list[dict]:
     posts: list[dict] = []
+    dimensions = load_dimensions()
     for path in sorted(POSTS_DIR.glob("*.md")):
         data, body = parse_frontmatter(path.read_text(encoding="utf-8"))
         english, separator, chinese = body.partition("---zh---")
@@ -202,6 +211,9 @@ def load_posts() -> list[dict]:
         title = str(data["title"])
         title_zh = str(data.get("title_zh") or title)
         cover = str(data["coverImage"]).lstrip("/")
+        if cover not in dimensions:
+            raise SystemExit(f"{path.name}: no recorded size for {cover}; run python3 scripts/generate-derivatives.py first")
+        boards = board_ladder(dimensions[cover])
         tags = list(data.get("tags") or [])
         tags_zh = list(data.get("tags_zh") or [])
         english_words = len(re.findall(r"\S+", english))
@@ -223,8 +235,8 @@ def load_posts() -> list[dict]:
                 "excerptZh": str(data.get("excerpt_zh") or "") or plain_excerpt(chinese, chinese=True),
                 "cover": derivative_url(cover, "covers", COVER_DEFAULT_WIDTH),
                 "coverSrcset": srcset(cover, "covers", COVER_WIDTHS),
-                "board": derivative_url(cover, "boards", COVER_BOARD_DEFAULT_WIDTH),
-                "boardSrcset": srcset(cover, "boards", COVER_BOARD_WIDTHS),
+                "board": derivative_url(cover, "boards", max([w for w in boards if w <= COVER_BOARD_DEFAULT_WIDTH] or boards[:1])),
+                "boardSrcset": srcset(cover, "boards", boards),
                 "tags": tags,
                 "tagsZh": tags_zh,
                 "readingMin": reading_min,
