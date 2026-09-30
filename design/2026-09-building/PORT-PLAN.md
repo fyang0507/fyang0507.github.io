@@ -22,7 +22,7 @@ The branch is rebased onto `cca4134`: #20 (no WIP anywhere), #21 (`FY.mount` wai
 | 1 | **1a · Static board** | Building.dc.html with no `support.js` or `<x-dc>`; the board built before first paint; screenshot-identical | #21 (merged) | nothing | S |
 | 2 | **R · Rail extraction** | `lib/reading/rail.css`; `rail.js` takes its strip and counter hosts from its context; Reading unchanged | #22 (merged) | nothing | S |
 | 3 | **E · Evidence ladder** | derived evidence images with intrinsic sizes and a zoom tier, served by today's Demos and microsite pages; `buyer.html`'s four images copied in | nothing (in progress, `building/evidence-ladder`) | nothing (Q9 a) | S–M |
-| 4 | **1b · The dossier** | peeking tabs, the dossier in your hand, kraft inks that pass; `card.css` split out | 1a | nothing (Q1 a) | M |
+| 4 | **1b · The dossier** | peeking tabs, the dossier in your hand, kraft inks that pass; the card's and the dossier's rules stay in `building.css` | 1a | nothing (Q1 a) | M |
 | 5 | **T · Board typeface** | Fraunces first on the board, its subset preloaded | 1a, the fonts branch (`perf/self-host-latin-fonts`) | nothing (Q5 b) | S |
 | 6 | **2 · Fred Agent** | the five chapters on the site's architecture, in C's look; the rail on Principles and Components; the pen-drawn map | 1b, R, E, the identity port, the fonts branch | Q3's Demos board (Fred's final look) | L |
 | 7 | **3 · The moves** | in, back and chapter as cross-document transitions, with the card layered over its tabs | 2 | nothing (Q2 a, Q8 a) | M |
@@ -99,9 +99,7 @@ Why this shape:
 
 **Files.**
 
-- `Building.dc.html`: loads `lib/building/card.css` and `lib/building/dossier.css` before `building.css`.
-- `lib/building/card.css` (new, R8): the card's own rules (slot, swing, paper, pin, tape, label), split out of `building.css`, so a project page can clip the card on without the board's global reset, body font and grain. Building renders the same.
-- `lib/building/dossier.css` (new, R8): the dossier and its tabs, and the kraft tokens as page tokens (`--kraft: #D8C29A` and its edge). Both surfaces load it, and PR 2 extends it with the page's parts.
+- `lib/building/building.css`: the dossier's section (the peek, the sheet, the tabs) and the kraft tokens (`--kraft: #D8C29A`, `--kraft-edge: #6E5A3A`) as page tokens. The rules stay in Building's one stylesheet (R8). Split into `card.css` and `dossier.css`, they cost Building 84 ms of LCP at 1440 and 100 ms at 390 on the local gate: two more render-blocking requests on a server that opens a connection per request. Only Building uses them so far. `Building.dc.html` gains only the `dossier.js` modulepreload.
 - `lib/building/cards.js`: the peeking tabs (numbers only) behind cards that have chapters.
 - `lib/building/unpin.js`: the hand step opens the dossier instead of the field note, whose code is deleted; in-hand scales for slips; the layer scrolls on short screens.
 - `lib/building/dossier.js` (new, about 110 lines): the contents sheet, its tabs, the slide out and back.
@@ -154,7 +152,7 @@ Every small text on kraft is `--ink`. Nothing on the board is ever "current" (bo
 
 **Lands after** 1a and the self-hosted fonts PR (`perf/self-host-latin-fonts`), which cuts Fraunces into latin / latin-ext subsets under `fonts/derived/`. T can then preload `Fraunces-latin.woff2` on Building, as Noto `-ui` is preloaded today. Independent of 1b, PR 2 and PR 3.
 
-**Files.** `lib/building/building.css` (`body` and `.cork, .unpin-layer` put Fraunces first); `Building.dc.html` (the Fraunces latin preload); `lib/building/card.css`, if 1b has landed, for the card's own rules.
+**Files.** `lib/building/building.css` (`body` and `.cork, .unpin-layer` put Fraunces first); `Building.dc.html` (the Fraunces latin preload); the card's own rules, in `building.css` until PR 2 splits them.
 
 **Verification.**
 - Before/after screenshots of the board at 1440, 390 and 360, a card in hand, and the dossier, in the PR for Fred.
@@ -173,7 +171,8 @@ Every small text on kraft is `--ink`. Nothing on the board is ever "current" (bo
 **Files.**
 
 - `building/fred-agent/{index,system,principles,components,demos}.html`: rewritten, text unchanged. The static header copied from a gateway page after the identity port; the documented head order without `support.js`; no `<base>`, `<helmet>`, `?v=` or Google Noto.
-- `lib/building/dossier.css`, extended with the page's parts: sheet, kraft edge, file label, stamps, fore-edge tabs and phone strip; the page tokens `rail.css` reads; Fraunces italic 400, declared from the fonts branch's `Fraunces-Italic-latin` files, because after that branch only Reading and home declare italic and C sets `.pj-note` and `.pj-pull` in it (R14).
+- `lib/building/card.css` and `lib/building/dossier.css` (new, R8): split out of `building.css` now that a project page is a second consumer. `card.css` holds the card's own rules (slot, swing, paper, pin, tape, label) for the clipped card; `dossier.css` holds the kraft tokens and the tabs, and is extended with the page's parts. Each page loads what it needs the way it needs it; on Building each extra render-blocking sheet cost about 30 ms of LCP on the local server and 0 ms over HTTP/2. `vt-lcp` gates Building as well as the chapters.
+- `lib/building/dossier.css`, as above, extended with the page's parts: sheet, kraft edge, file label, stamps, fore-edge tabs and phone strip; the page tokens `rail.css` reads; Fraunces italic 400, declared from the fonts branch's `Fraunces-Italic-latin` files, because after that branch only Reading and home declare italic and C sets `.pj-note` and `.pj-pull` in it (R14).
 - `lib/building/cover.js` (R8): the clipped card, built by `cards.js` with its links stripped (its href, `./building/fred-agent/`, would resolve to `building/fred-agent/building/fred-agent/` here). Not render-blocking: the card doesn't travel in C, so it is built after first paint in a box reserved by `card.css`.
 - `lib/building/project-rail.js`: the adapter that meets R's contract on a project page: landmarks from the section headings (`section.pj-pr[id]`: Principles' eleven, Components' five), the strip and counter hosts, `onLand` firing at once (there is no landing nav), and the labels' 「 」.
 - `lib/shared/site-tokens.css` gains `--hl-ink-kraft: #8F7A3C`, one line inside `:root`; `lib/shared/pen.css` gains `[data-paper="kraft"]{--hl-ink:var(--hl-ink-kraft)}` and a 2.6 px `.tm-line` on kraft (Q6).
@@ -339,7 +338,7 @@ What should move the numbers: no React on any of these pages; self-hosted subset
 | 5 | Building needs transitions-project.js | **Resolved:** loaded on Building too; a missing module skips the move; `prepare()` uses `TAB`; `ride`, `frame` and `spring` through `V` | §8 |
 | 6 | transitions.js would pass 500 lines | **Resolved:** the parsing and the move choice live in transitions-project.js; transitions.js adds at most 12 lines; chapter order comes from the pages | §8 |
 | 7 | Rail reuse under-scoped | **Resolved:** PR R extracts `rail.css` without the Noto face and takes its hosts from the context; the adapter's contract is listed. It lands after #22, which also edits the rail's context in `bus.js` (merged) | §3 |
-| 8 | The card pulls in the whole board stylesheet | **Resolved:** `card.css` split out; kraft tokens in `dossier.css`; the cover card built after first paint in a reserved box, links stripped | §5, §7 |
+| 8 | The card pulls in the whole board stylesheet | Resolved in two steps: 1b keeps the card's and the dossier's rules in `building.css`, because a split with no second consumer cost Building ~90 ms of LCP on the local gate. PR 2 splits out `card.css` and `dossier.css` for the project pages, with the kraft tokens in `dossier.css`, and gates Building's LCP again. The cover card is built after first paint in a reserved box, links stripped. | §5, §7 |
 | 9 | Fresh fragments won't hold on Demos | **Resolved:** every evidence image sized (E); the re-align dropped; the fresh-fragment test covers Demos, the microsite and APA on a cold cache | §4, §7, §9 |
 | 10 | Phone tabs don't fit; the moves pop | **Resolved:** peek inside the cork (1b), every tab in the phone strip with the counter off the row (PR 2), last-frame checks at 360 and 390 (PR 3); Q7 a | §5, §7, §8 |
 | 11 | PR 1 waits on unfinished streams and on Q1 | **Resolved:** split into 1a (after #21 only) and 1b (after Q1, answered a); fonts and identity rebase onto whichever lands first; R, E and T split out | §1 |
