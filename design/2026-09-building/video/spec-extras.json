@@ -1,0 +1,16 @@
+{"fps": 60, "crf": 20,
+ "labels": {"before": "round one", "after": "round two"},
+ "segments": [
+ {"kind": "card", "k": "fyang0507.github.io · also new", "title": "Two smaller things, *also new*.", "zh": "还有两处小改动。", "cap": "The identity, written and stamped after a first visit's opener; and Writing, in Chinese or English.", "capzh": "新的名号：第一次来时，开场之后先写再盖章；还有「在写」，中文、英文都能看。", "dur": 4.0},
+ {"kind": "split", "mode": "desk", "n": "A", "title": "Arriving · the seals", "zh": "开场 · 印章", "before": "17-identity-before", "after": "17-identity-after", "hold": 0.6, "beats": [
+  {"t": 0, "b": "A first visit: the opener plays.", "bzh": "第一次来：先放开场。", "a": "A first visit: the same opener.", "azh": "第一次来：还是那段开场。"},
+  {"t": 3.3, "b": "It ends on the desk, the lockup already set in type.", "bzh": "落在书桌上，名字已经排好了。", "a": "As it ends, the pen **writes the motto**, then the two seals are **stamped**.", "azh": "开场一结束，笔先写下那句话，再盖上两枚印章。"}],
+  "replay": {"t0": 3.3, "t1": 5.4, "rate": 0.4, "crop": [20, 0, 384, 300], "note": "replay · 0.4× speed · closer on the name", "b": "The same seconds: “Fred Yang | 弗雷德”, the tagline and the ghost are simply there.", "bzh": "同样几秒：「Fred Yang | 弗雷德」、那句话和小幽灵，一直就在那儿。", "a": "Slowed down: 继续写，继续造 in stroke order, then 弗雷德 and FRED YANG land on held frames, with their impact ticks.", "azh": "放慢看：「继续写，继续造」按笔顺写出来，再是「弗雷德」和「FRED YANG」两枚印一格一格地落下，带着冲击的短线。"}},
+ {"kind": "split", "mode": "desk", "n": "B", "title": "Writing · 中文 · EN", "zh": "在写 · 中文 · 英文", "before": "18-writing-lang-before", "after": "18-writing-lang-after", "hold": 0.6, "beats": [
+  {"t": 0, "b": "Pull a book: its cover turns to you.", "bzh": "抽出一本书，封面转过来。", "a": "Pull a book: its cover turns to you, **sharp** in your hand.", "azh": "抽出一本书，封面转过来，拿在手里是清楚的。"},
+  {"t": 3.6, "b": "The spines are Chinese only. There is no switch.", "bzh": "书脊只有中文，没有切换。", "a": "The index now has a **中文 · EN** switch.", "azh": "索引上多了一个「中文 · EN」的切换。"},
+  {"t": 5.0, "b": "The same click lands on the count.", "bzh": "同一下点在了篇数上。", "a": "EN: every spine and cover is retitled in English.", "azh": "点 EN：每本书的书脊和封面都换成英文标题。"},
+  {"t": 6.6, "b": "Another book.", "bzh": "再抽一本。", "a": "The next book opens in English, and Reading will too.", "azh": "下一本也是英文，点进去读也是英文。"},
+  {"t": 9.6, "b": "Nothing to switch back.", "bzh": "也没有什么可以切回去。", "a": "Back to 中文.", "azh": "切回中文。"}],
+  "replay": {"t0": 1.4, "t1": 3.0, "rate": 1, "crop": [30, 370, 480, 375], "note": "replay · closer on the book in your hand", "b": "Closer: round one's cover is a small face scaled up, so it is soft.", "bzh": "凑近看：第一轮的封面是一张小图放大的，所以发虚。", "a": "Closer: the book is laid out at its own size, so its type and its drawing are sharp.", "azh": "凑近看：书按它自己的尺寸排出来，字和画都是清楚的。"}}
+ ]}
