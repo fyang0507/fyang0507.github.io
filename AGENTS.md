@@ -195,6 +195,7 @@ After a change:
    - `pen-*` for pen states and spacing, on `pen-harness.html`;
    - `home-*` for home, plus `flash-audit.py` and `home-diff.py`;
    - `writing-*`, `building-*`, `gallery-*`, `about-*` and `reading-*` for their pages.
+   - `site-404.mjs` for `404.html`, which GitHub Pages serves at any missing URL, at any depth;
    - `evidence.mjs` for the Building sub-sites' evidence images and their bytes;
    - `project-*` for the sub-sites' chapters (Fred Agent's five, NJJoe's three): `project-pages.mjs` (the shell, contrast, the pen, the tabs, CLS and bytes, nothing off the site's origin, no WIP, and nothing out of its column at 1440, 390, 360 and a tablet's 768, 820, 1024 and 1180), `project-rail.mjs` (the rail and every section link opened fresh), `project-map.mjs` (System's map) and `project-webkit.mjs`.
 
