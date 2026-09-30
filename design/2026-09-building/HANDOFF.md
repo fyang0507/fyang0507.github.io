@@ -15,6 +15,7 @@ python3 -m http.server 4173 --bind 127.0.0.1   # from the repo root, on design/b
 - Board index: <http://127.0.0.1:4173/design/2026-09-building/>. The C frames are the third section.
 - Live C: `01-board.html?c=c` (take Fred Agent down, then a tab), `02-overview.html?c=c`, `03-principles.html?c=c`, `04-system.html?c=c`, `05-njjoe.html?c=c`. The switcher in each page's lower-left corner keeps C for the session; "now ↗" opens the same page on the live site.
 - Round 2: `r2-02-demos-board.html`, and `r2-02-demos.html?f=1|2|3`.
+- Round 3: `r3-decisions.html`, every open question of §4 with its options live (`?q2=a&q3=c…`, shareable). The r3 pages (`r3-board.html`, `r3-overview.html`, `r3-system.html`, `r3-principles.html`, `r3-components.html`, `r3-njjoe.html`) are round 1's C with the r3 options; each has a corner bar for its own questions.
 - `python -m http.server` sends no cache headers. If a board looks stale, hard-reload.
 
 ## 3. Decisions (Fred's calls)
@@ -49,10 +50,9 @@ Fred, 2026-09-29: "There shouldn't be any WIP sticker in the live website, if th
 
 ## 4. Awaiting Fred
 
-Every question has a recommendation, so "all recommended" is a complete answer; otherwise answer by number and letter ("1a, 3c, 4b…"). 1a, R and E (`PORT-PLAN.md` §1) wait on none of these.
+Every question has a recommendation, so "all recommended" is a complete answer; otherwise answer by number and letter ("2a, 3c, 4b…"). 1a, R and E (`PORT-PLAN.md` §1) wait on none of these. Every option of Q2–Q8 can be tried live on `r3-decisions.html` (§2).
 
-1. **A click on a card.** (a) It unpins: the card comes to your hand and the dossier slides out with its chapter tabs. *Recommended: it is C as you picked it.* (b) It goes straight into the project, and the dossier becomes a peek on the board. (c) Split by card: cards with pages go straight in, and slips without pages still unpin to their one sheet.
-   Blocks 1b and the two ends of PR 3. R, E, PR 2 and PR 4 go ahead.
+1. **A click on a card. Answered 2026-09-29: (a).** A click unpins the card, it comes to your hand, and the dossier slides out with its chapter tabs: C as picked. 1b is unblocked, and `PORT-PLAN.md` §5's "If a click goes straight in" no longer applies.
 2. **Coming back to the board.** (a) The board brings the card you came back from into view, pinned in its place. *Recommended: it's worked out from the page you left, so nothing new is remembered.* (b) The board exactly where you left it, remembered for the session.
    Blocks only PR 3, which builds (a) unless you say (b).
 3. **Demos' evidence viewers** (`r2-02-demos-board.html`). (a) F1, the pen's loop on the region. (b) F2, tracing paper with windows cut out. (c) F3, an enlargement pulled out from under the capture. *Recommended: F3, the only one that makes a capture readable on a phone.* The magnifiers go, so two captions change. Approve them as written or edit them here:
@@ -93,9 +93,10 @@ Decided for you, unless you object: Building becomes a static page, so a card ca
 - `index.html`, `01-*`–`05-*`: the boards (C's code is `01-dossier.js`, `02-c.css`, and the `c` branches of `00-vt.js`, `01-board.*`, `04-map.*`).
 - `shots/`: the audit (`now-*`) and every candidate's frames (`c-*` for the pick).
 - Round 2: `r2-02-demos-board.html` (the board and the question), `r2-02-demos.html` with `r2-02-demos.css`, `r2-02-demos.js` and `r2-kit.js` (`?f=1|2|3`), and `shots/r2-*`.
+- Round 3: `r3-decisions.html` with `r3-decisions.js` (the switches); `r3-kit.js` (the picks, in sessionStorage `fy-r3`), `r3-vt.js` (C's moves and Q8's cut), `r3-board.js` (Q2's two returns, Q8's naming), `r3.css` (the kraft inks, the phone peek, Q5–Q7), `r3-components.*` (the Components mock and Q4); the r3 pages are copies of round 1's markup with those loaded.
 
 ## 7. Next actions
 
-1. Fred answers §4, in one message.
+1. Fred tries `r3-decisions.html`, then answers §4 in one message.
 2. Without waiting: 1a (Building static), R (the rail extracted) and E (the evidence ladder), in parallel.
 3. Then, as `PORT-PLAN.md` §1 orders them: 1b after Q1; PR 2 after Q3, Q4, Q6, Q7, the identity port and the fonts branch; PR 3; PR 4 after Q9.
