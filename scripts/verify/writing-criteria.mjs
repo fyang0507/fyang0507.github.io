@@ -3,7 +3,8 @@
 //   env: WRITING_BASE (default http://127.0.0.1:4173/) · WRITING_DRAFT=<file> serves that file as Writing.dc.html
 //        (used before the page itself was integrated) · WRITING_SHOTS=<prefix> saves screenshots
 // Checks, per width (1440, 1024, 390, 360): no console errors, every request 200, posts-index.js and never
-// posts.js, nothing from /design/, no horizontal overflow, planks (2 / 3 / strip / strip); real pointer paths
+// posts.js, nothing from /design/, no horizontal overflow, planks (2 / 3 / strip / strip), the height the empty host
+// holds before the mount (the whole shelf on a phone, the index column on the desk, so fig.01 never moves); real pointer paths
 // (hover a spine → the held book is under the pointer → a click there reaches Reading.dc.html?post=<id>&lang=zh),
 // the phone's tap-tap; the book in your hand is laid out at its size there (its cover and spine are drawn at most
 // 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
@@ -170,6 +171,16 @@ export default async (page, ctx) => {
     check(ctx, `planks = ${planks === '1' ? 'one strip' : planks}`, s.planks === planks && (planks !== '1' || !!(await page.$('.sh-view.strip'))), 'got ' + s.planks);
     check(ctx, 'no horizontal overflow', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     check(ctx, 'readout says 27 / 27', /27 \/ 27/.test(await page.textContent('.ro')));
+    // before app.js mounts, the empty host holds the shelf's height (writing.css .wr:empty): all of it on a phone, the
+    // index column on the desk; an empty .wr beside the host shows what the reservation is
+    const held = await page.evaluate(() => {
+      const h = document.querySelector('[data-mount=writing]'), e = document.createElement('div'), top = h.getBoundingClientRect().top;
+      e.className = 'wr'; h.after(e);
+      const r = { held: e.getBoundingClientRect().height, shelf: h.getBoundingClientRect().height, index: h.querySelector('.wr-index').getBoundingClientRect().bottom - top };
+      e.remove(); return r;
+    });
+    const want = planks === '1' ? held.shelf : held.index;
+    check(ctx, `before the mount the host holds ${planks === '1' ? 'the shelf' : 'the index column'} (${want.toFixed(2)} px)`, Math.abs(held.held - want) < 0.5 && held.held <= held.shelf + 0.5, JSON.stringify(held));
     // a filter reflows the books and the live readout says N / 27
     const tab = await page.$('.tb[data-cat="travel log"]');
     await tab.click(); await page.waitForTimeout(1500);
