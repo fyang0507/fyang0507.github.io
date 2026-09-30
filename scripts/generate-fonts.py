@@ -3,9 +3,9 @@
 # requires-python = ">=3.10"
 # dependencies = ["fonttools>=4.50", "brotli>=1.1"]
 # ///
-"""Subset every CJK face this site uses to the glyphs it actually renders.
+"""Subset every face this site uses: CJK to the glyphs it renders, Latin to fixed ranges.
 
-Two groups, for two different reasons.
+Three groups, for three different reasons.
 
 **Local display faces** (`fonts/*.woff2`, committed masters). Complete
 typefaces of ~6,900 glyphs each, 2,596 KB together, to render a few hundred
@@ -31,11 +31,21 @@ although Reading loads one body file at a time: a per-essay subset would have
 to be injected by JS once the essay is known, which costs more than it saves
 and gives up the shared cache across essays.
 
+**Fraunces, Caveat and IBM Plex Mono** (masters fetched and cached, see
+LATIN_SOURCES). Previously a render-blocking stylesheet from
+fonts.googleapis.com, so first paint waited on a third-party origin. They are
+built as Google builds them: SOFT and WONK pinned at their defaults, opsz and
+wght kept, the `latin` / `latin-ext` split, default OpenType features, glyph
+names and .notdef, no hinting. Chrome and Safari on macOS draw them pixel for pixel like
+Google's files. The ranges are fixed rather than read from the content, so new
+English text needs no rerun, and a page fetches latin-ext only when it renders
+one of those letters (the essays' ā, č, ō).
+
 Pages load only `fonts/derived/`. Like `images/derived/`, that directory is a
 generated artifact - commit it. `.github/workflows/deploy-pages.yml` deletes
 `scripts/` before deploying, so it cannot be built in CI.
 
-The glyph set is read out of the rendered post HTML: it renders the essays
+The CJK glyph set is read out of the rendered post HTML: it renders the essays
 through generate-content.py's own pipeline, landmarks and all, so it matches
 the body files exactly. Run it after generate-content.py:
 
@@ -52,6 +62,7 @@ import argparse
 import hashlib
 import html as html_mod
 import importlib.util
+import io
 import json
 import re
 import shutil
@@ -72,6 +83,49 @@ MANIFEST = ROOT / "content" / "font-subsets.json"
 NOTO_SOURCES = {
     "NotoSerifSC": "https://github.com/google/fonts/raw/main/ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf",
     "NotoSansSC": "https://github.com/google/fonts/raw/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+}
+
+# The Latin masters are the binaries Google Fonts serves from (unchanged there
+# since 2020-22), taken at one google/fonts commit and checked against these
+# digests, so a rebuild reproduces the committed subsets. Their OFL texts are
+# copied beside the subsets.
+GOOGLE_FONTS = "https://github.com/google/fonts/raw/23e54b51ddffbc7713c583748e3bd86f62b1fa4a/ofl/"
+LATIN_SOURCES = {
+    "Fraunces": ("fraunces/Fraunces%5BSOFT,WONK,opsz,wght%5D.ttf", "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb"),
+    "Fraunces-Italic": ("fraunces/Fraunces-Italic%5BSOFT,WONK,opsz,wght%5D.ttf", "b24448c43702fac4ee856781d461a0dfba8d8e594b6e8e190234b75fed2c0e01"),
+    "Caveat": ("caveat/Caveat%5Bwght%5D.ttf", "0bdb6b660482d31531b3945849fba5916b3ef8695da7024a9e6b9ee3c4157988"),
+    "IBMPlexMono-Regular": ("ibmplexmono/IBMPlexMono-Regular.ttf", "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46"),
+    "IBMPlexMono-Medium": ("ibmplexmono/IBMPlexMono-Medium.ttf", "a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755"),
+}
+LATIN_LICENSES = {
+    "OFL-Fraunces.txt": ("fraunces/OFL.txt", "bdf4c22802eaf804f998195871c6b8938aac2ac14b2d78a8bd66a6f1eced833b"),
+    "OFL-Caveat.txt": ("caveat/OFL.txt", "1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b"),
+    "OFL-IBMPlexMono.txt": ("ibmplexmono/OFL.txt", "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"),
+}
+
+# Google's own `latin` and `latin-ext` ranges. The @font-face rules in
+# lib/shared/site-tokens.css, lib/home/home.css, lib/reading/reading.css and
+# 404.html repeat them as unicode-range, latin-ext first, as Google orders them.
+LATIN_RANGES = {
+    "latin": "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD",
+    "latin-ext": "U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF",
+}
+
+# Each face becomes `<name>-<range>.woff2`. Pinned axes leave the font; the rest
+# stay variable (Fraunces opsz 9-144 and wght, Caveat wght).
+LATIN_FACES = {
+    "Fraunces": {"family": "Fraunces", "master": "Fraunces", "pin": {"SOFT": 0, "WONK": 1}},
+    # Reading's italic, 400 and 500.
+    "Fraunces-Italic": {"family": "Fraunces", "master": "Fraunces-Italic", "pin": {"SOFT": 0, "WONK": 1}},
+    # Home sets italic only at 500 and only in ASCII (the opener, the phone
+    # shots), so it gets that one instance: 42 KB instead of 84.
+    "Fraunces-Italic500": {"family": "Fraunces", "master": "Fraunces-Italic", "pin": {"SOFT": 0, "WONK": 1, "wght": 500}, "ranges": ["latin"]},
+    "Caveat": {"family": "Caveat", "master": "Caveat", "pin": {}},
+    # "Plex" is IBM Plex's Reserved Font Name, which a subset may not carry
+    # (OFL 1.1 condition 3), so the names a font menu shows are replaced. The
+    # copyright, trademark, designer and licence records stay.
+    "IBMPlexMono-Regular": {"family": "IBM Plex Mono", "master": "IBMPlexMono-Regular", "pin": {}, "rename": "FY Mono"},
+    "IBMPlexMono-Medium": {"family": "IBM Plex Mono", "master": "IBMPlexMono-Medium", "pin": {}, "rename": "FY Mono"},
 }
 
 # Pages, and the scripts and stylesheets that write their interface text, whose
@@ -203,22 +257,35 @@ def digest(path: Path) -> str:
     return h.hexdigest()
 
 
+def fetch(url: str, target: Path, sha256: str | None = None) -> None:
+    """Download url to target, refusing bytes that miss a pinned digest."""
+    print(f"fetching {url.rsplit('/', 1)[-1]} ...")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    staging = target.with_name(target.name + ".partial")
+    try:
+        subprocess.run(["curl", "-sSfL", url, "-o", str(staging)], check=True)
+        if sha256 and digest(staging) != sha256:
+            raise SystemExit(f"error: {url} does not match its pinned sha256")
+        staging.replace(target)
+    finally:
+        staging.unlink(missing_ok=True)
+
+
 def resolve_master(spec: dict) -> Path:
     """Return the master for a face, fetching and caching Noto if needed."""
     if spec["master"] == "local":
         return FONTS_DIR / spec["_name"]
-
-    name = spec["master"]
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    cached = CACHE_DIR / f"{name}.ttf"
+    cached = CACHE_DIR / f"{spec['master']}.ttf"
     if not cached.is_file():
-        print(f"fetching upstream master {name} ...")
-        staging = cached.with_suffix(".partial")
-        try:
-            subprocess.run(["curl", "-sSL", NOTO_SOURCES[name], "-o", str(staging)], check=True)
-            staging.replace(cached)
-        finally:
-            staging.unlink(missing_ok=True)
+        fetch(NOTO_SOURCES[spec["master"]], cached)
+    return cached
+
+
+def latin_master(name: str) -> Path:
+    path, sha256 = LATIN_SOURCES[name]
+    cached = CACHE_DIR / f"{name}.ttf"
+    if not cached.is_file() or digest(cached) != sha256:
+        fetch(GOOGLE_FONTS + path, cached, sha256)
     return cached
 
 
@@ -253,6 +320,39 @@ def subset(master: Path, target: Path, chars: set[str]) -> None:
             "--drop-tables+=DSIG",
             f"--output-file={staging}",
         ])
+        staging.replace(target)
+    finally:
+        staging.unlink(missing_ok=True)
+
+
+def subset_latin(master: Path, target: Path, spec: dict, unicodes: str) -> None:
+    """Instance and subset a Latin face as Google serves it: default features, no hinting."""
+    from fontTools import subset as ft_subset
+    from fontTools.ttLib import TTFont
+    from fontTools.varLib import instancer
+
+    # Kept as Google keeps them: the master's timestamp (so rebuilds are byte-stable), bounding boxes and maxp (unless
+    # pinned), plus glyph names and .notdef's outline below. Drop any one and Chrome on macOS draws edges differently.
+    font = TTFont(master, recalcTimestamp=False, recalcBBoxes=False)
+    if spec["pin"]:
+        # Reloaded, because the subsetter expects a gvar entry for every glyph
+        # and the instancer drops the ones left without variations.
+        instanced = io.BytesIO()
+        instancer.instantiateVariableFont(font, spec["pin"]).save(instanced)
+        font = TTFont(instanced, recalcTimestamp=False)
+    options = ft_subset.Options(flavor="woff2", hinting=False, glyph_names=True, notdef_outline=True, name_IDs=[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 13, 14])
+    options.drop_tables += ["DSIG"]
+    subsetter = ft_subset.Subsetter(options)
+    subsetter.populate(unicodes=ft_subset.parse_unicodes(unicodes))
+    subsetter.subset(font)
+    if spec.get("rename"):
+        for record in font["name"].names:
+            if record.nameID in (1, 3, 4, 6):
+                record.string = (record.toUnicode().replace("IBM Plex Mono", spec["rename"])
+                                 .replace("IBMPlexMono", spec["rename"].replace(" ", "")))
+    staging = target.with_name(target.name + ".partial")
+    try:
+        ft_subset.save_font(font, str(staging), options)
         staging.replace(target)
     finally:
         staging.unlink(missing_ok=True)
@@ -327,8 +427,39 @@ def main() -> int:
             "charset": "".join(sorted(chars)),
         }
 
+    from fontTools.ttLib import TTFont
+
+    for name, spec in LATIN_FACES.items():
+        master = latin_master(spec["master"])
+        upstream[spec["master"]] = LATIN_SOURCES[spec["master"]][1]
+        for part in spec.get("ranges", LATIN_RANGES):
+            out = f"{name}-{part}.woff2"
+            target = DERIVED_DIR / out
+            recipe = json.dumps([spec, LATIN_RANGES[part], upstream[spec["master"]]], sort_keys=True)
+            fp = hashlib.sha256(recipe.encode("utf-8")).hexdigest()[:16]
+            if args.report:
+                size = target.stat().st_size / 1024 if target.is_file() else 0
+                print(f"{out:<34} master {master.stat().st_size/1024:>5.0f} KB  subset {size:>7.1f} KB")
+                continue
+            if args.force or not target.is_file() or previous.get(out, {}).get("fingerprint") != fp:
+                subset_latin(master, target, spec, LATIN_RANGES[part])
+                rebuilt += 1
+            entries[out] = {
+                "family": spec["family"],
+                "url": f"./fonts/derived/{out}",
+                "chars": len(TTFont(target).getBestCmap()),
+                "unicodeRange": LATIN_RANGES[part],
+                "fingerprint": fp,
+                "masterBytes": master.stat().st_size,
+                "subsetBytes": target.stat().st_size,
+            }
+
     if args.report:
         return 0
+
+    for out, (path, sha256) in LATIN_LICENSES.items():
+        if not (DERIVED_DIR / out).is_file() or digest(DERIVED_DIR / out) != sha256:
+            fetch(GOOGLE_FONTS + path, DERIVED_DIR / out, sha256)
 
     MANIFEST.write_text(
         json.dumps(
@@ -348,7 +479,7 @@ def main() -> int:
     # Remove derived files with no corresponding master.
     if DERIVED_DIR.is_dir():
         for stray in sorted(DERIVED_DIR.glob("*.woff2")):
-            if stray.name not in FACES:
+            if stray.name not in entries:
                 stray.unlink()
                 print(f"pruned orphan {stray.relative_to(ROOT)}")
 
@@ -356,9 +487,9 @@ def main() -> int:
     total_subset = sum(e["subsetBytes"] for e in entries.values())
     print(f"{'rebuilt' if rebuilt else 'already current:'} {rebuilt or len(entries)} face(s)")
     for name, e in sorted(entries.items()):
-        print(f"  {e['family']:<18} {e['chars']:>5} chars ({e['cjk']:>4} CJK)  "
+        print(f"  {name:<32} {e['chars']:>5} chars ({e.get('cjk', 0):>4} CJK)  "
               f"{e['masterBytes']/1024:>6.0f} KB -> {e['subsetBytes']/1024:>6.1f} KB")
-    print(f"  {'TOTAL':<18} {'':>18}  {total_master/1024:>6.0f} KB -> "
+    print(f"  {'TOTAL':<32} {'':>18}  {total_master/1024:>6.0f} KB -> "
           f"{total_subset/1024:>6.1f} KB "
           f"({total_master/total_subset:.1f}x smaller)")
     return 0

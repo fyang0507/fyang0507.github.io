@@ -4,6 +4,7 @@
    The opener's states (html.opening, set in the <head>) close the file. One stylesheet on purpose: each render-blocking
    request costs a round trip on a slow link, and the opener's first frame waits for all of them. */
 @font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}   /* the -ui tier (gateway page) */
+@font-face{font-family:"Fraunces";font-style:italic;src:url("../../fonts/derived/Fraunces-Italic500-latin.woff2") format("woff2");font-weight:500;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}   /* italic 500 only: the opener, the phone shots */
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);line-height:1.5;font-family:"Fraunces",Georgia,"Noto Serif SC",serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
