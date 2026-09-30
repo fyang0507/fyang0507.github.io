@@ -85,8 +85,8 @@
     }, ['66–75 s · #32, #33, then morning #34', 'The rail as contents, Overview LCP 944 → 820 ms; the board in Fraunces; NJJoe\'s CLS to zero at 09:31.']);
     panel(10, 2150, 560, .1, function () {
       line(); for (var k = -1; k < 3; k++) hang(700 + k * 950, ['main-writing', 'main-building', 'main-dossier', 'main-principles-read', 'main-system', 'main-njjoe'][k + 1], { old: false, no: '#' + (23 + k * 2), title: '', time: '', dev: 1 }, (k % 2) * 1.5);
-      N.peg(ctx, 4050, N.ropeY(4050, D), 2, 'pr3'); F.text(ctx, 'PR 3 · in flight', 3950, 820, '600 150px Caveat', C.soft, { align: 'center' });
-    }, ['75–83 s · dawn, the whole line', 'The camera pulls back on 17 prints. One peg is still open: PR 3, the tab that flies, in flight.']);
+      N.peg(ctx, 4050, N.ropeY(4050, D), 2, 'pr3'); F.text(ctx, '#35 · 10:21', 3950, 820, '600 150px Caveat', C.soft, { align: 'center' });
+    }, ['75–83 s · dawn, the whole line', 'The camera pulls back on the night\'s 17 prints; the last peg opens in daylight for #35 (10:21), the way in and the way back.']);
     panel(11, 960, 540, .32, function () {
       ctx.save(); ctx.translate(960 - 5 * 84, 180); N.drawLockup(ctx, 0, 0, 5, 1, [1, 1]); ctx.restore();
       F.text(ctx, 'Made with Claude Opus 5.5', 960, 700, '500 44px "IBM Plex Mono"', C.ink, { align: 'center' });
