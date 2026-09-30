@@ -115,7 +115,7 @@ body{font-family:var(--text);color:var(--ink)}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .pj img{max-width:100%}
-.pj code{font:.86em/1.4 var(--util)}
+.pj code{font:.86em/1.4 var(--util);overflow-wrap:anywhere}   /* an identifier breaks rather than leave its column */
 /* the question on a project's first page */
 .pj-note{max-width:26em;margin:0 0 10px auto;padding:4px 0 4px 22px;border-left:2px dashed var(--line-strong);color:var(--ink);font:italic 400 clamp(22px,2.4vw,28px)/1.32 "Fraunces",serif}
 .pj-note small{display:block;margin-top:12px;color:var(--pencil);font:normal 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
@@ -125,7 +125,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pj-sec-n{padding-top:10px;color:var(--pencil);font:500 11px/1.4 var(--util);letter-spacing:.1em;text-transform:uppercase}
 .pj-sec-n strong{display:block;margin-top:6px;color:var(--soft);font-weight:500}
 .pj-sec h2{max-width:20em;font:600 clamp(28px,3.4vw,42px)/1.1 var(--disp);letter-spacing:-.022em}
-.pj-sec-b{min-width:0}
+.pj-sec-b{min-width:0;container-type:inline-size}   /* the line and the rows below ask its width (@container) */
 .pj-sec-b>p{max-width:680px;margin-top:16px;font-size:18px;line-height:1.66}
 .pj-sec-b>p.pj-intro{color:var(--soft)}
 .pj-sec-b>p.pj-lede{font-size:clamp(20px,2.1vw,24px);line-height:1.45}
@@ -171,12 +171,17 @@ h3.pj-k{font-weight:500}
   .pj-count .rail-strip{top:-4px}
   .pj-back{grid-area:back;margin:18px 0 0}
 }
+/* a line of steps stands in a column wherever the section's writing is under 480 px wide (a phone, a tablet's portrait,
+   the first widths with the fore-edge): its three steps side by side would be under 115 px each, and a word or a
+   stamped figure would leave its step */
+@container (max-width:480px){
+  .pj-line{grid-template-columns:1fr;gap:26px}
+  .pj-line li:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-24px;transform:none}
+}
 @media (max-width:760px){
   .pj-sec{grid-template-columns:1fr;gap:10px}
   .pj-sec-n{padding-top:0}
-  .pj-cards,.pj-line{grid-template-columns:1fr}
-  .pj-line{gap:26px}
-  .pj-line li:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-24px;transform:none}
+  .pj-cards{grid-template-columns:1fr}
   .pj-note{margin:0 0 6px}
 }
 @media (max-width:640px){
