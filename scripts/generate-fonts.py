@@ -87,7 +87,7 @@ PAGES = [
 ]
 
 # Which post-derived text reaches which face, by the selector that sets it in
-# lib/reading/reading.css (the other pages render no essay text):
+# lib/reading/reading.css or rail.css (the other pages render no essay text):
 #   DingTalk JinBuTi  <- .title (post titles), .lm-t and .lm-head (the essay's
 #                        landmark headings, scripts/landmarks.py)
 #   MuyaoPleased      <- .eyebrow (subtitles), .fig figcaption (image captions)
