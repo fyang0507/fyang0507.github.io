@@ -55,7 +55,7 @@ html.narrow.lang-en .nav-title-t{font-size:14px}
 .nav-hair path{fill:none;stroke:var(--line-strong);stroke-width:1.3;stroke-linecap:round}
 .rnav .rail-strip{top:calc(var(--n1) - 3px)}   /* the rail's phone strip lies on the hairline (rail.css) */
 .brand,.right{display:flex;align-items:center;gap:11px}.right{gap:10px}
-.brand-mark{width:34px;height:34px;object-fit:contain;flex:none}
+.brand-mark{width:34px;height:34px;flex:none}
 .back{display:flex;align-items:baseline;font-family:var(--util);font-size:13px;letter-spacing:.04em;color:var(--soft);white-space:nowrap;
   padding:3px 7px;margin-left:-7px;border-radius:3px;background:var(--label)}
 html.lang-zh .back{font-family:var(--util-cn)}

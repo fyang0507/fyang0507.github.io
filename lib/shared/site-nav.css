@@ -10,7 +10,8 @@
    beside a white-text seal (弗雷 down its right column, 德 the left) and a red-text seal (FRED YANG). The mark is the
    pen's target (Tier.wire in site.js and lib/home/desk.js): its line box ends at the seals' bottom edge, so the hover
    line hangs from there. Phones scale the same drawing. Its markup is copied into every static header, the building/
-   pages and the vt-harness: edit them all. */
+   pages and the vt-harness, and Reading's compact header carries the white-text seal alone (.brand-mark, a named
+   image, not a link): edit them all. */
 .site-identity{position:relative;z-index:1;display:inline-block;padding:4px 10px 8px 2px;color:var(--ink,#33302B);line-height:0}
 .site-identity-name{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .site-identity-mark{display:block;line-height:0;font-size:24px}
