@@ -14,7 +14,8 @@
 // Fresh section links: on a cold cache (a new context per link) and vt-lcp's Fast 4G, every section, article and
 // heading id on every chapter, Demos' #trash-patrol and #unattended-recovery among them, lands between the bottom of
 // whatever sticks at the top (the strip on phones, nothing on desktop) and 40 px below it, or, near the page's end,
-// with the page scrolled to its end. 0 console or page errors throughout. Exit code 1 on any failure.
+// with the page scrolled to its end; so does the skip link, from the keyboard. 0 console or page errors throughout.
+// Exit code 1 on any failure.
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
 const DIR = 'building/fred-agent/';
 const RAIL = ['principles', 'components'], ALL = ['index', 'system', 'principles', 'components', 'demos'];
@@ -97,8 +98,9 @@ async function rail(browser, w, name) {
     check(tag + ': after the window resizes (a phone\'s URL bar), the ink still ends there', again.ok && again.cur === mid.cur, again);
   }
   await scroll(page, max, 1200);
-  const end = await state(page);
+  const end = await state(page), total = String(lm.ids.length).padStart(2, '0');
   check(tag + ': End reaches the last landmark and the end tick', end.cur === lm.ids.length - 1 && end.done, end);
+  check(tag + ': the counter writes its total the way its labels are', end.count === total + ' / ' + total, end.count);
   await band(page, 90); await sleep(300);
   const over = await state(page);
   check(tag + ': overscroll past the end un-draws nothing', over.cur === end.cur && over.done, over);
@@ -110,6 +112,12 @@ async function rail(browser, w, name) {
     return { drawn: !!path && getComputedStyle(path).strokeDashoffset !== '', wheat: !!path && getComputedStyle(path).stroke === wheat };
   });
   check(tag + ': the current landmark carries the wheat loop', loop.drawn && loop.wheat, loop);
+  const zh = await page.evaluate(() => { const nav = document.querySelector('.rail'), n = document.getElementById(nav.getAttribute('aria-labelledby')); return { name: !!n && !nav.hasAttribute('aria-label') && /读到哪儿/.test(n.querySelector('[lang="zh"]').textContent) }; });
+  if (top0.mode === 'rail') {
+    await page.hover('.rail-lab'); await sleep(400);
+    zh.peek = await page.evaluate(() => /本节/.test((document.querySelector('.rail-peek-k [lang="zh"]') || {}).textContent || '') && !/[\u3400-\u9fff]/.test([...document.querySelector('.rail-peek-k').childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('')));
+  }
+  check(tag + ': the rail\'s Chinese is marked lang="zh" (its name' + (top0.mode === 'rail' ? ', the peek' : '') + ')', zh.name && zh.peek !== false, zh);
   if (top0.mode === 'rail') {
     await page.evaluate(() => document.querySelectorAll('.rail-lab')[2].click()); await sleep(1400);
     const f = await page.evaluate(() => ({ id: document.activeElement.id, want: document.querySelectorAll('.rail-lab')[2].getAttribute('href').slice(1), top: Math.round(document.activeElement.getBoundingClientRect().top) }));
@@ -141,7 +149,11 @@ async function fragments(browser, w) {
   for (const name of ALL) {
     const probe = await context(browser, w);
     await probe.page.goto(BASE + DIR + name + '.html', { waitUntil: 'load' });
-    const ids = await probe.page.evaluate(() => [...document.querySelectorAll('.pj-sheet :is(section, article, h1, h2)[id]')].map((e) => e.id));
+    const ids = await probe.page.evaluate(() => ['main-content', ...[...document.querySelectorAll('.pj-sheet :is(section, article, h1, h2)[id]')].map((e) => e.id)]);
+    // the skip link, from the keyboard: the sheet lands under the strip too
+    await probe.page.keyboard.press('Tab'); await probe.page.keyboard.press('Enter'); await sleep(600);
+    const skip = await probe.page.evaluate(() => { const tabs = document.querySelector('.pj-tabs'), edge = getComputedStyle(tabs).flexDirection === 'row' ? tabs.getBoundingClientRect().bottom : 0; return { focus: document.activeElement.className, d: Math.round(document.getElementById('main-content').getBoundingClientRect().top - edge) }; });
+    if (!(skip.d >= 0 && skip.d <= 40)) bad.push(name + ' skip link ' + JSON.stringify(skip));
     await probe.ctx.close();
     for (const id of ids) {
       const { ctx, page, errors } = await context(browser, w, { throttle: true });

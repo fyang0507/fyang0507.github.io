@@ -149,6 +149,18 @@ h3.fa-k{font-weight:500}
   .fa-pagenav{grid-template-columns:1fr}
   .fa-pagenav a:last-child{align-items:flex-start;text-align:left}
 }
+@media (prefers-reduced-motion:reduce){
+  .ml-base,.map-node,.map-rail{transition:none!important}
+}
 @media (forced-colors:active){
-  .ml-hot{stroke:CanvasText}
+  .ml-hot{stroke:Highlight}
+  .map-node.is-path,.map-node[aria-pressed="true"]{outline:2px solid Highlight}
+}
+@media print{
+  .fa-pagenav,.fa-foot,.map-clear,.rail-col{display:none!important}
+  .fa-read{margin-left:0}
+  .map-node,.map-rail{opacity:1!important}
+  .map-lines{display:none!important}
+  .fa-sec,.fa-pr,.cm,.fa-demo{break-inside:avoid}
+  a{color:inherit!important}
 }

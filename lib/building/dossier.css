@@ -69,7 +69,7 @@
 .pj-frame{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"sheet tabs";width:min(1180px,100%);margin:0 auto;padding-top:30px}
 .pj-sheet{grid-area:sheet;position:relative;min-width:0;background:var(--paper);border:1px solid var(--line-strong);border-right-width:1.5px}
 .pj-sheet::before{content:"";position:absolute;left:-1px;right:-1.5px;top:-10px;height:9px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:6px 26px 0 0;background:var(--kraft);clip-path:polygon(0 0,34% 0,37% 100%,0 100%)}
-.pj-sheet [id]{scroll-margin-top:calc(var(--pj-stick) + 28px)}
+.pj-sheet,.pj-sheet [id]{scroll-margin-top:calc(var(--pj-stick) + 28px)}   /* the sheet itself: the skip link's landing */
 .pj-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;padding:28px var(--pj-pad) 30px}
 .pj-body{padding:0 var(--pj-pad) 30px}
 .pj-sheethead{grid-column:1;grid-row:1;min-width:0}
@@ -126,4 +126,14 @@
 
 @media (prefers-reduced-motion:reduce){
   .pj-tabs .dos-tab{transition:none!important}
+}
+@media (forced-colors:active){
+  .pj-tabs .dos-tab[aria-current="page"]{outline:2px solid Highlight}
+}
+@media print{
+  .site-top,.skip-link,.pj-tabs,.pj-back,.pj-cover{display:none!important}
+  .pj{padding:0}
+  .pj-frame{display:block;padding-top:0}
+  .pj-sheet{border:0}
+  .pj-sheet::before{display:none}
 }
