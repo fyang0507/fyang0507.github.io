@@ -5,6 +5,8 @@
 // tabmark (pen-inked where transitions.js runs), with no CSS border or dot on the tab itself; the rule's gap under
 // the current tab matches the before site (origin/main) ±1px, measured in pixels; no horizontal overflow; no
 // console errors (the fred-agent font 404 is pre-existing on main and reported apart).
+// The identity's motto is drawn (an SVG in the static header, no font since design/2026-09-identity), so its size is
+// the height of its drawn characters (.site-identity-tag > g, punctuation aside), held to the same 10.5 px.
 import { ORIGIN, check } from './vt-lib.mjs';
 
 const BEFORE = process.env.VT_BEFORE || 'http://127.0.0.1:4174';
@@ -29,7 +31,7 @@ async function state(page) {
     const tab = q('.site-tab[aria-current="page"]'), tm = q('.site-tabmark'), rule = q('.site-rule'), idx = q('.site-index');
     return {
       paper: cs(document.body).backgroundColor, labels,
-      tag: q('.site-identity-tag') && parseFloat(cs(q('.site-identity-tag')).fontSize),
+      tag: q('.site-identity-tag') && Math.min(...[...document.querySelectorAll('.site-identity-tag > g:not(.punct)')].map((g) => +r(g).height.toFixed(2))),
       num: q('.subpage-title-number') && parseFloat(cs(q('.subpage-title-number')).fontSize),
       after: idx ? cs(idx, '::after').content : 'none', dot: tab ? cs(tab, '::before').content : 'none',
       tabBorder: tab ? parseFloat(cs(tab).borderTopWidth) : 0,
