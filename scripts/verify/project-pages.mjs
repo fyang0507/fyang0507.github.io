@@ -2,7 +2,10 @@
 // §9, PRs 2 and 4).
 //   node /tmp/fyshot/run.mjs scripts/verify/project-pages.mjs
 //   env: BASE (default http://127.0.0.1:4173/) · PJ_PAGES (comma list, default Fred Agent's five and NJJoe's three)
-//        PJ_W (1440,390,360) · SHOTS (screenshot prefix, default /tmp/fyshot/pj)
+//        PJ_W (1440,390,360) · PJ_WIDE (768,820,1024,1180; empty skips them)
+//        SHOTS (screenshot prefix, default /tmp/fyshot/pj; the shots are named <prefix>-<site>-<page>-<width>.png)
+// Every chapter at 768×1024, 820×1180, 1024×768 and 1180×820 (a tablet each way up, where the tabs turn from strip to
+// fore-edge): no horizontal overflow, nothing out of its column (below), the strip's tabs inside its row, no errors.
 // Every chapter at 1440×900, 390×844 and 360×800:
 //   · 0 console or page errors and every request 200; nothing from Google Fonts, no font master (fonts/*.woff2 outside
 //     fonts/derived/), no Noto Serif SC text tier, no <base>, nothing from design/;
@@ -17,6 +20,9 @@
 //   · the current tab pulled out (the fore-edge) or standing taller (the strip), and banded: its band edge ≥ 3:1
 //     against kraft, drawn at 2.6 px;
 //   · no horizontal overflow; in the strip every tab inside the row, uncovered, none overlapping, the current one named;
+//   · nothing on the sheet out of its column: no box past its parent's sides (a bleed, set by a negative side margin,
+//     past the sheet's), and no text wider than its own box (a word or a code string that doesn't break), except inside
+//     what scrolls sideways;
 //   · the fore-edge tabs link where the board's dossier does (content/building-projects.js), in order, each 200;
 //   · every link and button reaches 「 」 by keyboard;
 //   · italic text is set in a real Fraunces italic; the Latin faces the first screen sets are preloaded: Fraunces
@@ -28,6 +34,8 @@ const SHOTS = process.env.SHOTS || '/tmp/fyshot/pj';
 const PAGES = (process.env.PJ_PAGES || ['index', 'system', 'principles', 'components', 'demos'].map((p) => 'building/fred-agent/' + p + '.html')
   .concat(['index', 'microsite', 'apa'].map((p) => 'building/njjoe/' + p + '.html')).join(',')).split(',');
 const SIZES = [[1440, 900], [390, 844], [360, 800]].filter(([w]) => (process.env.PJ_W || '1440,390,360').split(',').map(Number).includes(w));
+const WIDE = [[768, 1024], [820, 1180], [1024, 768], [1180, 820]].filter(([w]) => (process.env.PJ_WIDE ?? '768,820,1024,1180').split(',').map(Number).includes(w));
+const shot = (path, w) => `${SHOTS}-${path.split('/').slice(-2).join('-').replace('.html', '')}-${w}.png`;
 const CORAL = ['rgb(217, 105, 90)', 'rgb(165, 69, 58)', 'rgb(203, 94, 73)', 'rgb(200, 94, 71)'];
 const res = [];
 const check = (name, ok, detail) => { res.push({ name, ok: !!ok }); console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail !== undefined ? '  · ' + (typeof detail === 'string' ? detail : JSON.stringify(detail)) : '')); };
@@ -57,6 +65,31 @@ const LIB = () => {
     return r.width > 1 && r.height > 1;
   };
   window.__multiply = (a, b) => [0, 1, 2].map((i) => a[i] * b[i] / 255).concat(1);
+  // what leaves its column on the sheet: a box past its parent's sides, or text wider than its own box. Positioned
+  // parts (the pen's marks, a line's arrows), the card, the rail, what scrolls sideways and its contents are left out;
+  // a bleed (a negative side margin) only has to stay on the sheet; a rotated stamp gets 4 px.
+  window.__spill = () => {
+    const skip = '.pj-cover, .rail-col, .rail, .rail-strip, svg, iframe, video, .sr-only';
+    const sheet = document.querySelector('.pj-sheet'), sr = sheet.getBoundingClientRect(), out = [];
+    const scrolls = (e) => { for (let a = e.parentElement; a && a !== sheet; a = a.parentElement) if (getComputedStyle(a).overflowX !== 'visible') return true; return false; };
+    for (const e of sheet.querySelectorAll('*')) {
+      if (e.closest(skip)) continue;
+      const cs = getComputedStyle(e);
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'absolute' || cs.position === 'fixed' || scrolls(e)) continue;
+      const r = e.getBoundingClientRect();
+      if (!r.width && !r.height) continue;
+      const name = e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className ? '.' + e.className.split(' ')[0] : '') + ' "' + e.textContent.trim().slice(0, 24) + '"';
+      if (parseFloat(cs.marginLeft) < 0 || parseFloat(cs.marginRight) < 0) {
+        if (r.left < sr.left - 1 || r.right > sr.right + 1) out.push(name + ' off the sheet');
+        continue;
+      }
+      const pr = e.parentElement.getBoundingClientRect(), tol = cs.transform !== 'none' || getComputedStyle(e.parentElement).transform !== 'none' ? 4 : 1;
+      if (r.left < pr.left - tol || r.right > pr.right + tol) out.push(name + ' out of its column by ' + Math.round(Math.max(pr.left - r.left, r.right - pr.right)) + ' px');
+      const arrows = ['::before', '::after'].some((k) => { const q = getComputedStyle(e, k); return q.content !== 'none' && q.position === 'absolute'; });
+      if (!arrows && cs.display !== 'inline' && cs.overflowX === 'visible' && e.clientWidth > 0 && e.scrollWidth > e.clientWidth + 1 && !e.querySelector('svg, img, iframe, video')) out.push(name + ' text wider than its box by ' + (e.scrollWidth - e.clientWidth) + ' px');
+    }
+    return out;
+  };
 };
 
 async function open(browser, path, w, h) {
@@ -204,6 +237,22 @@ export default async (page) => {
   const browser = page.context().browser();
   const gw = await open(browser, 'Building.dc.html', 1440, 900), gateway = await headerParts(gw.page);
   await gw.context.close();
+  for (const [w, h] of WIDE) {
+    for (const path of PAGES) {
+      const tag = w + ' ' + path.split('/').slice(-2).join('/');
+      const { context, page: p, bad } = await open(browser, path, w, h);
+      const f = await p.evaluate(() => {
+        const tabs = [...document.querySelectorAll('.pj-tabs .dos-tab')], row = document.querySelector('.pj-tabs').getBoundingClientRect();
+        return { overflow: document.documentElement.scrollWidth - innerWidth, spill: window.__spill(), strip: getComputedStyle(document.querySelector('.pj-tabs')).flexDirection === 'row',
+          row: tabs.map((t) => { const r = t.getBoundingClientRect(); return r.left >= row.left - 0.5 && r.right <= row.right + 0.5 && r.right <= innerWidth; }) };
+      });
+      check(tag + ': no horizontal overflow', f.overflow <= 0, f.overflow);
+      check(tag + ': nothing on the sheet out of its column', f.spill.length === 0, f.spill.slice(0, 4));
+      if (f.strip) check(tag + ': every strip tab inside the row', f.row.every(Boolean), f.row);
+      check(tag + ': 0 console or page errors, every request 200', bad.length === 0, bad.slice(0, 4));
+      await context.close();
+    }
+  }
   for (const [w, h] of SIZES) {
     for (const path of PAGES) {
       const tag = w + ' ' + path.split('/').slice(-2).join('/');
@@ -223,6 +272,8 @@ export default async (page) => {
       check(tag + ': the current tab is ' + (c.strip ? 'taller in the strip' : 'pulled out') + ', banded, its edge ≥ 3:1 on kraft at 2.6 px, its text ≥ 4.5:1',
         (c.strip ? c.others.every((x) => c.h > x) : /matrix\(1, 0, 0, 1, 10, 0\)/.test(c.transform)) && c.banded && c.edgeRatio >= 3 && Math.abs(c.edgeW - 2.6) < 0.01 && c.text >= 4.5 && c.named, c);
       check(tag + ': no horizontal overflow', f.overflow <= 0, f.overflow);
+      const sp = await p.evaluate(() => window.__spill());
+      check(tag + ': nothing on the sheet out of its column', sp.length === 0, sp.slice(0, 4));
       if (c.strip) check(tag + ': every strip tab inside the row, uncovered, apart', f.row.every((t) => t.inside && t.shown) && f.apart, f.row);
       check(tag + ': the fore-edge links where the board\'s dossier does, in order', f.hrefs.length === f.board.length && f.hrefs.every((u, i) => u === f.board[i]), f.hrefs.map((u) => u.split('/').pop() || './'));
       const st = await p.evaluate(async (hs) => Promise.all(hs.map((u) => fetch(u).then((r) => r.status, () => 0))), f.hrefs);
@@ -237,7 +288,7 @@ export default async (page) => {
         check(tag + ': every link and button on the page reaches 「 」 by keyboard (' + links.length + ')', links.length > 5 && missing.length === 0, missing.slice(0, 4).map((s) => s.key));
         check(tag + ': every 「 」 ≥ 3:1 on its paper', weak.length === 0, weak.slice(0, 3).map((s) => s.key + ' ' + s.pen));
         await p.evaluate(() => scrollTo(0, 0));
-        await p.screenshot({ path: `${SHOTS}-${path.split('/').pop().replace('.html', '')}-${w}.png` });
+        await p.screenshot({ path: shot(path, w) });
       }
       check(tag + ': 0 console or page errors, every request 200', bad.length === 0, bad.slice(0, 4));
       await context.close();
