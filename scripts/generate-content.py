@@ -48,6 +48,14 @@ GALLERY_DISPLAY_WIDTH = 2560
 # ~340px mobile card, and Reading.dc.html's full-bleed 100vw hero.
 COVER_WIDTHS = (320, 560, 900, 1600)
 COVER_DEFAULT_WIDTH = 560
+# The book in your hand on Writing shows its cover on a 16:25 front board
+# (object-fit: cover, zoomed 1.12), so that copy is pre-cropped to the board, as
+# the gallery thumbnails are to their box: a landscape wash would otherwise need
+# its 1600w copy to stay sharp there at 2x. The board draws 224px wide on a
+# desk and 177px on a phone: 240w at 1x, 480w at 2x, 640w on a 3x phone.
+COVER_BOARD_ASPECT = (16, 25)
+COVER_BOARD_WIDTHS = (240, 480, 640)
+COVER_BOARD_DEFAULT_WIDTH = 480
 # Evidence: the captures and plates on the Building sub-sites, archived under
 # images/evidence/<project>/. Captures carry small UI text that the photo
 # ladders' quality blurs, so the display ladder is encoded at 86 and capped at
@@ -215,6 +223,8 @@ def load_posts() -> list[dict]:
                 "excerptZh": str(data.get("excerpt_zh") or "") or plain_excerpt(chinese, chinese=True),
                 "cover": derivative_url(cover, "covers", COVER_DEFAULT_WIDTH),
                 "coverSrcset": srcset(cover, "covers", COVER_WIDTHS),
+                "board": derivative_url(cover, "boards", COVER_BOARD_DEFAULT_WIDTH),
+                "boardSrcset": srcset(cover, "boards", COVER_BOARD_WIDTHS),
                 "tags": tags,
                 "tagsZh": tags_zh,
                 "readingMin": reading_min,

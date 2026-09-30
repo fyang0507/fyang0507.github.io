@@ -5,7 +5,9 @@
 // Checks, per width (1440, 1024, 390, 360): no console errors, every request 200, posts-index.js and never
 // posts.js, nothing from /design/, no horizontal overflow, planks (2 / 3 / strip / strip); real pointer paths
 // (hover a spine → the held book is under the pointer → a click there reaches Reading.dc.html?post=<id>&lang=zh),
-// the phone's tap-tap; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
+// the phone's tap-tap; the book in your hand is laid out at its size there (its cover and spine are drawn at most
+// 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
+// every device pixel it is drawn at: lib/writing/case.js sh.hand); a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
@@ -36,36 +38,47 @@ async function spine(page, n) {
     return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35), id: a.dataset.post };
   }, n);
 }
+// The book in your hand, drawn from a raster its own size: 'ok', or cover / spine enlargement and image px per device px.
+const sharp = (page) => page.evaluate(() => {
+  const b = document.querySelector('.book.held'); if (!b) return 'none held';
+  const f = b.querySelector('.leaf-front'), s = b.querySelector('.f-spine'), img = b.querySelector('.cv-img img'), up = (e) => e.getBoundingClientRect().height / e.offsetHeight;
+  const src = +(img.currentSrc.match(/-(\d+)\.jpg$/) || [0, 0])[1] * 25 / 16, r = [up(f), up(s), src / (up(f) * img.offsetHeight * 1.12 * devicePixelRatio)];
+  return r[0] <= 1.1 && r[1] <= 1.1 && r[2] >= 1 ? 'ok' : r.map((v) => v.toFixed(2)).join('/');
+});
 const heldAt = (page, p) => page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y), b = e && e.closest('.book'); return !!(b && b.classList.contains('held')); }, p);
 
 async function pointerPaths(ctx, page, w) {
-  const got = [];
+  const got = [], crisp = [];
   for (const n of [1, 5, 9, 14]) {
     await open(page, w, 900); await toCase(page);
     const p = await spine(page, n);
     await page.mouse.move(p.x - 30, p.y + 70); await page.mouse.move(p.x, p.y, { steps: 8 });
     await page.waitForTimeout(1400);
     const under = await heldAt(page, p), held = (await state(page)).held;
+    crisp.push(await sharp(page));
     if (SHOTS && n === 5) await ctx.shot(`${SHOTS}-${w}-held.png`);
     await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), page.mouse.click(p.x, p.y)]);
     const url = page.url(), ok = under && held === p.id && url.endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id) + LANG);
     got.push(ok ? 'ok' : `✗ under=${under} held=${held} id=${p.id} url=${url.split('/').pop()}`);
   }
   check(ctx, `pointer paths: held book under the pointer, click reaches Reading ?post=<id> (${w})`, got.every((g) => g === 'ok'), got.join(' · '));
+  check(ctx, `the book in your hand is drawn from a raster its size, its cover image sharp (${w})`, crisp.every((g) => g === 'ok'), crisp.join(' · '));
 }
 async function phoneTaps(ctx, page, w) {
-  const cdp = await page.context().newCDPSession(page), got = [];
+  const cdp = await page.context().newCDPSession(page), got = [], crisp = [];
   const tap = async (x, y) => { await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] }); await page.waitForTimeout(40); await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); };
   for (const n of [1, 3]) {
     await open(page, w, 844); await toCase(page, 120);
     const p = await spine(page, n);
     await tap(p.x, p.y); await page.waitForTimeout(1500);
     const under = await heldAt(page, p);
+    crisp.push(await sharp(page));
     await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), tap(p.x, p.y)]);
     const ok = under && page.url().endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id) + LANG);
     got.push(ok ? 'ok' : `✗ under=${under} url=${page.url().split('/').pop()}`);
   }
   check(ctx, `phone: tap a spine, tap the book it becomes → Reading ?post=<id> (${w})`, got.every((g) => g === 'ok'), got.join(' · '));
+  check(ctx, `phone: the book in your hand is drawn from a raster its size, its cover image sharp (${w})`, crisp.every((g) => g === 'ok'), crisp.join(' · '));
 }
 
 export default async (page, ctx) => {

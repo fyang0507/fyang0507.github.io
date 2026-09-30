@@ -272,6 +272,8 @@ def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> i
         label = f"content/posts/{path.name}"
         for width in generator.COVER_WIDTHS:
             expected.append((label, generator.derivative_url(cover, "covers", width)))
+        for width in generator.COVER_BOARD_WIDTHS:
+            expected.append((label, generator.derivative_url(cover, "boards", width)))
 
     # Evidence: the ladder is capped at each original's width, read from the
     # dimensions sidecar, and the loupes' captures add their zoom copy.
