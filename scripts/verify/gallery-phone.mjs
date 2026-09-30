@@ -1,5 +1,6 @@
 // gallery-phone.mjs — Gallery at 390 and 360 with touch (CDP): one swipe line per clothesline, vertical scroll still
-// works, tap unclips, swipe in the viewer, a tap on a gliding line only stops it, stringing to all 107, idle loop.
+// works, tap unclips, swipe in the viewer, a tap on a gliding line only stops it, stringing to all 107, idle loop;
+// and the chips wait for the page's faces (Fraunces held back 1.5 s).
 //   node /tmp/fyshot/run.mjs scripts/verify/gallery-phone.mjs
 import { open, load, settle, rafOver, overflow, requestAudit, Report } from './gallery-lib.mjs';
 
@@ -18,6 +19,22 @@ const line = (p, k) => p.evaluate((k) => {
 }, k);
 
 export default async (page, ctx) => {
+  // The gallery is built in its own faces (lib/gallery/app.js): with Fraunces held back, the chips wait for it
+  // rather than wrap in a fallback and re-wrap when it lands, and Plex Mono and Caveat are in too.
+  {
+    const R = Report(ctx, 'faces');
+    const { ctx: bc, page: p } = await open(page, { width: 390, height: 844, touch: true });
+    await bc.route(/fraunces[^?]*\.woff2$/i, async (r) => { await new Promise((ok) => setTimeout(ok, 1500)); await r.continue(); });
+    await bc.addInitScript(() => new MutationObserver((l, mo) => {
+      if (!document.querySelector('.g-chip')) return;
+      mo.disconnect(); window.__faces = ['15px Fraunces', '11px "IBM Plex Mono"', '15px Caveat'].map((f) => document.fonts.check(f));
+    }).observe(document, { childList: true, subtree: true }));
+    await load(p);
+    const f = await p.evaluate(() => window.__faces);
+    R.ok('with Fraunces held back 1.5 s, the chips are built once it, Plex Mono and Caveat are in', !!f && f.every(Boolean), JSON.stringify(f));
+    R.done();
+    await bc.close();
+  }
   for (const [W, H] of [[390, 844], [360, 780]]) {
     const R = Report(ctx, String(W));
     const { ctx: bc, page: p, errors, requests } = await open(page, { width: W, height: H, touch: true });
