@@ -2,6 +2,8 @@
 
 An independent agent reviewed `PORT-PLAN.md` against the code on 2026-09-29, just before the work paused. It found 1 blocking, 11 significant and 6 minor findings. Removing `<base>`, the static Building page and the states between PRs all check out. Section numbers refer to `PORT-PLAN.md`. Resolve the blocking and significant findings, and take the open questions to Fred, before PR 1 starts.
 
+Answered 2026-09-29: `PORT-PLAN.md` was revised against this review (its §11 lists every finding's resolution), and the open questions below are Q1–Q9 in `HANDOFF.md` §4. Section numbers here refer to the first plan.
+
 ## Blocking
 
 ### 1. §4 PR 3: "the board is where you left it" can't travel in `fy-vt`
