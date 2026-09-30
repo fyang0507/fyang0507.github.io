@@ -99,6 +99,54 @@
 .skip-link{position:fixed;z-index:500;left:14px;top:12px;padding:9px 13px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:11px/1 var(--util);transform:translateY(-160%)}
 .skip-link:focus{transform:none}
 
+/* ---- what every project page writes on its sheet (a project's own parts are its lib/<id>/<id>.css) ----
+   Line-led: ruled entries, typed labels at the side, no boxes and no washes. Text is --ink, --soft (5.4:1) and --pencil
+   (4.5:1) on paper; the pen is the only highlighter; no coral at rest. The page's base comes first: the board's is
+   building.css, loaded after this file, which keeps the same reset and sets its own face. */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--text);color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.pj img{max-width:100%}
+.pj code{font:.86em/1.4 var(--util)}
+/* the question on a project's first page */
+.pj-note{max-width:26em;margin:0 0 10px auto;padding:4px 0 4px 22px;border-left:2px dashed var(--line-strong);color:var(--ink);font:italic 400 clamp(22px,2.4vw,28px)/1.32 "Fraunces",serif}
+.pj-note small{display:block;margin-top:12px;color:var(--pencil);font:normal 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+/* a section: its typed number at the side, the writing beside it */
+.pj-sec{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:clamp(20px,4vw,56px);padding:clamp(44px,6vw,76px) 0;border-top:1px dashed var(--line-strong)}
+.pj-body>.pj-sec:first-child,.pj-note+.pj-sec{border-top:1px solid var(--ink)}
+.pj-sec-n{padding-top:10px;color:var(--pencil);font:500 11px/1.4 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.pj-sec-n strong{display:block;margin-top:6px;color:var(--soft);font-weight:500}
+.pj-sec h2{max-width:20em;font:600 clamp(28px,3.4vw,42px)/1.1 var(--disp);letter-spacing:-.022em}
+.pj-sec-b{min-width:0}
+.pj-sec-b>p{max-width:680px;margin-top:16px;font-size:18px;line-height:1.66}
+.pj-sec-b>p.pj-intro{color:var(--soft)}
+.pj-sec-b>p.pj-lede{font-size:clamp(20px,2.1vw,24px);line-height:1.45}
+/* ruled entries: a section's cards, a kicker and a line of ink down their left */
+.pj-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.pj-card{display:flex;flex-direction:column;padding:16px 0 18px 18px;border-left:1.5px solid var(--ink)}
+.pj-card:nth-child(n+3){border-left-color:var(--line-strong)}
+.pj-k{color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+h3.pj-k{font-weight:500}
+.pj-card h3:not(.pj-k){margin-top:10px;font:500 21px/1.22 var(--disp);letter-spacing:-.012em}
+.pj-card p{margin-top:10px;color:var(--soft);font-size:15.5px;line-height:1.58}
+.pj-go{align-self:flex-start;margin-top:auto;padding-top:18px;color:var(--ink);font:11.5px/1.3 var(--util);letter-spacing:.02em}
+/* a sequence in one line: its steps side by side, an arrow between them */
+.pj-line{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;margin-top:30px}
+.pj-line li{position:relative;padding:14px 0 16px 16px;border-left:1.5px solid var(--ink)}
+.pj-line li:not(:last-child)::after{content:"→";position:absolute;right:-26px;top:50%;color:var(--soft);font:15px/1 var(--util);transform:translateY(-50%)}
+.pj-line strong{display:block;margin-top:8px;font:500 19px/1.2 var(--disp)}
+.pj-line p{margin-top:8px;color:var(--soft);font-size:14.5px;line-height:1.55}
+/* the chapter's way on, and its foot */
+.pj-pagenav{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:30px;border-top:1px solid var(--line)}
+.pj-pagenav a{display:flex;flex-direction:column;gap:14px;padding:16px 18px 18px;border:1px solid var(--line-strong);border-radius:4px}
+.pj-pagenav a:last-child{align-items:flex-end;text-align:right}
+.pj-pagenav a>span{color:var(--pencil);font:11px/1 var(--util);letter-spacing:.06em;text-transform:uppercase}
+.pj-pagenav strong{font:500 18px/1.2 var(--disp)}
+.pj-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--pencil);font:11.5px/1.5 var(--util)}
+.pj-foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.pj-foot a{color:var(--soft)}
+
 @media (max-width:1000px){
   .pj{--pj-stick:40px}
   .pj:has(.pj-count){--pj-stick:66px}
@@ -116,12 +164,23 @@
   .pj-count .rail-strip{top:-4px}
   .pj-back{grid-area:back;margin:18px 0 0}
 }
+@media (max-width:760px){
+  .pj-sec{grid-template-columns:1fr;gap:10px}
+  .pj-sec-n{padding-top:0}
+  .pj-cards,.pj-line{grid-template-columns:1fr}
+  .pj-line{gap:26px}
+  .pj-line li:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-24px;transform:none}
+  .pj-note{margin:0 0 6px}
+}
 @media (max-width:640px){
   .pj-tabs .dos-tab:not([aria-current="page"]) .dt-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
   .pj{--pj-pad:18px}
   .pj-head{grid-template-columns:minmax(0,1fr);gap:18px;padding:22px var(--pj-pad) 24px}
   .pj-cover{grid-column:1;grid-row:2;justify-self:end;width:147px;height:99px;margin:0 8px 0 0}
   .pj-body{padding:0 var(--pj-pad) 24px}
+  .pj-sec-b>p{font-size:17px}
+  .pj-pagenav{grid-template-columns:1fr}
+  .pj-pagenav a:last-child{align-items:flex-start;text-align:left}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -136,4 +195,7 @@
   .pj-frame{display:block;padding-top:0}
   .pj-sheet{border:0}
   .pj-sheet::before{display:none}
+  .pj-pagenav,.pj-foot{display:none!important}
+  .pj-sec{break-inside:avoid}
+  .pj a{color:inherit!important}
 }

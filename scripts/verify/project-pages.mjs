@@ -131,7 +131,7 @@ const facts = (page) => page.evaluate(() => {
   out.hrefs = tabs.map((t) => t.href);
   out.board = p ? p.chapters.map((c) => new URL(c.href, root).href) : [];
   // faces
-  out.italic = !!document.querySelector('.fa-note, .fa-pull');
+  out.italic = !!document.querySelector('.pj-note, .fa-pull');
   out.faces = [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/"/g, '') + ' ' + f.style + ' ' + f.weight);
   out.preloads = [...document.querySelectorAll('link[rel=preload][as=font]')].map((l) => l.href);
   out.plexLocal = [...document.styleSheets].some((s) => { try { return [...s.cssRules].some((r) => r instanceof CSSFontFaceRule && /Plex Mono/.test(r.style.fontFamily) && /fonts\/derived/.test(r.style.getPropertyValue('src'))); } catch (e) { return false; } });
