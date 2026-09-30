@@ -1,4 +1,5 @@
-// pen-api.mjs — the P1-pen success criteria (PORT-PLAN §2), on scripts/verify/pen-harness.html.
+// pen-api.mjs — the P1-pen success criteria (PORT-PLAN §2), on scripts/verify/pen-harness.html, and Pen.annotate:
+// its layer adds no layout box.
 //   node /tmp/fyshot/run.mjs scripts/verify/pen-api.mjs        (exit code 1 if any check fails)
 // Screenshots: /tmp/fyshot/p1pen-*.png
 
@@ -141,6 +142,20 @@ export default async (page, ctx) => {
 
   const se = await page.evaluate(() => { const e = Motion.springEase(300, 20.8, 1); return [CSS.supports('animation-timing-function', e), Motion.springEase.duration(300, 20.8, 1)]; });
   check("CSS.supports('animation-timing-function', springEase(...))", se[0], `settles in ${se[1]} ms`);
+
+  // Pen.annotate on a word made for each check: HX.vis is the stroke's visible fraction, HX.sample [ms, fraction] per frame
+  await page.evaluate(() => {
+    HX.vis = (a) => { const p = a.svg.querySelector('path'), L = p.getTotalLength(), o = parseFloat(getComputedStyle(p).strokeDashoffset) || 0; return Math.max(0, Math.min(L, L - o) - Math.max(0, -o)) / L; };
+    HX.sample = (a, ms, t0 = performance.now()) => new Promise((done) => { const s = []; (function f() { s.push([Math.round(performance.now() - t0), +HX.vis(a).toFixed(3)]); if (performance.now() - t0 < ms) requestAnimationFrame(f); else done(s); })(); });
+    HX.word = (css) => { const el = document.createElement('span'); el.textContent = 'annotated'; el.style.cssText = 'position:absolute;top:120px;font:16px/1.3 var(--text);' + css; document.body.appendChild(el); return el; };
+    HX.frames = (n) => new Promise((r) => { (function f(k) { if (k) requestAnimationFrame(() => f(k - 1)); else r(); })(n); });
+  });
+  const wide = await page.evaluate(async () => {
+    const el = HX.word('right:8px'), a = Pen.annotate(el, 'loop', { manual: true }); a.show(); await HX.frames(2);
+    const b = a.svg.getBoundingClientRect(), r = [document.documentElement.scrollWidth, innerWidth, Math.round(b.width) + 'x' + Math.round(b.height)];
+    a.destroy(); el.remove(); return r;
+  });
+  check('annotate adds no layout box: a loop at the right edge leaves the page as wide as the window', wide[0] === wide[1], `scrollWidth ${wide[0]} · window ${wide[1]} · svg ${wide[2]}`);
 
   // destroy leaves nothing behind
   const gone = await page.evaluate(() => { HX.w.twin.destroy(); const h = document.querySelector('#twin'); return [h.querySelectorAll('svg').length, h.hasAttribute('data-pen-tier'), h.hasAttribute('data-pen-t'), h.hasAttribute('data-pen-focus')]; });
