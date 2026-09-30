@@ -1,216 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<base href="../../">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>A Life With Handles · Fred Agent · Fred Yang</title>
 <meta name="description" content="Fred Agent is an operating environment that lets general-purpose agents participate in real life through time, communication, shared state, personal context, and visible recovery.">
-<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
-<link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./lib/shared/site-nav.css">
-<link rel="stylesheet" href="assets/fred-agent/fred-agent.css?v=20260726-8">
-<script src="./lib/shared/support.js"></script>
-<script src="assets/fred-agent/fred-agent.js?v=20260726-8" defer></script>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="../../favicon.png">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="../../lib/shared/site-nav.css">
+<link rel="stylesheet" href="../../lib/shared/pen.css">
+<link rel="stylesheet" href="../../lib/shared/transitions.css">
+<link rel="stylesheet" href="../../lib/building/card.css">
+<link rel="stylesheet" href="../../lib/building/dossier.css">
+<link rel="stylesheet" href="../../lib/fred-agent/fred-agent.css">
+<link rel="preload" href="../../fonts/derived/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/IBMPlexMono-Regular-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/IBMPlexMono-Medium-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/DingTalkJinBuTi.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="../../lib/shared/motion.js" defer blocking="render"></script>
+<script src="../../lib/shared/transitions-tab.js" defer blocking="render"></script>
+<script src="../../lib/shared/transitions.js" defer blocking="render"></script>
+<script src="../../lib/shared/pen.js" defer></script>
+<script src="../../lib/shared/pen-tier.js" defer></script>
+<script src="../../lib/shared/site.js" defer></script>
+<script src="../../content/building-projects.js" defer></script>
+<script type="module" src="../../lib/fred-agent/main.js"></script>
 </head>
 <body>
-<x-dc>
-<helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
-</helmet>
-
-<a class="skip-link" href="building/fred-agent/index.html#main-content">Skip to content</a>
-
-<div class="fa-page" data-screen-label="fred-agent">
-  <header class="site-shell-header">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
     <div class="site-header-row">
-      <a class="site-identity" href="index.html"><span class="site-identity-name">Fred Yang, <span lang="zh">弗雷德</span>. <span lang="zh">继续写，继续造</span>: keep writing, keep making. Home</span><span class="site-identity-mark" data-pen-seed="Fred Yang"><svg class="site-identity-art" viewBox="0 0 168 68" width="168" height="68" aria-hidden="true" focusable="false"><g class="site-identity-tag"><g><path d="M156 2.8 Q154.4 5.8 152.8 8.5 L155.8 7.9"/><path d="M157.1 6.3 Q155 9.6 152.8 12.5 L157.1 11.4"/><path d="M152.5 15.7 Q154.7 14.9 157.3 13.8"/><path d="M160.5 3.2 Q160.9 4 161.3 5"/><path d="M164.9 2.9 Q164.5 4.2 163.8 5.2"/><path d="M159.7 6.9 Q162.7 6.8 165.9 6.3"/><path d="M162.7 2.3 L162.7 13.2"/><path d="M162.4 7.4 Q161.6 10 159.5 11.6"/><path d="M163 7.7 Q164.3 9.2 165.6 10.6"/><path d="M158.9 2.3 Q158.9 9 158.9 15.4 Q162.7 15.2 166.9 14.9"/></g><g><path d="M156 20.3 Q154.4 23.3 152.8 26 L155.8 25.4"/><path d="M157.1 23.8 Q155 27.1 152.8 30 L157.1 28.9"/><path d="M152.5 33.2 Q154.7 32.4 157.3 31.3"/><path d="M158.7 22.7 Q161.9 22.5 165.3 22.2"/><path d="M161.9 20.3 L161.9 23.8"/><path d="M158.4 24.9 Q162.1 24.7 165.9 24.4 L164.9 27.1"/><path d="M159.7 26 Q160.5 26.7 161.3 27.6"/><path d="M158.5 27.8 Q159.3 28.4 160.1 29.2"/><path d="M157.9 30.5 Q162.5 30.3 167.2 29.9"/><path d="M162.2 26 Q162.2 31.3 157.9 34.3"/><path d="M162.7 31.5 Q165.1 32.7 167.2 34.3"/></g><g><path d="M153.6 39 Q153.7 40 154.1 41"/><path d="M153.9 39 Q159.7 38.9 165.6 38.4 L164.8 40.6"/><path d="M156.8 42.4 Q160.5 42.2 164.3 41.9"/><path d="M157.3 40.3 L156.1 45.6 Q160.1 45.4 164.3 45.1 Q164.3 49.1 163.2 51 L161.4 50.1"/><path d="M153.3 48.3 Q157.7 48.2 162.2 47.8"/></g><g class="punct"><path d="M161.1 54.5 Q162.5 55.6 160.8 57.8"/></g><g><path d="M136.6 2.7 Q135 5.7 133.3 8.4 L136.3 7.8"/><path d="M137.7 6.2 Q135.5 9.6 133.2 12.4 L137.6 11.4"/><path d="M132.8 15.6 Q135.1 14.8 137.7 13.8"/><path d="M141.1 3.3 Q141.5 4.1 141.8 5"/><path d="M145.6 3 Q145.1 4.3 144.4 5.3"/><path d="M140.2 6.9 Q143.3 6.8 146.5 6.4"/><path d="M143.3 2.4 L143.1 13.2"/><path d="M142.9 7.5 Q142.1 10 140 11.6"/><path d="M143.6 7.8 Q144.8 9.3 146.1 10.7"/><path d="M139.5 2.3 Q139.4 9 139.2 15.4 Q143.1 15.3 147.2 15.1"/></g><g><path d="M136.6 20.2 Q135 23.2 133.3 25.9 L136.3 25.3"/><path d="M137.7 23.7 Q135.5 27.1 133.2 29.9 L137.6 28.9"/><path d="M132.8 33.1 Q135.1 32.3 137.7 31.3"/><path d="M139.3 22.6 Q142.5 22.6 145.9 22.3"/><path d="M142.5 20.3 L142.5 23.8"/><path d="M138.9 24.9 Q142.6 24.8 146.4 24.6 L145.4 27.3"/><path d="M140.2 26 Q141 26.7 141.7 27.7"/><path d="M139 27.8 Q139.8 28.4 140.6 29.2"/><path d="M138.3 30.5 Q143 30.4 147.6 30"/><path d="M142.7 26.1 Q142.6 31.4 138.2 34.3"/><path d="M143.1 31.5 Q145.5 32.9 147.5 34.5"/></g><g><path d="M139.8 37.8 Q139.4 40.3 137.3 42.4"/><path d="M138.9 40.6 Q142.6 40.3 146.2 39.8"/><path d="M137 43.8 Q141.9 43.5 147 43"/><path d="M141.9 37.3 L141.9 43.5"/><path d="M138.4 45.4 L138.6 49.4"/><path d="M138.4 45.4 Q141.8 45.3 145.1 45 L144.8 49.3"/><path d="M138.6 49.3 Q141.6 49.1 144.8 49.1"/><path d="M133.9 38.7 Q134.9 39.7 135.5 40.8"/><path d="M133.4 44.2 L135.4 44 L135.4 49.6 Q134.7 50.7 133.3 51.5"/><path d="M135.4 49.6 Q137 51.5 141 51.5 L147.4 51.2"/></g></g><g class="site-identity-seal" transform="translate(0 1) rotate(-1.1 33 33) scale(0.66)"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g><g class="site-identity-seal" transform="translate(74 21) rotate(0.9 23 23) scale(0.46)"><path class="seal-line" stroke-width="4.6" d="M6 5.6 L94.5 6.1 L94 94.6 L5.6 94 Z"/><g class="seal-line" stroke-width="4.4"><path d="M14 16 L14 44"/><path d="M14 16 L29 16"/><path d="M14 29.5 L26 29.5"/><path d="M35 44 L35 16 L44 16 Q51 16 51 23 Q51 30 44 30 L35 30"/><path d="M44 30 L51.5 44"/><path d="M57 16 L57 44"/><path d="M57 16 L71 16"/><path d="M57 30 L68 30"/><path d="M57 44 L71 44"/><path d="M77 16 L77 44"/><path d="M77 16 L81.5 16 Q88.5 16 88.5 30 Q88.5 44 81.5 44 L77 44"/><path d="M12.5 56 L21 70.5"/><path d="M29.5 56 L21 70.5 L21 84"/><path d="M33 84 L41 56 L49 84"/><path d="M36.2 74.5 L45.8 74.5"/><path d="M55 84 L55 56 L69 84 L69 56"/><path d="M88.5 61 Q85.5 56 80.5 56 Q73.5 56 73.5 70 Q73.5 84 80.5 84 Q88.5 84 88.5 74.5 L81 74.5"/></g></g></svg></span></a>
+      <a class="site-identity" href="../../index.html"><span class="site-identity-name">Fred Yang, <span lang="zh">弗雷德</span>. <span lang="zh">继续写，继续造</span>: keep writing, keep making. Home</span><span class="site-identity-mark" data-pen-seed="Fred Yang"><svg class="site-identity-art" viewBox="0 0 168 68" width="168" height="68" aria-hidden="true" focusable="false"><g class="site-identity-tag"><g><path d="M156 2.8 Q154.4 5.8 152.8 8.5 L155.8 7.9"/><path d="M157.1 6.3 Q155 9.6 152.8 12.5 L157.1 11.4"/><path d="M152.5 15.7 Q154.7 14.9 157.3 13.8"/><path d="M160.5 3.2 Q160.9 4 161.3 5"/><path d="M164.9 2.9 Q164.5 4.2 163.8 5.2"/><path d="M159.7 6.9 Q162.7 6.8 165.9 6.3"/><path d="M162.7 2.3 L162.7 13.2"/><path d="M162.4 7.4 Q161.6 10 159.5 11.6"/><path d="M163 7.7 Q164.3 9.2 165.6 10.6"/><path d="M158.9 2.3 Q158.9 9 158.9 15.4 Q162.7 15.2 166.9 14.9"/></g><g><path d="M156 20.3 Q154.4 23.3 152.8 26 L155.8 25.4"/><path d="M157.1 23.8 Q155 27.1 152.8 30 L157.1 28.9"/><path d="M152.5 33.2 Q154.7 32.4 157.3 31.3"/><path d="M158.7 22.7 Q161.9 22.5 165.3 22.2"/><path d="M161.9 20.3 L161.9 23.8"/><path d="M158.4 24.9 Q162.1 24.7 165.9 24.4 L164.9 27.1"/><path d="M159.7 26 Q160.5 26.7 161.3 27.6"/><path d="M158.5 27.8 Q159.3 28.4 160.1 29.2"/><path d="M157.9 30.5 Q162.5 30.3 167.2 29.9"/><path d="M162.2 26 Q162.2 31.3 157.9 34.3"/><path d="M162.7 31.5 Q165.1 32.7 167.2 34.3"/></g><g><path d="M153.6 39 Q153.7 40 154.1 41"/><path d="M153.9 39 Q159.7 38.9 165.6 38.4 L164.8 40.6"/><path d="M156.8 42.4 Q160.5 42.2 164.3 41.9"/><path d="M157.3 40.3 L156.1 45.6 Q160.1 45.4 164.3 45.1 Q164.3 49.1 163.2 51 L161.4 50.1"/><path d="M153.3 48.3 Q157.7 48.2 162.2 47.8"/></g><g class="punct"><path d="M161.1 54.5 Q162.5 55.6 160.8 57.8"/></g><g><path d="M136.6 2.7 Q135 5.7 133.3 8.4 L136.3 7.8"/><path d="M137.7 6.2 Q135.5 9.6 133.2 12.4 L137.6 11.4"/><path d="M132.8 15.6 Q135.1 14.8 137.7 13.8"/><path d="M141.1 3.3 Q141.5 4.1 141.8 5"/><path d="M145.6 3 Q145.1 4.3 144.4 5.3"/><path d="M140.2 6.9 Q143.3 6.8 146.5 6.4"/><path d="M143.3 2.4 L143.1 13.2"/><path d="M142.9 7.5 Q142.1 10 140 11.6"/><path d="M143.6 7.8 Q144.8 9.3 146.1 10.7"/><path d="M139.5 2.3 Q139.4 9 139.2 15.4 Q143.1 15.3 147.2 15.1"/></g><g><path d="M136.6 20.2 Q135 23.2 133.3 25.9 L136.3 25.3"/><path d="M137.7 23.7 Q135.5 27.1 133.2 29.9 L137.6 28.9"/><path d="M132.8 33.1 Q135.1 32.3 137.7 31.3"/><path d="M139.3 22.6 Q142.5 22.6 145.9 22.3"/><path d="M142.5 20.3 L142.5 23.8"/><path d="M138.9 24.9 Q142.6 24.8 146.4 24.6 L145.4 27.3"/><path d="M140.2 26 Q141 26.7 141.7 27.7"/><path d="M139 27.8 Q139.8 28.4 140.6 29.2"/><path d="M138.3 30.5 Q143 30.4 147.6 30"/><path d="M142.7 26.1 Q142.6 31.4 138.2 34.3"/><path d="M143.1 31.5 Q145.5 32.9 147.5 34.5"/></g><g><path d="M139.8 37.8 Q139.4 40.3 137.3 42.4"/><path d="M138.9 40.6 Q142.6 40.3 146.2 39.8"/><path d="M137 43.8 Q141.9 43.5 147 43"/><path d="M141.9 37.3 L141.9 43.5"/><path d="M138.4 45.4 L138.6 49.4"/><path d="M138.4 45.4 Q141.8 45.3 145.1 45 L144.8 49.3"/><path d="M138.6 49.3 Q141.6 49.1 144.8 49.1"/><path d="M133.9 38.7 Q134.9 39.7 135.5 40.8"/><path d="M133.4 44.2 L135.4 44 L135.4 49.6 Q134.7 50.7 133.3 51.5"/><path d="M135.4 49.6 Q137 51.5 141 51.5 L147.4 51.2"/></g></g><g class="site-identity-seal" transform="translate(0 1) rotate(-1.1 33 33) scale(0.66)"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g><g class="site-identity-seal" transform="translate(74 21) rotate(0.9 23 23) scale(0.46)"><path class="seal-line" stroke-width="4.6" d="M6 5.6 L94.5 6.1 L94 94.6 L5.6 94 Z"/><g class="seal-line" stroke-width="4.4"><path d="M14 16 L14 44"/><path d="M14 16 L29 16"/><path d="M14 29.5 L26 29.5"/><path d="M35 44 L35 16 L44 16 Q51 16 51 23 Q51 30 44 30 L35 30"/><path d="M44 30 L51.5 44"/><path d="M57 16 L57 44"/><path d="M57 16 L71 16"/><path d="M57 30 L68 30"/><path d="M57 44 L71 44"/><path d="M77 16 L77 44"/><path d="M77 16 L81.5 16 Q88.5 16 88.5 30 Q88.5 44 81.5 44 L77 44"/><path d="M12.5 56 L21 70.5"/><path d="M29.5 56 L21 70.5 L21 84"/><path d="M33 84 L41 56 L49 84"/><path d="M36.2 74.5 L45.8 74.5"/><path d="M55 84 L55 56 L69 84 L69 56"/><path d="M88.5 61 Q85.5 56 80.5 56 Q73.5 56 73.5 70 Q73.5 84 80.5 84 Q88.5 84 88.5 74.5 L81 74.5"/></g></g></svg></span></a>
       <div class="site-header-status">fred-agent · field notes</div>
     </div>
     <nav class="site-index" aria-label="Primary navigation">
-      <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <a class="site-home" href="../../index.html"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="../../Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="../../Building.dc.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="../../Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="../../About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
       <div class="site-rule" aria-hidden="true"></div>
       <span class="site-tabmark" aria-hidden="true"></span>
     </nav>
   </header>
-
-  <div class="fa-project-strip">
-    <div class="fa-project-strip-inner">
-      <a class="fa-back" href="Building.dc.html">← Building board</a>
-      <nav class="fa-project-nav" aria-label="Fred Agent chapters">
-        <ul class="fa-project-nav-list">
-          <li><a href="building/fred-agent/index.html" aria-current="page">Overview</a></li>
-          <li><a href="building/fred-agent/system.html">System</a></li>
-          <li><a href="building/fred-agent/principles.html">Principles</a></li>
-          <li><a href="building/fred-agent/components.html">Components</a></li>
-          <li><a href="building/fred-agent/demos.html">Demos</a></li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
-  <main id="main-content" class="fa-stage fa-rise">
-    <header class="fa-hero" aria-labelledby="page-title">
-      <div>
-        <div class="fa-eyebrow">fred-agent · an operating environment for general-purpose agents</div>
-        <h1 id="page-title" class="fa-title"><span class="fa-title-mark">A Life With Handles</span></h1>
-        <p class="fa-deck">The capability already exists. The opportunity does not.</p>
-        <div class="fa-hero-meta">
-          <span>active system · 2025—now</span>
-          <span>last revised · July 2026</span>
-          <span>source · private working repository</span>
-        </div>
-      </div>
-      <blockquote class="fa-hero-note">
-        Why couldn't I welcome an agent to participate in my life?
-        <small>The question behind Fred Agent</small>
-      </blockquote>
-    </header>
-
-    <section class="fa-section" aria-labelledby="gap-title">
-      <div class="fa-section-head">
-        <div class="fa-section-index">00<strong>The gap</strong></div>
-        <div>
-          <h2 id="gap-title" class="fa-section-title">Remarkable intelligence, stranded behind a screen.</h2>
-        </div>
-      </div>
-      <div class="fa-copy">
-        <p class="fa-lede">Today's agents can solve problems that feel impossibly difficult. Ask the same intelligence to operate seamlessly in a person's life, and it becomes strangely helpless.</p>
-        <p>The intelligence is ready. Everyday life has not made room for it. Fred Agent is my attempt to make that room.</p>
-      </div>
-    </section>
-
-    <section class="fa-section" aria-labelledby="changes-title">
-      <div class="fa-section-head">
-        <div class="fa-section-index">01<strong>What changes</strong></div>
-        <div>
-          <h2 id="changes-title" class="fa-section-title">Give the intelligence somewhere to act.</h2>
-          <p class="fa-section-intro">Not continuous presence or universal autonomy—just the right opening at the right moment.</p>
-        </div>
-      </div>
-      <div class="fa-card-grid fa-card-grid--changes">
-        <article class="fa-card fa-card--signature fa-card--wash-wheat fa-reveal">
-          <div class="fa-card-kicker">time</div>
-          <h3>The agent can arrive without being summoned</h3>
-          <p>It can wake by clock, sunlight, condition, or one future moment. I do not have to become the scheduler myself.</p>
-        </article>
-        <article class="fa-card fa-card--signature fa-card--wash-blue fa-reveal">
-          <div class="fa-card-kicker">reach</div>
-          <h3>The agent can leave the chatbox</h3>
-          <p>It can call, message, observe, update shared state, or ask for a decision when waiting would make the result worse.</p>
-        </article>
-        <article class="fa-card fa-card--signature fa-reveal">
-          <div class="fa-card-kicker">shared knowledge</div>
-          <h3>The agent and I share one knowledge base</h3>
-          <p>I read and edit it through a familiar workspace. The agent reaches it through its own interface. Neither side has to work like the other.</p>
-        </article>
-        <article class="fa-card fa-card--signature fa-card--wash-peach fa-reveal">
-          <div class="fa-card-kicker">recovery</div>
-          <h3>Execution failure starts recovery</h3>
-          <p>It preserves retry state, records evidence, and attempts a bounded repair before escalating what still needs a human.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="fa-section" aria-labelledby="system-title">
-      <div class="fa-section-head">
-        <div class="fa-section-index">02<strong>The system</strong></div>
-        <div>
-          <h2 id="system-title" class="fa-section-title">Enablement, in one line.</h2>
-          <p class="fa-section-intro">Small handles become useful only when a protocol composes them around a human outcome.</p>
-        </div>
-      </div>
-      <div class="fa-system-line" aria-label="Atomic handles compose into workflow protocols and real-life outcomes">
-        <div class="fa-system-step">
-          <span>01</span>
-          <strong>Atomic handles</strong>
-          <p>Scheduling, communication, memory, perception, and personal context.</p>
-        </div>
-        <div class="fa-system-step">
-          <span>02</span>
-          <strong>Workflow protocols</strong>
-          <p>Rules for composition, constraints, retries, and human handoff.</p>
-        </div>
-        <div class="fa-system-step">
-          <span>03</span>
-          <strong><span class="fa-ordinary-mark">Real-life</span> outcomes</strong>
-          <p>A call made, a thought preserved, a bin noticed, a draft finished, a failure closed.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="fa-section" aria-labelledby="routes-title">
-      <div class="fa-section-head">
-        <div class="fa-section-index">03<strong>Choose a way in</strong></div>
-        <div>
-          <h2 id="routes-title" class="fa-section-title">Follow the question that interests you.</h2>
-          <p class="fa-section-intro">Architecture, argument, components, and evidence each get their own depth.</p>
-        </div>
-      </div>
-      <div class="fa-recipe-grid">
-        <article class="fa-card fa-card--signature fa-card--wash-blue fa-reveal">
-          <div class="fa-card-kicker">How does it connect?</div>
-          <h3>See the system</h3>
-          <p>Trace how atomic handles become a workflow and then a real-life result.</p>
-          <a class="fa-card-link" href="building/fred-agent/system.html">Open the system map</a>
-        </article>
-        <article class="fa-card fa-card--signature fa-card--wash-wheat fa-reveal">
-          <div class="fa-card-kicker">Why these boundaries?</div>
-          <h3>Read the principles</h3>
-          <p>Read the operating choices behind portability, attention, shared state, privacy, and failure.</p>
-          <a class="fa-card-link" href="building/fred-agent/principles.html">Read A Life With Handles</a>
-        </article>
-        <article class="fa-card fa-card--signature fa-card--wash-peach fa-reveal">
-          <div class="fa-card-kicker">What does each part own?</div>
-          <h3>Inspect the components</h3>
-          <p>What each narrow component enables—and where its contract stops.</p>
-          <a class="fa-card-link" href="building/fred-agent/components.html">Open the component field guide</a>
-        </article>
-        <article class="fa-card fa-card--signature fa-reveal">
-          <div class="fa-card-kicker">Does it operate?</div>
-          <h3>Watch it operate</h3>
-          <p>Five outcome-first scenarios, each with the evidence behind it.</p>
-          <a class="fa-card-link" href="building/fred-agent/demos.html">Browse the demos</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="fa-section fa-section--tight" aria-labelledby="closing-title">
-      <div class="fa-section-head">
-        <div class="fa-section-index">04<strong>Still growing</strong></div>
-        <div>
-          <h2 id="closing-title" class="fa-section-title">The environment is the durable part.</h2>
-        </div>
-      </div>
-      <div class="fa-copy">
-        <p>Components will change. Workflows will be deleted. The runtime will change again. The enablement environment is what lets the next agent continue.</p>
-        <p class="fa-lede">Not a better chatbot. A life with handles.</p>
-      </div>
-    </section>
-
-    <nav class="fa-page-nav" aria-label="Fred Agent page navigation">
-      <a href="Building.dc.html"><span>← Previous</span><strong>Building board</strong></a>
-      <a href="building/fred-agent/system.html"><span>Next →</span><strong>System overview</strong></a>
-    </nav>
-
-    <footer class="fa-footer">
-      <span>© 2026 Fred Yang · Fred Agent field notes</span>
-      <div class="fa-footer-links">
-        <a href="Building.dc.html">Building</a>
-        <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">Public GitHub</a>
-        <a href="mailto:fredyang0507@gmail.com">Email</a>
-      </div>
-    </footer>
-  </main>
 </div>
 
-</x-dc>
+<div class="pj" data-paper="cream">
+  <div class="pj-frame">
+    <nav class="pj-tabs" aria-label="Fred Agent chapters">
+      <a class="dos-tab" data-paper="kraft" href="./" aria-current="page"><span class="pen-t"><span class="dt-n">01</span> <span class="dt-t">overview</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./system.html"><span class="pen-t"><span class="dt-n">02</span> <span class="dt-t">system</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./principles.html"><span class="pen-t"><span class="dt-n">03</span> <span class="dt-t">principles</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./components.html"><span class="pen-t"><span class="dt-n">04</span> <span class="dt-t">components</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./demos.html"><span class="pen-t"><span class="dt-n">05</span> <span class="dt-t">demos</span></span></a>
+    </nav>
+    <a class="pj-back" href="../../Building.dc.html"><span class="pen-t">← Building board · <span lang="zh">回到板上</span></span></a>
+
+    <main id="main-content" class="pj-sheet">
+      <header class="pj-head">
+        <div class="pj-cover" data-card="fred-agent"></div>
+        <div class="pj-sheethead">
+          <div class="pj-label">field notes · Fred Agent · 01 / 05</div>
+          <div class="pj-eyebrow">fred-agent · an operating environment for general-purpose agents</div>
+          <h1 id="page-title" class="pj-title">A Life With Handles</h1>
+          <p class="pj-deck">The capability already exists. The opportunity does not.</p>
+          <div class="pj-meta"><span>active system · 2025—now</span><span>last revised · July 2026</span><span>source · private working repository</span></div>
+        </div>
+      </header>
+      <div class="pj-body">
+        <blockquote class="fa-note">Why couldn't I welcome an agent to participate in my life?<small>The question behind Fred Agent</small></blockquote>
+
+        <section class="fa-sec" aria-labelledby="gap-title">
+          <div class="fa-sec-n">00<strong>The gap</strong></div>
+          <div class="fa-sec-b">
+            <h2 id="gap-title">Remarkable intelligence, stranded behind a screen.</h2>
+            <p class="fa-lede">Today's agents can solve problems that feel impossibly difficult. Ask the same intelligence to operate seamlessly in a person's life, and it becomes strangely helpless.</p>
+            <p>The intelligence is ready. Everyday life has not made room for it. Fred Agent is my attempt to make that room.</p>
+          </div>
+        </section>
+
+        <section class="fa-sec" aria-labelledby="changes-title">
+          <div class="fa-sec-n">01<strong>What changes</strong></div>
+          <div class="fa-sec-b">
+            <h2 id="changes-title">Give the intelligence somewhere to act.</h2>
+            <p class="fa-intro">Not continuous presence or universal autonomy—just the right opening at the right moment.</p>
+            <div class="fa-cards">
+              <article class="fa-card"><div class="fa-k">time</div><h3>The agent can arrive without being summoned</h3><p>It can wake by clock, sunlight, condition, or one future moment. I do not have to become the scheduler myself.</p></article>
+              <article class="fa-card"><div class="fa-k">reach</div><h3>The agent can leave the chatbox</h3><p>It can call, message, observe, update shared state, or ask for a decision when waiting would make the result worse.</p></article>
+              <article class="fa-card"><div class="fa-k">shared knowledge</div><h3>The agent and I share one knowledge base</h3><p>I read and edit it through a familiar workspace. The agent reaches it through its own interface. Neither side has to work like the other.</p></article>
+              <article class="fa-card"><div class="fa-k">recovery</div><h3>Execution failure starts recovery</h3><p>It preserves retry state, records evidence, and attempts a bounded repair before escalating what still needs a human.</p></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="fa-sec" aria-labelledby="system-title">
+          <div class="fa-sec-n">02<strong>The system</strong></div>
+          <div class="fa-sec-b">
+            <h2 id="system-title">Enablement, in one line.</h2>
+            <p class="fa-intro">Small handles become useful only when a protocol composes them around a human outcome.</p>
+            <ol class="fa-line" aria-label="Atomic handles compose into workflow protocols and real-life outcomes">
+              <li><span class="fa-k">01</span><strong>Atomic handles</strong><p>Scheduling, communication, memory, perception, and personal context.</p></li>
+              <li><span class="fa-k">02</span><strong>Workflow protocols</strong><p>Rules for composition, constraints, retries, and human handoff.</p></li>
+              <li><span class="fa-k">03</span><strong>Real-life outcomes</strong><p>A call made, a thought preserved, a bin noticed, a draft finished, a failure closed.</p></li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="fa-sec" aria-labelledby="routes-title">
+          <div class="fa-sec-n">03<strong>Choose a way in</strong></div>
+          <div class="fa-sec-b">
+            <h2 id="routes-title">Follow the question that interests you.</h2>
+            <p class="fa-intro">Architecture, argument, components, and evidence each get their own depth.</p>
+            <div class="fa-cards">
+              <article class="fa-card"><div class="fa-k">How does it connect?</div><h3>See the system</h3><p>Trace how atomic handles become a workflow and then a real-life result.</p><a class="fa-go" href="./system.html"><span class="pen-t">Open the system map</span> →</a></article>
+              <article class="fa-card"><div class="fa-k">Why these boundaries?</div><h3>Read the principles</h3><p>Read the operating choices behind portability, attention, shared state, privacy, and failure.</p><a class="fa-go" href="./principles.html"><span class="pen-t">Read A Life With Handles</span> →</a></article>
+              <article class="fa-card"><div class="fa-k">What does each part own?</div><h3>Inspect the components</h3><p>What each narrow component enables—and where its contract stops.</p><a class="fa-go" href="./components.html"><span class="pen-t">Open the component field guide</span> →</a></article>
+              <article class="fa-card"><div class="fa-k">Does it operate?</div><h3>Watch it operate</h3><p>Five outcome-first scenarios, each with the evidence behind it.</p><a class="fa-go" href="./demos.html"><span class="pen-t">Browse the demos</span> →</a></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="fa-sec" aria-labelledby="closing-title">
+          <div class="fa-sec-n">04<strong>Still growing</strong></div>
+          <div class="fa-sec-b">
+            <h2 id="closing-title">The environment is the durable part.</h2>
+            <p>Components will change. Workflows will be deleted. The runtime will change again. The enablement environment is what lets the next agent continue.</p>
+            <p class="fa-lede">Not a better chatbot. A life with handles.</p>
+          </div>
+        </section>
+
+        <nav class="fa-pagenav" aria-label="Fred Agent page navigation">
+          <a href="../../Building.dc.html"><span>← Previous</span><strong><span class="pen-t">Building board</span></strong></a>
+          <a href="./system.html"><span>Next →</span><strong><span class="pen-t">System overview</span></strong></a>
+        </nav>
+
+        <footer class="fa-foot">
+          <span>© 2026 Fred Yang · Fred Agent field notes</span>
+          <span class="fa-foot-links">
+            <a href="../../Building.dc.html"><span class="pen-t">Building</span></a>
+            <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer"><span class="pen-t">Public GitHub</span></a>
+            <a href="mailto:fredyang0507@gmail.com"><span class="pen-t">Email</span></a>
+          </span>
+        </footer>
+      </div>
+    </main>
+  </div>
+</div>
 </body>
 </html>

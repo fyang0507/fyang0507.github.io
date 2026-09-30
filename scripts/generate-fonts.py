@@ -133,11 +133,12 @@ LATIN_FACES = {
 # so taking all of them costs a handful of glyphs and removes any need to
 # resolve CSS selectors against static markup. Globs, relative to the root:
 # page code and the shared modules in lib/ render strings of their own (the
-# opener's 点按跳过, Gallery's hand notes), so they count as pages.
+# opener's 点按跳过, Gallery's hand notes), so they count as pages, and so do the
+# Building sub-sites' pages (building/<id>/).
 PAGES = [
     "index.html", "Gallery.dc.html", "Writing.dc.html", "Reading.dc.html",
-    "About.dc.html", "Building.dc.html", "404.html",
-    "lib/**/*.js", "lib/**/*.css", "assets/fred-agent/fred-agent.css",
+    "About.dc.html", "Building.dc.html", "404.html", "building/**/*.html",
+    "lib/**/*.js", "lib/**/*.css",
 ]
 
 # Which post-derived text reaches which face, by the selector that sets it in

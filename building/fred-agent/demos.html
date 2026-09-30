@@ -1,551 +1,496 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<base href="../../">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>Fred Agent Demos · Fred Yang</title>
 <meta name="description" content="Outcome-first demonstrations of Fred Agent operating across time, channels, physical-world state, and unattended failure.">
-<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
-<link rel="apple-touch-icon" href="./favicon.png">
-<link rel="stylesheet" href="./lib/shared/site-nav.css">
-<link rel="stylesheet" href="assets/fred-agent/fred-agent.css?v=20260726-16">
-<script src="./lib/shared/support.js"></script>
-<script src="assets/fred-agent/fred-agent.js?v=20260726-8" defer></script>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="../../favicon.png">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="../../lib/shared/site-nav.css">
+<link rel="stylesheet" href="../../lib/shared/pen.css">
+<link rel="stylesheet" href="../../lib/shared/transitions.css">
+<link rel="stylesheet" href="../../lib/building/card.css">
+<link rel="stylesheet" href="../../lib/building/dossier.css">
+<link rel="stylesheet" href="../../lib/fred-agent/fred-agent.css">
+<link rel="stylesheet" href="../../lib/fred-agent/demos.css">
+<link rel="preload" href="../../assets/fred-agent/demo/omni-presence-poster-07s.webp" as="image" media="(min-width: 1001px)" fetchpriority="high">
+<link rel="preload" href="../../fonts/derived/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/IBMPlexMono-Regular-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/IBMPlexMono-Medium-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/DingTalkJinBuTi.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="../../lib/shared/motion.js" defer blocking="render"></script>
+<script src="../../lib/shared/transitions-tab.js" defer blocking="render"></script>
+<script src="../../lib/shared/transitions.js" defer blocking="render"></script>
+<script src="../../lib/shared/pen.js" defer></script>
+<script src="../../lib/shared/pen-tier.js" defer></script>
+<script src="../../lib/shared/site.js" defer></script>
+<script src="../../content/building-projects.js" defer></script>
+<script type="module" src="../../lib/fred-agent/main.js"></script>
+<script type="module" src="../../lib/fred-agent/evidence.js"></script>
 </head>
 <body>
-<x-dc>
-<helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Serif+SC:wght@400;500;600&amp;family=Noto+Sans+SC:wght@400;500&amp;display=swap" rel="stylesheet">
-</helmet>
-
-<a class="skip-link" href="building/fred-agent/demos.html#main-content">Skip to content</a>
-
-<div class="fa-page" data-screen-label="fred-agent-demos">
-  <header class="site-shell-header">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
     <div class="site-header-row">
-      <a class="site-identity" href="index.html"><span class="site-identity-name">Fred Yang, <span lang="zh">弗雷德</span>. <span lang="zh">继续写，继续造</span>: keep writing, keep making. Home</span><span class="site-identity-mark" data-pen-seed="Fred Yang"><svg class="site-identity-art" viewBox="0 0 168 68" width="168" height="68" aria-hidden="true" focusable="false"><g class="site-identity-tag"><g><path d="M156 2.8 Q154.4 5.8 152.8 8.5 L155.8 7.9"/><path d="M157.1 6.3 Q155 9.6 152.8 12.5 L157.1 11.4"/><path d="M152.5 15.7 Q154.7 14.9 157.3 13.8"/><path d="M160.5 3.2 Q160.9 4 161.3 5"/><path d="M164.9 2.9 Q164.5 4.2 163.8 5.2"/><path d="M159.7 6.9 Q162.7 6.8 165.9 6.3"/><path d="M162.7 2.3 L162.7 13.2"/><path d="M162.4 7.4 Q161.6 10 159.5 11.6"/><path d="M163 7.7 Q164.3 9.2 165.6 10.6"/><path d="M158.9 2.3 Q158.9 9 158.9 15.4 Q162.7 15.2 166.9 14.9"/></g><g><path d="M156 20.3 Q154.4 23.3 152.8 26 L155.8 25.4"/><path d="M157.1 23.8 Q155 27.1 152.8 30 L157.1 28.9"/><path d="M152.5 33.2 Q154.7 32.4 157.3 31.3"/><path d="M158.7 22.7 Q161.9 22.5 165.3 22.2"/><path d="M161.9 20.3 L161.9 23.8"/><path d="M158.4 24.9 Q162.1 24.7 165.9 24.4 L164.9 27.1"/><path d="M159.7 26 Q160.5 26.7 161.3 27.6"/><path d="M158.5 27.8 Q159.3 28.4 160.1 29.2"/><path d="M157.9 30.5 Q162.5 30.3 167.2 29.9"/><path d="M162.2 26 Q162.2 31.3 157.9 34.3"/><path d="M162.7 31.5 Q165.1 32.7 167.2 34.3"/></g><g><path d="M153.6 39 Q153.7 40 154.1 41"/><path d="M153.9 39 Q159.7 38.9 165.6 38.4 L164.8 40.6"/><path d="M156.8 42.4 Q160.5 42.2 164.3 41.9"/><path d="M157.3 40.3 L156.1 45.6 Q160.1 45.4 164.3 45.1 Q164.3 49.1 163.2 51 L161.4 50.1"/><path d="M153.3 48.3 Q157.7 48.2 162.2 47.8"/></g><g class="punct"><path d="M161.1 54.5 Q162.5 55.6 160.8 57.8"/></g><g><path d="M136.6 2.7 Q135 5.7 133.3 8.4 L136.3 7.8"/><path d="M137.7 6.2 Q135.5 9.6 133.2 12.4 L137.6 11.4"/><path d="M132.8 15.6 Q135.1 14.8 137.7 13.8"/><path d="M141.1 3.3 Q141.5 4.1 141.8 5"/><path d="M145.6 3 Q145.1 4.3 144.4 5.3"/><path d="M140.2 6.9 Q143.3 6.8 146.5 6.4"/><path d="M143.3 2.4 L143.1 13.2"/><path d="M142.9 7.5 Q142.1 10 140 11.6"/><path d="M143.6 7.8 Q144.8 9.3 146.1 10.7"/><path d="M139.5 2.3 Q139.4 9 139.2 15.4 Q143.1 15.3 147.2 15.1"/></g><g><path d="M136.6 20.2 Q135 23.2 133.3 25.9 L136.3 25.3"/><path d="M137.7 23.7 Q135.5 27.1 133.2 29.9 L137.6 28.9"/><path d="M132.8 33.1 Q135.1 32.3 137.7 31.3"/><path d="M139.3 22.6 Q142.5 22.6 145.9 22.3"/><path d="M142.5 20.3 L142.5 23.8"/><path d="M138.9 24.9 Q142.6 24.8 146.4 24.6 L145.4 27.3"/><path d="M140.2 26 Q141 26.7 141.7 27.7"/><path d="M139 27.8 Q139.8 28.4 140.6 29.2"/><path d="M138.3 30.5 Q143 30.4 147.6 30"/><path d="M142.7 26.1 Q142.6 31.4 138.2 34.3"/><path d="M143.1 31.5 Q145.5 32.9 147.5 34.5"/></g><g><path d="M139.8 37.8 Q139.4 40.3 137.3 42.4"/><path d="M138.9 40.6 Q142.6 40.3 146.2 39.8"/><path d="M137 43.8 Q141.9 43.5 147 43"/><path d="M141.9 37.3 L141.9 43.5"/><path d="M138.4 45.4 L138.6 49.4"/><path d="M138.4 45.4 Q141.8 45.3 145.1 45 L144.8 49.3"/><path d="M138.6 49.3 Q141.6 49.1 144.8 49.1"/><path d="M133.9 38.7 Q134.9 39.7 135.5 40.8"/><path d="M133.4 44.2 L135.4 44 L135.4 49.6 Q134.7 50.7 133.3 51.5"/><path d="M135.4 49.6 Q137 51.5 141 51.5 L147.4 51.2"/></g></g><g class="site-identity-seal" transform="translate(0 1) rotate(-1.1 33 33) scale(0.66)"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g><g class="site-identity-seal" transform="translate(74 21) rotate(0.9 23 23) scale(0.46)"><path class="seal-line" stroke-width="4.6" d="M6 5.6 L94.5 6.1 L94 94.6 L5.6 94 Z"/><g class="seal-line" stroke-width="4.4"><path d="M14 16 L14 44"/><path d="M14 16 L29 16"/><path d="M14 29.5 L26 29.5"/><path d="M35 44 L35 16 L44 16 Q51 16 51 23 Q51 30 44 30 L35 30"/><path d="M44 30 L51.5 44"/><path d="M57 16 L57 44"/><path d="M57 16 L71 16"/><path d="M57 30 L68 30"/><path d="M57 44 L71 44"/><path d="M77 16 L77 44"/><path d="M77 16 L81.5 16 Q88.5 16 88.5 30 Q88.5 44 81.5 44 L77 44"/><path d="M12.5 56 L21 70.5"/><path d="M29.5 56 L21 70.5 L21 84"/><path d="M33 84 L41 56 L49 84"/><path d="M36.2 74.5 L45.8 74.5"/><path d="M55 84 L55 56 L69 84 L69 56"/><path d="M88.5 61 Q85.5 56 80.5 56 Q73.5 56 73.5 70 Q73.5 84 80.5 84 Q88.5 84 88.5 74.5 L81 74.5"/></g></g></svg></span></a>
+      <a class="site-identity" href="../../index.html"><span class="site-identity-name">Fred Yang, <span lang="zh">弗雷德</span>. <span lang="zh">继续写，继续造</span>: keep writing, keep making. Home</span><span class="site-identity-mark" data-pen-seed="Fred Yang"><svg class="site-identity-art" viewBox="0 0 168 68" width="168" height="68" aria-hidden="true" focusable="false"><g class="site-identity-tag"><g><path d="M156 2.8 Q154.4 5.8 152.8 8.5 L155.8 7.9"/><path d="M157.1 6.3 Q155 9.6 152.8 12.5 L157.1 11.4"/><path d="M152.5 15.7 Q154.7 14.9 157.3 13.8"/><path d="M160.5 3.2 Q160.9 4 161.3 5"/><path d="M164.9 2.9 Q164.5 4.2 163.8 5.2"/><path d="M159.7 6.9 Q162.7 6.8 165.9 6.3"/><path d="M162.7 2.3 L162.7 13.2"/><path d="M162.4 7.4 Q161.6 10 159.5 11.6"/><path d="M163 7.7 Q164.3 9.2 165.6 10.6"/><path d="M158.9 2.3 Q158.9 9 158.9 15.4 Q162.7 15.2 166.9 14.9"/></g><g><path d="M156 20.3 Q154.4 23.3 152.8 26 L155.8 25.4"/><path d="M157.1 23.8 Q155 27.1 152.8 30 L157.1 28.9"/><path d="M152.5 33.2 Q154.7 32.4 157.3 31.3"/><path d="M158.7 22.7 Q161.9 22.5 165.3 22.2"/><path d="M161.9 20.3 L161.9 23.8"/><path d="M158.4 24.9 Q162.1 24.7 165.9 24.4 L164.9 27.1"/><path d="M159.7 26 Q160.5 26.7 161.3 27.6"/><path d="M158.5 27.8 Q159.3 28.4 160.1 29.2"/><path d="M157.9 30.5 Q162.5 30.3 167.2 29.9"/><path d="M162.2 26 Q162.2 31.3 157.9 34.3"/><path d="M162.7 31.5 Q165.1 32.7 167.2 34.3"/></g><g><path d="M153.6 39 Q153.7 40 154.1 41"/><path d="M153.9 39 Q159.7 38.9 165.6 38.4 L164.8 40.6"/><path d="M156.8 42.4 Q160.5 42.2 164.3 41.9"/><path d="M157.3 40.3 L156.1 45.6 Q160.1 45.4 164.3 45.1 Q164.3 49.1 163.2 51 L161.4 50.1"/><path d="M153.3 48.3 Q157.7 48.2 162.2 47.8"/></g><g class="punct"><path d="M161.1 54.5 Q162.5 55.6 160.8 57.8"/></g><g><path d="M136.6 2.7 Q135 5.7 133.3 8.4 L136.3 7.8"/><path d="M137.7 6.2 Q135.5 9.6 133.2 12.4 L137.6 11.4"/><path d="M132.8 15.6 Q135.1 14.8 137.7 13.8"/><path d="M141.1 3.3 Q141.5 4.1 141.8 5"/><path d="M145.6 3 Q145.1 4.3 144.4 5.3"/><path d="M140.2 6.9 Q143.3 6.8 146.5 6.4"/><path d="M143.3 2.4 L143.1 13.2"/><path d="M142.9 7.5 Q142.1 10 140 11.6"/><path d="M143.6 7.8 Q144.8 9.3 146.1 10.7"/><path d="M139.5 2.3 Q139.4 9 139.2 15.4 Q143.1 15.3 147.2 15.1"/></g><g><path d="M136.6 20.2 Q135 23.2 133.3 25.9 L136.3 25.3"/><path d="M137.7 23.7 Q135.5 27.1 133.2 29.9 L137.6 28.9"/><path d="M132.8 33.1 Q135.1 32.3 137.7 31.3"/><path d="M139.3 22.6 Q142.5 22.6 145.9 22.3"/><path d="M142.5 20.3 L142.5 23.8"/><path d="M138.9 24.9 Q142.6 24.8 146.4 24.6 L145.4 27.3"/><path d="M140.2 26 Q141 26.7 141.7 27.7"/><path d="M139 27.8 Q139.8 28.4 140.6 29.2"/><path d="M138.3 30.5 Q143 30.4 147.6 30"/><path d="M142.7 26.1 Q142.6 31.4 138.2 34.3"/><path d="M143.1 31.5 Q145.5 32.9 147.5 34.5"/></g><g><path d="M139.8 37.8 Q139.4 40.3 137.3 42.4"/><path d="M138.9 40.6 Q142.6 40.3 146.2 39.8"/><path d="M137 43.8 Q141.9 43.5 147 43"/><path d="M141.9 37.3 L141.9 43.5"/><path d="M138.4 45.4 L138.6 49.4"/><path d="M138.4 45.4 Q141.8 45.3 145.1 45 L144.8 49.3"/><path d="M138.6 49.3 Q141.6 49.1 144.8 49.1"/><path d="M133.9 38.7 Q134.9 39.7 135.5 40.8"/><path d="M133.4 44.2 L135.4 44 L135.4 49.6 Q134.7 50.7 133.3 51.5"/><path d="M135.4 49.6 Q137 51.5 141 51.5 L147.4 51.2"/></g></g><g class="site-identity-seal" transform="translate(0 1) rotate(-1.1 33 33) scale(0.66)"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g><g class="site-identity-seal" transform="translate(74 21) rotate(0.9 23 23) scale(0.46)"><path class="seal-line" stroke-width="4.6" d="M6 5.6 L94.5 6.1 L94 94.6 L5.6 94 Z"/><g class="seal-line" stroke-width="4.4"><path d="M14 16 L14 44"/><path d="M14 16 L29 16"/><path d="M14 29.5 L26 29.5"/><path d="M35 44 L35 16 L44 16 Q51 16 51 23 Q51 30 44 30 L35 30"/><path d="M44 30 L51.5 44"/><path d="M57 16 L57 44"/><path d="M57 16 L71 16"/><path d="M57 30 L68 30"/><path d="M57 44 L71 44"/><path d="M77 16 L77 44"/><path d="M77 16 L81.5 16 Q88.5 16 88.5 30 Q88.5 44 81.5 44 L77 44"/><path d="M12.5 56 L21 70.5"/><path d="M29.5 56 L21 70.5 L21 84"/><path d="M33 84 L41 56 L49 84"/><path d="M36.2 74.5 L45.8 74.5"/><path d="M55 84 L55 56 L69 84 L69 56"/><path d="M88.5 61 Q85.5 56 80.5 56 Q73.5 56 73.5 70 Q73.5 84 80.5 84 Q88.5 84 88.5 74.5 L81 74.5"/></g></g></svg></span></a>
       <div class="site-header-status">fred-agent · evidence</div>
     </div>
     <nav class="site-index" aria-label="Primary navigation">
-      <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-      <a class="site-tab site-tab--writing" href="Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-      <a class="site-tab site-tab--building" href="Building.dc.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-      <a class="site-tab site-tab--shooting" href="Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-      <a class="site-tab site-tab--about" href="About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <a class="site-home" href="../../index.html"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="../../Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="../../Building.dc.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="../../Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="../../About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
       <div class="site-rule" aria-hidden="true"></div>
       <span class="site-tabmark" aria-hidden="true"></span>
     </nav>
   </header>
-
-  <div class="fa-project-strip">
-    <div class="fa-project-strip-inner">
-      <a class="fa-back" href="Building.dc.html">← Building board</a>
-      <nav class="fa-project-nav" aria-label="Fred Agent chapters">
-        <ul class="fa-project-nav-list">
-          <li><a href="building/fred-agent/index.html">Overview</a></li>
-          <li><a href="building/fred-agent/system.html">System</a></li>
-          <li><a href="building/fred-agent/principles.html">Principles</a></li>
-          <li><a href="building/fred-agent/components.html">Components</a></li>
-          <li><a href="building/fred-agent/demos.html" aria-current="page">Demos</a></li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
-  <main id="main-content" class="fa-stage fa-rise">
-    <div class="fa-breadcrumb"><a href="building/fred-agent/index.html">Fred Agent</a><span>/</span> Demos</div>
-    <header class="fa-hero fa-hero--single" aria-labelledby="page-title">
-      <div>
-        <div class="fa-eyebrow">Fred Agent · Demos</div>
-        <h1 id="page-title" class="fa-title fa-title--compact">The System in Motion</h1>
-        <p class="fa-deck">Five ways existing agent capability becomes useful outside the chat window.</p>
-      </div>
-    </header>
-
-    <section aria-label="Fred Agent demonstrations">
-      <article class="fa-demo fa-demo--featured" id="omni-presence">
-        <header class="fa-demo-head">
-          <div>
-            <div class="fa-section-index">01<strong>Featured demo · a multi-channel reach capability for general-purpose agents</strong></div>
-            <h2>When Codex Gives You a Call</h2>
-          </div>
-          <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
-        </header>
-
-        <figure class="fa-media-slot fa-media-slot--video" aria-labelledby="omni-presence-video-caption">
-          <video class="fa-demo-video" controls="controls" playsinline preload="metadata" poster="assets/fred-agent/demo/omni-presence-poster-07s.webp" aria-describedby="omni-presence-video-caption">
-            <source src="assets/fred-agent/demo/omni-presence-demo.mp4" type="video/mp4">
-            Your browser does not support embedded video. <a href="assets/fred-agent/demo/omni-presence-demo.mp4">Open the Demo 01 recording.</a>
-          </video>
-          <figcaption id="omni-presence-video-caption"><span>Fig. 01</span> The agent starts with a live call, then carries the same task through message approval and into a durable Notion record.</figcaption>
-        </figure>
-
-        <div class="fa-demo-copy fa-demo-copy--split">
-          <section>
-            <h3>What happens</h3>
-            <p>Codex calls me. Calling is not what makes it a bespoke agent; it is a capability a general-purpose agent can use instead of waiting for me to open a chat window. I send a YouTube link by message; it understands the video, asks for a tapback, and writes the approved artifact into my technical-reading system.</p>
-            <p>The call is the opening, not the container. The same task keeps its context as it moves from voice to message, video, approval, and a durable record.</p>
-          </section>
-          <section>
-            <h3>Recipe</h3>
-            <ol class="fa-recipe-flow fa-reveal" aria-label="Omni-Presence composition recipe">
-              <li><span class="fa-flow-chip">general-purpose agent</span></li>
-              <li><span class="fa-flow-chip">voice call</span></li>
-              <li><span class="fa-flow-chip">message handoff</span></li>
-              <li><span class="fa-flow-chip">video understanding</span></li>
-              <li><span class="fa-flow-chip">human approval</span></li>
-              <li><span class="fa-flow-chip">Notion record</span></li>
-            </ol>
-          </section>
-        </div>
-        <div class="fa-demo-details">
-        <section class="fa-card fa-card--label fa-reveal">
-          <h3>What to notice</h3>
-          <ul>
-            <li>The agent can initiate a real phone call instead of waiting inside a chat window.</li>
-            <li>The same task moves from voice to message without losing context.</li>
-            <li>Approval is lightweight, explicit, and followed by durable state.</li>
-          </ul>
-        </section>
-        </div>
-      </article>
-
-      <article class="fa-demo" id="trash-patrol">
-        <header class="fa-demo-head">
-          <div>
-            <div class="fa-section-index">02<strong>Demo · Trash Patrol</strong></div>
-            <h2>The House Has a Small, Boring Problem</h2>
-          </div>
-          <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
-        </header>
-
-        <figure class="fa-evidence-canvas fa-reveal" aria-labelledby="trash-evidence-caption">
-          <div class="fa-evidence-scroll-hint" id="trash-evidence-scroll-hint"><span aria-hidden="true">←</span> Swipe or scroll to inspect the full canvas <span aria-hidden="true">→</span></div>
-          <div class="fa-evidence-scroll" role="region" aria-label="Horizontally scrollable annotated Trash Patrol evidence" aria-describedby="trash-evidence-scroll-hint trash-evidence-caption" tabindex="0">
-            <div class="fa-evidence-stage">
-              <div class="fa-evidence-shot-wrap">
-                <div class="fa-evidence-shot">
-                  <img loading="lazy" src="images/derived/evidence/fred-agent/trash-patrol-960.jpg" srcset="images/derived/evidence/fred-agent/trash-patrol-640.jpg 640w, images/derived/evidence/fred-agent/trash-patrol-960.jpg 960w, images/derived/evidence/fred-agent/trash-patrol-1280.jpg 1280w, images/derived/evidence/fred-agent/trash-patrol-1654.jpg 1654w" sizes="(min-width: 1251px) 1112px, 960px" width="1654" height="1309" data-zoom-src="images/derived/evidence/fred-agent/trash-patrol-zoom.jpg" alt="A complete side-by-side Trash Patrol capture. Codex refreshes access, finds the doorbell, captures and inspects a live frame, then posts a verdict. Beside it, Discord shows successive evening verdicts with changing timestamps and snooze icons on silent deliveries.">
-                </div>
-                <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
-
-                <div class="fa-evidence-annotations" aria-label="Trash Patrol evidence annotations">
-                  <div class="fa-evidence-annotation fa-evidence-annotation--schedule">
-                    <button class="fa-evidence-loupe" type="button" data-scope-target-x="74.5" data-scope-target-y="74.5" aria-expanded="false" aria-controls="trash-note-schedule">
-                      <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Timing drift</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                      <span class="sr-only">Adjacent timing samples from July 16 through July 22</span>
-                    </button>
-                    <div class="fa-evidence-note-body" id="trash-note-schedule"><div>
-                      <span class="fa-evidence-note-index">Sundial trigger</span>
-                      <strong>Sunset moves. So does the run.</strong>
-                      <p>Across the samples shown here, 7:26 PM becomes 7:23 and then 7:22 instead of occupying a fixed clock slot.</p>
-                    </div></div>
-                  </div>
-                  <div class="fa-evidence-annotation fa-evidence-annotation--delivery">
-                    <button class="fa-evidence-loupe" type="button" data-scope-target-x="75.5" data-scope-target-y="31" aria-expanded="false" aria-controls="trash-note-delivery">
-                      <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Delivery mode</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                      <span class="sr-only">Contrast between silent and non-silent delivery</span>
-                    </button>
-                    <div class="fa-evidence-note-body" id="trash-note-delivery"><div>
-                      <span class="fa-evidence-note-index">Delivery mode</span>
-                      <strong>Quiet when nothing is owed.</strong>
-                      <p>July 8’s action request has no snooze mark. July 9’s no-action verdict carries one, identifying a silent delivery.</p>
-                    </div></div>
-                  </div>
-                  <div class="fa-evidence-annotation fa-evidence-annotation--capture">
-                    <button class="fa-evidence-loupe" type="button" data-scope-target-x="6.9" data-scope-target-y="54.2" aria-expanded="false" aria-controls="trash-note-capture">
-                      <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Live frame</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                      <span class="sr-only">Live image capture in the Codex run</span>
-                    </button>
-                    <div class="fa-evidence-note-body" id="trash-note-capture"><div>
-                      <span class="fa-evidence-note-index">Live capture</span>
-                      <strong>A fresh look, not a remembered state.</strong>
-                      <p>Codex finds the doorbell, captures through WebRTC, and visibly inspects the frame before returning a verdict—in this run, in 38 seconds.</p>
-                    </div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <figcaption id="trash-evidence-caption"><span>Fig. 02</span> Select any magnifier to focus the evidence and reveal all three notes; select anywhere in the canvas to return.</figcaption>
-        </figure>
-
-        <div class="fa-demo-copy fa-demo-copy--split">
-          <section>
-            <h3>What happens</h3>
-            <p>Sundial wakes the workflow near sunset. A doorbell frame, the local collection rule, and a bounded judgment answer one question: do the bins need attention now?</p>
-            <p>The system posts a short verdict and deletes the temporary capture.</p>
-          </section>
-          <section>
-            <h3>Recipe</h3>
-            <ol class="fa-recipe-flow fa-reveal" aria-label="Trash Patrol composition recipe">
-              <li><span class="fa-flow-chip">solar trigger</span></li>
-              <li><span class="fa-flow-chip">doorbell capture</span></li>
-              <li><span class="fa-flow-chip">local rule and visual judgment</span></li>
-              <li><span class="fa-flow-chip">short Discord verdict</span></li>
-              <li><span class="fa-flow-chip">cleanup</span></li>
-            </ol>
-          </section>
-        </div>
-        <div class="fa-demo-details">
-        <section class="fa-card fa-card--label fa-reveal">
-          <h3>What to notice</h3>
-          <ul>
-            <li>The trigger follows the obligation, not a generic schedule.</li>
-            <li>Unclear scenes produce uncertainty, not a guess.</li>
-            <li>The final message is smaller than the reasoning behind it.</li>
-          </ul>
-        </section>
-        </div>
-      </article>
-
-      <article class="fa-demo" id="discord-intake">
-        <header class="fa-demo-head">
-          <div>
-            <div class="fa-section-index">03<strong>Demo · Discord Intake</strong></div>
-            <h2>Think. Dump. Forget.</h2>
-          </div>
-          <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
-        </header>
-
-        <figure class="fa-evidence-canvas fa-evidence-canvas--discord fa-reveal" aria-labelledby="discord-evidence-caption">
-          <div class="fa-evidence-scroll-hint" id="discord-evidence-scroll-hint"><span aria-hidden="true">←</span> Swipe or scroll to inspect the full canvas <span aria-hidden="true">→</span></div>
-          <div class="fa-evidence-scroll" role="region" aria-label="Horizontally scrollable annotated Discord Intake evidence" aria-describedby="discord-evidence-scroll-hint discord-evidence-caption" tabindex="0">
-            <div class="fa-evidence-stage">
-              <div class="fa-evidence-shot-wrap">
-                <div class="fa-evidence-shot">
-                  <img loading="lazy" src="images/derived/evidence/fred-agent/discord-intake-960.jpg" srcset="images/derived/evidence/fred-agent/discord-intake-640.jpg 640w, images/derived/evidence/fred-agent/discord-intake-960.jpg 960w, images/derived/evidence/fred-agent/discord-intake-1206.jpg 1206w" sizes="(min-width: 1251px) 451px, 322px" width="1206" height="2622" data-zoom-src="images/derived/evidence/fred-agent/discord-intake-zoom.jpg" alt="A Discord capture-this channel on a phone. Fred sends a seven-second voice clip and later a bookmark request containing a URL. Fred Agent replies to the voice clip with a crossed-fingers emoji.">
-                </div>
-                <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
-
-                <div class="fa-evidence-annotations" aria-label="Discord Intake evidence annotations">
-                  <div class="fa-evidence-annotation fa-evidence-annotation--discord-audio">
-                    <button class="fa-evidence-loupe" type="button" data-scope-target-x="35.5" data-scope-target-y="23.2" aria-expanded="false" aria-controls="discord-note-audio">
-                      <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Voice clip</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                      <span class="sr-only">Seven-second voice clip sent through Discord Intake</span>
-                    </button>
-                    <div class="fa-evidence-note-body" id="discord-note-audio"><div>
-                      <span class="fa-evidence-note-index">Audio in</span>
-                      <strong>Just say it.</strong>
-                      <p>A seven-second voice clip gets through with no transcription chore for the sender.</p>
-                    </div></div>
-                  </div>
-                  <div class="fa-evidence-annotation fa-evidence-annotation--discord-status">
-                    <button class="fa-evidence-loupe" type="button" data-scope-target-x="22.5" data-scope-target-y="33.2" aria-expanded="false" aria-controls="discord-note-status">
-                      <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Status receipt</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                      <span class="sr-only">Crossed-fingers status reply from Fred Agent</span>
-                    </button>
-                    <div class="fa-evidence-note-body" id="discord-note-status"><div>
-                      <span class="fa-evidence-note-index">Low-friction reply</span>
-                      <strong>🤞 is the whole status report.</strong>
-                      <p>The agent confirms the input got through without turning intake into another form to manage.</p>
-                    </div></div>
-                  </div>
-                  <div class="fa-evidence-annotation fa-evidence-annotation--discord-link">
-                    <button class="fa-evidence-loupe" type="button" data-scope-target-x="56" data-scope-target-y="47.2" aria-expanded="false" aria-controls="discord-note-link">
-                      <span class="fa-evidence-scope-cta" aria-hidden="true"><span>URL intake</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                      <span class="sr-only">Bookmark request containing a URL</span>
-                    </button>
-                    <div class="fa-evidence-note-body" id="discord-note-link"><div>
-                      <span class="fa-evidence-note-index">Link in</span>
-                      <strong>A URL fits through the same door.</strong>
-                      <p>The full instruction and wrapped URL enter as one lightweight request.</p>
-                    </div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <figcaption id="discord-evidence-caption"><span>Fig. 03</span> Two formats shown, one purpose: turn low-effort human drops into context the agent can inherit.</figcaption>
-        </figure>
-
-        <div class="fa-demo-copy fa-demo-copy--split">
-          <section>
-            <h3>What happens</h3>
-            <p>I drop whatever I have—an image, video, URL, audio clip, or half-formed thought—into one Discord channel before I have to choose a database, tag, or final form. The system stages it, understands what matters, and turns the drop into durable context an agent can inherit later.</p>
-            <p>Each drop closes the context gap between human and agent. Capture becomes forgettable; the context does not.</p>
-          </section>
-          <section>
-            <h3>Recipe</h3>
-            <ol class="fa-recipe-flow fa-reveal" aria-label="Discord Intake composition recipe">
-              <li><span class="fa-flow-chip">thought · image · video · URL · audio</span></li>
-              <li><span class="fa-flow-chip">one low-effort drop</span></li>
-              <li><span class="fa-flow-chip">stage before expiry</span></li>
-              <li><span class="fa-flow-chip">understand and organize</span></li>
-              <li><span class="fa-flow-chip">human-agent context sync</span></li>
-              <li><span class="fa-flow-chip">🤞 status receipt</span></li>
-            </ol>
-          </section>
-        </div>
-        <div class="fa-demo-details">
-        <section class="fa-card fa-card--label fa-reveal">
-          <h3>What to notice</h3>
-          <ul>
-            <li>Capture asks for no destination, tag, or final form.</li>
-            <li>Images, videos, URLs, and audio clips become shared agent context.</li>
-            <li>The human can forget the intake step without losing the thought.</li>
-          </ul>
-        </section>
-        </div>
-      </article>
-
-      <article class="fa-demo" id="unattended-recovery">
-        <header class="fa-demo-head">
-          <div>
-            <div class="fa-section-index">04<strong>Demo · Unattended Recovery</strong></div>
-            <h2>Failure Should Leave a Forwarding Address</h2>
-          </div>
-          <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
-        </header>
-
-        <figure class="fa-evidence-canvas fa-evidence-canvas--recovery fa-reveal" aria-labelledby="recovery-evidence-caption">
-          <div class="fa-evidence-scroll-hint" id="recovery-evidence-scroll-hint"><span aria-hidden="true">←</span> Swipe or scroll to inspect the full canvas <span aria-hidden="true">→</span></div>
-          <div class="fa-evidence-scroll" role="region" aria-label="Horizontally scrollable Unattended Recovery evidence" aria-describedby="recovery-evidence-scroll-hint recovery-evidence-caption" tabindex="0">
-            <div class="fa-evidence-stage">
-              <div class="fa-recovery-board" data-evidence-focus-group>
-                <section class="fa-recovery-panel fa-recovery-panel--contract" aria-labelledby="recovery-contract-label">
-                  <div class="fa-recovery-panel-label" id="recovery-contract-label"><span>01</span> Recovery contract</div>
-                  <div class="fa-evidence-shot-wrap fa-recovery-shot-wrap">
-                    <div class="fa-evidence-shot fa-recovery-shot">
-                      <img loading="lazy" src="images/derived/evidence/fred-agent/auto-recover-960.jpg" srcset="images/derived/evidence/fred-agent/auto-recover-640.jpg 640w, images/derived/evidence/fred-agent/auto-recover-960.jpg 960w, images/derived/evidence/fred-agent/auto-recover-1260.jpg 1260w" sizes="596px" width="1260" height="1363" data-zoom-src="images/derived/evidence/fred-agent/auto-recover-zoom.jpg" alt="The Headless Error Report skill in the Fred Agent workspace. Its required sequence preserves retry state, captures evidence, posts a concise Discord digest, and dispatches a guarded investigation when diagnosis is needed.">
-                    </div>
-                    <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
-                    <div class="fa-evidence-annotations" aria-label="Recovery contract evidence annotation">
-                      <div class="fa-evidence-annotation fa-evidence-annotation--recovery-dispatch">
-                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="53.3" data-scope-target-y="81.5" aria-expanded="false" aria-controls="recovery-note-dispatch">
-                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Auto-investigate</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                          <span class="sr-only">Dispatch a separate headless investigation agent</span>
-                        </button>
-                        <div class="fa-evidence-note-body" id="recovery-note-dispatch"><div>
-                          <span class="fa-evidence-note-index">Headless-first contract</span>
-                          <strong>A failure dispatches its own investigator.</strong>
-                          <p>The unattended run preserves state, reports what failed, and hands diagnosis to a separate guarded agent without waiting for a person.</p>
-                        </div></div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-                <section class="fa-recovery-panel fa-recovery-panel--report" aria-labelledby="recovery-trash-label">
-                  <div class="fa-recovery-panel-label" id="recovery-trash-label"><span>02</span> Closed loop · Trash Patrol</div>
-                  <div class="fa-evidence-shot-wrap fa-recovery-shot-wrap">
-                    <div class="fa-evidence-shot fa-recovery-shot">
-                      <img loading="lazy" src="images/derived/evidence/fred-agent/auto-recover-evidence-960.jpg" srcset="images/derived/evidence/fred-agent/auto-recover-evidence-640.jpg 640w, images/derived/evidence/fred-agent/auto-recover-evidence-960.jpg 960w, images/derived/evidence/fred-agent/auto-recover-evidence-1206.jpg 1206w" sizes="366px" width="1206" height="2622" data-zoom-src="images/derived/evidence/fred-agent/auto-recover-evidence-zoom.jpg" alt="A Discord bug-report showing a Trash Patrol runtime-path failure, its preserved state and next action, followed by a fixed final status with root cause, actions taken, evidence paths, and follow-up.">
-                    </div>
-                    <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
-                    <div class="fa-evidence-annotations" aria-label="Trash Patrol auto-recovery evidence annotations">
-                      <div class="fa-evidence-annotation fa-evidence-annotation--recovery-task">
-                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="52.5" data-scope-target-y="20.7" aria-expanded="false" aria-controls="recovery-note-task">
-                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Task</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                          <span class="sr-only">The task that failed</span>
-                        </button>
-                        <div class="fa-evidence-note-body" id="recovery-note-task"><div>
-                          <span class="fa-evidence-note-index">Preserved task</span>
-                          <strong>The failure keeps its identity.</strong>
-                          <p>The report names the exact workflow and task, so headless recovery begins from preserved context instead of a vague alert.</p>
-                        </div></div>
-                      </div>
-                      <div class="fa-evidence-annotation fa-evidence-annotation--recovery-error">
-                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="41.3" data-scope-target-y="27.5" aria-expanded="false" aria-controls="recovery-note-error">
-                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Error type</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                          <span class="sr-only">Error type: missing runtime path</span>
-                        </button>
-                        <div class="fa-evidence-note-body" id="recovery-note-error"><div>
-                          <span class="fa-evidence-note-index">Failure evidence</span>
-                          <strong>The error becomes a handoff.</strong>
-                          <p>A typed failure and concise status give the headless investigator evidence to diagnose instead of forcing it to guess.</p>
-                        </div></div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-                <section class="fa-recovery-panel fa-recovery-panel--intake" aria-labelledby="recovery-intake-label">
-                  <div class="fa-recovery-panel-label" id="recovery-intake-label"><span>03</span> Closed loop · Discord Intake</div>
-                  <div class="fa-evidence-shot-wrap fa-recovery-shot-wrap">
-                    <div class="fa-evidence-shot fa-recovery-shot">
-                      <img loading="lazy" src="images/derived/evidence/fred-agent/auto-recover-evidence-2-960.jpg" srcset="images/derived/evidence/fred-agent/auto-recover-evidence-2-640.jpg 640w, images/derived/evidence/fred-agent/auto-recover-evidence-2-960.jpg 960w, images/derived/evidence/fred-agent/auto-recover-evidence-2-1206.jpg 1206w" sizes="366px" width="1206" height="2622" data-zoom-src="images/derived/evidence/fred-agent/auto-recover-evidence-2-zoom.jpg" alt="A Discord bug-report showing a Discord Intake tool failure, the successful side effect and timed-out push, followed by a fixed final status with root cause, verification, evidence paths, and follow-up.">
-                    </div>
-                    <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
-                    <div class="fa-evidence-annotations" aria-label="Discord Intake auto-recovery evidence annotation">
-                      <div class="fa-evidence-annotation fa-evidence-annotation--recovery-fixed">
-                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="29.4" data-scope-target-y="48.4" aria-expanded="false" aria-controls="recovery-note-fixed">
-                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Final status</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
-                          <span class="sr-only">Final status: fixed</span>
-                        </button>
-                        <div class="fa-evidence-note-body" id="recovery-note-fixed"><div>
-                          <span class="fa-evidence-note-index">Human-visible closure</span>
-                          <strong>Headless recovery ends in “fixed.”</strong>
-                          <p>The investigator returns root cause, actions, evidence, and follow-up so the human sees both the failure and the repair.</p>
-                        </div></div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-          <figcaption id="recovery-evidence-caption"><span>Fig. 04</span> Select a magnifier to isolate the auto-investigation rule or the task → error → fixed loop; the second report shows the same recovery pattern again.</figcaption>
-        </figure>
-
-        <div class="fa-demo-copy fa-demo-copy--split">
-          <section>
-            <h3>What happens</h3>
-            <p>The workflow preserves retry state, saves a local evidence note, and posts a concise digest. If diagnosis is needed, a separate investigator works under a recursion guard and returns with a final status.</p>
-            <p>The human learns what did not happen and what comes next—not merely that a log exists.</p>
-          </section>
-          <section>
-            <h3>Recipe</h3>
-            <ol class="fa-recipe-flow fa-reveal" aria-label="Unattended Recovery composition recipe">
-              <li><span class="fa-flow-chip">failure</span></li>
-              <li><span class="fa-flow-chip">preserve retry state</span></li>
-              <li><span class="fa-flow-chip">save evidence</span></li>
-              <li><span class="fa-flow-chip">concise human digest</span></li>
-              <li><span class="fa-flow-chip">guarded investigation</span></li>
-              <li><span class="fa-flow-chip">final status</span></li>
-            </ol>
-          </section>
-        </div>
-        <div class="fa-demo-details">
-        <section class="fa-card fa-card--label fa-reveal">
-          <h3>What to notice</h3>
-          <ul>
-            <li>Failed side effects do not advance completion state.</li>
-            <li>Routine no-ops and clear rate limits avoid needless investigation.</li>
-            <li>The final message closes the human-visible loop.</li>
-          </ul>
-        </section>
-        </div>
-      </article>
-
-      <article class="fa-demo" id="co-authored-publishing">
-        <header class="fa-demo-head">
-          <div>
-            <div class="fa-section-index">05<strong>Supporting demo · Personal Creative System</strong></div>
-            <h2>A Taste Against AI Slop</h2>
-          </div>
-          <span class="fa-evidence-label fa-evidence-label--real">Controlled comparison</span>
-        </header>
-
-        <figure class="fa-taste-comparison fa-reveal" aria-labelledby="taste-comparison-caption">
-          <div class="fa-taste-prompt">
-            <span>Shared prompt</span>
-            <p>Create a 4:5 editorial illustration of a pelican riding a red bicycle through a seaside town at sunset. A baguette sticks out of the front basket, and several loose papers trail behind in the wind. Add the title: “A Small Errand.”</p>
-          </div>
-          <div class="fa-taste-comparison-grid">
-            <div class="fa-taste-panel">
-              <div class="fa-taste-panel-head">
-                <span aria-hidden="true">A</span>
-                <div><strong>Prompt only</strong><small>No personal guide</small></div>
-              </div>
-              <img loading="lazy" decoding="async" src="images/derived/evidence/fred-agent/pelican-without-visual-guide-960.jpg" srcset="images/derived/evidence/fred-agent/pelican-without-visual-guide-640.jpg 640w, images/derived/evidence/fred-agent/pelican-without-visual-guide-960.jpg 960w, images/derived/evidence/fred-agent/pelican-without-visual-guide-1252.jpg 1252w" sizes="(max-width: 760px) calc(92vw - 30px), min(34vw, 425px)" width="1252" height="1565" alt="Prompt-only editorial illustration. A richly painted pelican in a red scarf rides a red bicycle carrying a baguette through a glowing seaside town at sunset while papers fly behind it. The title reads A Small Errand.">
-            </div>
-            <div class="fa-taste-panel fa-taste-panel--guided">
-              <div class="fa-taste-panel-head">
-                <span aria-hidden="true">B</span>
-                <div><strong>Personal system</strong><small>Fred Visual Design Guide</small></div>
-              </div>
-              <img loading="lazy" decoding="async" src="images/derived/evidence/fred-agent/pelican-with-visual-guide-960.jpg" srcset="images/derived/evidence/fred-agent/pelican-with-visual-guide-640.jpg 640w, images/derived/evidence/fred-agent/pelican-with-visual-guide-960.jpg 960w, images/derived/evidence/fred-agent/pelican-with-visual-guide-1200.jpg 1200w" sizes="(max-width: 760px) calc(92vw - 30px), min(50vw, 632px)" width="1200" height="1500" alt="Design-system-guided editorial illustration. A sparse line-drawn pelican rides a red bicycle carrying a baguette along a quiet seaside road at sunset while papers trail behind it. The title reads A Small Errand.">
-            </div>
-          </div>
-          <figcaption id="taste-comparison-caption"><span>Fig. 05</span> Same prompt, same GPT-5.6 model. Only the right-hand run had access to Fred’s Visual Design Guide.</figcaption>
-        </figure>
-
-        <figure class="fa-settei-library fa-reveal" aria-labelledby="settei-library-title">
-          <div class="fa-settei-head">
-            <div>
-              <span>Inside the guide</span>
-              <h3 id="settei-library-title">Canonical settei library</h3>
-            </div>
-            <p>The system does not rely on prose alone. When a recurring subject appears, the agent can look up a visual source of truth.</p>
-          </div>
-          <div class="fa-settei-grid">
-            <div class="fa-settei-card">
-              <span class="fa-settei-image">
-                <img loading="lazy" decoding="async" src="images/derived/evidence/fred-agent/settei-character-960.jpg" srcset="images/derived/evidence/fred-agent/settei-character-640.jpg 640w, images/derived/evidence/fred-agent/settei-character-960.jpg 960w, images/derived/evidence/fred-agent/settei-character-1254.jpg 1254w" sizes="(max-width: 760px) calc(92vw - 30px), min(28vw, 366px)" width="1254" height="1254" alt="Character identity reference sheet for Kaho and Takumi, showing their canonical appearance and proportions.">
-              </span>
-              <span class="fa-settei-meta">Master 01</span>
-              <strong>Character identity</strong>
-              <small>Kaho + Takumi · appearance and proportion</small>
-            </div>
-            <div class="fa-settei-card">
-              <span class="fa-settei-image">
-                <img loading="lazy" decoding="async" src="images/derived/evidence/fred-agent/settei-facial-expression-960.jpg" srcset="images/derived/evidence/fred-agent/settei-facial-expression-640.jpg 640w, images/derived/evidence/fred-agent/settei-facial-expression-960.jpg 960w, images/derived/evidence/fred-agent/settei-facial-expression-1280.jpg 1280w, images/derived/evidence/fred-agent/settei-facial-expression-1379.jpg 1379w" sizes="(max-width: 760px) calc(92vw - 30px), min(28vw, 366px)" width="1379" height="1254" alt="Expression reference sheet showing Kaho in eight canonical emotional states and gestures.">
-              </span>
-              <span class="fa-settei-meta">Master 02</span>
-              <strong>Expression range</strong>
-              <small>Kaho · eight emotional and gestural states</small>
-            </div>
-            <div class="fa-settei-card">
-              <span class="fa-settei-image">
-                <img loading="lazy" decoding="async" src="images/derived/evidence/fred-agent/settei-object-animal-960.jpg" srcset="images/derived/evidence/fred-agent/settei-object-animal-640.jpg 640w, images/derived/evidence/fred-agent/settei-object-animal-960.jpg 960w, images/derived/evidence/fred-agent/settei-object-animal-1055.jpg 1055w" sizes="(max-width: 760px) calc(92vw - 30px), min(28vw, 366px)" width="1055" height="1491" alt="Reference sheet showing animals and objects simplified through several consistent levels of abstraction.">
-              </span>
-              <span class="fa-settei-meta">Master 03</span>
-              <strong>Abstraction ladder</strong>
-              <small>Animals + objects · detailed to emblematic</small>
-            </div>
-          </div>
-          <figcaption><span>Reference library</span> These master sheets preserve recurring-subject identity and simplification rules without forcing every composition into one template.</figcaption>
-        </figure>
-
-        <div class="fa-demo-copy fa-demo-copy--split">
-          <section>
-            <h3>What happens</h3>
-            <p>Two GPT-5.6 runs receive the same short prompt. The first has no personal guide. The second can read Fred’s Visual Design Guide. The subject, wording, model, and aspect ratio stay fixed.</p>
-            <p>The baseline is attractive and complete. It is also familiar enough to belong almost anywhere. The guided version changes the line, hierarchy, density, and temperature—not simply the palette—until the image belongs here.</p>
-            <p>For recurring subjects, canonical settei sheets keep identity and abstraction consistent across sessions. The Article Style Guide holds the same kind of memory for prose: what to notice, what to compress, and which rough edges should remain.</p>
-          </section>
-          <section>
-            <h3>Recipe</h3>
-            <ol class="fa-recipe-flow fa-reveal" aria-label="Personal creative system composition">
-              <li><span class="fa-flow-chip">core intent + human point</span></li>
-              <li><span class="fa-flow-chip">adaptable visual grammar</span></li>
-              <li><span class="fa-flow-chip">canonical settei masters</span></li>
-              <li><span class="fa-flow-chip">reusable semantic tokens</span></li>
-              <li><span class="fa-flow-chip">textual voice + guardrails</span></li>
-            </ol>
-          </section>
-        </div>
-        <div class="fa-demo-details">
-        <section class="fa-card fa-card--label fa-reveal">
-          <h3>What to notice</h3>
-          <ul>
-            <li>The baseline is not sabotaged; it is polished, coherent, and generic.</li>
-            <li>The guided version changes composition and mark-making before it changes color.</li>
-            <li>Visual masters anchor recurring subjects; the wider guides carry reasons and boundaries, not one mandatory look or voice.</li>
-          </ul>
-        </section>
-        </div>
-      </article>
-    </section>
-
-    <section class="fa-section" aria-labelledby="demo-closing">
-      <div class="fa-section-head">
-        <div class="fa-section-index">06<strong>Still changing</strong></div>
-        <div><h2 id="demo-closing" class="fa-section-title">The task should survive the change</h2></div>
-      </div>
-      <div class="fa-copy">
-        <p>Fred Agent is not a bespoke agent. It is the enablement layer around any capable agent: the handles that let it arrive, inherit, act, and stop.</p>
-        <p class="fa-lede">The agent can change. The task should survive it.</p>
-      </div>
-    </section>
-
-    <nav class="fa-page-nav" aria-label="Fred Agent chapter navigation">
-      <a href="building/fred-agent/components.html"><span>← Previous</span><strong>Component Field Guide</strong></a>
-      <a href="building/fred-agent/index.html"><strong>Back to the Overview</strong><span>Next →</span></a>
-    </nav>
-
-    <footer class="fa-footer">
-      <span>© 2026 Fred Yang · 杨</span>
-      <div class="fa-footer-links">
-        <a href="Building.dc.html">building board</a>
-        <a href="mailto:fredyang0507@gmail.com">email</a>
-        <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </div>
-    </footer>
-  </main>
 </div>
-</x-dc>
+
+<div class="pj" data-paper="cream">
+  <div class="pj-frame">
+    <nav class="pj-tabs" aria-label="Fred Agent chapters">
+      <a class="dos-tab" data-paper="kraft" href="./"><span class="pen-t"><span class="dt-n">01</span> <span class="dt-t">overview</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./system.html"><span class="pen-t"><span class="dt-n">02</span> <span class="dt-t">system</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./principles.html"><span class="pen-t"><span class="dt-n">03</span> <span class="dt-t">principles</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./components.html"><span class="pen-t"><span class="dt-n">04</span> <span class="dt-t">components</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./demos.html" aria-current="page"><span class="pen-t"><span class="dt-n">05</span> <span class="dt-t">demos</span></span></a>
+    </nav>
+    <a class="pj-back" href="../../Building.dc.html"><span class="pen-t">← Building board · <span lang="zh">回到板上</span></span></a>
+
+    <main id="main-content" class="pj-sheet">
+      <header class="pj-head">
+        <div class="pj-cover" data-card="fred-agent"></div>
+        <div class="pj-sheethead">
+          <div class="pj-label">field notes · Fred Agent · 05 / 05</div>
+          <div class="pj-eyebrow">Fred Agent · Demos</div>
+          <h1 id="page-title" class="pj-title">The System in Motion</h1>
+          <p class="pj-deck">Five ways existing agent capability becomes useful outside the chat window.</p>
+        </div>
+      </header>
+      <div class="pj-body">
+        <section aria-label="Fred Agent demonstrations">
+          <article class="fa-demo fa-demo--featured" id="omni-presence">
+            <header class="fa-demo-head">
+              <div>
+                <div class="fa-section-index">01<strong>Featured demo · a multi-channel reach capability for general-purpose agents</strong></div>
+                <h2>When Codex Gives You a Call</h2>
+              </div>
+              <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
+            </header>
+
+            <figure class="fa-media-slot fa-media-slot--video" aria-labelledby="omni-presence-video-caption">
+              <video class="fa-demo-video" controls="controls" playsinline preload="none" poster="../../assets/fred-agent/demo/omni-presence-poster-07s.webp" aria-describedby="omni-presence-video-caption">
+                <source src="../../assets/fred-agent/demo/omni-presence-demo.mp4" type="video/mp4">
+                Your browser does not support embedded video. <a href="../../assets/fred-agent/demo/omni-presence-demo.mp4">Open the Demo 01 recording.</a>
+              </video>
+              <figcaption id="omni-presence-video-caption"><span>Fig. 01</span> The agent starts with a live call, then carries the same task through message approval and into a durable Notion record.</figcaption>
+            </figure>
+
+            <div class="fa-demo-copy fa-demo-copy--split">
+              <section>
+                <h3>What happens</h3>
+                <p>Codex calls me. Calling is not what makes it a bespoke agent; it is a capability a general-purpose agent can use instead of waiting for me to open a chat window. I send a YouTube link by message; it understands the video, asks for a tapback, and writes the approved artifact into my technical-reading system.</p>
+                <p>The call is the opening, not the container. The same task keeps its context as it moves from voice to message, video, approval, and a durable record.</p>
+              </section>
+              <section>
+                <h3>Recipe</h3>
+                <ol class="fa-recipe-flow" aria-label="Omni-Presence composition recipe">
+                  <li><span class="fa-flow-chip">general-purpose agent</span></li><li><span class="fa-flow-chip">voice call</span></li><li><span class="fa-flow-chip">message handoff</span></li><li><span class="fa-flow-chip">video understanding</span></li><li><span class="fa-flow-chip">human approval</span></li><li><span class="fa-flow-chip">Notion record</span></li>
+                </ol>
+              </section>
+            </div>
+            <div class="fa-demo-details">
+            <section class="fa-card">
+              <h3 class="fa-k">What to notice</h3>
+              <ul>
+                <li>The agent can initiate a real phone call instead of waiting inside a chat window.</li>
+                <li>The same task moves from voice to message without losing context.</li>
+                <li>Approval is lightweight, explicit, and followed by durable state.</li>
+              </ul>
+            </section>
+            </div>
+          </article>
+
+          <article class="fa-demo" id="trash-patrol">
+            <header class="fa-demo-head">
+              <div>
+                <div class="fa-section-index">02<strong>Demo · Trash Patrol</strong></div>
+                <h2>The House Has a Small, Boring Problem</h2>
+              </div>
+              <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
+            </header>
+
+            <figure class="fa-evidence-canvas" aria-labelledby="trash-evidence-caption">
+              <div class="fa-evidence-scroll-hint" id="trash-evidence-scroll-hint"><span aria-hidden="true">←</span> Swipe or scroll to inspect the full canvas <span aria-hidden="true">→</span></div>
+              <div class="fa-evidence-scroll" role="region" aria-label="Horizontally scrollable annotated Trash Patrol evidence" aria-describedby="trash-evidence-scroll-hint trash-evidence-caption" tabindex="0">
+                <div class="fa-evidence-stage">
+                  <div class="fa-evidence-shot-wrap">
+                    <div class="fa-evidence-shot">
+                      <img loading="lazy" src="../../images/derived/evidence/fred-agent/trash-patrol-960.jpg" srcset="../../images/derived/evidence/fred-agent/trash-patrol-640.jpg 640w, ../../images/derived/evidence/fred-agent/trash-patrol-960.jpg 960w, ../../images/derived/evidence/fred-agent/trash-patrol-1280.jpg 1280w, ../../images/derived/evidence/fred-agent/trash-patrol-1654.jpg 1654w" sizes="960px" width="1654" height="1309" data-zoom-src="../../images/derived/evidence/fred-agent/trash-patrol-zoom.jpg" alt="A complete side-by-side Trash Patrol capture. Codex refreshes access, finds the doorbell, captures and inspects a live frame, then posts a verdict. Beside it, Discord shows successive evening verdicts with changing timestamps and snooze icons on silent deliveries.">
+                    </div>
+                    <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
+
+                    <div class="fa-evidence-annotations" aria-label="Trash Patrol evidence annotations">
+                      <div class="fa-evidence-annotation fa-evidence-annotation--schedule">
+                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="74.5" data-scope-target-y="74.5" aria-expanded="false" aria-controls="trash-note-schedule">
+                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Timing drift</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                          <span class="sr-only">Adjacent timing samples from July 16 through July 22</span>
+                        </button>
+                        <div class="fa-evidence-note-body" id="trash-note-schedule"><div><span class="fa-evidence-note-index">Sundial trigger</span><strong>Sunset moves. So does the run.</strong><p>Across the samples shown here, 7:26 PM becomes 7:23 and then 7:22 instead of occupying a fixed clock slot.</p></div></div>
+                      </div>
+                      <div class="fa-evidence-annotation fa-evidence-annotation--delivery">
+                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="75.5" data-scope-target-y="31" aria-expanded="false" aria-controls="trash-note-delivery">
+                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Delivery mode</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                          <span class="sr-only">Contrast between silent and non-silent delivery</span>
+                        </button>
+                        <div class="fa-evidence-note-body" id="trash-note-delivery"><div><span class="fa-evidence-note-index">Delivery mode</span><strong>Quiet when nothing is owed.</strong><p>July 8’s action request has no snooze mark. July 9’s no-action verdict carries one, identifying a silent delivery.</p></div></div>
+                      </div>
+                      <div class="fa-evidence-annotation fa-evidence-annotation--capture">
+                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="6.9" data-scope-target-y="54.2" aria-expanded="false" aria-controls="trash-note-capture">
+                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Live frame</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                          <span class="sr-only">Live image capture in the Codex run</span>
+                        </button>
+                        <div class="fa-evidence-note-body" id="trash-note-capture"><div><span class="fa-evidence-note-index">Live capture</span><strong>A fresh look, not a remembered state.</strong><p>Codex finds the doorbell, captures through WebRTC, and visibly inspects the frame before returning a verdict—in this run, in 38 seconds.</p></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption id="trash-evidence-caption"><span>Fig. 02</span> Select any magnifier to focus the evidence and reveal all three notes; select anywhere in the canvas to return.</figcaption>
+            </figure>
+
+            <div class="fa-demo-copy fa-demo-copy--split">
+              <section>
+                <h3>What happens</h3>
+                <p>Sundial wakes the workflow near sunset. A doorbell frame, the local collection rule, and a bounded judgment answer one question: do the bins need attention now?</p>
+                <p>The system posts a short verdict and deletes the temporary capture.</p>
+              </section>
+              <section>
+                <h3>Recipe</h3>
+                <ol class="fa-recipe-flow" aria-label="Trash Patrol composition recipe">
+                  <li><span class="fa-flow-chip">solar trigger</span></li><li><span class="fa-flow-chip">doorbell capture</span></li><li><span class="fa-flow-chip">local rule and visual judgment</span></li><li><span class="fa-flow-chip">short Discord verdict</span></li><li><span class="fa-flow-chip">cleanup</span></li>
+                </ol>
+              </section>
+            </div>
+            <div class="fa-demo-details">
+            <section class="fa-card">
+              <h3 class="fa-k">What to notice</h3>
+              <ul>
+                <li>The trigger follows the obligation, not a generic schedule.</li>
+                <li>Unclear scenes produce uncertainty, not a guess.</li>
+                <li>The final message is smaller than the reasoning behind it.</li>
+              </ul>
+            </section>
+            </div>
+          </article>
+
+          <article class="fa-demo" id="discord-intake">
+            <header class="fa-demo-head">
+              <div>
+                <div class="fa-section-index">03<strong>Demo · Discord Intake</strong></div>
+                <h2>Think. Dump. Forget.</h2>
+              </div>
+              <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
+            </header>
+
+            <figure class="fa-evidence-canvas fa-evidence-canvas--discord" aria-labelledby="discord-evidence-caption">
+              <div class="fa-evidence-scroll-hint" id="discord-evidence-scroll-hint"><span aria-hidden="true">←</span> Swipe or scroll to inspect the full canvas <span aria-hidden="true">→</span></div>
+              <div class="fa-evidence-scroll" role="region" aria-label="Horizontally scrollable annotated Discord Intake evidence" aria-describedby="discord-evidence-scroll-hint discord-evidence-caption" tabindex="0">
+                <div class="fa-evidence-stage">
+                  <div class="fa-evidence-shot-wrap">
+                    <div class="fa-evidence-shot">
+                      <img loading="lazy" src="../../images/derived/evidence/fred-agent/discord-intake-960.jpg" srcset="../../images/derived/evidence/fred-agent/discord-intake-640.jpg 640w, ../../images/derived/evidence/fred-agent/discord-intake-960.jpg 960w, ../../images/derived/evidence/fred-agent/discord-intake-1206.jpg 1206w" sizes="(min-width: 1283px) 451px, 322px" width="1206" height="2622" data-zoom-src="../../images/derived/evidence/fred-agent/discord-intake-zoom.jpg" alt="A Discord capture-this channel on a phone. Fred sends a seven-second voice clip and later a bookmark request containing a URL. Fred Agent replies to the voice clip with a crossed-fingers emoji.">
+                    </div>
+                    <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
+
+                    <div class="fa-evidence-annotations" aria-label="Discord Intake evidence annotations">
+                      <div class="fa-evidence-annotation fa-evidence-annotation--discord-audio">
+                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="35.5" data-scope-target-y="23.2" aria-expanded="false" aria-controls="discord-note-audio">
+                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Voice clip</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                          <span class="sr-only">Seven-second voice clip sent through Discord Intake</span>
+                        </button>
+                        <div class="fa-evidence-note-body" id="discord-note-audio"><div><span class="fa-evidence-note-index">Audio in</span><strong>Just say it.</strong><p>A seven-second voice clip gets through with no transcription chore for the sender.</p></div></div>
+                      </div>
+                      <div class="fa-evidence-annotation fa-evidence-annotation--discord-status">
+                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="22.5" data-scope-target-y="33.2" aria-expanded="false" aria-controls="discord-note-status">
+                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Status receipt</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                          <span class="sr-only">Crossed-fingers status reply from Fred Agent</span>
+                        </button>
+                        <div class="fa-evidence-note-body" id="discord-note-status"><div><span class="fa-evidence-note-index">Low-friction reply</span><strong>🤞 is the whole status report.</strong><p>The agent confirms the input got through without turning intake into another form to manage.</p></div></div>
+                      </div>
+                      <div class="fa-evidence-annotation fa-evidence-annotation--discord-link">
+                        <button class="fa-evidence-loupe" type="button" data-scope-target-x="56" data-scope-target-y="47.2" aria-expanded="false" aria-controls="discord-note-link">
+                          <span class="fa-evidence-scope-cta" aria-hidden="true"><span>URL intake</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                          <span class="sr-only">Bookmark request containing a URL</span>
+                        </button>
+                        <div class="fa-evidence-note-body" id="discord-note-link"><div><span class="fa-evidence-note-index">Link in</span><strong>A URL fits through the same door.</strong><p>The full instruction and wrapped URL enter as one lightweight request.</p></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption id="discord-evidence-caption"><span>Fig. 03</span> Two formats shown, one purpose: turn low-effort human drops into context the agent can inherit.</figcaption>
+            </figure>
+
+            <div class="fa-demo-copy fa-demo-copy--split">
+              <section>
+                <h3>What happens</h3>
+                <p>I drop whatever I have—an image, video, URL, audio clip, or half-formed thought—into one Discord channel before I have to choose a database, tag, or final form. The system stages it, understands what matters, and turns the drop into durable context an agent can inherit later.</p>
+                <p>Each drop closes the context gap between human and agent. Capture becomes forgettable; the context does not.</p>
+              </section>
+              <section>
+                <h3>Recipe</h3>
+                <ol class="fa-recipe-flow" aria-label="Discord Intake composition recipe">
+                  <li><span class="fa-flow-chip">thought · image · video · URL · audio</span></li><li><span class="fa-flow-chip">one low-effort drop</span></li><li><span class="fa-flow-chip">stage before expiry</span></li><li><span class="fa-flow-chip">understand and organize</span></li><li><span class="fa-flow-chip">human-agent context sync</span></li><li><span class="fa-flow-chip">🤞 status receipt</span></li>
+                </ol>
+              </section>
+            </div>
+            <div class="fa-demo-details">
+            <section class="fa-card">
+              <h3 class="fa-k">What to notice</h3>
+              <ul>
+                <li>Capture asks for no destination, tag, or final form.</li>
+                <li>Images, videos, URLs, and audio clips become shared agent context.</li>
+                <li>The human can forget the intake step without losing the thought.</li>
+              </ul>
+            </section>
+            </div>
+          </article>
+
+          <article class="fa-demo" id="unattended-recovery">
+            <header class="fa-demo-head">
+              <div>
+                <div class="fa-section-index">04<strong>Demo · Unattended Recovery</strong></div>
+                <h2>Failure Should Leave a Forwarding Address</h2>
+              </div>
+              <span class="fa-evidence-label fa-evidence-label--real">Recorded run</span>
+            </header>
+
+            <figure class="fa-evidence-canvas fa-evidence-canvas--recovery" aria-labelledby="recovery-evidence-caption">
+              <div class="fa-evidence-scroll-hint" id="recovery-evidence-scroll-hint"><span aria-hidden="true">←</span> Swipe or scroll to inspect the full canvas <span aria-hidden="true">→</span></div>
+              <div class="fa-evidence-scroll" role="region" aria-label="Horizontally scrollable Unattended Recovery evidence" aria-describedby="recovery-evidence-scroll-hint recovery-evidence-caption" tabindex="0">
+                <div class="fa-evidence-stage">
+                  <div class="fa-recovery-board" data-evidence-focus-group>
+                    <section class="fa-recovery-panel fa-recovery-panel--contract" aria-labelledby="recovery-contract-label">
+                      <div class="fa-recovery-panel-label" id="recovery-contract-label"><span>01</span> Recovery contract</div>
+                      <div class="fa-evidence-shot-wrap fa-recovery-shot-wrap">
+                        <div class="fa-evidence-shot fa-recovery-shot">
+                          <img loading="lazy" src="../../images/derived/evidence/fred-agent/auto-recover-960.jpg" srcset="../../images/derived/evidence/fred-agent/auto-recover-640.jpg 640w, ../../images/derived/evidence/fred-agent/auto-recover-960.jpg 960w, ../../images/derived/evidence/fred-agent/auto-recover-1260.jpg 1260w" sizes="596px" width="1260" height="1363" data-zoom-src="../../images/derived/evidence/fred-agent/auto-recover-zoom.jpg" alt="The Headless Error Report skill in the Fred Agent workspace. Its required sequence preserves retry state, captures evidence, posts a concise Discord digest, and dispatches a guarded investigation when diagnosis is needed.">
+                        </div>
+                        <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
+                        <div class="fa-evidence-annotations" aria-label="Recovery contract evidence annotation">
+                          <div class="fa-evidence-annotation fa-evidence-annotation--recovery-dispatch">
+                            <button class="fa-evidence-loupe" type="button" data-scope-target-x="53.3" data-scope-target-y="81.5" aria-expanded="false" aria-controls="recovery-note-dispatch">
+                              <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Auto-investigate</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                              <span class="sr-only">Dispatch a separate headless investigation agent</span>
+                            </button>
+                            <div class="fa-evidence-note-body" id="recovery-note-dispatch"><div><span class="fa-evidence-note-index">Headless-first contract</span><strong>A failure dispatches its own investigator.</strong><p>The unattended run preserves state, reports what failed, and hands diagnosis to a separate guarded agent without waiting for a person.</p></div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                    <section class="fa-recovery-panel fa-recovery-panel--report" aria-labelledby="recovery-trash-label">
+                      <div class="fa-recovery-panel-label" id="recovery-trash-label"><span>02</span> Closed loop · Trash Patrol</div>
+                      <div class="fa-evidence-shot-wrap fa-recovery-shot-wrap">
+                        <div class="fa-evidence-shot fa-recovery-shot">
+                          <img loading="lazy" src="../../images/derived/evidence/fred-agent/auto-recover-evidence-960.jpg" srcset="../../images/derived/evidence/fred-agent/auto-recover-evidence-640.jpg 640w, ../../images/derived/evidence/fred-agent/auto-recover-evidence-960.jpg 960w, ../../images/derived/evidence/fred-agent/auto-recover-evidence-1206.jpg 1206w" sizes="366px" width="1206" height="2622" data-zoom-src="../../images/derived/evidence/fred-agent/auto-recover-evidence-zoom.jpg" alt="A Discord bug-report showing a Trash Patrol runtime-path failure, its preserved state and next action, followed by a fixed final status with root cause, actions taken, evidence paths, and follow-up.">
+                        </div>
+                        <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
+                        <div class="fa-evidence-annotations" aria-label="Trash Patrol auto-recovery evidence annotations">
+                          <div class="fa-evidence-annotation fa-evidence-annotation--recovery-task">
+                            <button class="fa-evidence-loupe" type="button" data-scope-target-x="52.5" data-scope-target-y="20.7" aria-expanded="false" aria-controls="recovery-note-task">
+                              <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Task</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                              <span class="sr-only">The task that failed</span>
+                            </button>
+                            <div class="fa-evidence-note-body" id="recovery-note-task"><div><span class="fa-evidence-note-index">Preserved task</span><strong>The failure keeps its identity.</strong><p>The report names the exact workflow and task, so headless recovery begins from preserved context instead of a vague alert.</p></div></div>
+                          </div>
+                          <div class="fa-evidence-annotation fa-evidence-annotation--recovery-error">
+                            <button class="fa-evidence-loupe" type="button" data-scope-target-x="41.3" data-scope-target-y="27.5" aria-expanded="false" aria-controls="recovery-note-error">
+                              <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Error type</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                              <span class="sr-only">Error type: missing runtime path</span>
+                            </button>
+                            <div class="fa-evidence-note-body" id="recovery-note-error"><div><span class="fa-evidence-note-index">Failure evidence</span><strong>The error becomes a handoff.</strong><p>A typed failure and concise status give the headless investigator evidence to diagnose instead of forcing it to guess.</p></div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                    <section class="fa-recovery-panel fa-recovery-panel--intake" aria-labelledby="recovery-intake-label">
+                      <div class="fa-recovery-panel-label" id="recovery-intake-label"><span>03</span> Closed loop · Discord Intake</div>
+                      <div class="fa-evidence-shot-wrap fa-recovery-shot-wrap">
+                        <div class="fa-evidence-shot fa-recovery-shot">
+                          <img loading="lazy" src="../../images/derived/evidence/fred-agent/auto-recover-evidence-2-960.jpg" srcset="../../images/derived/evidence/fred-agent/auto-recover-evidence-2-640.jpg 640w, ../../images/derived/evidence/fred-agent/auto-recover-evidence-2-960.jpg 960w, ../../images/derived/evidence/fred-agent/auto-recover-evidence-2-1206.jpg 1206w" sizes="366px" width="1206" height="2622" data-zoom-src="../../images/derived/evidence/fred-agent/auto-recover-evidence-2-zoom.jpg" alt="A Discord bug-report showing a Discord Intake tool failure, the successful side effect and timed-out push, followed by a fixed final status with root cause, verification, evidence paths, and follow-up.">
+                        </div>
+                        <span class="fa-evidence-mode-hint" aria-hidden="true">Focus view · click anywhere to return</span>
+                        <div class="fa-evidence-annotations" aria-label="Discord Intake auto-recovery evidence annotation">
+                          <div class="fa-evidence-annotation fa-evidence-annotation--recovery-fixed">
+                            <button class="fa-evidence-loupe" type="button" data-scope-target-x="29.4" data-scope-target-y="48.4" aria-expanded="false" aria-controls="recovery-note-fixed">
+                              <span class="fa-evidence-scope-cta" aria-hidden="true"><span>Final status</span><span class="fa-evidence-scope-action"><i>focus</i><b>clear</b></span></span>
+                              <span class="sr-only">Final status: fixed</span>
+                            </button>
+                            <div class="fa-evidence-note-body" id="recovery-note-fixed"><div><span class="fa-evidence-note-index">Human-visible closure</span><strong>Headless recovery ends in “fixed.”</strong><p>The investigator returns root cause, actions, evidence, and follow-up so the human sees both the failure and the repair.</p></div></div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+              <figcaption id="recovery-evidence-caption"><span>Fig. 04</span> Select a magnifier to isolate the auto-investigation rule or the task → error → fixed loop; the second report shows the same recovery pattern again.</figcaption>
+            </figure>
+
+            <div class="fa-demo-copy fa-demo-copy--split">
+              <section>
+                <h3>What happens</h3>
+                <p>The workflow preserves retry state, saves a local evidence note, and posts a concise digest. If diagnosis is needed, a separate investigator works under a recursion guard and returns with a final status.</p>
+                <p>The human learns what did not happen and what comes next—not merely that a log exists.</p>
+              </section>
+              <section>
+                <h3>Recipe</h3>
+                <ol class="fa-recipe-flow" aria-label="Unattended Recovery composition recipe">
+                  <li><span class="fa-flow-chip">failure</span></li><li><span class="fa-flow-chip">preserve retry state</span></li><li><span class="fa-flow-chip">save evidence</span></li><li><span class="fa-flow-chip">concise human digest</span></li><li><span class="fa-flow-chip">guarded investigation</span></li><li><span class="fa-flow-chip">final status</span></li>
+                </ol>
+              </section>
+            </div>
+            <div class="fa-demo-details">
+            <section class="fa-card">
+              <h3 class="fa-k">What to notice</h3>
+              <ul>
+                <li>Failed side effects do not advance completion state.</li>
+                <li>Routine no-ops and clear rate limits avoid needless investigation.</li>
+                <li>The final message closes the human-visible loop.</li>
+              </ul>
+            </section>
+            </div>
+          </article>
+
+          <article class="fa-demo" id="co-authored-publishing">
+            <header class="fa-demo-head">
+              <div>
+                <div class="fa-section-index">05<strong>Supporting demo · Personal Creative System</strong></div>
+                <h2>A Taste Against AI Slop</h2>
+              </div>
+              <span class="fa-evidence-label fa-evidence-label--real">Controlled comparison</span>
+            </header>
+
+            <figure class="fa-taste-comparison" aria-labelledby="taste-comparison-caption">
+              <div class="fa-taste-prompt">
+                <span>Shared prompt</span>
+                <p>Create a 4:5 editorial illustration of a pelican riding a red bicycle through a seaside town at sunset. A baguette sticks out of the front basket, and several loose papers trail behind in the wind. Add the title: “A Small Errand.”</p>
+              </div>
+              <div class="fa-taste-comparison-grid">
+                <div class="fa-taste-panel">
+                  <div class="fa-taste-panel-head">
+                    <span aria-hidden="true">A</span>
+                    <div><strong>Prompt only</strong><small>No personal guide</small></div>
+                  </div>
+                  <img loading="lazy" decoding="async" src="../../images/derived/evidence/fred-agent/pelican-without-visual-guide-960.jpg" srcset="../../images/derived/evidence/fred-agent/pelican-without-visual-guide-640.jpg 640w, ../../images/derived/evidence/fred-agent/pelican-without-visual-guide-960.jpg 960w, ../../images/derived/evidence/fred-agent/pelican-without-visual-guide-1252.jpg 1252w" sizes="(max-width: 760px) calc(92vw - 30px), min(27vw, 330px)" width="1252" height="1565" alt="Prompt-only editorial illustration. A richly painted pelican in a red scarf rides a red bicycle carrying a baguette through a glowing seaside town at sunset while papers fly behind it. The title reads A Small Errand.">
+                </div>
+                <div class="fa-taste-panel fa-taste-panel--guided">
+                  <div class="fa-taste-panel-head">
+                    <span aria-hidden="true">B</span>
+                    <div><strong>Personal system</strong><small>Fred Visual Design Guide</small></div>
+                  </div>
+                  <img loading="lazy" decoding="async" src="../../images/derived/evidence/fred-agent/pelican-with-visual-guide-960.jpg" srcset="../../images/derived/evidence/fred-agent/pelican-with-visual-guide-640.jpg 640w, ../../images/derived/evidence/fred-agent/pelican-with-visual-guide-960.jpg 960w, ../../images/derived/evidence/fred-agent/pelican-with-visual-guide-1200.jpg 1200w" sizes="(max-width: 760px) calc(92vw - 30px), min(40vw, 500px)" width="1200" height="1500" alt="Design-system-guided editorial illustration. A sparse line-drawn pelican rides a red bicycle carrying a baguette along a quiet seaside road at sunset while papers trail behind it. The title reads A Small Errand.">
+                </div>
+              </div>
+              <figcaption id="taste-comparison-caption"><span>Fig. 05</span> Same prompt, same GPT-5.6 model. Only the right-hand run had access to Fred’s Visual Design Guide.</figcaption>
+            </figure>
+
+            <figure class="fa-settei-library" aria-labelledby="settei-library-title">
+              <div class="fa-settei-head">
+                <div>
+                  <span>Inside the guide</span>
+                  <h3 id="settei-library-title">Canonical settei library</h3>
+                </div>
+                <p>The system does not rely on prose alone. When a recurring subject appears, the agent can look up a visual source of truth.</p>
+              </div>
+              <div class="fa-settei-grid">
+                <div class="fa-settei-card">
+                  <span class="fa-settei-image">
+                    <img loading="lazy" decoding="async" src="../../images/derived/evidence/fred-agent/settei-character-960.jpg" srcset="../../images/derived/evidence/fred-agent/settei-character-640.jpg 640w, ../../images/derived/evidence/fred-agent/settei-character-960.jpg 960w, ../../images/derived/evidence/fred-agent/settei-character-1254.jpg 1254w" sizes="(max-width: 760px) calc(92vw - 30px), min(22vw, 290px)" width="1254" height="1254" alt="Character identity reference sheet for Kaho and Takumi, showing their canonical appearance and proportions.">
+                  </span>
+                  <span class="fa-settei-meta">Master 01</span>
+                  <strong>Character identity</strong>
+                  <small>Kaho + Takumi · appearance and proportion</small>
+                </div>
+                <div class="fa-settei-card">
+                  <span class="fa-settei-image">
+                    <img loading="lazy" decoding="async" src="../../images/derived/evidence/fred-agent/settei-facial-expression-960.jpg" srcset="../../images/derived/evidence/fred-agent/settei-facial-expression-640.jpg 640w, ../../images/derived/evidence/fred-agent/settei-facial-expression-960.jpg 960w, ../../images/derived/evidence/fred-agent/settei-facial-expression-1280.jpg 1280w, ../../images/derived/evidence/fred-agent/settei-facial-expression-1379.jpg 1379w" sizes="(max-width: 760px) calc(92vw - 30px), min(22vw, 290px)" width="1379" height="1254" alt="Expression reference sheet showing Kaho in eight canonical emotional states and gestures.">
+                  </span>
+                  <span class="fa-settei-meta">Master 02</span>
+                  <strong>Expression range</strong>
+                  <small>Kaho · eight emotional and gestural states</small>
+                </div>
+                <div class="fa-settei-card">
+                  <span class="fa-settei-image">
+                    <img loading="lazy" decoding="async" src="../../images/derived/evidence/fred-agent/settei-object-animal-960.jpg" srcset="../../images/derived/evidence/fred-agent/settei-object-animal-640.jpg 640w, ../../images/derived/evidence/fred-agent/settei-object-animal-960.jpg 960w, ../../images/derived/evidence/fred-agent/settei-object-animal-1055.jpg 1055w" sizes="(max-width: 760px) calc(92vw - 30px), min(22vw, 290px)" width="1055" height="1491" alt="Reference sheet showing animals and objects simplified through several consistent levels of abstraction.">
+                  </span>
+                  <span class="fa-settei-meta">Master 03</span>
+                  <strong>Abstraction ladder</strong>
+                  <small>Animals + objects · detailed to emblematic</small>
+                </div>
+              </div>
+              <figcaption><span>Reference library</span> These master sheets preserve recurring-subject identity and simplification rules without forcing every composition into one template.</figcaption>
+            </figure>
+
+            <div class="fa-demo-copy fa-demo-copy--split">
+              <section>
+                <h3>What happens</h3>
+                <p>Two GPT-5.6 runs receive the same short prompt. The first has no personal guide. The second can read Fred’s Visual Design Guide. The subject, wording, model, and aspect ratio stay fixed.</p>
+                <p>The baseline is attractive and complete. It is also familiar enough to belong almost anywhere. The guided version changes the line, hierarchy, density, and temperature—not simply the palette—until the image belongs here.</p>
+                <p>For recurring subjects, canonical settei sheets keep identity and abstraction consistent across sessions. The Article Style Guide holds the same kind of memory for prose: what to notice, what to compress, and which rough edges should remain.</p>
+              </section>
+              <section>
+                <h3>Recipe</h3>
+                <ol class="fa-recipe-flow" aria-label="Personal creative system composition">
+                  <li><span class="fa-flow-chip">core intent + human point</span></li><li><span class="fa-flow-chip">adaptable visual grammar</span></li><li><span class="fa-flow-chip">canonical settei masters</span></li><li><span class="fa-flow-chip">reusable semantic tokens</span></li><li><span class="fa-flow-chip">textual voice + guardrails</span></li>
+                </ol>
+              </section>
+            </div>
+            <div class="fa-demo-details">
+            <section class="fa-card">
+              <h3 class="fa-k">What to notice</h3>
+              <ul>
+                <li>The baseline is not sabotaged; it is polished, coherent, and generic.</li>
+                <li>The guided version changes composition and mark-making before it changes color.</li>
+                <li>Visual masters anchor recurring subjects; the wider guides carry reasons and boundaries, not one mandatory look or voice.</li>
+              </ul>
+            </section>
+            </div>
+          </article>
+        </section>
+
+        <section class="fa-sec" aria-labelledby="demo-closing">
+          <div class="fa-sec-n">06<strong>Still changing</strong></div>
+          <div class="fa-sec-b">
+            <h2 id="demo-closing">The task should survive the change</h2>
+            <p>Fred Agent is not a bespoke agent. It is the enablement layer around any capable agent: the handles that let it arrive, inherit, act, and stop.</p>
+            <p class="fa-lede">The agent can change. The task should survive it.</p>
+          </div>
+        </section>
+
+        <nav class="fa-pagenav" aria-label="Fred Agent chapter navigation">
+          <a href="./components.html"><span>← Previous</span><strong><span class="pen-t">Component Field Guide</span></strong></a>
+          <a href="./"><span>Next →</span><strong><span class="pen-t">Back to the Overview</span></strong></a>
+        </nav>
+
+        <footer class="fa-foot">
+          <span>© 2026 Fred Yang · 杨</span>
+          <span class="fa-foot-links">
+            <a href="../../Building.dc.html"><span class="pen-t">building board</span></a>
+            <a href="mailto:fredyang0507@gmail.com"><span class="pen-t">email</span></a>
+            <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer"><span class="pen-t">GitHub</span></a>
+          </span>
+        </footer>
+      </div>
+    </main>
+  </div>
+</div>
 </body>
 </html>

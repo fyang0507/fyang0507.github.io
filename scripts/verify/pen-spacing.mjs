@@ -6,7 +6,8 @@
 // the next line of text, or a drawn rule (.site-rule, hr, [data-pen-rule]) — sits ≥ MIN px below the
 // stroke and ≥ RATIO × the line's drop, so the line belongs to the word above it. A link's next line
 // in its own paragraph is exempt (that is leading, not "what follows"). Transforms are removed while
-// measuring: tilted cards rotate rigidly, so the designed distances are the untransformed ones.
+// measuring: tilted cards rotate rigidly, so the designed distances are the untransformed ones. It measures at the
+// top of the page, where anything sticky (a project page's chapter strip) sits in its own place, not over the text.
 // Surfaces that exist only once opened (Building's dossiers) are opened on their page and measured within.
 // Exit code 1 if anything breaks the rule.
 
@@ -30,7 +31,7 @@ function measure([MIN, RATIO, scope]) {
     const texts = [], rg = document.createRange(), w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     for (let n = w.nextNode(); n; n = w.nextNode()) {
       const el = n.parentElement;
-      if (!n.nodeValue.trim() || !el || el.closest('svg, script, style, noscript, [aria-hidden="true"]')) continue;
+      if (!n.nodeValue.trim() || !el || el.closest('svg, script, style, noscript, [aria-hidden="true"], [inert], [role="img"]')) continue;   // a picture's words (the clipped cover card) are not text that follows
       const cs = getComputedStyle(el);
       if (cs.visibility === 'hidden' || +cs.opacity < 0.05) continue;
       rg.selectNodeContents(n);
@@ -61,7 +62,8 @@ function measure([MIN, RATIO, scope]) {
 
 export default async (page, ctx) => {
   const base = process.env.PEN_BASE || 'http://127.0.0.1:4173/';
-  const pages = (process.env.PEN_PAGES || 'scripts/verify/pen-harness.html,index.html,Writing.dc.html,Building.dc.html,Gallery.dc.html,About.dc.html,Reading.dc.html').split(',');
+  const chapters = ['index', 'system', 'principles', 'components', 'demos'].map((c) => 'building/fred-agent/' + c + '.html').join(',');
+  const pages = (process.env.PEN_PAGES || 'scripts/verify/pen-harness.html,index.html,Writing.dc.html,Building.dc.html,Gallery.dc.html,About.dc.html,Reading.dc.html,' + chapters).split(',');
   const widths = (process.env.PEN_W || '1440,390').split(',').map(Number);
   let total = 0, bad = 0;
   const runs = pages.map((p) => [p]).concat(OPENED.filter((o) => pages.includes(o[0])));
@@ -76,6 +78,7 @@ export default async (page, ctx) => {
         for (const h of await page.$$((scope ? scope + ' ' : '') + '[data-pen-tier]')) { try { await h.hover({ timeout: 500 }); await page.waitForTimeout(40); } catch (e) { /* hidden or covered */ } }
         await page.mouse.move(1, 1); await page.waitForTimeout(600);
       }
+      if (!opener) { await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(100); }
       const r = await page.evaluate(measure, [MIN, RATIO, scope]);
       const fails = r.filter((x) => !x.ok), finite = r.filter((x) => x.below != null);
       const tight = finite.sort((a, b) => a.below - b.below)[0];

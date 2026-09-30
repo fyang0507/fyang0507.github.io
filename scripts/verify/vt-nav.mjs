@@ -1,10 +1,10 @@
 // vt-nav.mjs — the static nav (site-nav.css) on every page that loads it, at 1440, 390 and 320.
-//   node /tmp/fyshot/run.mjs scripts/verify/vt-nav.mjs      env: VT_ORIGIN (after, :4173) · VT_BEFORE (:4174)
+//   node /tmp/fyshot/run.mjs scripts/verify/vt-nav.mjs      env: VT_ORIGIN (after, :4173) · VT_BEFORE (:4174) · SHOTS (/tmp/fyshot/p1nav/nav)
 // Checks: labels ≥ 10px (10.5 on desktop; 9.5 in a header under 280 px, the plan's phone floor), opacity 1, ≥ 4.5:1 on paper, no overflow, ≥ 1px between labels; identity tag
 // and title number ≥ 10.5px; the rule is a real .site-rule and no .site-index::after draws; the current tab is the
 // tabmark (pen-inked where transitions.js runs), with no CSS border or dot on the tab itself; the rule's gap under
 // the current tab matches the before site (origin/main) ±1px, measured in pixels; no horizontal overflow; no
-// console errors (the fred-agent font 404 is pre-existing on main and reported apart).
+// console errors or failed requests.
 // The identity's motto is drawn (an SVG in the static header, no font since design/2026-09-identity), so its size is
 // the height of its drawn characters (.site-identity-tag > g, punctuation aside), held to the same 10.5 px.
 import { ORIGIN, check } from './vt-lib.mjs';
@@ -14,8 +14,6 @@ const GATEWAY = ['Writing.dc.html', 'Building.dc.html', 'Gallery.dc.html', 'Abou
 const SUBSITES = ['building/njjoe/index.html', 'building/njjoe/microsite.html', 'building/njjoe/apa.html',
   'building/fred-agent/index.html', 'building/fred-agent/system.html', 'building/fred-agent/principles.html',
   'building/fred-agent/components.html', 'building/fred-agent/demos.html'];
-// pre-existing on main: assets/fred-agent/fred-agent.css points at ./fonts/*.woff2, which were never shipped
-const KNOWN = /assets\/fred-agent\/fonts\/|building\/fred-agent\/\S+ Failed to load resource: the server responded with a status of 404/;
 
 function lum(c) { const v = c.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number).map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; }
 function contrast(a, b) { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); }
@@ -100,14 +98,12 @@ export default async (page, ctx) => {
         await before.waitForSelector('.site-index', { timeout: 8000 }).catch(() => {}); await before.waitForTimeout(700);
         const was = await gap(before);
         check(res, tag + ' rule gap (from the tab edges) matches before ±1px', now && was && Math.abs(now[0] - was[0]) <= 1 && Math.abs(now[1] - was[1]) <= 1, { now, before: was });
-        await ctx.shot('/tmp/fyshot/p1nav/nav-' + w + '-' + p.replace(/[\/?=]/g, '_') + '.png', { clip: { x: 0, y: 0, width: w, height: w > 500 ? 240 : 230 } });
+        await ctx.shot((process.env.SHOTS || '/tmp/fyshot/p1nav/nav') + '-' + w + '-' + p.replace(/[\/?=]/g, '_') + '.png', { clip: { x: 0, y: 0, width: w, height: w > 500 ? 240 : 230 } });
       }
     }
   }
   await before.close();
-  const real = errs.filter((e) => !KNOWN.test(e));
-  check(res, 'no console errors or failed requests', real.length === 0, real.slice(0, 6));
-  if (errs.length > real.length) ctx.log('known, pre-existing on main: ' + [...new Set(errs.filter((e) => /^HTTP/.test(e) && KNOWN.test(e)).map((e) => e.replace(/^HTTP \d+ /, '')))].join(', '));
+  check(res, 'no console errors or failed requests', errs.length === 0, errs.slice(0, 6));
   const bad = res.filter((r) => !r.ok);
   ctx.log(`vt-nav: ${res.length - bad.length}/${res.length} pass`);
   if (bad.length) process.exitCode = 1;
