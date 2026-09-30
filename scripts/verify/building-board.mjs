@@ -10,7 +10,7 @@
 
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
 const SHOTS = process.env.SHOTS || '/tmp/fyshot/p2b';
-const CORAL = ['rgb(217, 105, 90)', 'rgb(203, 94, 73)', 'rgb(200, 94, 71)'];
+const CORAL = ['rgb(217, 105, 90)', 'rgb(203, 94, 73)', 'rgb(200, 94, 71)', 'rgb(165, 69, 58)'];   // cream, cork, wheat, kraft (--mark-deep)
 const INK = 'rgb(51, 48, 43)';
 
 async function open(browser, w, h, opts = {}) {
@@ -115,7 +115,7 @@ export default async (page0, ctx) => {
     await page.screenshot({ path: `${SHOTS}-dialog-1440.png` });
     let trapped = true;
     for (let i = 0; i < 6; i++) { await page.keyboard.press('Tab'); if (!(await page.evaluate(() => !!document.activeElement.closest('.unpin-panel')))) trapped = false; }
-    note(trapped, 'Tab stays inside the field note');
+    note(trapped, 'Tab stays inside the dossier');
     await page.keyboard.press('Escape');
     await page.waitForTimeout(1200);
     const back = await page.evaluate(() => ({ closed: document.querySelector('.unpin-layer').hidden, home: !document.querySelector('.slot--lead').classList.contains('unpinned'), focus: document.activeElement === document.querySelector('.slot--lead .unpin-trigger') }));

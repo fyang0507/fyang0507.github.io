@@ -101,7 +101,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - point: one short coral arrow per view, spent for the session (`Pen.pointOnce` / `Pen.spend`).
 - **Pen spacing.** Whatever follows an underline sits at least 10 px below it and at least twice its drop (`scripts/verify/pen-spacing.mjs`).
 - **Seeds.** Strokes are seeded by their text, or by `data-pen-seed`, so the same word always gets the same stroke.
-- **Coral at rest** is only the point arrow and fixed identity. Never set small text in coral; use `--pencil` (4.5:1 on paper and paper2; on plank, board or wheat use `--soft`). On tinted paper, mark the surface `data-paper="cork"` (or `wheat`, `cream`), so `--pen` becomes the coral multiplied by that paper.
+- **Coral at rest** is only the point arrow and fixed identity. Never set small text in coral; use `--pencil` (4.5:1 on paper and paper2; on plank, board or wheat use `--soft`; on kraft use `--ink`). On tinted paper, mark the surface `data-paper="cork"` (or `wheat`, `cream`), so `--pen` becomes the coral multiplied by that paper. Kraft (`data-paper="kraft"`, Building's dossier tabs) is the one paper where the multiplied coral fails 3:1, so its pen is `--mark-deep`; the wheat band can't be seen on kraft, so nothing on kraft is ever banded.
 - **Tokens.** Shared tokens live only in `site-tokens.css`. Page-only tokens live in the page's own CSS; do not redeclare shared ones there. The one exception is Reading's `html.dark` palette in `lib/reading/reading.css`.
 - **Storage.** The site keeps session memory only. sessionStorage keys:
   - `fy-opener`: the full opener plays once per session;
@@ -163,6 +163,10 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - The paper rotates about `var(--pin-left) 14px`, the pin's tip (`top:-24px` plus 90% of its 42px height), and the pin rotates about its own tip.
   - Everything else uses the same point: the cork patch behind the card (`.ghost`), the pin hole (`top:13.8px`), and the physics (`pinPoint`, the unpin's `P.y = 14`).
   - Changing the pin artwork, its `top` or `--pin-left` means updating all of them together. Otherwise the pin slides across the cork whenever the paper swings. See the comment at the top of `lib/building/building.css`.
+- A Building card with pages keeps its dossier behind it (`lib/building/dossier.js`; its rules and the kraft tokens are a section of `building.css`).
+  - At rest its index tabs peek past the card's right edge, one per chapter, numbers only. They sit inside the `.swing`, so they hang from the same pin. On a phone the card narrows by the peek (`--peek-room`), so the tabs stay inside the cork.
+  - A click unpins the card into your hand, and the dossier slides out from under it: its contents sheet, and the tabs down its fore-edge (on its top edge where the window has no room beside it), each a plain link to its chapter. The card's own link still goes straight in. A slip without pages gets one sheet and one tab, to its repository.
+  - Its content lives with the project in `content/building-projects.js`: `contents` (the sheet's label), `chapters` (`n`, `tab`, the chapter's own `title`, one `line`, `href`), `figure` (`caption`, `steps`, `exit`), `status` and `source`. A slip may carry a `figure` and `lines`, shown instead of its note. Take every line from the project's own pages, and keep the chapters in step with the project's own chapter nav: the same pages, in the same order.
 - Design iterations live in `design/YYYY-MM-topic/` with an index in `design/README.md`. Keep them, and never edit an earlier iteration; a new round of design work adds a sibling folder. The deploy strips `design/`, and production must request nothing from it.
 
 ## Verification
