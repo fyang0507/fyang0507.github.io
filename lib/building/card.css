@@ -16,8 +16,8 @@
   --pin-green:#3D5C52;--pin-mustard:#A5822C;     /* pin heads */
   --note-ink:#504A42;--featured-ink:#575149;     /* body text on the lead card, and on the featured card */
 }
-/* the card is set in the site's text face: its English in Fraunces, its Chinese in the -ui tier of Noto Serif SC */
-@font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+/* the card is set in the site's text face: its English in Fraunces, its Chinese in the -ui tier of Noto Serif SC
+   (declared in dossier.css) */
 .slot{font-family:var(--text)}
 
 /* ---- slot = the card's place on the cork; swing = the paper that pivots on the pin ---- */
@@ -103,7 +103,6 @@
 .morph-icon::before{width:10px;height:1.3px}
 .morph-icon::after{width:1.3px;height:10px}
 /* a link's printed pencil rule sits under its words; the pen's hover line traces it */
-.pen-t{display:inline-block;position:relative}
 .github-link .pen-t,.featured-cta .pen-t{border-bottom:1px solid var(--pencil)}
 
 /* ---- one unpin trigger per card: the title (lead, featured) or the "+" (slips) ---- */
