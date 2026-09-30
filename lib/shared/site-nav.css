@@ -5,19 +5,21 @@
    tab→tab view transition slides the gap along with the outline. transitions.css names these parts. */
 .site-shell-header{width:min(1180px,100%);container-type:inline-size}
 .site-header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
-.site-identity{position:relative;z-index:1;display:inline-flex;align-items:center;padding:3px 12px 15px 4px;color:var(--soft);transform:rotate(-1deg)}
-.site-identity:hover{color:var(--soft)}
-.site-identity-copy{position:relative;display:block;padding:8px 62px 7px 4px}
-.site-identity-copy::before{content:"";position:absolute;left:0;right:50px;bottom:0;height:10px;border-bottom:3px solid var(--mark);border-radius:50%;transform:rotate(-1.5deg)}
-.site-identity-names{display:flex;align-items:baseline;gap:10px;white-space:nowrap;line-height:1}
-.site-identity-name{display:block;white-space:nowrap;line-height:1}
-.site-identity-name--en{font-family:"Fraunces",serif;font-size:25px;font-weight:500;letter-spacing:.01em}
-.site-identity-name--zh{padding-left:9px;border-left:1.6px solid var(--mark);font-family:"DingTalk JinBuTi",serif;font-size:26px;font-weight:400;letter-spacing:.04em}
-.site-identity-tag{display:block;margin:6px 0 0 5px;color:var(--soft);font-family:"Noto Sans SC",sans-serif;font-size:10.5px;font-weight:400;line-height:1;letter-spacing:.1em}
-.site-identity-stickers{position:absolute;right:6px;bottom:0;display:block;width:52px;height:41px;pointer-events:none}
-.site-identity-sticker{position:absolute;display:block;width:auto;opacity:.78}
-.site-identity-sticker--ghost{right:0;bottom:0;height:36px;transform:rotate(2deg)}
-.site-identity-sticker--blob{left:0;bottom:1px;height:17px;transform:rotate(-2deg)}
+/* The identity (design/2026-09-identity, candidate B, the seals): one link home, drawn, no font glyphs. Its name is
+   visually hidden text with lang spans; the drawing is an aria-hidden SVG: the written inscription (.site-identity-tag)
+   beside a white-text seal (弗雷 down its right column, 德 the left) and a red-text seal (FRED YANG). The mark is the
+   pen's target (Tier.wire in site.js and lib/home/desk.js): its line box ends at the seals' bottom edge, so the hover
+   line hangs from there. Phones scale the same drawing. Its markup is copied into every static header, the building/
+   pages and the vt-harness: edit them all. */
+.site-identity{position:relative;z-index:1;display:inline-block;padding:4px 10px 8px 2px;color:var(--ink,#33302B);line-height:0}
+.site-identity-name{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.site-identity-mark{display:block;line-height:0;font-size:24px}
+.site-identity-art{display:inline;vertical-align:baseline;width:168px;height:68px;overflow:visible}
+.site-identity-tag path{fill:none;stroke:var(--ink,#33302B);stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}
+.site-identity-seal .seal-body{fill:var(--mark,#D9695A)}
+.site-identity-seal .seal-cut{fill:none;stroke:var(--paper,#FBF6EC);stroke-linecap:square;stroke-linejoin:miter}
+.site-identity-seal .seal-line{fill:none;stroke:var(--mark,#D9695A);stroke-linecap:square;stroke-linejoin:miter}
+.site-identity-ticks path{fill:none;stroke:var(--ink,#33302B);stroke-width:1.6;stroke-linecap:round}
 .site-header-status{padding-top:10px;color:var(--pencil);font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.04em}
 
 /* Shared bilingual masthead for the four home destinations. */
@@ -85,12 +87,7 @@ html.dark .site-nav-frame{background-image:url("../../assets/nav-frame-dark.png"
 
 @media (max-width:640px){
   .site-identity{padding-right:8px}
-  .site-identity-copy{padding-right:54px}
-  .site-identity-name--en{font-size:20px}
-  .site-identity-name--zh{padding-left:7px;font-size:21px}
-  .site-identity-stickers{right:5px;width:48px;height:38px}
-  .site-identity-sticker--ghost{height:33px}
-  .site-identity-sticker--blob{height:15px}
+  .site-identity-art{width:147px;height:59.5px}
   .site-header-status{padding-top:8px;font-size:10.5px}
   .subpage-intro{grid-template-columns:1fr;gap:16px}
   .subpage-title-kicker{gap:8px;margin-bottom:6px}
@@ -123,6 +120,9 @@ html.dark .site-nav-frame{background-image:url("../../assets/nav-frame-dark.png"
   .site-nav-object{--nav-lift:0px!important;--nav-tilt:0deg!important}
 }
 @media (forced-colors:active){
+  .site-identity-tag path,.site-identity-seal .seal-line{stroke:CanvasText}
+  .site-identity-seal .seal-body{fill:CanvasText}
+  .site-identity-seal .seal-cut{stroke:Canvas}
   .site-rule{background:CanvasText}
   .site-tabmark{border-color:CanvasText}
   .site-tabmark::before{background:Canvas}
