@@ -10,7 +10,8 @@
 // 1.1x their layout size, so neither is enlarged from a smaller raster, and its cover image has a source pixel for
 // every device pixel it is drawn at: lib/writing/case.js sh.hand); no book keeps that layout once it is back, when a
 // returning book is caught again and let go inside the dwell (the pointer 200 and 350 ms after leaving; the keyboard's
-// Right, Left, Right; a resize while one is held, then a re-hover); in 2x and 3x contexts the book in your hand takes
+// Right, Left, Right; a resize while one is held, then a re-hover) or when a filter clicked with no pointer move
+// takes it off the shelf on its way back and all brings it back; in 2x and 3x contexts the book in your hand takes
 // the board it needs (480w on a 2x desk, 640w on a 3x phone, the top of a capped ladder) and every board is as wide
 // and tall as its srcset says; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
@@ -115,7 +116,16 @@ async function handBack(ctx, page) {
   const q = await page.evaluate((id) => { const r = document.querySelector('.bk-hit[data-post="' + id + '"]').getBoundingClientRect(); return { x: Math.round(r.left + r.width / 2), y: Math.round(r.top + r.height * 0.35) }; }, p.id);
   await page.mouse.move(q.x, q.y); await page.waitForTimeout(30); await page.mouse.move(700, 5); await page.waitForTimeout(2600);
   got.push('resize: ' + ((await stuck(page)).join(', ') || 'ok'));
-  check(ctx, 'a returning book caught again and let go inside the dwell comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
+  // A filter clicked with no pointer move takes the book in your hand off the shelf on its way back; all brings it back.
+  await open(page, 1440, 900); await page.mouse.move(2, 2);
+  await page.focus('.site-tab--about'); await page.keyboard.press('Tab');
+  while (await page.evaluate(() => window.FY_POST_INDEX.find((e) => e.id === document.activeElement.dataset.post).tags.includes('travel log'))) await page.keyboard.press('ArrowRight');
+  await page.waitForTimeout(1500);
+  const id = await page.evaluate(() => document.querySelector('[data-mount=writing]').dataset.held);
+  for (const cat of ['travel log', 'all']) { await page.evaluate((c) => document.querySelector('.tb[data-cat="' + c + '"]').click(), cat); await page.waitForTimeout(2500); }
+  const tz = await page.evaluate((id) => new DOMMatrix(getComputedStyle(document.querySelector('.book[href*="' + id + '"]')).transform).m43, id);
+  got.push('filtered off and back: ' + (id && Math.abs(tz) < 1 ? (await stuck(page)).join(', ') || 'ok' : `${id} at dz ${tz.toFixed(1)}`));
+  check(ctx, 'a returning book caught again and let go inside the dwell, or filtered off the shelf and back, comes home 1:1 (no --z left on it)', got.every((g) => g.endsWith(': ok')), got.join(' · '));
 }
 // 2x and 3x: the board the book in your hand fetches, and every board's real size against its srcset.
 async function boards(ctx, browser) {
