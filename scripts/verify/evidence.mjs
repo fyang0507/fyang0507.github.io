@@ -2,9 +2,10 @@
 //   node /tmp/fyshot/run.mjs scripts/verify/evidence.mjs
 //   env: VT_ORIGIN (after, :4173) · VT_BEFORE (main, :4174) · EV_W (1440,390) · EV_DPR (1) · EV_PAGES (comma list; empty: crawl only)
 // 1. EV_PAGES against main: a cold first visit on Fast 4G (9 Mbps, 165 ms RTT), measured before any scroll and again
-//    after a full scroll at a skimming pace. Demos must transfer a quarter of main's bytes or less before any scroll; no
-//    page's CLS through the scroll may exceed the larger of main's and 0.01, plus 0.002 of run-to-run noise. The Demos
-//    recording is left out of the bytes: python's http.server has no Range support, so its preload="metadata" streams.
+//    after a full scroll at a skimming pace. Demos must transfer under 1.5 MB before any scroll (the budget PR 2 set, as
+//    project-pages.mjs does; this PR's first gate, a quarter of main's, measured against the PNG captures); no page's
+//    CLS through the scroll may exceed the larger of main's and 0.01, plus 0.002 of run-to-run noise. The Demos
+//    recording is left out of the bytes: python's http.server has no Range support, so a preload streams it whole.
 // 2. Demos' loupes, on the branch: at rest each frames its target from the file its image already shows; opening one
 //    lays the zoom tier over its figure's loupes, and nothing fetches the zoom tier before that.
 // 3. Every building/ page, on the branch, fully scrolled:
@@ -12,8 +13,7 @@
 //      content/image-dimensions.json (the email demo's are its display size, which email clients honour, so there
 //      they need only give the original's ratio); once loaded it is not undersized for its box at the DPR;
 //    - nothing from images/evidence/ or the old PNG captures, and nothing from apa.njjoegroup.com: the only hosts
-//      besides the site's own are Google Fonts' and unpkg's; every request returns 200 (the fred-agent font 404 is
-//      pre-existing on main and reported apart).
+//      besides the site's own are Google Fonts' and unpkg's; every request returns 200.
 import { readFileSync, readdirSync } from 'fs';
 import { ORIGIN, check } from './vt-lib.mjs';
 
@@ -24,7 +24,6 @@ const ROOT = new URL('../../', import.meta.url);
 const CRAWL = readdirSync(new URL('building/', ROOT), { recursive: true }).filter((f) => f.endsWith('.html')).map((f) => 'building/' + f).sort();
 const DIMS = JSON.parse(readFileSync(new URL('content/image-dimensions.json', ROOT), 'utf8'));
 const HOSTS = /^(fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com)$/;
-const KNOWN = /assets\/fred-agent\/fonts\//;
 const FORBIDDEN = /\/images\/evidence\/|\/assets\/fred-agent\/demo\/[^?]*\.png|\/assets\/njjoe\/[^?]*\.png|apa\.njjoegroup\.com/;
 const EVIDENCE = /images\/derived\/evidence\/|fred-agent\/demo\/[^?]*\.png|assets\/njjoe\/[^?]*\.png|apa\.njjoegroup\.com/;
 const MB = (b) => (b / 1048576).toFixed(2) + ' MB';
@@ -130,13 +129,13 @@ async function loupes(page, reqs, res, label) {
     await page.click(`[aria-controls="${id}"]`);
     await quiet(page, reqs, 800, 20000);
     const open = await page.evaluate((id) => {
-      const scope = document.querySelector(`[aria-controls="${id}"]`), group = scope.closest('[data-evidence-focus-group]') || scope.closest('.fa-evidence-shot-wrap');
-      return [...group.querySelectorAll('.fa-evidence-shot-wrap')].map((w) => {
+      const scope = document.querySelector(`[aria-controls="${id}"]`), group = scope.closest('[data-evidence-focus-group]');
+      return (group ? [...group.querySelectorAll('.fa-evidence-shot-wrap')] : [scope.closest('.fa-evidence-shot-wrap')]).map((w) => {
         const img = w.querySelector('img');
-        return { open: w.classList.contains('is-focus-mode'), bg: [...w.querySelectorAll('.fa-evidence-loupe')].map((s) => s.style.backgroundImage), want: `url("${img.getAttribute('data-zoom-src')}"), url("${img.currentSrc}")`, zoom: img.getAttribute('data-zoom-src') };
+        return { open: w.classList.contains('is-focus-mode'), bg: [...w.querySelectorAll('.fa-evidence-loupe')].map((s) => s.style.backgroundImage), want: `url("${img.getAttribute('data-zoom-src')}"), url("${img.currentSrc}")`, zoom: new URL(img.getAttribute('data-zoom-src'), location.href).href };
       });
     }, id);
-    const got = zooms().filter((r) => open.some((w) => r.url.endsWith(w.zoom)));
+    const got = zooms().filter((r) => open.some((w) => r.url === w.zoom));
     check(res, `${label}: opening ${id} lays the zoom tier over its figure's loupes, each fetched 200`, open.every((w) => w.open && w.bg.every((b) => b === w.want)) && got.length === open.length && got.every((r) => r.status === 200), got.map((r) => r.status + ' ' + r.url.split('/').pop()).join(', '));
     await page.keyboard.press('Escape');
     await page.waitForTimeout(200);
@@ -155,8 +154,8 @@ function audit(res, label, path, imgs, reqs) {
   const origin = new URL(ORIGIN).host, hosts = [...new Set(all.map((r) => new URL(r.url).host).filter((h) => h && h !== origin))];
   check(res, `${label}: no host besides the site's own, Google Fonts' and unpkg's`, hosts.every((h) => HOSTS.test(h)), hosts.join(', ') || 'none');
   // a media element aborts its own fetch once it has what it needs (the Demos recording's preload="metadata")
-  const failed = all.filter((r) => (r.failed && !(/\.mp4/.test(r.url) && /ERR_ABORTED/.test(r.failed))) || (r.status && r.status !== 200 && r.status !== 206)), known = failed.filter((r) => KNOWN.test(r.url));
-  check(res, `${label}: every request returns 200`, failed.length === known.length, failed.filter((r) => !known.includes(r)).map((r) => (r.status || r.failed) + ' ' + r.url).join(', ') || (known.length ? `pre-existing: ${known.length} fred-agent font 404s` : 'ok'));
+  const failed = all.filter((r) => (r.failed && !(/\.mp4/.test(r.url) && /ERR_ABORTED/.test(r.failed))) || (r.status && r.status !== 200 && r.status !== 206));
+  check(res, `${label}: every request returns 200`, failed.length === 0, failed.map((r) => (r.status || r.failed) + ' ' + r.url).join(', ') || 'ok');
 }
 
 export default async (page, ctx) => {
@@ -168,7 +167,7 @@ export default async (page, ctx) => {
       const branch = await visit(browser, ORIGIN, path, w, { then: demos ? (p, reqs) => loupes(p, reqs, res, label) : null });
       rows.push(`| ${path.replace(/^building\//, '')} | ${w} | ${MB(main.before.total)} → ${MB(branch.before.total)} | ${MB(main.after.total)} → ${MB(branch.after.total)} | ${MB(main.after.evidence)} → ${MB(branch.after.evidence)} | ${main.clsLoad.toFixed(3)} → ${branch.clsLoad.toFixed(3)} | ${main.cls.toFixed(3)} → ${branch.cls.toFixed(3)} |`);
       ctx.log(rows[rows.length - 1]);
-      if (demos) check(res, `${label}: Demos before scroll ≤ a quarter of main's`, branch.before.total <= main.before.total / 4, `${MB(branch.before.total)} vs ${MB(main.before.total)}`);
+      if (demos) check(res, `${label}: Demos under 1.5 MB before any scroll`, branch.before.total < 1.5 * 1048576, `${MB(branch.before.total)} (main ${MB(main.before.total)})`);
       check(res, `${label}: CLS through the scroll no worse than max(main, 0.01)`, branch.cls <= Math.max(main.cls, 0.01) + 0.002, `${branch.cls.toFixed(4)} vs ${main.cls.toFixed(4)}`);
     }
     for (const path of CRAWL) {
