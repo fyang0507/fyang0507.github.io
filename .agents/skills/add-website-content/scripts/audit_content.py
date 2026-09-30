@@ -273,6 +273,25 @@ def audit_derivatives(root: Path, generator: ModuleType, errors: list[str]) -> i
         for width in generator.COVER_WIDTHS:
             expected.append((label, generator.derivative_url(cover, "covers", width)))
 
+    # Evidence: the ladder is capped at each original's width, read from the
+    # dimensions sidecar, and the loupes' captures add their zoom copy.
+    dimensions = generator.load_dimensions()
+    evidence = generator.evidence_originals()
+    for name in generator.EVIDENCE_ZOOM:
+        if f"{generator.EVIDENCE_DIR}/{name}" not in evidence:
+            errors.append(f"EVIDENCE_ZOOM names {name}, which is not in {generator.EVIDENCE_DIR}/")
+    for relative in evidence:
+        size = dimensions.get(relative)
+        if not size:
+            errors.append(f"{relative}: no recorded dimensions; run python3 scripts/generate-derivatives.py")
+            continue
+        group = generator.evidence_group(relative)
+        widths = list(generator.evidence_ladder(size[0]))
+        if relative.removeprefix(generator.EVIDENCE_DIR + "/") in generator.EVIDENCE_ZOOM:
+            widths.append("zoom")
+        for width in widths:
+            expected.append((relative, generator.derivative_url(relative, group, width)))
+
     missing = [
         (label, url) for label, url in expected if not exact_case_exists(root, url.lstrip("./"))
     ]
