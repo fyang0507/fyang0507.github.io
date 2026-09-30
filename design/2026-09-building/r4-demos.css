@@ -1,0 +1,204 @@
+/* design/2026-09-building · round 4 · Demos: the enlargement as a pair of the region and its note, B's paper token
+   tuned, the pen pointing at a region by its edge, and play at the centre of the poster. Loaded after 02-project.css
+   and 02-c.css. The exhibits, the comparison and the library are round 3's (r3-demos.css), carried here unchanged. No
+   blur, no gradient, no fade-up; coral only while the pen is noticing something; the wheat band for what is open. */
+.c-c{--ex-kraft:#D8C29A;--ex-kraft-ink:#5A4830}
+.ex-main{padding-top:4px}
+.slip-k{display:block;color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+
+/* ---- the exhibits' contents ---- */
+.ex-index{margin:0 0 6px;padding:16px 0 14px;border-top:1px solid var(--ink)}
+.ex-index ol{list-style:none;margin:10px 0 0;padding:0;columns:2;column-gap:44px}
+.ex-index li{break-inside:avoid}
+.ex-index a{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:7px 0 8px;border-bottom:1px dashed var(--line-strong);color:var(--ink)}
+.xi-n{color:var(--pencil);font:500 11px/1 var(--util)}
+.xi-t{font:500 16.5px/1.3 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.xi-l{color:var(--pencil);font:10.5px/1 var(--util);letter-spacing:.04em;white-space:nowrap}
+
+/* ---- an exhibit ---- */
+.exhibit{padding:clamp(40px,5vw,62px) 0 clamp(30px,4vw,46px);border-top:1px solid var(--ink);scroll-margin-top:24px}
+.ex-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 22px;align-items:end}
+.ex-label{grid-column:1/-1;display:flex;gap:10px;align-items:baseline;color:var(--pencil);font:500 11px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.ex-label .pr-no{color:var(--ink)}
+.ex-title{font:600 clamp(28px,3.4vw,42px)/1.08 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.022em}
+.stamp{display:inline-block;padding:4px 9px 5px;border:1.4px solid var(--soft);border-radius:3px;color:var(--soft);font:500 11px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.stamp--lead{border-color:var(--ink);color:var(--ink);transform:rotate(-2deg)}
+.ex-head .stamp{margin-bottom:8px}
+
+/* ---- a print, held on the sheet by four photo corners ---- */
+.ex-fig{margin:28px 0 0}
+.print{position:relative;display:block;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong),-5px 10px 18px rgba(60,50,35,.12)}
+.print img,.print video{display:block;width:100%;height:auto}
+.pc{position:absolute;z-index:4;width:26px;height:26px;background:var(--ex-kraft);pointer-events:none}
+.pc-tl{left:-7px;top:-7px;clip-path:polygon(0 0,100% 0,0 100%)}
+.pc-tr{right:-7px;top:-7px;clip-path:polygon(0 0,100% 0,100% 100%)}
+.pc-bl{left:-7px;bottom:-7px;clip-path:polygon(0 0,0 100%,100% 100%)}
+.pc-br{right:-7px;bottom:-7px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.ex-cap{display:flex;gap:12px;margin-top:16px;padding-top:9px;border-top:1px dashed var(--line-strong);color:var(--soft);font:12px/1.55 var(--util)}
+.ex-cap>span{flex:none;color:var(--ink);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+
+/* the recording: the poster is the print, and play sits where people look for it, at its centre: a paper disc with an
+   ink ring and an ink triangle, the typed label under it. Paper and ink, never a player's red; the disc lifts a
+   little under a mouse (the site's settle curve), the label takes the pen's hover underline, focus the 「 」. Nothing
+   downloads until it's pressed (preload="none"); the poster itself starts it too. */
+.print--video{background:#1f1d1a}
+.print--video video{cursor:pointer}
+/* a flat ink veil holds the poster back until it plays, so the one control on it is the thing you see; no gradient */
+.print--video::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(31,29,26,.4);pointer-events:none}
+.print--video.playing::after{display:none}
+.ex-play{position:absolute;z-index:5;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 8px;border:0;background:none;color:var(--ink);font:12px/1 var(--util);letter-spacing:.02em;cursor:pointer;transform:translate(-50%,-50%)}
+.ex-play-d{display:grid;place-items:center;box-sizing:border-box;width:72px;height:72px;border:2.5px solid var(--ink);border-radius:50%;background:var(--paper);box-shadow:0 0 0 4px var(--paper),0 0 0 5.25px rgba(51,48,43,.42),0 3px 5px rgba(20,18,15,.32),0 12px 26px rgba(20,18,15,.3);transition:transform .38s var(--ease-settle)}
+.ex-play-b{width:0;height:0;margin-left:7px;border-left:23px solid var(--ink);border-top:14px solid transparent;border-bottom:14px solid transparent}
+/* the pen's hover underline is a z -1 layer in the control: the slip sits under it (z -2), or its paper would hide it */
+.ex-play-l{position:relative;z-index:-2;display:inline-flex;align-items:baseline;gap:10px;white-space:nowrap;padding:8px 13px 9px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);box-shadow:0 3px 8px rgba(20,18,15,.22)}
+.ex-play-t{color:var(--soft)}
+.ex-play:hover .ex-play-d{transform:scale(1.07)}
+.ex-play:active .ex-play-d{transform:scale(.97);transition-duration:.12s}
+.print--video.playing .ex-play{display:none}
+.bd-rm .ex-play-d{transition:none}
+@media (prefers-reduced-motion:reduce){.ex-play-d{transition:none}}
+
+/* ---- the copy under each exhibit ---- */
+.ex-copy{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,4vw,58px);margin-top:34px}
+.ex-h3{margin:0 0 12px;color:var(--pencil);font:500 11px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.ex-copy p{margin-top:12px;font-size:17px;line-height:1.66}
+.ex-copy p:first-of-type{margin-top:0}
+.ex-recipe{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.ex-recipe li{display:flex;flex-direction:column;align-items:flex-start}
+.ex-recipe li:not(:first-child)::before{content:"↓";padding:3px 0 3px 14px;color:var(--soft);font:12px/1 var(--util)}
+.ex-recipe span{display:inline-block;padding:5px 10px 6px;border:1.3px solid var(--ink);border-radius:7px 10px 6px 9px;background:var(--paper);font:11.5px/1.25 var(--util)}
+.ex-notice{margin-top:30px}
+.ex-notice ul{list-style:none;margin:0;padding:0;border-top:1px dashed var(--line-strong)}
+.ex-notice li{position:relative;padding:10px 0 11px 24px;border-bottom:1px dashed var(--line-strong);font-size:16px;line-height:1.55}
+.ex-notice li::before{content:"—";position:absolute;left:0;color:var(--pencil);font-family:var(--util)}
+
+/* ---- the evidence viewer: prints, the numbered markers, the typed legend ---- */
+.viewer{position:relative;display:flex;flex-direction:column}
+.prints{position:relative;z-index:2}
+.viewer--sheet .prints{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:28px;align-items:start}
+.viewer--tall{display:grid;grid-template-columns:minmax(240px,360px) minmax(0,1fr);gap:0 38px;align-items:start}
+.viewer--tall .prints{grid-row:1/span 3}
+.ex-notes{list-style:none;order:3;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;border-top:1px solid var(--ink)}
+.viewer--sheet .ex-notes{grid-template-columns:repeat(2,minmax(0,1fr))}
+.viewer--tall .ex-notes{order:0;grid-template-columns:1fr;margin-top:0}
+.ex-note{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 10px;width:100%;padding:13px 0 15px;border:0;border-bottom:1px dashed var(--line-strong);background:none;color:var(--ink);text-align:left;cursor:pointer}
+.en-k{display:block;color:var(--pencil);font:500 10px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.en-t{display:block;margin-top:6px;font:500 17px/1.25 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.en-p{display:block;margin-top:7px;color:var(--soft);font-size:14.5px;line-height:1.55}
+/* a region of a capture: the pen's colour runs through `color` */
+.rg{position:absolute;z-index:3;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);color:var(--pen);pointer-events:none}
+
+/* ---- the pen pointing at a region (r4-demos-hl.js, html[data-h]) ---- the marks sit on the region's edge, never
+   across its inside; an unsized svg is 300 × 150, so every one is sized to its region and draws outside it */
+.hl-svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.hl-box{position:absolute;inset:-6px;border:1.5px solid currentColor;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .12s cubic-bezier(.4,0,.8,.4)}
+.hl-box.on{opacity:1;transition:opacity .16s var(--ease-out)}
+.bd-rm .hl-box{transition:none}
+@media (prefers-reduced-motion:reduce){.hl-box{transition:none}}
+
+/* ---- the marker: B, the paper token, tuned to hold on any capture ----
+   A paper disc, an ink numeral and a firmer 2.5 px ink ring (round 3's was 2.25), then a paper halo with an ink
+   hairline outside it, so the token keeps an edge on white UI, and a two-part contact shadow, so it sits on the
+   capture instead of in it. The legend uses the same token. Open, it takes the wheat band. No coral. */
+.mk{--mk:30px;position:relative;display:inline-grid;place-items:center;flex:none;box-sizing:border-box;width:var(--mk);height:var(--mk);padding:0;border:2.5px solid var(--ink);border-radius:50%;background:var(--paper);color:var(--ink);font:600 15.5px/1 "Fraunces",Georgia,serif;font-variant-numeric:lining-nums;letter-spacing:0;
+  box-shadow:0 0 0 3px var(--paper),0 0 0 4.25px rgba(51,48,43,.4),0 2px 3px rgba(20,18,15,.3),0 6px 14px rgba(20,18,15,.2)}
+.mk>span{display:block;transform:translateY(.5px)}
+.mk.on,.ex-note[aria-expanded="true"] .mk{background:var(--hl);border-color:var(--hl-ink)}
+/* on the capture: centred on the region's top-left corner, a 46 px target round a 30 px token; two regions close
+   together on a small print: the later token steps along its region's top edge (--nx, r4-demos.js) */
+.rg-m{position:absolute;left:calc(var(--mk) / -2 + var(--nx, 0px));top:calc(var(--mk) / -2);pointer-events:auto;cursor:pointer}
+.rg-m::after{content:"";position:absolute;inset:-8px;border-radius:50%}
+.ex-note .mk{--mk:28px;margin-top:-4px;font-size:14.5px}
+
+/* ---- the enlargement: a print laid over the capture's frame, the region and its note as a pair ----
+   Positioned by r4-demos.js over the capture's frame (the print; the contact sheet; a phone capture and the legend
+   beside it), and on a phone across the screen's width. data-layout: side (the window, the note in a column beside
+   it), band (the window, the note in a band under it), stack (phones: the window over the note). */
+.zm{position:absolute;z-index:6;left:0;top:0;display:grid;box-sizing:border-box;padding:8px;background:var(--paper);box-shadow:0 0 0 1px var(--line-strong),-8px 16px 28px rgba(60,50,35,.22);transform-origin:0 0;outline:none}
+.zm[hidden]{display:none}
+.zm[data-layout="side"]{grid-template-columns:minmax(0,1fr) var(--nw,340px);grid-template-rows:minmax(0,1fr)}
+.zm[data-layout="band"]{grid-template-rows:minmax(0,1fr) auto}
+.zm[data-layout="stack"]{grid-template-rows:auto auto;padding-bottom:0}
+.zoomed .prints .rg-m{visibility:hidden}   /* under the enlargement; none peeks out past its edge */
+.zm-win{position:relative;min-width:0;min-height:0;display:flex;overflow:auto;overscroll-behavior-x:contain;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong);scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+.zm-win.pan{cursor:grab}
+.zm-win.grab{cursor:grabbing}
+.zm-size{position:relative;flex:none;margin:auto}
+.zm-img{position:absolute;inset:0;transform-origin:0 0}
+.zm-img img{display:block;width:100%;height:100%;-webkit-user-drag:none;user-select:none}
+.zm-rg{position:absolute;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);pointer-events:none}
+.zm-rg .mk{position:absolute;z-index:1;left:calc(var(--mk) / -2 + var(--zx, 0px));top:calc(var(--mk) / -2 + var(--zy, 0px))}
+/* the note: its token and key, its title, its text, then ← n / N → and put it back */
+.zm-note{display:flex;flex-direction:column;min-width:0;min-height:0}
+.zm-txt{min-width:0}
+.zm-k{display:flex;align-items:center;gap:12px;color:var(--pencil);font:500 10.5px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.zm-k .mk{--mk:28px;font-size:14.5px;letter-spacing:0}
+.zm-t{margin-top:12px;font:500 21px/1.25 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.012em}
+.zm-p{margin-top:10px!important;max-width:34em;color:var(--soft);font-size:16px!important;line-height:1.6!important}
+.zm-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:auto;padding-top:18px}
+.zm-steps{display:flex;align-items:center;gap:4px}
+.zm-bar button{display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 14px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:13px/1 var(--util);cursor:pointer;touch-action:manipulation}
+.zm-bar .zm-prev,.zm-bar .zm-next{width:44px;padding:0;font-size:17px}
+.zm-n{min-width:56px;color:var(--ink);font:500 12.5px/1 var(--util);letter-spacing:.04em;text-align:center;white-space:nowrap}
+.zm-x{margin-left:auto}
+.zm[data-layout="side"] .zm-note{overflow:auto;padding:16px 12px 4px 30px}
+.zm[data-layout="side"] .zm-t{margin-top:16px;font-size:24px;line-height:1.2}
+.zm[data-layout="side"] .zm-p{margin-top:12px!important;font-size:17px!important;line-height:1.62!important}
+.zm[data-layout="band"] .zm-note{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 40px;align-items:end;padding:18px 10px 10px}
+.zm[data-layout="band"] .zm-bar{padding-top:0;flex-wrap:nowrap}
+.zm[data-layout="band"] .zm-t{margin-top:12px;font-size:22px}
+.zm[data-layout="band"] .zm-p{font-size:16.5px!important;line-height:1.6!important}
+.zm[data-layout="stack"] .zm-note{padding:14px 4px 12px}
+.zm[data-layout="stack"] .zm-t{margin-top:10px;font-size:19px}
+.zm[data-layout="stack"] .zm-p{font-size:15px!important;line-height:1.55!important}
+.zm[data-layout="stack"] .zm-bar{padding-top:14px}
+
+/* ---- the controlled comparison and the settei library ---- */
+.slip{padding:14px 16px 16px;background:var(--slip);box-shadow:0 0 0 1px var(--line-strong),-4px 7px 12px rgba(60,50,35,.1);transform:rotate(-.4deg)}
+.slip p{margin-top:8px;font-size:16px;line-height:1.6}
+.ex-prompt{max-width:640px}
+.ex-ab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;margin-top:30px}
+.ab-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.ab-head small{color:var(--pencil);font:11px/1.3 var(--util)}
+.ex-lib{margin:44px 0 0;padding-top:24px;border-top:1px dashed var(--line-strong)}
+.lib-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px 40px;align-items:end}
+.lib-head .slip-k{grid-column:1/-1}
+.lib-t{font:600 24px/1.2 "Fraunces",serif}
+.lib-head p{color:var(--soft);font-size:15.5px;line-height:1.55}
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:24px;align-items:start}
+.plate{margin:0}
+.plate figcaption{display:flex;flex-direction:column;gap:3px;margin-top:14px}
+.plate-k{color:var(--pencil);font:500 10px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.plate strong{font:500 16px/1.3 "Fraunces",serif}
+.plate small{color:var(--soft);font:11.5px/1.45 var(--util)}
+.ex-close{border-top:1px solid var(--ink)}
+
+@media (max-width:760px){
+  .ex-index ol{columns:1}
+  .ex-index a{grid-template-columns:24px minmax(0,1fr)}
+  .xi-l{grid-column:2}
+  .ex-head{grid-template-columns:1fr}
+  .ex-head .stamp{justify-self:start;margin:4px 0 0}
+  .ex-copy,.ex-ab,.lib-head{grid-template-columns:1fr}
+  .ex-notes,.viewer--sheet .ex-notes{grid-template-columns:1fr}
+  .viewer--tall{display:flex}
+  .viewer--tall .prints{width:min(250px,76%);margin:0 auto}
+  .viewer--tall .ex-notes{order:3;margin-top:24px}
+  .viewer--sheet .prints{grid-template-columns:1.2fr 1fr 1fr;gap:12px}
+  .plates{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .plate strong{font-size:13px}.plate small{display:none}
+  .pc{width:18px;height:18px}
+  .pc-tl,.pc-tr{top:-5px}.pc-bl,.pc-br{bottom:-5px}.pc-tl,.pc-bl{left:-5px}.pc-tr,.pc-br{right:-5px}
+  /* a 32 px token is the tap target's floor; the ::after takes it to 48 */
+  .mk{--mk:32px;font-size:16px}
+  .zm{padding:6px}
+  /* a comfortable thumb target, still clear of the call screen's own round buttons */
+  .ex-play{gap:10px}
+  .ex-play-d{width:64px;height:64px}
+  .ex-play-b{margin-left:6px;border-left-width:20px;border-top-width:12px;border-bottom-width:12px}
+  .ex-play-l{padding:7px 11px 8px;font-size:11.5px}
+}
+@media (forced-colors:active){
+  .rg{color:CanvasText}
+  .mk,.ex-play-d{border:2px solid CanvasText;forced-color-adjust:none;background:Canvas;color:CanvasText}
+}
