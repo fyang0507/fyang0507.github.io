@@ -1,0 +1,182 @@
+/* design/2026-09-building · round 3 · Demos: the enlargement laid over the capture, and markers that can't be missed.
+   Loaded after 02-project.css and 02-c.css. The exhibits, the recording and the comparison are round 2's
+   (r2-02-demos.css), carried here unchanged; what's new is the region marker (three variants, html[data-m], r3-demos-kit.js)
+   and the enlargement (.zm, r3-demos.js): a paper print laid over the capture's own frame, the region at size in a
+   window that pans, its note typed under the window, ← n / N → and "put it back · 放回". Nothing moves in the page's
+   flow when it opens. No blur, no gradient, no fade-up; coral only while the pen is noticing a region; the wheat band
+   for the region that's open. */
+.c-c{--ex-kraft:#D8C29A;--ex-kraft-ink:#5A4830}
+.ex-main{padding-top:4px}
+.slip-k{display:block;color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+
+/* ---- the exhibits' contents ---- */
+.ex-index{margin:0 0 6px;padding:16px 0 14px;border-top:1px solid var(--ink)}
+.ex-index ol{list-style:none;margin:10px 0 0;padding:0;columns:2;column-gap:44px}
+.ex-index li{break-inside:avoid}
+.ex-index a{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:7px 0 8px;border-bottom:1px dashed var(--line-strong);color:var(--ink)}
+.xi-n{color:var(--pencil);font:500 11px/1 var(--util)}
+.xi-t{font:500 16.5px/1.3 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.xi-l{color:var(--pencil);font:10.5px/1 var(--util);letter-spacing:.04em;white-space:nowrap}
+
+/* ---- an exhibit ---- */
+.exhibit{padding:clamp(40px,5vw,62px) 0 clamp(30px,4vw,46px);border-top:1px solid var(--ink);scroll-margin-top:24px}
+.ex-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 22px;align-items:end}
+.ex-label{grid-column:1/-1;display:flex;gap:10px;align-items:baseline;color:var(--pencil);font:500 11px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.ex-label .pr-no{color:var(--ink)}
+.ex-title{font:600 clamp(28px,3.4vw,42px)/1.08 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.022em}
+.stamp{display:inline-block;padding:4px 9px 5px;border:1.4px solid var(--soft);border-radius:3px;color:var(--soft);font:500 11px/1 var(--util);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.stamp--lead{border-color:var(--ink);color:var(--ink);transform:rotate(-2deg)}
+.ex-head .stamp{margin-bottom:8px}
+
+/* ---- a print, held on the sheet by four photo corners ---- */
+.ex-fig{margin:28px 0 0}
+.print{position:relative;display:block;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong),-5px 10px 18px rgba(60,50,35,.12)}
+.print img,.print video{display:block;width:100%;height:auto}
+.pc{position:absolute;z-index:4;width:26px;height:26px;background:var(--ex-kraft);pointer-events:none}
+.pc-tl{left:-7px;top:-7px;clip-path:polygon(0 0,100% 0,0 100%)}
+.pc-tr{right:-7px;top:-7px;clip-path:polygon(0 0,100% 0,100% 100%)}
+.pc-bl{left:-7px;bottom:-7px;clip-path:polygon(0 0,0 100%,100% 100%)}
+.pc-br{right:-7px;bottom:-7px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.ex-cap{display:flex;gap:12px;margin-top:16px;padding-top:9px;border-top:1px dashed var(--line-strong);color:var(--soft);font:12px/1.55 var(--util)}
+.ex-cap>span{flex:none;color:var(--ink);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+
+/* the recording: the poster is the print; play turns it into the player in place */
+.print--video{background:#1f1d1a}
+.ex-play{position:absolute;z-index:5;left:18px;bottom:18px;display:inline-flex;align-items:center;gap:10px;padding:10px 15px 10px 13px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:12px/1 var(--util);letter-spacing:.02em;cursor:pointer}
+.ex-play-b{width:0;height:0;border-left:10px solid var(--ink);border-top:6.5px solid transparent;border-bottom:6.5px solid transparent}
+.ex-play-t{color:var(--soft)}
+.print--video.playing .ex-play{display:none}
+
+/* ---- the copy under each exhibit ---- */
+.ex-copy{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(24px,4vw,58px);margin-top:34px}
+.ex-h3{margin:0 0 12px;color:var(--pencil);font:500 11px/1.3 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.ex-copy p{margin-top:12px;font-size:17px;line-height:1.66}
+.ex-copy p:first-of-type{margin-top:0}
+.ex-recipe{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.ex-recipe li{display:flex;flex-direction:column;align-items:flex-start}
+.ex-recipe li:not(:first-child)::before{content:"↓";padding:3px 0 3px 14px;color:var(--soft);font:12px/1 var(--util)}
+.ex-recipe span{display:inline-block;padding:5px 10px 6px;border:1.3px solid var(--ink);border-radius:7px 10px 6px 9px;background:var(--paper);font:11.5px/1.25 var(--util)}
+.ex-notice{margin-top:30px}
+.ex-notice ul{list-style:none;margin:0;padding:0;border-top:1px dashed var(--line-strong)}
+.ex-notice li{position:relative;padding:10px 0 11px 24px;border-bottom:1px dashed var(--line-strong);font-size:16px;line-height:1.55}
+.ex-notice li::before{content:"—";position:absolute;left:0;color:var(--pencil);font-family:var(--util)}
+
+/* ---- the evidence viewer: prints, the numbered markers, the typed legend ---- */
+.viewer{position:relative;display:flex;flex-direction:column}
+.prints{position:relative;z-index:2}
+.viewer--sheet .prints{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:28px;align-items:start}
+.viewer--tall{display:grid;grid-template-columns:minmax(240px,360px) minmax(0,1fr);gap:0 38px;align-items:start}
+.viewer--tall .prints{grid-row:1/span 3}
+.ex-notes{list-style:none;order:3;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 26px;border-top:1px solid var(--ink)}
+.viewer--sheet .ex-notes{grid-template-columns:repeat(2,minmax(0,1fr))}
+.viewer--tall .ex-notes{order:0;grid-template-columns:1fr;margin-top:0}
+.ex-note{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 10px;width:100%;padding:13px 0 15px;border:0;border-bottom:1px dashed var(--line-strong);background:none;color:var(--ink);text-align:left;cursor:pointer}
+.en-k{display:block;color:var(--pencil);font:500 10px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.en-t{display:block;margin-top:6px;font:500 17px/1.25 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.en-p{display:block;margin-top:7px;color:var(--soft);font-size:14.5px;line-height:1.55}
+/* a region of a capture: the pen's colour runs through `color` */
+.rg{position:absolute;z-index:3;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);color:var(--pen);pointer-events:none}
+/* the pen's loop is drawn outside its box; an unsized svg is 300 × 150 and widened round 2's phone page to 568 px */
+.rg>svg,.zm-rg>svg{width:100%;height:100%}
+
+/* ---- the marker: one numeral per region, on the capture and in its legend, the same mark in both places ----
+   It has to read on any screenshot, light UI or dark, so every variant carries its own contrast: a disc (or a flag)
+   in one value, the numeral in the other, and a paper halo ring that separates it from whatever is under it. No coral:
+   the pen's coral loop marks a region only while it's noticed. Open, the marker takes the wheat band. */
+.mk{--mk:30px;position:relative;display:inline-grid;place-items:center;flex:none;box-sizing:border-box;width:var(--mk);height:var(--mk);padding:0;border:0;border-radius:50%;font:600 15.5px/1 "Fraunces",Georgia,serif;font-variant-numeric:lining-nums;letter-spacing:0}
+.mk>span{display:block;transform:translateY(.5px)}
+/* A · the ink seal: an ink disc, a paper numeral, a paper halo and an ink hairline outside it */
+[data-m="a"] .mk{background:var(--ink);color:var(--paper);box-shadow:0 0 0 3px var(--paper),0 0 0 4.25px rgba(51,48,43,.62),0 3px 7px 2px rgba(20,18,15,.3)}
+/* B · the paper token: a paper disc, an ink numeral and ring, a paper halo outside the ring */
+[data-m="b"] .mk{background:var(--paper);color:var(--ink);border:2.25px solid var(--ink);box-shadow:0 0 0 3px rgba(251,246,236,.94),0 3px 7px 2px rgba(20,18,15,.3)}
+/* C · the index flag: the dossier's kraft index tab, stuck onto the print at the region's corner */
+[data-m="c"] .mk{--mk:28px;width:auto;min-width:40px;padding:0 9px 0 8px;border:1.25px solid var(--ex-kraft-ink);border-radius:3px 12px 12px 3px;background:var(--ex-kraft);color:var(--ink);font:600 13px/1 var(--util);box-shadow:0 0 0 2.5px var(--paper),0 3px 7px 2px rgba(20,18,15,.28)}
+[data-m="c"] .mk>span::before{content:"0"}
+/* open: the wheat band, with its darker edge */
+.mk.on,.ex-note[aria-expanded="true"] .mk{background:var(--hl);color:var(--ink);box-shadow:0 0 0 1.75px var(--hl-ink),0 0 0 4.25px var(--paper),0 3px 7px 2px rgba(20,18,15,.26)}
+[data-m="b"] .mk.on,[data-m="b"] .ex-note[aria-expanded="true"] .mk{border-color:var(--hl-ink);box-shadow:0 0 0 3px rgba(251,246,236,.94),0 3px 7px 2px rgba(20,18,15,.26)}
+[data-m="c"] .mk.on,[data-m="c"] .ex-note[aria-expanded="true"] .mk{border-color:var(--hl-ink)}
+/* on the capture: centred on the region's top-left corner; a 44 px target around a 30 px mark */
+/* two regions close together on a small print: the later mark steps along its region's top edge (--nx, r3-demos.js) */
+.rg-m{position:absolute;left:calc(var(--mk) / -2 + var(--nx, 0px));top:calc(var(--mk) / -2);pointer-events:auto;cursor:pointer}
+[data-m="c"] .rg-m{left:calc(-6px + var(--nx, 0px));top:-22px}
+.rg-m::after{content:"";position:absolute;inset:-8px;border-radius:50%}
+.ex-note .mk{--mk:28px;margin-top:-4px;font-size:14.5px}
+[data-m="c"] .ex-note .mk{--mk:26px;min-width:36px;font-size:12px}
+
+/* ---- the enlargement: a print laid over the capture's frame ----
+   Positioned by r3-demos.js over the capture's frame (the print; the contact sheet; a phone capture and the legend
+   beside it, whose print alone is already at size), and on a phone across the screen's width. The window pans (touch,
+   drag, wheel, ↑ ↓); the note and its controls sit under it. */
+.zm{position:absolute;z-index:6;left:0;top:0;display:flex;flex-direction:column;box-sizing:border-box;padding:8px 8px 0;background:var(--paper);box-shadow:0 0 0 1px var(--line-strong),-8px 16px 28px rgba(60,50,35,.22);transform-origin:0 0;outline:none}
+.zm[hidden]{display:none}
+.zoomed .prints .rg-m{visibility:hidden}   /* under the enlargement; none peeks out past its edge */
+.zm-win{position:relative;flex:1 1 auto;min-height:0;display:flex;overflow:auto;overscroll-behavior-x:contain;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong);scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+.zm-win.pan{cursor:grab}
+.zm-win.grab{cursor:grabbing}
+.zm-size{position:relative;flex:none;margin:auto}
+.zm-img{position:absolute;inset:0;transform-origin:0 0}
+.zm-img img{display:block;width:100%;height:100%;-webkit-user-drag:none;user-select:none}
+.zm-rg{position:absolute;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);color:var(--hl-ink);pointer-events:none}
+.zm-rg .mk{position:absolute;z-index:1;left:calc(var(--mk) / -2 + var(--zx, 0px));top:calc(var(--mk) / -2 + var(--zy, 0px))}
+[data-m="c"] .zm-rg .mk{left:calc(-6px + var(--zx, 0px));top:calc(-22px + var(--zy, 0px))}
+.zm-note{flex:none;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"k bar" "t bar" "p bar";gap:0 28px;align-items:start;padding:12px 4px 12px}
+.zm-k{grid-area:k;color:var(--pencil);font:500 10.5px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.zm-t{grid-area:t;margin-top:5px;font:500 19px/1.25 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+.zm-p{grid-area:p;margin-top:6px!important;max-width:60ch;color:var(--soft);font-size:15px!important;line-height:1.5!important}
+.zm-bar{grid-area:bar;align-self:end;display:flex;align-items:center;gap:4px}
+.zm-bar button{display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 14px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:13px/1 var(--util);cursor:pointer;touch-action:manipulation}
+.zm-bar .zm-prev,.zm-bar .zm-next{width:44px;padding:0;font-size:17px}
+.zm-n{min-width:56px;color:var(--ink);font:500 12.5px/1 var(--util);letter-spacing:.04em;text-align:center;white-space:nowrap}
+.zm-x{margin-left:10px}
+
+/* ---- the controlled comparison and the settei library ---- */
+.slip{padding:14px 16px 16px;background:var(--slip);box-shadow:0 0 0 1px var(--line-strong),-4px 7px 12px rgba(60,50,35,.1);transform:rotate(-.4deg)}
+.slip p{margin-top:8px;font-size:16px;line-height:1.6}
+.ex-prompt{max-width:640px}
+.ex-ab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;margin-top:30px}
+.ab-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.ab-head small{color:var(--pencil);font:11px/1.3 var(--util)}
+.ex-lib{margin:44px 0 0;padding-top:24px;border-top:1px dashed var(--line-strong)}
+.lib-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px 40px;align-items:end}
+.lib-head .slip-k{grid-column:1/-1}
+.lib-t{font:600 24px/1.2 "Fraunces",serif}
+.lib-head p{color:var(--soft);font-size:15.5px;line-height:1.55}
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:24px;align-items:start}
+.plate{margin:0}
+.plate figcaption{display:flex;flex-direction:column;gap:3px;margin-top:14px}
+.plate-k{color:var(--pencil);font:500 10px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.plate strong{font:500 16px/1.3 "Fraunces",serif}
+.plate small{color:var(--soft);font:11.5px/1.45 var(--util)}
+.ex-close{border-top:1px solid var(--ink)}
+
+@media (max-width:760px){
+  .ex-index ol{columns:1}
+  .ex-index a{grid-template-columns:24px minmax(0,1fr)}
+  .xi-l{grid-column:2}
+  .ex-head{grid-template-columns:1fr}
+  .ex-head .stamp{justify-self:start;margin:4px 0 0}
+  .ex-copy,.ex-ab,.lib-head{grid-template-columns:1fr}
+  .ex-notes,.viewer--sheet .ex-notes{grid-template-columns:1fr}
+  .viewer--tall{display:flex}
+  .viewer--tall .prints{width:min(250px,76%);margin:0 auto}
+  .viewer--tall .ex-notes{order:3;margin-top:24px}
+  .viewer--sheet .prints{grid-template-columns:1.2fr 1fr 1fr;gap:12px}
+  .plates{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .plate strong{font-size:13px}.plate small{display:none}
+  .pc{width:18px;height:18px}
+  .pc-tl,.pc-tr{top:-5px}.pc-bl,.pc-br{bottom:-5px}.pc-tl,.pc-bl{left:-5px}.pc-tr,.pc-br{right:-5px}
+  /* a 32 px mark is the tap target's floor; the ::after takes it to 48 */
+  .mk{--mk:32px;font-size:16px}
+  [data-m="c"] .mk{--mk:30px;min-width:42px;font-size:13.5px}
+  .zm{padding:6px 6px 0}
+  .zm-note{grid-template-columns:minmax(0,1fr);grid-template-areas:"k" "t" "p" "bar";padding:10px 4px 10px}
+  .zm-t{font-size:18px}
+  .zm-p{font-size:14.5px!important}
+  .zm-bar{margin-top:10px}
+  .zm-x{margin-left:auto}
+}
+@media (forced-colors:active){
+  .rg{color:CanvasText}
+  .mk{border:2px solid CanvasText;forced-color-adjust:none;background:Canvas;color:CanvasText}
+}

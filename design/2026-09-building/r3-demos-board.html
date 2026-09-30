@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building · round 3 · Demos: the enlargement over the capture</title>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="./r3-demos.css">
+<style>
+body{margin:0;background:#F6F1E6;color:#2B2722;font:16px/1.6 Georgia,serif}
+main{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:34px;line-height:1.15;margin:0 0 10px}
+h2{margin:48px 0 10px;padding-top:18px;border-top:1px solid #2B2722;font-size:22px}
+h3{margin:26px 0 6px;font-size:17px}
+p,li{max-width:78ch}
+code,.k{font:13px/1.5 ui-monospace,Menlo,monospace}
+a{color:#2B2722;text-decoration:underline}
+blockquote{margin:14px 0;padding:4px 0 4px 18px;border-left:2px solid #2B2722;font-style:italic}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:start;margin-top:14px}
+.row.ph{grid-template-columns:2.6fr 1fr}
+figure{margin:0}
+figure img{display:block;width:100%;height:auto;box-shadow:0 0 0 1px #CFC4AE}
+figcaption{margin-top:6px;color:#5F574C;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+table{border-collapse:collapse;margin-top:10px;font-size:15px}
+td,th{padding:7px 12px 7px 0;border-bottom:1px dashed #CFC4AE;text-align:left;vertical-align:top}
+.q{margin-top:48px;padding:18px 20px;border:1.5px solid #2B2722;background:#FBF7EE}
+.cap td:first-child{white-space:nowrap}
+.cap .was{color:#6D6559}
+/* the live marker specimen: each variant on three real patches of the captures, at the size they sit on the page */
+.spec{display:grid;gap:14px;margin-top:16px}
+.sp-row{display:grid;grid-template-columns:150px repeat(3,240px) minmax(170px,1fr);gap:14px;align-items:center}
+.sp-h{font:13px/1.4 ui-monospace,Menlo,monospace}
+.sp-h b{display:block;font:600 15px/1.3 Georgia,serif}
+.sp-h.rec b::after{content:" · recommended";color:#6D6559;font-weight:400}
+.pt{position:relative;width:240px;height:150px;background-repeat:no-repeat;box-shadow:0 0 0 1px #CFC4AE;overflow:hidden}
+.pt i{position:absolute;left:120px;top:75px;width:0;height:0}
+.pt i .rg-m{pointer-events:none}
+.sp-leg{display:flex;flex-direction:column;gap:14px;padding:14px 16px;background:var(--paper);box-shadow:0 0 0 1px #CFC4AE;font:500 16px/1.3 "Fraunces",serif}
+.sp-leg>span{display:flex;align-items:center;gap:12px}
+.sp-leg small{color:#6D6559;font:11px/1.3 ui-monospace,Menlo,monospace}
+.sp-cols{display:grid;grid-template-columns:150px repeat(3,240px) minmax(170px,1fr);gap:14px;color:#5F574C;font:12px/1.4 ui-monospace,Menlo,monospace}
+.tp{background-image:url("../../assets/fred-agent/demo/trash-patrol.png");background-size:911px auto}
+.di{background-image:url("../../assets/fred-agent/demo/discord-intake.png");background-size:360px auto}
+@media (max-width:1100px){.sp-row,.sp-cols{grid-template-columns:repeat(2,minmax(0,240px))}.sp-cols{display:none}.sp-h{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main>
+<p class="k">design/2026-09-building · round 3 · C 档案, the dossier · Demos</p>
+<h1>Demos, round 3: the enlargement lies over the capture, and the markers are hard to miss</h1>
+<p>Round 2 put three focus treatments to Fred (<a href="./r2-02-demos-board.html">r2-02-demos-board.html</a>), and F3, the enlargement, won on phone readability. Fred's call on Q3, in his words:</p>
+<blockquote>For Q3 we need enlargement, but maybe directly overlay on the original image and give the &lt;- -&gt; option to rotate between options. Note that the rounded number are not big enough and can easily get ignored with the images.</blockquote>
+<p>This round answers both points. Choosing a marker or a note lays the enlargement over the capture itself, inside the capture's own frame, and nothing on the page moves. ← → step through the capture's regions with a counter. The numbers are now seals, big enough to find on any screenshot, light or dark. The exhibits, the recording behind its poster and the comparison are unchanged from round 2.</p>
+<p>Live: <a href="./r3-demos.html?m=a">r3-demos.html?m=a</a>, with markers A, the ink seal (recommended) · <a href="./r3-demos.html?m=b">?m=b</a> B, the paper token · <a href="./r3-demos.html?m=c">?m=c</a> C, the index flag · round 2's F3 for comparison, <a href="./r2-02-demos.html?f=3">r2-02-demos.html?f=3</a>. The switcher in the page's lower-left corner changes the marker; "reduced" previews reduced motion.</p>
+
+<h2>1 · The enlargement, in place</h2>
+<div class="row ph">
+<figure><img src="shots/r3-demos-open-1440.png" alt="Fig. 02 at 1440 with region 2 open: the enlargement print covers the capture exactly; the Discord messages read at size, the region is looped in wheat, and the note, 2 / 3 with arrows and put it back, is typed under the window"><figcaption>1440 · Fig. 02, region 2. The print over the capture: the window sits exactly where the capture was, and the legend below hasn't moved (its entry 2 is banded)</figcaption></figure>
+<figure><img src="shots/r3-demos-open-390.png" alt="Fig. 02 at 390 with region 1 open: the enlargement spans the screen; Discord timestamps read at about 13 px"><figcaption>390 · the screen's width; the Discord text reads at about 13 px and the window pans</figcaption></figure>
+</div>
+<div class="row ph">
+<figure><img src="shots/r3-demos-open-fig3-1440.png" alt="Fig. 03 at 1440 with region 3 open: the phone capture at about twice its size, over the print and the legend beside it"><figcaption>1440 · Fig. 03. A lone phone capture already reads at its size on the page, so its enlargement lies over the print and the legend beside it, and shows it at nearly twice the size</figcaption></figure>
+<figure><img src="shots/r3-demos-open-fig4-390.png" alt="Fig. 04 at 390 with region 2 open"><figcaption>390 · Fig. 04, region 2 of 4, on the contact sheet</figcaption></figure>
+</div>
+<ul>
+<li><strong>Where.</strong> The enlargement covers the capture's frame: the print in Fig. 02, and the whole contact sheet in Fig. 04, so ← → can walk across its three prints. Fig. 03's print alone is already at size at desktop widths, so there the frame includes the legend beside it. On a phone the enlargement spans the screen, 8 px from each edge, and lies over whatever follows the capture instead of pushing it down. If the capture is half off the screen (you chose a note far below it), the page scrolls just far enough to show the whole enlargement under the tab strip.</li>
+<li><strong>What it shows.</strong> A paper print whose margin covers the photo corners, so its window sits exactly where the capture was. Inside the window, the region at size with its number in the wheat band and the pen's wheat loop around it. Under the window, the region's note: its key, title and text, then ← n / N → and "put it back · 放回". The note area keeps the height of the capture's longest note, so stepping never moves the window's edges.</li>
+<li><strong>How large.</strong> As large as fits the window, but never smaller than the size at which the capture's small text reads, and never larger than the image holds up. Each capture carries its own range, in CSS px per image px: 0.85–1.25 for the Trash Patrol and skill-file captures, whose 12–15 px UI text lands at 9–19 px, and 0.3–0.55 for the phone captures, whose ~44 px body text lands at 13–24 px. At desktop widths the capture's whole width always fits. On a phone the floor holds and the window pans: drag it, or use ↑ ↓.</li>
+<li><strong>Motion</strong> runs on the physics clock and moves only transform and opacity. <em>Open:</em> the enlargement grows out of the region's own place on the capture. At the first frame its region lies exactly over the region at rest (0.0 px off for all ten regions), then it springs out with one small overshoot (k 220, c 22: 534 ms, 3 %). <em>Step within a print:</em> the window pans across the capture to the next region (240 / 24, 2 %). <em>Step to another print</em> (Fig. 04): the next print grows into the window from its own place on the contact sheet. <em>Close:</em> it tucks back into the region it shows (250 ms) and is gone. Each time it lands, the wheat loop draws once on the pen's clock. An interrupted move restarts from where it visibly is. Under reduced motion every state lands at once.</li>
+</ul>
+
+<h2>2 · Markers you can't miss</h2>
+<p>Every variant carries its own contrast, so it reads on any screenshot. The mark takes one value and its numeral the other, and a paper halo ring separates the mark from whatever is under it. The legend uses the same mark at 28 px, so each number on the capture visibly pairs with its note. There's no coral at rest. Noticing a marker (a mouse) or an entry (a mouse or keyboard focus) has the pen loop the region in coral, and an open region takes the wheat band. Below, each variant sits live on three real patches of the captures, at the size it has on the page at 1440.</p>
+<div class="spec c-c">
+<div class="sp-cols"><span></span><span>Codex, light UI (Fig. 02)</span><span>Discord, dark UI (Fig. 02)</span><span>a phone capture at its small size (Fig. 03)</span><span>in the legend · open</span></div>
+<div class="sp-row" data-m="a">
+<div class="sp-h rec"><b>A · the ink seal</b>ink disc, paper numeral, paper halo, ink hairline</div>
+<div class="pt tp" style="background-position:-45.3px -106.8px"><i><span class="rg-m mk"><span>3</span></span></i></div>
+<div class="pt tp" style="background-position:-475.1px -347.6px"><i><span class="rg-m mk"><span>1</span></span></i></div>
+<div class="pt di" style="background-position:-59.1px -268.3px"><i><span class="rg-m mk"><span>2</span></span></i></div>
+<div class="sp-leg"><span><span class="en-n mk" style="--mk:28px;font-size:14.5px"><span>2</span></span>Quiet when nothing is owed.</span><span><span class="en-n mk on" style="--mk:28px;font-size:14.5px"><span>2</span></span><small>open: the wheat band</small></span></div>
+</div>
+<div class="sp-row" data-m="b">
+<div class="sp-h"><b>B · the paper token</b>paper disc, ink numeral and 2.25 px ring, paper halo</div>
+<div class="pt tp" style="background-position:-45.3px -106.8px"><i><span class="rg-m mk"><span>3</span></span></i></div>
+<div class="pt tp" style="background-position:-475.1px -347.6px"><i><span class="rg-m mk"><span>1</span></span></i></div>
+<div class="pt di" style="background-position:-59.1px -268.3px"><i><span class="rg-m mk"><span>2</span></span></i></div>
+<div class="sp-leg"><span><span class="en-n mk" style="--mk:28px;font-size:14.5px"><span>2</span></span>Quiet when nothing is owed.</span><span><span class="en-n mk on" style="--mk:28px;font-size:14.5px"><span>2</span></span><small>open: the wheat band</small></span></div>
+</div>
+<div class="sp-row" data-m="c">
+<div class="sp-h"><b>C · the index flag</b>the dossier's kraft tab, stuck on at the corner</div>
+<div class="pt tp" style="background-position:-45.3px -106.8px"><i><span class="rg-m mk"><span>3</span></span></i></div>
+<div class="pt tp" style="background-position:-475.1px -347.6px"><i><span class="rg-m mk"><span>1</span></span></i></div>
+<div class="pt di" style="background-position:-59.1px -268.3px"><i><span class="rg-m mk"><span>2</span></span></i></div>
+<div class="sp-leg"><span><span class="en-n mk" style="--mk:26px;min-width:36px;font-size:12px"><span>2</span></span>Quiet when nothing is owed.</span><span><span class="en-n mk on" style="--mk:26px;min-width:36px;font-size:12px"><span>2</span></span><small>open: the wheat band</small></span></div>
+</div>
+</div>
+
+<h3>Recommended: A, the ink seal</h3>
+<ul>
+<li>It's the only variant that separates by value in both directions. The ink disc stands out against light UI, the paper halo against dark UI, and the ink hairline outside the halo keeps even the halo visible on white. Discord's background in these captures (#1A1A1E) is darker than the ink itself, so on Discord the halo does the work, which is what it's there for.</li>
+<li>It reads as the print's own numbering, not as part of the screenshot. A 30 px round seal with a 15.5 px Fraunces numeral looks like nothing a UI draws. B's paper disc on light UI is held only by its ring, and at a glance it reads like one more round avatar or button. C's kraft flag borrows the dossier's own tab and is the least like an avatar, but it's wider, covers more of the capture, and "01" reads more slowly than "1".</li>
+<li>Sizes: 30 px at desktop widths (38 px with the halo) and 32 px on phones, each with an invisible target of 46–48 px. Where two marks would overlap on a small print (Fig. 04's 2 and 3 on a phone), the later one steps along its region's top edge. While the enlargement is open, the capture's marks are hidden under it.</li>
+</ul>
+<div class="row ph">
+<figure><img src="shots/r3-demos-rest-1440.png" alt="Fig. 02 at rest at 1440 with markers A: three ink seals with paper halos over the Codex and Discord UI"><figcaption>A at rest, 1440 · the seals on Codex's light UI, on Discord's sidebar and on its message list; the legend's seals match them</figcaption></figure>
+<figure><img src="shots/r3-demos-rest-390.png" alt="Fig. 02 at rest at 390 with markers A"><figcaption>A at rest, 390 · 32 px seals</figcaption></figure>
+</div>
+<div class="row">
+<figure><img src="shots/r3-demos-markers-b-1440.png" alt="Fig. 02 at rest with markers B, paper tokens"><figcaption>B at rest, 1440</figcaption></figure>
+<figure><img src="shots/r3-demos-markers-c-1440.png" alt="Fig. 02 at rest with markers C, kraft index flags"><figcaption>C at rest, 1440</figcaption></figure>
+<figure><img src="shots/r3-demos-hover-1440.png" alt="A mouse over marker 1: the pen loops the region in coral"><figcaption>Noticing a marker: the pen's coral loop, the only coral on the capture, and only while it's noticed</figcaption></figure>
+</div>
+
+<h2>3 · Two captions for Fred to approve</h2>
+<p>Round 2 drafted both captions for F3, which slid the enlargement out below the capture. These are redrafted for the enlargement laid over the capture, with ← →. They're already on the page.</p>
+<table class="cap">
+<tr><th></th><th>Round 2 (F3's slide-out)</th><th>Round 3 (in place, ← →)</th></tr>
+<tr><td>Fig. 02</td><td class="was">The numbers on the capture are the notes below it. Choose one to look closer; Esc puts it back.</td><td>The numbers on the capture are the notes below it. Choose one to read it at size, in place; ← → step to the next, and Esc puts it back.</td></tr>
+<tr><td>Fig. 04</td><td class="was">The numbers mark the auto-investigation rule and the task → error → fixed loop; the second report shows the same recovery pattern again.</td><td>The numbers mark the auto-investigation rule and the task → error → fixed loop. Open one and ← → walk the loop in order; the second report shows the same recovery again.</td></tr>
+</table>
+
+<h2>4 · Keyboard and touch</h2>
+<table>
+<tr><th>Input</th><th>What happens</th></tr>
+<tr><td>Tab</td><td>One stop per region: the legend entries are the controls (<code>button</code>, <code>aria-expanded</code>, <code>aria-controls</code> → the enlargement). The markers on the capture are for pointers and touch, hidden from assistive tech. Focus shows the pen's coral 「 」 and loops the region.</td></tr>
+<tr><td>Enter / Space, click, tap</td><td>Opens the enlargement and moves focus into it; it announces "Enlargement 2 of 3: Quiet when nothing is owed." Choosing another entry or marker while it's open steps to that region; choosing the open one again puts it back.</td></tr>
+<tr><td>← →</td><td>In the enlargement: the previous and next region of the same capture, wrapping around; the counter reads "2 / 3" and the new region is announced. On the legend entries, ← → ↑ ↓ move between entries.</td></tr>
+<tr><td>↑ ↓</td><td>In the enlargement, pan its window when the region is larger than the window.</td></tr>
+<tr><td>Tab inside it</td><td>← , →, "put it back · 放回". The window isn't a tab stop of its own. Entries it covers (Fig. 03 at desktop widths, and on a phone the ones under it) are inert while it's open.</td></tr>
+<tr><td>Esc, "put it back", a click or tap outside</td><td>It tucks back into its region and focus returns to the entry (from the keyboard, the entry is scrolled into view if it's off the screen). A click outside returns focus only if focus was inside the enlargement, and never takes it from what you clicked.</td></tr>
+<tr><td>Swipe left / right</td><td>Steps. On the note, always; inside a window that pans sideways, only once it's at its edge, so a pan is never taken for a step. Vertical swipes scroll the window, then the page.</td></tr>
+<tr><td>Mouse drag</td><td>Pans the window when there's more to see; a drag that ends outside doesn't close it.</td></tr>
+<tr><td>Reduced motion</td><td>Every state lands at once: no spring, no pan, no draw.</td></tr>
+</table>
+
+<h2>5 · For the port</h2>
+<ul>
+<li><strong>The zoom tier.</strong> The enlargement's image is the only thing that fetches the zoom tier (PR E's full-width q90 JPEG), and only when an enlargement opens. Until the tier arrives, the display image already in the print stands in at the same place, so opening never waits on the network. The mock uses the live PNG.</li>
+<li>Each capture's size range (<code>data-zoom="lo hi"</code>) goes into the evidence data, beside its width and height.</li>
+<li><strong>Found on the way: the pen's loop can widen a phone page.</strong> <code>Pen.annotate</code> draws into an svg with no size, and an unsized svg is 300 × 150. Round 2's region loops near the right edge made its phone page 568 px wide, so the page could be dragged sideways (nothing a screenshot shows). This board sizes those svgs to their host in its own CSS. Production's callers (<code>lib/reading/rail.js</code>, <code>slip.js</code>, <code>lib/writing/pull.js</code>) are worth a check.</li>
+<li><strong>Also found: <code>hide()</code> on a loop that never showed sweeps it through visible.</strong> After a build or a resize, the stroke's offset sits at "hidden before the start", and erasing from there passes through fully drawn. Round 2 hid every loop on every change, so choosing region 1 swept loops 2 and 3 through coral once. This board hides only a loop it showed; <code>pen.js</code> could start the erase from the far side instead.</li>
+</ul>
+
+<h2>Known gaps in this board</h2>
+<ul>
+<li>While open, Fig. 03's enlargement covers its own legend at desktop widths. Its note is in the enlargement, and ← → reach the others.</li>
+<li>On a phone the enlargement lies over the notes after the capture (most of Fig. 02's legend). They're inert until it's put back.</li>
+<li>There's no pinch-to-zoom inside the window; a pinch zooms the page, as it always does.</li>
+<li>Closing during a step finishes the step at once, then tucks the enlargement back.</li>
+<li>The recording's play button and the comparison are round 2's, untouched.</li>
+</ul>
+
+<div class="q">
+<p><strong>Question for Fred (Q3, round 3):</strong> should Demos ship the enlargement laid over the capture, with markers A (the ink seal, recommended), B (the paper token) or C (the index flag)? And do the two captions in §3 stand as written, or do you want to edit them?</p>
+</div>
+</main>
+</body>
+</html>
