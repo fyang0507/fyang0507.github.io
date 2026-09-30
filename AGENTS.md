@@ -59,7 +59,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Put no inline styles, animation classes or `view-transition-name` on header parts.
 - Head order on every templated `.dc.html` page (the shared files are in `lib/shared/`):
   1. `support.js`, first, so React's fetch from unpkg starts before the stylesheets claim the connections (the page's largest paint waits for React). Don't preload React: arriving before parsing ends makes support.js wait for DOMContentLoaded.
-  2. `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/<page>/<page>.css`
+  2. `site-tokens.css`, `site-nav.css`, `pen.css`, the view-transition opt-in, `transitions.css`, `lib/<page>/<page>.css`. The opt-in (`@view-transition{navigation:auto}`, `none` under reduced motion) is an inline `<style>` on every page that has transitions, never in a stylesheet: Chrome decides whether the page you land on takes the move from the opt-in it read when `<body>` went in, unless something restyles the page before its first frame, and a linked sheet is never in by then. From `transitions.css` the moves ran only because `site.js` happened to measure the nav first; a render-blocking file a little late, and Chrome cut the move and reported its skipped transition as an uncaught error.
   3. the `expect` link
   4. `motion.js`, `transitions-tab.js` and `transitions.js` as `defer blocking="render"`: they don't block the parser, but first render waits for them, so `pagereveal` is still heard
   5. deferred: `pen.js`, `pen-tier.js`, `site.js`, `content/*`, then the page's modules
@@ -102,7 +102,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Do not add ambient loops, gradients, gloss, shimmer, glass blur, parallax or fade-and-rise entrances.
   - The home opener is the one sanctioned register break.
 - **Transitions run on the compositor.** A view-transition animation changes only transform and opacity; a clip may be set but holds still. The new page mounts while its move plays, and anything on the main thread (a changing clip-path, width or height, `composite: 'add'`, SVG redrawn per frame) stops for as long as the page is busy. `vt-moves.mjs` checks every tab move, and `vt-project.mjs` every move between the Building board and a project's pages from Chrome's own trace; see `design/2026-09-tab-moves/`.
-- **Reduced motion** goes through `Motion.reduced()` / `Motion.onReduced()`. Turning it on finishes running tweens, and `transitions.css` switches view transitions off.
+- **Reduced motion** goes through `Motion.reduced()` / `Motion.onReduced()`. Turning it on finishes running tweens, and the head's inline opt-in switches view transitions off.
 - **The pen is the only highlighter.** Wire states with `Tier.wire`:
   - hover: a coral underline hung from the text's baseline (baseline + max(3 px, 0.18 em)), level, with a blunt end;
   - keyboard focus: coral 「 」;

@@ -1,9 +1,12 @@
 /* transitions.css — cross-document View Transitions: the desk becomes the nav (board r2-01 A).
    Loaded on home and on every gateway page. The shared parts carry one name each; transitions.js
    (pagereveal) replaces the browser's default morph with keyframes sampled from the physics clock.
-   Engines without cross-document View Transitions keep a hard cut; reduced motion gets no transition. */
-@view-transition{navigation:auto}
-@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+   Engines without cross-document View Transitions keep a hard cut; reduced motion gets no transition.
+   The opt-in, @view-transition{navigation:auto} (none under reduced motion), is not here but in an inline <style>
+   right before this sheet on every page: Chrome decides whether the page you land on takes the move from the opt-in
+   it read when <body> went in, unless something restyles the page before its first frame, and a linked sheet is
+   never in by then. From here it relied on site.js measuring the nav first; when the frame won (a render-blocking
+   file a little late), the move was a hard cut and Chrome reported its skipped transition as an uncaught error. */
 
 /* ---- names: one rendered element per name per document ---- */
 .site-identity{view-transition-name:identity}
