@@ -3,7 +3,8 @@
    held on the sheet by four kraft photo corners; the recording's play control sits at its poster's centre; a capture's
    regions carry B's paper tokens, and its legend is the controls (evidence.js), whose enlargement lies over the
    capture's own frame, the region and its note as a pair. No blur, no gradient, no entrance; coral only while the pen
-   notices something; for what is open, the wheat band and the corners in ink. */
+   notices something, and on the corners of the region an enlargement shows (Fred's exception, AGENTS.md); for what is
+   open, the wheat band. */
 
 /* ---- an exhibit ---- */
 .fa-demo{padding:64px 0;border-top:1px dashed var(--line-strong)}
@@ -93,26 +94,31 @@
 .rg-m::after{content:"";position:absolute;inset:-8px;border-radius:50%}
 .ex-note .mk{--mk:28px;margin-top:-4px;font-size:14.5px}
 
-/* ---- the pen at a region's four corners (corners.js): coral while it's noticed; chosen, ink in a paper casing, which
-   holds on the dark captures as on the white, and marks the current region in the enlargement ---- */
+/* ---- the pen at a region's four corners (corners.js), coral: bare while it's noticed; chosen, the region an
+   enlargement shows, on a thin paper halo that lifts it off the dark captures and the busy ones ---- */
 .cn{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .cn path{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .cn-ink{stroke:var(--pen);stroke-width:3.4px}
-.cn[data-state="2"] .cn-ink{stroke:var(--ink);stroke-width:3px}
-.cn-case{display:none;stroke:var(--paper);stroke-width:7.5px}
+.cn-case{display:none;stroke:var(--paper);stroke-width:5.8px}
 .cn[data-state="2"] .cn-case{display:inline}
 
 /* ---- the enlargement: a print laid over the capture's frame, the region and its note as a pair ----
    Placed by evidence.js over the capture's frame (the print; the contact sheet; a phone capture and the legend beside
    it), and on a phone across the screen's width. data-layout: side (the window, the note in a column beside it),
    band (the window, the note in a band under it), stack (phones: the window over the note). */
-.zm{position:absolute;z-index:6;left:0;top:0;display:grid;padding:8px;background:var(--paper);box-shadow:0 0 0 1px var(--line-strong),-8px 16px 28px rgba(60,50,35,.22);transform-origin:0 0;outline:none}
+.zm{position:absolute;z-index:6;left:0;top:0;display:grid;padding:8px;transform-origin:0 0;outline:none}
+/* its paper, and the window's under it, are one layer of their own, so they fold away while what the window shows
+   stays solid (evidence.js puts it back) */
+.zm-paper{position:absolute;inset:0;background:var(--paper);box-shadow:0 0 0 1px var(--line-strong),-8px 16px 28px rgba(60,50,35,.22);pointer-events:none}
+.zm-well{position:absolute;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong)}
+.zm.putting{pointer-events:none}
+.zm.putting .zm-win{scrollbar-color:transparent transparent}
 .zm[hidden]{display:none}
 .zm[data-layout="side"]{grid-template-columns:minmax(0,1fr) var(--nw,340px);grid-template-rows:minmax(0,1fr)}
 .zm[data-layout="band"]{grid-template-rows:minmax(0,1fr) auto}
 .zm[data-layout="stack"]{grid-template-rows:auto auto;padding-bottom:0}
 .zoomed .prints .rg-m{visibility:hidden}   /* under the enlargement; none peeks out past its edge */
-.zm-win{position:relative;min-width:0;min-height:0;display:flex;overflow:auto;overscroll-behavior-x:contain;background:var(--paper2);box-shadow:0 0 0 1px var(--line-strong);scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
+.zm-win{position:relative;z-index:1;min-width:0;min-height:0;display:flex;overflow:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent}
 .zm-win.pan{cursor:grab}
 .zm-win.grab{cursor:grabbing}
 .zm-size{position:relative;flex:none;margin:auto}
@@ -121,8 +127,13 @@
 .zm-img img{display:block;width:100%;height:100%;max-width:none;-webkit-user-drag:none;user-select:none}
 .zm-rg{position:absolute;left:calc(var(--x) - var(--w) / 2);top:calc(var(--y) - var(--h) / 2);width:var(--w);height:var(--h);pointer-events:none}
 .zm-rg .mk{position:absolute;z-index:1;left:calc(var(--mk) / -2 + var(--zx, 0px));top:calc(var(--mk) / -2 + var(--zy, 0px))}
+/* put back (evidence.js): the capture's own tokens under its way, and the region's corners, held over the
+   enlargement where they are, each in its region's box */
+.zm-home{position:absolute;inset:0;z-index:7;pointer-events:none}
+.zm-at{position:absolute}
+.zm-home .rg-m{pointer-events:none}
 /* the note: its token and key, its title, its text, then ← n / N → and put it back */
-.zm-note{display:flex;flex-direction:column;min-width:0;min-height:0}
+.zm-note{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0;min-height:0}
 .zm-txt{min-width:0}
 .zm-k{display:flex;align-items:center;gap:12px;color:var(--pencil);font:500 10.5px/1.35 var(--util);letter-spacing:.07em;text-transform:uppercase}
 .zm-k .mk{--mk:28px;font-size:14.5px;letter-spacing:0}
@@ -130,7 +141,11 @@
 .zm-p{margin-top:10px;max-width:34em;color:var(--soft);font-size:16px;line-height:1.6}
 .zm-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:auto;padding-top:18px}
 .zm-steps{display:flex;align-items:center;gap:4px}
-.zm-bar button{display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 14px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:13px/1 var(--util);touch-action:manipulation}
+/* the controls take no pen line: under a mouse they lift a little on the settle curve and their ring firms up; a
+   keyboard's focus still gets the pen's 「 」 (lib/building/project.js) */
+.zm-bar button{display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 14px;border:1.3px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:13px/1 var(--util);touch-action:manipulation;transition:transform .38s var(--ease-settle)}
+@media (hover:hover){.zm-bar button:hover{box-shadow:0 0 0 .8px var(--ink),0 3px 6px rgba(20,18,15,.14);transform:translateY(-1.5px)}}
+.zm-bar button:active{box-shadow:0 0 0 .8px var(--ink);transform:scale(.97);transition-duration:.12s}
 .zm-bar .zm-prev,.zm-bar .zm-next{width:44px;padding:0;font-size:17px}
 .zm-n{min-width:56px;color:var(--ink);font:500 12.5px/1 var(--util);letter-spacing:.04em;text-align:center;white-space:nowrap}
 .zm-x{margin-left:auto}
@@ -205,7 +220,7 @@
   .fa-settei-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){
-  .ex-play-d{transition:none}
+  .ex-play-d,.zm-bar button{transition:none}
 }
 @media (forced-colors:active){
   .mk,.ex-play-d{border:2px solid CanvasText;forced-color-adjust:none;background:Canvas;color:CanvasText}
