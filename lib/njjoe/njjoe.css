@@ -1,0 +1,115 @@
+/* NJJoe · the casebook's three pages (building/njjoe/*.html), as the open dossier (design/2026-09-building, candidate
+   C, 05-njjoe): the frame, the tabs, the card and what every project writes on its sheet (sections, ruled entries, the
+   line, the page nav and foot) are lib/building/dossier.css and card.css; this is what only the casebook writes: the
+   two cases and their before and after, the four-step lines across the sheet, Joe's words, the stamped figures, the
+   slips, the typed notes and table, and the two exhibits, clipped prints that scroll inside. Line-led, as there: no
+   washes and no reveals; text is --ink, --soft and --pencil on paper; the pen is the only highlighter; the one hand
+   note is in pencil. The email in the APA exhibit (email-demo/buyer.html) keeps its own inline styles: it is the
+   artifact, not the page. */
+
+/* the fore-edge is cut to the casebook's longest tab, "01 listing microsite" (dossier.css holds 150 px for Fred Agent's) */
+.pj-frame{--pj-tabs-w:170px}
+
+/* ---- the two cases, on the overview: a line of ink down each, dashed for the pilot ---- */
+.nj-cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:30px}
+.nj-case{display:flex;flex-direction:column;min-width:0;padding:4px 0 8px 18px;border-left:1.5px solid var(--ink)}
+.nj-case--pilot{border-left-style:dashed}
+.nj-case h3{margin-top:10px;font:500 24px/1.18 var(--disp);letter-spacing:-.015em}
+.nj-case>p{margin-top:12px;color:var(--soft);font-size:16px;line-height:1.6}
+.nj-case .pj-go{padding-top:20px}
+/* before → unlocked */
+.nj-ba{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;margin-top:18px}
+.nj-ba>div{padding:12px 12px 13px;border-top:1.5px solid var(--ink)}
+.nj-ba span{display:block;color:var(--pencil);font:500 10px/1.3 var(--util);letter-spacing:.07em;text-transform:uppercase}
+.nj-ba strong{display:block;margin-top:6px;font:500 14.5px/1.35 var(--disp)}
+.nj-ba i{align-self:center;color:var(--soft);font:14px/1 var(--util);font-style:normal}
+
+/* ---- a line of four steps runs the sheet's whole width under its section's head; the step a person takes has a
+   rule of ink over it as well. The overview's one hand note hangs under that step, in pencil ---- */
+.nj-wide{grid-column:1/-1;min-width:0}
+.nj-human{box-shadow:inset 0 1.5px 0 var(--ink)}
+.pj-line h3{margin-top:8px;font:500 19px/1.2 var(--disp)}
+.nj-aside{margin:18px 0 0 16px;color:var(--pencil);font:600 21px/1.2 var(--hand);transform:rotate(-.8deg);transform-origin:0 50%}
+
+/* ---- Joe's words ---- */
+.nj-quote{margin-top:26px;padding:4px 0 4px 24px;border-left:2px solid var(--line-strong)}
+.nj-quote blockquote{margin-top:14px}
+.nj-quote p{max-width:640px;margin-top:12px;font-size:18px;line-height:1.65}
+.nj-quote p:first-child{margin-top:0}
+.nj-quote figcaption{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:16px;color:var(--pencil);font:11.5px/1.4 var(--util)}
+.nj-quote figcaption strong{color:var(--ink);font-weight:500}
+/* the page's last line, after the section's last entry */
+.pj-sec-b>p.nj-closing{max-width:18em;margin-top:34px;font:500 clamp(28px,3.2vw,40px)/1.14 var(--disp);letter-spacing:-.022em}
+
+/* ---- ruled entries: the microsite's four surfaces, and a row of three ---- */
+.pj-card>strong{margin-top:10px;font:500 21px/1.22 var(--disp);letter-spacing:-.012em}
+.nj-three .pj-card{border-left-color:var(--ink)}
+
+/* ---- the figures, stamped: the funnels' counts and the microsite's facts ---- */
+.nj-stamp{display:inline-block;margin-top:2px;padding:4px 10px 6px;border:1.5px solid var(--ink);border-radius:4px;color:var(--ink);font:500 34px/1 var(--disp);letter-spacing:-.02em;transform:rotate(-1.2deg)}
+.pj-line strong.nj-stamp{display:inline-block;margin-top:2px;font:500 34px/1 var(--disp)}
+:nth-child(2)>.nj-stamp{transform:rotate(.9deg)}
+:nth-child(3)>.nj-stamp{transform:rotate(-.4deg)}
+.nj-stamp small{font:500 11px/1 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.nj-funnel .pj-k{display:block;margin-top:14px}
+.nj-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.nj-facts>div{padding:14px 0 16px 16px;border-left:1.5px solid var(--ink)}
+.nj-facts span{display:block;margin-top:14px;color:var(--soft);font:12.5px/1.5 var(--util)}
+
+/* ---- a slip clipped in (the consequence, the constraint), and the typed notes ---- */
+.nj-slip{max-width:520px;margin-top:28px;padding:16px 18px 18px;border:1px solid var(--line);border-left:2px solid var(--ink);background:var(--paper2)}
+.nj-slip strong{display:block;margin-top:10px;font:500 21px/1.22 var(--disp);letter-spacing:-.012em}
+.nj-slip p{margin-top:8px;color:var(--soft);font-size:15px;line-height:1.55}
+.pj-sec-b>p.nj-typed{max-width:680px;margin-top:22px;padding:2px 0 2px 16px;border-left:1.5px dashed var(--line-strong);color:var(--soft);font:12.5px/1.7 var(--util)}
+.nj-typed strong{color:var(--ink);font-weight:500}
+
+/* ---- the batch, typed ---- */
+.nj-table{width:100%;margin-top:30px;border-collapse:collapse;font:12.5px/1.5 var(--util);text-align:left}
+.nj-table caption{padding-bottom:10px;color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.08em;text-align:left;text-transform:uppercase}
+.nj-table th,.nj-table td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line-strong);font-weight:400;vertical-align:top}
+.nj-table thead th{border-bottom-color:var(--ink);color:var(--soft);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.nj-table tbody th{color:var(--ink);font-weight:500}
+.nj-table td:nth-child(2){color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.nj-table td:last-child{padding-right:0;color:var(--soft)}
+
+/* ---- an exhibit: a print clipped to the sheet (project.js draws the clip), scrolling inside ---- */
+.nj-print{margin-top:30px}
+.nj-print>.pj-k{margin-bottom:10px}
+.nj-print-paper{position:relative;padding:8px;border:1px solid var(--line-strong);background:var(--slip);filter:drop-shadow(-4px 10px 14px rgba(60,50,35,.12))}
+.nj-print-paper>.pj-clip{left:28px}
+.nj-scroll{height:min(50vh,520px);min-height:400px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;background:#F7F0E5}
+.nj-scroll picture{display:block}
+.pj .nj-scroll img{display:block;width:100%;max-width:none;height:auto}
+.nj-print iframe{display:block;width:100%;height:min(65vh,640px);min-height:400px;border:0;background:#EFEDE7}
+.nj-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;margin-top:12px;color:var(--pencil);font:10.5px/1.45 var(--util);letter-spacing:.06em;text-transform:uppercase}
+
+/* the two cases stand side by side only where each before → unlocked has 110 px a side; the row of three stands in a
+   column where the section's writing is under 480 px, as dossier.css's line does; the line of four, across the whole
+   sheet, from 900 px down */
+.nj-three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@container (max-width:480px){
+  .nj-three{grid-template-columns:1fr}
+}
+@media (max-width:1200px){
+  .nj-cases{grid-template-columns:1fr;gap:34px}
+}
+@media (min-width:761px){
+  .nj-sec--wide{row-gap:30px}
+  .nj-four{margin-top:0}
+}
+@media (min-width:901px){
+  .nj-four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .nj-aside{margin-left:calc(50% + 33px)}   /* over the third of four columns (34 px apart), at its text */
+}
+@media (max-width:900px){   /* the line of four isn't in a section's writing, so it stands in its column here */
+  .nj-four{grid-template-columns:1fr;gap:26px}
+  .nj-four li:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-24px;transform:none}
+}
+@media (max-width:640px){
+  .nj-ba{grid-template-columns:1fr}
+  .nj-ba i{justify-self:start;padding-left:12px;transform:rotate(90deg)}
+  .nj-facts{grid-template-columns:1fr}
+  .nj-quote{padding-left:18px}
+  .nj-quote p{font-size:17px}
+  .nj-scroll{height:50vh;min-height:380px}
+}

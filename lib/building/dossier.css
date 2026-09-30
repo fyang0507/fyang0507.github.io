@@ -11,7 +11,12 @@
 :root{
   --kraft:#D8C29A;--kraft-edge:#6E5A3A;          /* the dossier's kraft stock and its cut edge (3.8:1, an edge, never text) */
 }
-/* the project pages set their notes and pull quotes in Fraunces italic 400 (site-tokens.css declares the roman only) */
+/* both pages set their Chinese in the -ui tier of Noto Serif SC (--text's second face: the board, the cards, the sheet)
+   and wire the pen to a .pen-t; the project pages set their notes and pull quotes in Fraunces italic 400 (site-tokens.css
+   declares the roman only). A project page loads card.css with its card, after first paint (cover.js), so these live
+   here. */
+@font-face{font-family:"Noto Serif SC";src:url("../../fonts/derived/NotoSerifSC-ui.woff2") format("woff2");font-weight:200 900;font-display:swap}
+.pen-t{display:inline-block;position:relative}
 @font-face{font-family:"Fraunces";font-style:italic;src:url("../../fonts/derived/Fraunces-Italic-latin-ext.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:"Fraunces";font-style:italic;src:url("../../fonts/derived/Fraunces-Italic-latin.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
@@ -66,7 +71,7 @@
    28 px below it. A page with the reading rail carries an empty .pj-count in its tabs, the rail's phone strip and
    counter (project-rail.js), so the strip has its height at first paint. */
 .pj{--pj-pad:clamp(26px,4vw,60px);--pj-stick:0px;padding:0 4vw 60px}
-.pj-frame{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"sheet tabs";width:min(1180px,100%);margin:0 auto;padding-top:30px}
+.pj-frame{position:relative;display:grid;grid-template-columns:minmax(0,1fr) var(--pj-tabs-w,150px);grid-template-areas:"sheet tabs";width:min(1180px,100%);margin:0 auto;padding-top:30px}
 .pj-sheet{grid-area:sheet;position:relative;min-width:0;background:var(--paper);border:1px solid var(--line-strong);border-right-width:1.5px}
 .pj-sheet::before{content:"";position:absolute;left:-1px;right:-1.5px;top:-10px;height:9px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:6px 26px 0 0;background:var(--kraft);clip-path:polygon(0 0,34% 0,37% 100%,0 100%)}
 .pj-sheet,.pj-sheet [id]{scroll-margin-top:calc(var(--pj-stick) + 28px)}   /* the sheet itself: the skip link's landing */
@@ -82,12 +87,13 @@
 .pj-meta span:first-child{border-color:var(--ink);color:var(--ink);transform:rotate(-1.2deg)}
 /* the card's box, held before it arrives: the lead card at its board size (700 × 470) × 0.3, clipped on at a tilt */
 .pj-cover{position:relative;grid-column:2;grid-row:1;align-self:start;width:210px;height:141px;margin:-6px 6px 0 0;transform:rotate(2.4deg)}
+.pj-cover.pj-cover--featured{width:117px;height:108px}   /* the featured card (390 × 360) × 0.3, at every width */
 /* the card is laid out in a board-wide container (its sizes are the board's cqw), scaled; the frame clips that
    container 20 px round the card, so its empty width never widens the page */
 .pj-cover-frame{position:absolute;inset:-20px;overflow:hidden;pointer-events:none}
 .pj-cover-board{position:absolute;left:20px;top:20px;width:1180px;container-type:inline-size;transform-origin:0 0}
 .pj-cover-board .slot{margin-top:0}
-.pj-cover-clip{position:absolute;z-index:3;left:24%;top:-13px;width:16px;height:38px;overflow:visible;pointer-events:none}
+.pj-clip{position:absolute;z-index:3;left:24%;top:-13px;width:16px;height:38px;overflow:visible;pointer-events:none}
 /* the fore-edge: the tabs off the sheet's right edge; the current one pulled out further and banded (pen.css) */
 .pj-tabs{grid-area:tabs;position:sticky;top:26px;z-index:2;align-self:start;display:flex;flex-direction:column;gap:7px;margin-top:58px}
 .pj-tabs .dos-tab{margin-left:-1px;padding:0 12px 0 14px;font-size:11.5px;transition:transform .38s var(--ease-settle)}
@@ -96,8 +102,57 @@
 .pj-tabs .dos-tab[aria-current="page"]:hover{transform:translateX(10px)}
 .pj-count{display:none}
 .pj-back{grid-area:tabs;align-self:end;justify-self:start;margin:0 0 30px 16px;color:var(--soft);font:10.5px/1.4 var(--util);letter-spacing:.02em}
+.pj-back [lang="zh"]{white-space:nowrap}   /* 回到板上 breaks as a whole */
 .skip-link{position:fixed;z-index:500;left:14px;top:12px;padding:9px 13px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:11px/1 var(--util);transform:translateY(-160%)}
 .skip-link:focus{transform:none}
+
+/* ---- what every project page writes on its sheet (a project's own parts are its lib/<id>/<id>.css) ----
+   Line-led: ruled entries, typed labels at the side, no boxes and no washes. Text is --ink, --soft (5.4:1) and --pencil
+   (4.5:1) on paper; the pen is the only highlighter; no coral at rest. The page's base comes first: the board's is
+   building.css, loaded after this file, which keeps the same reset and sets its own face. */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--text);color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.pj img{max-width:100%}
+.pj code{font:.86em/1.4 var(--util);overflow-wrap:anywhere}   /* an identifier breaks rather than leave its column */
+/* the question on a project's first page */
+.pj-note{max-width:26em;margin:0 0 10px auto;padding:4px 0 4px 22px;border-left:2px dashed var(--line-strong);color:var(--ink);font:italic 400 clamp(22px,2.4vw,28px)/1.32 "Fraunces",serif}
+.pj-note small{display:block;margin-top:12px;color:var(--pencil);font:normal 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+/* a section: its typed number at the side, the writing beside it */
+.pj-sec{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:clamp(20px,4vw,56px);padding:clamp(44px,6vw,76px) 0;border-top:1px dashed var(--line-strong)}
+.pj-body>.pj-sec:first-child,.pj-note+.pj-sec{border-top:1px solid var(--ink)}
+.pj-sec-n{padding-top:10px;color:var(--pencil);font:500 11px/1.4 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.pj-sec-n strong{display:block;margin-top:6px;color:var(--soft);font-weight:500}
+.pj-sec h2{max-width:20em;font:600 clamp(28px,3.4vw,42px)/1.1 var(--disp);letter-spacing:-.022em}
+.pj-sec-b{min-width:0;container-type:inline-size}   /* the line and the rows below ask its width (@container) */
+.pj-sec-b>p{max-width:680px;margin-top:16px;font-size:18px;line-height:1.66}
+.pj-sec-b>p.pj-intro{color:var(--soft)}
+.pj-sec-b>p.pj-lede{font-size:clamp(20px,2.1vw,24px);line-height:1.45}
+/* ruled entries: a section's cards, a kicker and a line of ink down their left */
+.pj-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.pj-card{display:flex;flex-direction:column;padding:16px 0 18px 18px;border-left:1.5px solid var(--ink)}
+.pj-card:nth-child(n+3){border-left-color:var(--line-strong)}
+.pj-k{color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+h3.pj-k{font-weight:500}
+.pj-card h3:not(.pj-k){margin-top:10px;font:500 21px/1.22 var(--disp);letter-spacing:-.012em}
+.pj-card p{margin-top:10px;color:var(--soft);font-size:15.5px;line-height:1.58}
+.pj-go{align-self:flex-start;margin-top:auto;padding-top:18px;color:var(--ink);font:11.5px/1.3 var(--util);letter-spacing:.02em}
+/* a sequence in one line: its steps side by side, an arrow between them */
+.pj-line{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;margin-top:30px}
+.pj-line li{position:relative;padding:14px 0 16px 16px;border-left:1.5px solid var(--ink)}
+.pj-line li:not(:last-child)::after{content:"→";position:absolute;right:-26px;top:50%;color:var(--soft);font:15px/1 var(--util);transform:translateY(-50%)}
+.pj-line strong{display:block;margin-top:8px;font:500 19px/1.2 var(--disp)}
+.pj-line p{margin-top:8px;color:var(--soft);font-size:14.5px;line-height:1.55}
+/* the chapter's way on, and its foot */
+.pj-pagenav{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:30px;border-top:1px solid var(--line)}
+.pj-pagenav a{display:flex;flex-direction:column;gap:14px;padding:16px 18px 18px;border:1px solid var(--line-strong);border-radius:4px}
+.pj-pagenav a:last-child{align-items:flex-end;text-align:right}
+.pj-pagenav a>span{color:var(--pencil);font:11px/1 var(--util);letter-spacing:.06em;text-transform:uppercase}
+.pj-pagenav strong{font:500 18px/1.2 var(--disp)}
+.pj-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--pencil);font:11.5px/1.5 var(--util)}
+.pj-foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.pj-foot a{color:var(--soft)}
 
 @media (max-width:1000px){
   .pj{--pj-stick:40px}
@@ -116,12 +171,28 @@
   .pj-count .rail-strip{top:-4px}
   .pj-back{grid-area:back;margin:18px 0 0}
 }
+/* a line of steps stands in a column wherever the section's writing is under 480 px wide (a phone, a tablet's portrait,
+   the first widths with the fore-edge): its three steps side by side would be under 115 px each, and a word or a
+   stamped figure would leave its step */
+@container (max-width:480px){
+  .pj-line{grid-template-columns:1fr;gap:26px}
+  .pj-line li:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-24px;transform:none}
+}
+@media (max-width:760px){
+  .pj-sec{grid-template-columns:1fr;gap:10px}
+  .pj-sec-n{padding-top:0}
+  .pj-cards{grid-template-columns:1fr}
+  .pj-note{margin:0 0 6px}
+}
 @media (max-width:640px){
   .pj-tabs .dos-tab:not([aria-current="page"]) .dt-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
   .pj{--pj-pad:18px}
   .pj-head{grid-template-columns:minmax(0,1fr);gap:18px;padding:22px var(--pj-pad) 24px}
   .pj-cover{grid-column:1;grid-row:2;justify-self:end;width:147px;height:99px;margin:0 8px 0 0}
   .pj-body{padding:0 var(--pj-pad) 24px}
+  .pj-sec-b>p{font-size:17px}
+  .pj-pagenav{grid-template-columns:1fr}
+  .pj-pagenav a:last-child{align-items:flex-start;text-align:left}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -136,4 +207,7 @@
   .pj-frame{display:block;padding-top:0}
   .pj-sheet{border:0}
   .pj-sheet::before{display:none}
+  .pj-pagenav,.pj-foot{display:none!important}
+  .pj-sec{break-inside:avoid}
+  .pj a{color:inherit!important}
 }

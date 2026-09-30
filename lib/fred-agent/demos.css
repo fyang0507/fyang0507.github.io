@@ -19,8 +19,8 @@
 .fa-demo-copy h3{font:500 20px/1.2 var(--disp)}
 .fa-demo-copy p{max-width:680px;margin-top:12px;font-size:17px;line-height:1.62}
 .fa-demo-details{margin-top:24px}
-.fa-demo-details .fa-card ul{margin-top:10px;padding-left:17px;font-size:15px;line-height:1.55}
-.fa-demo-details .fa-card li+li{margin-top:4px}
+.fa-demo-details .pj-card ul{margin-top:10px;padding-left:17px;font-size:15px;line-height:1.55}
+.fa-demo-details .pj-card li+li{margin-top:4px}
 /* the recipe: its steps typed on slips, a pencil line between them, the last one inked */
 .fa-recipe-flow{counter-reset:fa-recipe-step;display:grid;gap:8px;margin-top:14px;list-style:none}
 .fa-recipe-flow li{counter-increment:fa-recipe-step;position:relative;display:grid;grid-template-columns:25px minmax(0,1fr);gap:10px;align-items:center;min-height:32px}

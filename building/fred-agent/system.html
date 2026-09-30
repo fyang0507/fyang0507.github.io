@@ -12,13 +12,11 @@
 <link rel="stylesheet" href="../../lib/shared/site-nav.css">
 <link rel="stylesheet" href="../../lib/shared/pen.css">
 <link rel="stylesheet" href="../../lib/shared/transitions.css">
-<link rel="stylesheet" href="../../lib/building/card.css">
 <link rel="stylesheet" href="../../lib/building/dossier.css">
 <link rel="stylesheet" href="../../lib/fred-agent/fred-agent.css">
 <link rel="preload" href="../../fonts/derived/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../fonts/derived/IBMPlexMono-Regular-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../fonts/derived/IBMPlexMono-Medium-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../../fonts/derived/DingTalkJinBuTi.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="expect" href="#site-nav" blocking="render">
 <script src="../../lib/shared/motion.js" defer blocking="render"></script>
 <script src="../../lib/shared/transitions-tab.js" defer blocking="render"></script>
@@ -27,7 +25,7 @@
 <script src="../../lib/shared/pen-tier.js" defer></script>
 <script src="../../lib/shared/site.js" defer></script>
 <script src="../../content/building-projects.js" defer></script>
-<script type="module" src="../../lib/fred-agent/main.js"></script>
+<script type="module" src="../../lib/building/project.js"></script>
 <script type="module" src="../../lib/fred-agent/map.js"></script>
 </head>
 <body>
@@ -73,25 +71,25 @@
         </div>
       </header>
       <div class="pj-body">
-        <section class="fa-sec" aria-labelledby="outside-in-title">
-          <div class="fa-sec-n">01 / outcomes<strong>What becomes possible</strong></div>
-          <div class="fa-sec-b">
+        <section class="pj-sec" aria-labelledby="outside-in-title">
+          <div class="pj-sec-n">01 / outcomes<strong>What becomes possible</strong></div>
+          <div class="pj-sec-b">
             <h2 id="outside-in-title">The capability was there. The opportunity was missing.</h2>
-            <p class="fa-intro">Enablement means opening four practical doors into real life.</p>
-            <div class="fa-cards">
-              <article class="fa-card"><div class="fa-k">Presence</div><h3>Arrive when the obligation exists</h3><p>Wake by clock, sunlight, condition, or one future moment.</p></article>
-              <article class="fa-card"><div class="fa-k">Reach</div><h3>Enter the interfaces life still uses</h3><p>Call, message, email, observe, and preserve a result.</p></article>
-              <article class="fa-card"><div class="fa-k">Continuity</div><h3>Carry work across sessions</h3><p>Share one Notion workspace with the human for co-authoring, while canonical task state lets any new agent or session resume without relying on model memory.</p></article>
-              <article class="fa-card"><div class="fa-k">Recovery</div><h3>Recover after execution failure</h3><p>Preserve the retry, attempt a bounded fix, and tell the human only when action is still needed.</p></article>
+            <p class="pj-intro">Enablement means opening four practical doors into real life.</p>
+            <div class="pj-cards">
+              <article class="pj-card"><div class="pj-k">Presence</div><h3>Arrive when the obligation exists</h3><p>Wake by clock, sunlight, condition, or one future moment.</p></article>
+              <article class="pj-card"><div class="pj-k">Reach</div><h3>Enter the interfaces life still uses</h3><p>Call, message, email, observe, and preserve a result.</p></article>
+              <article class="pj-card"><div class="pj-k">Continuity</div><h3>Carry work across sessions</h3><p>Share one Notion workspace with the human for co-authoring, while canonical task state lets any new agent or session resume without relying on model memory.</p></article>
+              <article class="pj-card"><div class="pj-k">Recovery</div><h3>Recover after execution failure</h3><p>Preserve the retry, attempt a bounded fix, and tell the human only when action is still needed.</p></article>
             </div>
           </div>
         </section>
 
-        <section class="fa-sec fa-sec--map" aria-labelledby="map-title">
-          <div class="fa-sec-n">02 / composition<strong>Trace the system</strong></div>
-          <div class="fa-sec-b">
+        <section class="pj-sec pj-sec--map" aria-labelledby="map-title">
+          <div class="pj-sec-n">02 / composition<strong>Trace the system</strong></div>
+          <div class="pj-sec-b">
             <h2 id="map-title">Atomic handles → workflow protocols → real-life outcomes</h2>
-            <p id="map-help" class="fa-intro">Hover or focus to trace a path. Click any module to lock the path and open its concise explainer; click again or press Escape to close it.</p>
+            <p id="map-help" class="pj-intro">Hover or focus to trace a path. Click any module to lock the path and open its concise explainer; click again or press Escape to close it.</p>
           </div>
           <div class="map-shell" data-system-map>
             <div class="map-bar">
@@ -162,37 +160,37 @@
           </div>
         </section>
 
-        <section class="fa-sec" aria-labelledby="rails-title">
-          <div class="fa-sec-n">03 / operations<strong>Before it runs alone</strong></div>
-          <div class="fa-sec-b">
+        <section class="pj-sec" aria-labelledby="rails-title">
+          <div class="pj-sec-n">03 / operations<strong>Before it runs alone</strong></div>
+          <div class="pj-sec-b">
             <h2 id="rails-title">Every unattended workflow must answer four operational questions.</h2>
-            <p class="fa-intro">The handles explain what a workflow can do. These decisions define when it acts, what survives, when it interrupts, and how anyone can reconstruct the result.</p>
-            <div class="fa-cards">
-              <article class="fa-card"><h3 class="fa-k">01 · Time</h3><p>Name the trigger, active window, timeout, and condition for staying asleep.</p></article>
-              <article class="fa-card"><h3 class="fa-k">02 · State</h3><p>Name the canonical record, checkpoint, and exact point at which work is complete.</p></article>
-              <article class="fa-card"><h3 class="fa-k">03 · Attention</h3><p>Separate silent recovery, written digest, and the rare decision worth an interruption.</p></article>
-              <article class="fa-card"><h3 class="fa-k">04 · Evidence</h3><p>Keep enough receipts to prove the side effect, retry safely, and explain cleanup.</p></article>
+            <p class="pj-intro">The handles explain what a workflow can do. These decisions define when it acts, what survives, when it interrupts, and how anyone can reconstruct the result.</p>
+            <div class="pj-cards">
+              <article class="pj-card"><h3 class="pj-k">01 · Time</h3><p>Name the trigger, active window, timeout, and condition for staying asleep.</p></article>
+              <article class="pj-card"><h3 class="pj-k">02 · State</h3><p>Name the canonical record, checkpoint, and exact point at which work is complete.</p></article>
+              <article class="pj-card"><h3 class="pj-k">03 · Attention</h3><p>Separate silent recovery, written digest, and the rare decision worth an interruption.</p></article>
+              <article class="pj-card"><h3 class="pj-k">04 · Evidence</h3><p>Keep enough receipts to prove the side effect, retry safely, and explain cleanup.</p></article>
             </div>
           </div>
         </section>
 
-        <section class="fa-sec" aria-labelledby="not-title">
-          <div class="fa-sec-n">04 / boundary<strong>What it is not</strong></div>
-          <div class="fa-sec-b">
+        <section class="pj-sec" aria-labelledby="not-title">
+          <div class="pj-sec-n">04 / boundary<strong>What it is not</strong></div>
+          <div class="pj-sec-b">
             <h2 id="not-title">A growing environment, not a universal autonomous agent.</h2>
             <p>Fred Agent is not a foundation model, a personality around one provider, or a catalog of API wrappers. It is not proof that every personal workflow should be automated.</p>
             <p>It makes selected parts of life legible and actionable to a general-purpose agent.</p>
           </div>
         </section>
 
-        <nav class="fa-pagenav" aria-label="Fred Agent chapter navigation">
+        <nav class="pj-pagenav" aria-label="Fred Agent chapter navigation">
           <a href="./"><span>← Previous</span><strong><span class="pen-t">Overview</span></strong></a>
           <a href="./principles.html"><span>Next →</span><strong><span class="pen-t">Design Principles</span></strong></a>
         </nav>
 
-        <footer class="fa-foot">
+        <footer class="pj-foot">
           <span>Fred Agent · active system · 2025—now</span>
-          <span class="fa-foot-links">
+          <span class="pj-foot-links">
             <a href="../../Building.dc.html"><span class="pen-t">Building board</span></a>
             <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer"><span class="pen-t">Public GitHub ↗</span></a>
           </span>

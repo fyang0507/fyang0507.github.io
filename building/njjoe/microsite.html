@@ -1,108 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<base href="../../">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>One House, Four Interfaces · NJJoe · Fred Yang</title>
 <meta name="description" content="How a fragmented property-listing experience became one shareable microsite and a reusable agent workflow.">
-<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
-<link rel="stylesheet" href="./lib/shared/site-nav.css">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./assets/njjoe/casebook.css">
-<script src="./assets/njjoe/casebook.js" defer></script>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="../../favicon.png">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="../../lib/shared/site-nav.css">
+<link rel="stylesheet" href="../../lib/shared/pen.css">
+<link rel="stylesheet" href="../../lib/shared/transitions.css">
+<link rel="stylesheet" href="../../lib/building/dossier.css">
+<link rel="stylesheet" href="../../lib/njjoe/njjoe.css">
+<link rel="preload" href="../../fonts/derived/Fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/IBMPlexMono-Regular-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/derived/IBMPlexMono-Medium-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="expect" href="#site-nav" blocking="render">
+<script src="../../lib/shared/motion.js" defer blocking="render"></script>
+<script src="../../lib/shared/transitions-tab.js" defer blocking="render"></script>
+<script src="../../lib/shared/transitions.js" defer blocking="render"></script>
+<script src="../../lib/shared/pen.js" defer></script>
+<script src="../../lib/shared/pen-tier.js" defer></script>
+<script src="../../lib/shared/site.js" defer></script>
+<script src="../../content/building-projects.js" defer></script>
+<script type="module" src="../../lib/building/project.js"></script>
 </head>
 <body>
-<a class="skip-link" href="./building/njjoe/microsite.html#main-content">Skip to content</a>
-<header class="site-shell-header">
-  <div class="site-header-row">
-    <a class="site-identity" href="./index.html"><span class="site-identity-name">Fred Yang, <span lang="zh">弗雷德</span>. <span lang="zh">继续写，继续造</span>: keep writing, keep making. Home</span><span class="site-identity-mark" data-pen-seed="Fred Yang"><svg class="site-identity-art" viewBox="0 0 168 68" width="168" height="68" aria-hidden="true" focusable="false"><g class="site-identity-tag"><g><path d="M156 2.8 Q154.4 5.8 152.8 8.5 L155.8 7.9"/><path d="M157.1 6.3 Q155 9.6 152.8 12.5 L157.1 11.4"/><path d="M152.5 15.7 Q154.7 14.9 157.3 13.8"/><path d="M160.5 3.2 Q160.9 4 161.3 5"/><path d="M164.9 2.9 Q164.5 4.2 163.8 5.2"/><path d="M159.7 6.9 Q162.7 6.8 165.9 6.3"/><path d="M162.7 2.3 L162.7 13.2"/><path d="M162.4 7.4 Q161.6 10 159.5 11.6"/><path d="M163 7.7 Q164.3 9.2 165.6 10.6"/><path d="M158.9 2.3 Q158.9 9 158.9 15.4 Q162.7 15.2 166.9 14.9"/></g><g><path d="M156 20.3 Q154.4 23.3 152.8 26 L155.8 25.4"/><path d="M157.1 23.8 Q155 27.1 152.8 30 L157.1 28.9"/><path d="M152.5 33.2 Q154.7 32.4 157.3 31.3"/><path d="M158.7 22.7 Q161.9 22.5 165.3 22.2"/><path d="M161.9 20.3 L161.9 23.8"/><path d="M158.4 24.9 Q162.1 24.7 165.9 24.4 L164.9 27.1"/><path d="M159.7 26 Q160.5 26.7 161.3 27.6"/><path d="M158.5 27.8 Q159.3 28.4 160.1 29.2"/><path d="M157.9 30.5 Q162.5 30.3 167.2 29.9"/><path d="M162.2 26 Q162.2 31.3 157.9 34.3"/><path d="M162.7 31.5 Q165.1 32.7 167.2 34.3"/></g><g><path d="M153.6 39 Q153.7 40 154.1 41"/><path d="M153.9 39 Q159.7 38.9 165.6 38.4 L164.8 40.6"/><path d="M156.8 42.4 Q160.5 42.2 164.3 41.9"/><path d="M157.3 40.3 L156.1 45.6 Q160.1 45.4 164.3 45.1 Q164.3 49.1 163.2 51 L161.4 50.1"/><path d="M153.3 48.3 Q157.7 48.2 162.2 47.8"/></g><g class="punct"><path d="M161.1 54.5 Q162.5 55.6 160.8 57.8"/></g><g><path d="M136.6 2.7 Q135 5.7 133.3 8.4 L136.3 7.8"/><path d="M137.7 6.2 Q135.5 9.6 133.2 12.4 L137.6 11.4"/><path d="M132.8 15.6 Q135.1 14.8 137.7 13.8"/><path d="M141.1 3.3 Q141.5 4.1 141.8 5"/><path d="M145.6 3 Q145.1 4.3 144.4 5.3"/><path d="M140.2 6.9 Q143.3 6.8 146.5 6.4"/><path d="M143.3 2.4 L143.1 13.2"/><path d="M142.9 7.5 Q142.1 10 140 11.6"/><path d="M143.6 7.8 Q144.8 9.3 146.1 10.7"/><path d="M139.5 2.3 Q139.4 9 139.2 15.4 Q143.1 15.3 147.2 15.1"/></g><g><path d="M136.6 20.2 Q135 23.2 133.3 25.9 L136.3 25.3"/><path d="M137.7 23.7 Q135.5 27.1 133.2 29.9 L137.6 28.9"/><path d="M132.8 33.1 Q135.1 32.3 137.7 31.3"/><path d="M139.3 22.6 Q142.5 22.6 145.9 22.3"/><path d="M142.5 20.3 L142.5 23.8"/><path d="M138.9 24.9 Q142.6 24.8 146.4 24.6 L145.4 27.3"/><path d="M140.2 26 Q141 26.7 141.7 27.7"/><path d="M139 27.8 Q139.8 28.4 140.6 29.2"/><path d="M138.3 30.5 Q143 30.4 147.6 30"/><path d="M142.7 26.1 Q142.6 31.4 138.2 34.3"/><path d="M143.1 31.5 Q145.5 32.9 147.5 34.5"/></g><g><path d="M139.8 37.8 Q139.4 40.3 137.3 42.4"/><path d="M138.9 40.6 Q142.6 40.3 146.2 39.8"/><path d="M137 43.8 Q141.9 43.5 147 43"/><path d="M141.9 37.3 L141.9 43.5"/><path d="M138.4 45.4 L138.6 49.4"/><path d="M138.4 45.4 Q141.8 45.3 145.1 45 L144.8 49.3"/><path d="M138.6 49.3 Q141.6 49.1 144.8 49.1"/><path d="M133.9 38.7 Q134.9 39.7 135.5 40.8"/><path d="M133.4 44.2 L135.4 44 L135.4 49.6 Q134.7 50.7 133.3 51.5"/><path d="M135.4 49.6 Q137 51.5 141 51.5 L147.4 51.2"/></g></g><g class="site-identity-seal" transform="translate(0 1) rotate(-1.1 33 33) scale(0.66)"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g><g class="site-identity-seal" transform="translate(74 21) rotate(0.9 23 23) scale(0.46)"><path class="seal-line" stroke-width="4.6" d="M6 5.6 L94.5 6.1 L94 94.6 L5.6 94 Z"/><g class="seal-line" stroke-width="4.4"><path d="M14 16 L14 44"/><path d="M14 16 L29 16"/><path d="M14 29.5 L26 29.5"/><path d="M35 44 L35 16 L44 16 Q51 16 51 23 Q51 30 44 30 L35 30"/><path d="M44 30 L51.5 44"/><path d="M57 16 L57 44"/><path d="M57 16 L71 16"/><path d="M57 30 L68 30"/><path d="M57 44 L71 44"/><path d="M77 16 L77 44"/><path d="M77 16 L81.5 16 Q88.5 16 88.5 30 Q88.5 44 81.5 44 L77 44"/><path d="M12.5 56 L21 70.5"/><path d="M29.5 56 L21 70.5 L21 84"/><path d="M33 84 L41 56 L49 84"/><path d="M36.2 74.5 L45.8 74.5"/><path d="M55 84 L55 56 L69 84 L69 56"/><path d="M88.5 61 Q85.5 56 80.5 56 Q73.5 56 73.5 70 Q73.5 84 80.5 84 Q88.5 84 88.5 74.5 L81 74.5"/></g></g></svg></span></a>
-    <div class="site-header-status">njjoe · casebook</div>
-  </div>
-  <nav class="site-index" aria-label="Primary navigation">
-    <a class="site-home" href="./index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
-    <a class="site-tab site-tab--writing" href="./Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
-    <a class="site-tab site-tab--building" href="./Building.dc.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
-    <a class="site-tab site-tab--shooting" href="./Gallery.dc.html"><span class="site-nav-object site-nav-camera"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
-    <a class="site-tab site-tab--about" href="./About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
-    <div class="site-rule" aria-hidden="true"></div>
-    <span class="site-tabmark" aria-hidden="true"></span>
-  </nav>
-</header>
-<div class="case-strip">
-  <div class="case-strip-inner">
-    <a class="case-back" href="./Building.dc.html">← Building board</a>
-    <nav class="case-nav" aria-label="NJJoe casebook pages"><ul><li><a href="./building/njjoe/index.html">Overview</a></li><li><a href="./building/njjoe/microsite.html" aria-current="page">Listing microsite</a></li><li><a href="./building/njjoe/apa.html">APA campaign</a></li></ul></nav>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="site-top">
+  <header class="site-shell-header" id="site-nav">
+    <div class="site-header-row">
+      <a class="site-identity" href="../../index.html"><span class="site-identity-name">Fred Yang, <span lang="zh">弗雷德</span>. <span lang="zh">继续写，继续造</span>: keep writing, keep making. Home</span><span class="site-identity-mark" data-pen-seed="Fred Yang"><svg class="site-identity-art" viewBox="0 0 168 68" width="168" height="68" aria-hidden="true" focusable="false"><g class="site-identity-tag"><g><path d="M156 2.8 Q154.4 5.8 152.8 8.5 L155.8 7.9"/><path d="M157.1 6.3 Q155 9.6 152.8 12.5 L157.1 11.4"/><path d="M152.5 15.7 Q154.7 14.9 157.3 13.8"/><path d="M160.5 3.2 Q160.9 4 161.3 5"/><path d="M164.9 2.9 Q164.5 4.2 163.8 5.2"/><path d="M159.7 6.9 Q162.7 6.8 165.9 6.3"/><path d="M162.7 2.3 L162.7 13.2"/><path d="M162.4 7.4 Q161.6 10 159.5 11.6"/><path d="M163 7.7 Q164.3 9.2 165.6 10.6"/><path d="M158.9 2.3 Q158.9 9 158.9 15.4 Q162.7 15.2 166.9 14.9"/></g><g><path d="M156 20.3 Q154.4 23.3 152.8 26 L155.8 25.4"/><path d="M157.1 23.8 Q155 27.1 152.8 30 L157.1 28.9"/><path d="M152.5 33.2 Q154.7 32.4 157.3 31.3"/><path d="M158.7 22.7 Q161.9 22.5 165.3 22.2"/><path d="M161.9 20.3 L161.9 23.8"/><path d="M158.4 24.9 Q162.1 24.7 165.9 24.4 L164.9 27.1"/><path d="M159.7 26 Q160.5 26.7 161.3 27.6"/><path d="M158.5 27.8 Q159.3 28.4 160.1 29.2"/><path d="M157.9 30.5 Q162.5 30.3 167.2 29.9"/><path d="M162.2 26 Q162.2 31.3 157.9 34.3"/><path d="M162.7 31.5 Q165.1 32.7 167.2 34.3"/></g><g><path d="M153.6 39 Q153.7 40 154.1 41"/><path d="M153.9 39 Q159.7 38.9 165.6 38.4 L164.8 40.6"/><path d="M156.8 42.4 Q160.5 42.2 164.3 41.9"/><path d="M157.3 40.3 L156.1 45.6 Q160.1 45.4 164.3 45.1 Q164.3 49.1 163.2 51 L161.4 50.1"/><path d="M153.3 48.3 Q157.7 48.2 162.2 47.8"/></g><g class="punct"><path d="M161.1 54.5 Q162.5 55.6 160.8 57.8"/></g><g><path d="M136.6 2.7 Q135 5.7 133.3 8.4 L136.3 7.8"/><path d="M137.7 6.2 Q135.5 9.6 133.2 12.4 L137.6 11.4"/><path d="M132.8 15.6 Q135.1 14.8 137.7 13.8"/><path d="M141.1 3.3 Q141.5 4.1 141.8 5"/><path d="M145.6 3 Q145.1 4.3 144.4 5.3"/><path d="M140.2 6.9 Q143.3 6.8 146.5 6.4"/><path d="M143.3 2.4 L143.1 13.2"/><path d="M142.9 7.5 Q142.1 10 140 11.6"/><path d="M143.6 7.8 Q144.8 9.3 146.1 10.7"/><path d="M139.5 2.3 Q139.4 9 139.2 15.4 Q143.1 15.3 147.2 15.1"/></g><g><path d="M136.6 20.2 Q135 23.2 133.3 25.9 L136.3 25.3"/><path d="M137.7 23.7 Q135.5 27.1 133.2 29.9 L137.6 28.9"/><path d="M132.8 33.1 Q135.1 32.3 137.7 31.3"/><path d="M139.3 22.6 Q142.5 22.6 145.9 22.3"/><path d="M142.5 20.3 L142.5 23.8"/><path d="M138.9 24.9 Q142.6 24.8 146.4 24.6 L145.4 27.3"/><path d="M140.2 26 Q141 26.7 141.7 27.7"/><path d="M139 27.8 Q139.8 28.4 140.6 29.2"/><path d="M138.3 30.5 Q143 30.4 147.6 30"/><path d="M142.7 26.1 Q142.6 31.4 138.2 34.3"/><path d="M143.1 31.5 Q145.5 32.9 147.5 34.5"/></g><g><path d="M139.8 37.8 Q139.4 40.3 137.3 42.4"/><path d="M138.9 40.6 Q142.6 40.3 146.2 39.8"/><path d="M137 43.8 Q141.9 43.5 147 43"/><path d="M141.9 37.3 L141.9 43.5"/><path d="M138.4 45.4 L138.6 49.4"/><path d="M138.4 45.4 Q141.8 45.3 145.1 45 L144.8 49.3"/><path d="M138.6 49.3 Q141.6 49.1 144.8 49.1"/><path d="M133.9 38.7 Q134.9 39.7 135.5 40.8"/><path d="M133.4 44.2 L135.4 44 L135.4 49.6 Q134.7 50.7 133.3 51.5"/><path d="M135.4 49.6 Q137 51.5 141 51.5 L147.4 51.2"/></g></g><g class="site-identity-seal" transform="translate(0 1) rotate(-1.1 33 33) scale(0.66)"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g><g class="site-identity-seal" transform="translate(74 21) rotate(0.9 23 23) scale(0.46)"><path class="seal-line" stroke-width="4.6" d="M6 5.6 L94.5 6.1 L94 94.6 L5.6 94 Z"/><g class="seal-line" stroke-width="4.4"><path d="M14 16 L14 44"/><path d="M14 16 L29 16"/><path d="M14 29.5 L26 29.5"/><path d="M35 44 L35 16 L44 16 Q51 16 51 23 Q51 30 44 30 L35 30"/><path d="M44 30 L51.5 44"/><path d="M57 16 L57 44"/><path d="M57 16 L71 16"/><path d="M57 30 L68 30"/><path d="M57 44 L71 44"/><path d="M77 16 L77 44"/><path d="M77 16 L81.5 16 Q88.5 16 88.5 30 Q88.5 44 81.5 44 L77 44"/><path d="M12.5 56 L21 70.5"/><path d="M29.5 56 L21 70.5 L21 84"/><path d="M33 84 L41 56 L49 84"/><path d="M36.2 74.5 L45.8 74.5"/><path d="M55 84 L55 56 L69 84 L69 56"/><path d="M88.5 61 Q85.5 56 80.5 56 Q73.5 56 73.5 70 Q73.5 84 80.5 84 Q88.5 84 88.5 74.5 L81 74.5"/></g></g></svg></span></a>
+      <div class="site-header-status">njjoe · casebook</div>
+    </div>
+    <nav class="site-index" aria-label="Primary navigation">
+      <a class="site-home" href="../../index.html"><img class="site-home-object" src="../../assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="../../Writing.dc.html"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="../../Building.dc.html" aria-current="page"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="../../Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="../../About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
+    </nav>
+  </header>
+</div>
+
+<div class="pj" data-paper="cream">
+  <div class="pj-frame">
+    <nav class="pj-tabs" aria-label="NJJoe casebook pages">
+      <a class="dos-tab" data-paper="kraft" href="./"><span class="pen-t"><span class="dt-n">00</span> <span class="dt-t">overview</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./microsite.html" aria-current="page"><span class="pen-t"><span class="dt-n">01</span> <span class="dt-t">listing microsite</span></span></a>
+      <a class="dos-tab" data-paper="kraft" href="./apa.html"><span class="pen-t"><span class="dt-n">02</span> <span class="dt-t">APA campaign</span></span></a>
+    </nav>
+    <a class="pj-back" href="../../Building.dc.html"><span class="pen-t">← Building board · <span lang="zh">回到板上</span></span></a>
+
+    <main id="main-content" class="pj-sheet">
+      <header class="pj-head">
+        <div class="pj-cover pj-cover--featured" data-card="njjoe"></div>
+        <div class="pj-sheethead">
+          <div class="pj-label">casebook · NJJoe · 01 / 02</div>
+          <div class="pj-eyebrow">Case 01 · listing microsite · shipped</div>
+          <h1 id="page-title" class="pj-title">One house, four interfaces.</h1>
+          <p class="pj-deck">The photos were good. The 3D tour worked. The floorplans existed. The listing details were known. The buyer experience was still broken, because seeing one property meant visiting several products.</p>
+          <div class="pj-meta"><span>pilot · 346 Roosevelt Ave</span><span>public · June 2026</span><span>delivery · agent skill + static microsite</span></div>
+        </div>
+      </header>
+      <div class="pj-body">
+        <blockquote class="pj-note">A bundle of links is not a product.<small>the problem behind the pilot</small></blockquote>
+
+        <section class="pj-sec" aria-labelledby="discovery-title">
+          <div class="pj-sec-n">00<strong>discovery</strong></div>
+          <div class="pj-sec-b">
+            <h2 id="discovery-title">The buyer was not missing content. The buyer was missing the whole.</h2>
+            <p class="pj-intro">A real-estate listing is assembled by several specialists, and each specialist naturally delivers its own artifact. The photographer provides images. A 3D virtual-tour provider supplies the walkthrough. Property details move through internal notes and messages. Floorplans, maps, schedules, and contact information accumulate somewhere else.</p>
+            <div class="pj-cards" role="group" aria-label="The four disconnected surfaces in the old listing experience">
+              <div class="pj-card"><span class="pj-k">Surface 01</span><strong>Photographer gallery</strong><p>Static images hosted on the vendor's site.</p></div>
+              <div class="pj-card"><span class="pj-k">Surface 02</span><strong>3D virtual tour</strong><p>A separate Matterport-hosted walkthrough and URL.</p></div>
+              <div class="pj-card"><span class="pj-k">Surface 03</span><strong>Listing details</strong><p>Facts, updates, and schedules inside messages or internal notes.</p></div>
+              <div class="pj-card"><span class="pj-k">Surface 04</span><strong>Broker contact</strong><p>Brand, disclaimers, and next steps on another surface.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pj-sec" aria-labelledby="pain-title">
+          <div class="pj-sec-n">01<strong>pain point</strong></div>
+          <div class="pj-sec-b">
+            <h2 id="pain-title">Every vendor finished its part. The buyer inherited the seams.</h2>
+            <p class="pj-lede">To understand one house, a buyer might open the photographer's gallery, follow another link for the tour, return to a message for the key facts, then search again for the agent's contact information. Sharing the listing meant sharing the same bundle.</p>
+            <p>The operating burden landed on the realtor as well. Each launch required locating assets, reconciling details, arranging them for the next channel, and checking that every link still worked. The pieces were reusable. The assembly was not.</p>
+            <aside class="nj-slip"><div class="pj-k">Buyer consequence</div><strong>More assets did not produce one better experience.</strong><p>The quality was present. Coherence was missing.</p></aside>
+          </div>
+        </section>
+
+        <section class="pj-sec nj-sec--wide" aria-labelledby="intervention-title">
+          <div class="pj-sec-n">02<strong>intervention</strong></div>
+          <div class="pj-sec-b">
+            <h2 id="intervention-title">Turn the listing into structured input. Give the property one URL.</h2>
+            <p class="pj-intro">The intervention was not another vendor page. It was an agent-operable workflow that could collect the existing materials, place them into an agreed NJJoe presentation, show the whole thing for approval, and publish a verified microsite.</p>
+          </div>
+          <div class="nj-wide">
+            <ol class="pj-line nj-four" aria-label="The four steps of the listing workflow">
+              <li><span class="pj-k">01</span><h3>Gather</h3><p>Address, facts, photos, floorplans, tour, map, schedules, contact, branding.</p></li>
+              <li><span class="pj-k">02</span><h3>Normalize</h3><p>Check required fields, links, media, labels, and approved language.</p></li>
+              <li class="nj-human"><span class="pj-k">03</span><h3>Preview</h3><p>Generate the complete page and let a person inspect the real buyer experience.</p></li>
+              <li><span class="pj-k">04</span><h3>Publish + verify</h3><p>Release one listing subdomain, then check the public result on desktop and mobile.</p></li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="pj-sec" aria-labelledby="delivery-title">
+          <div class="pj-sec-n">03<strong>delivery</strong></div>
+          <div class="pj-sec-b">
+            <h2 id="delivery-title">A reusable skill, demonstrated by one live property.</h2>
+            <figure class="nj-print">
+              <div class="pj-k" aria-hidden="true">static archive · scroll inside</div>
+              <div class="nj-print-paper" data-clip>
+                <div class="nj-scroll" tabindex="0" aria-label="Scrollable full-page image of the 346 Roosevelt Avenue listing microsite"><picture><source media="(max-width: 680px)" srcset="../../images/derived/evidence/njjoe/roosevelt-full-page-mobile-390.jpg" width="390" height="13079"><img src="../../images/derived/evidence/njjoe/roosevelt-full-page-960.jpg" srcset="../../images/derived/evidence/njjoe/roosevelt-full-page-640.jpg 640w, ../../images/derived/evidence/njjoe/roosevelt-full-page-960.jpg 960w, ../../images/derived/evidence/njjoe/roosevelt-full-page-1280.jpg 1280w, ../../images/derived/evidence/njjoe/roosevelt-full-page-1440.jpg 1440w" sizes="(max-width: 760px) calc(84vw - 20px), (max-width: 1000px) calc(80vw - 230px), (max-width: 1280px) calc(80vw - 420px), 610px" width="1440" height="7703" alt="Full-page archival capture of the 346 Roosevelt Avenue listing microsite, including its gallery, property details, tour section, floorplans, and contact information." loading="lazy" decoding="sync"></picture></div>
+              </div>
+              <figcaption class="nj-cap"><span>fig.01 · scrollable static capture</span><span>preserved while the property site remains live</span></figcaption>
+            </figure>
+            <div class="nj-facts">
+              <div><strong class="nj-stamp">01 <small>URL</small></strong><span>property, gallery, tour, plans, map, and contact</span></div>
+              <div><strong class="nj-stamp">human gate</strong><span>preview before publish</span></div>
+            </div>
+            <p class="nj-typed"><strong>Verified boundary:</strong> one listing microsite is live. The repeatable playbook exists. Time reduction is qualitatively clear from the removed assembly steps but has not yet been measured as a controlled before/after duration.</p>
+          </div>
+        </section>
+
+        <section class="pj-sec" aria-labelledby="outcome-title">
+          <div class="pj-sec-n">04<strong>outcome</strong></div>
+          <div class="pj-sec-b">
+            <h2 id="outcome-title">What became possible was more than a prettier page.</h2>
+            <div class="pj-cards nj-three">
+              <article class="pj-card"><h3>One buyer experience</h3><p>Buyers can understand the property without reconstructing it across unrelated services.</p></article>
+              <article class="pj-card"><h3>One shareable object</h3><p>The same URL can travel through email, messages, social posts, listing channels, and direct conversations.</p></article>
+              <article class="pj-card"><h3>Lower assembly burden</h3><p>The realtor manages listing inputs once; the skill handles repeated composition, checking, packaging, and verification.</p></article>
+            </div>
+            <p class="pj-lede nj-closing">One property. One URL. No seams for the buyer to carry.</p>
+          </div>
+        </section>
+
+        <nav class="pj-pagenav" aria-label="Casebook page navigation">
+          <a href="./"><span>← Previous</span><strong><span class="pen-t">Casebook overview</span></strong></a>
+          <a href="./apa.html"><span>Next →</span><strong><span class="pen-t">APA campaign</span></strong></a>
+        </nav>
+
+        <footer class="pj-foot"><span>Fred Yang · NJJoe casebook</span><span>listing microsite · July 2026</span></footer>
+      </div>
+    </main>
   </div>
 </div>
-<main id="main-content" class="case-stage case-rise">
-  <header class="hero">
-    <div>
-      <div class="eyebrow">Case 01 · listing microsite · shipped</div>
-      <h1>One house, <span class="mark">four interfaces.</span></h1>
-      <p class="deck">The photos were good. The 3D tour worked. The floorplans existed. The listing details were known. The buyer experience was still broken, because seeing one property meant visiting several products.</p>
-      <div class="meta"><span>pilot · 346 Roosevelt Ave</span><span>public · June 2026</span><span>delivery · agent skill + static microsite</span></div>
-    </div>
-    <blockquote class="hero-note">A bundle of links is not a product.<small>the problem behind the pilot</small></blockquote>
-  </header>
-
-  <section class="section section--strong" aria-labelledby="discovery-title">
-    <div class="section-head"><div class="section-index"><span>00</span> discovery</div><div><h2 id="discovery-title">The buyer was not missing content. The buyer was missing the whole.</h2><p class="section-lede">A real-estate listing is assembled by several specialists, and each specialist naturally delivers its own artifact. The photographer provides images. A 3D virtual-tour provider supplies the walkthrough. Property details move through internal notes and messages. Floorplans, maps, schedules, and contact information accumulate somewhere else.</p></div></div>
-    <div class="seams" aria-label="The four disconnected surfaces in the old listing experience">
-      <div class="seam case-reveal"><span>Surface 01</span><strong>Photographer gallery</strong><p>Static images hosted on the vendor's site.</p></div>
-      <div class="seam case-reveal"><span>Surface 02</span><strong>3D virtual tour</strong><p>A separate Matterport-hosted walkthrough and URL.</p></div>
-      <div class="seam case-reveal"><span>Surface 03</span><strong>Listing details</strong><p>Facts, updates, and schedules inside messages or internal notes.</p></div>
-      <div class="seam case-reveal"><span>Surface 04</span><strong>Broker contact</strong><p>Brand, disclaimers, and next steps on another surface.</p></div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="pain-title">
-    <div class="section-head"><div class="section-index"><span>01</span> pain point</div><div><h2 id="pain-title">Every vendor finished its part. The buyer inherited the seams.</h2></div></div>
-    <div class="prose-grid">
-      <div class="prose"><p class="lead">To understand one house, a buyer might open the photographer's gallery, follow another link for the tour, return to a message for the key facts, then search again for the agent's contact information. Sharing the listing meant sharing the same bundle.</p><p>The operating burden landed on the realtor as well. Each launch required locating assets, reconciling details, arranging them for the next channel, and checking that every link still worked. The pieces were reusable. The assembly was not.</p></div>
-      <aside class="aside"><div class="aside-label">Buyer consequence</div><strong>More assets did not produce one better experience.</strong><p>The quality was present. Coherence was missing.</p></aside>
-    </div>
-  </section>
-
-  <section class="section section--strong" aria-labelledby="intervention-title">
-    <div class="section-head"><div class="section-index"><span>02</span> intervention</div><div><h2 id="intervention-title">Turn the listing into structured input. Give the property one URL.</h2><p class="section-lede">The intervention was not another vendor page. It was an agent-operable workflow that could collect the existing materials, place them into an agreed NJJoe presentation, show the whole thing for approval, and publish a verified microsite.</p></div></div>
-    <div class="journey">
-      <div class="journey-card case-reveal"><span>01</span><h3>Gather</h3><p>Address, facts, photos, floorplans, tour, map, schedules, contact, branding.</p></div>
-      <div class="journey-card case-reveal"><span>02</span><h3>Normalize</h3><p>Check required fields, links, media, labels, and approved language.</p></div>
-      <div class="journey-card case-reveal"><span>03</span><h3>Preview</h3><p>Generate the complete page and let a person inspect the real buyer experience.</p></div>
-      <div class="journey-card case-reveal"><span>04</span><h3>Publish + verify</h3><p>Release one listing subdomain, then check the public result on desktop and mobile.</p></div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="delivery-title">
-    <div class="section-head"><div class="section-index"><span>03</span> delivery</div><div><h2 id="delivery-title">A reusable skill, demonstrated by one live property.</h2></div></div>
-    <div class="proof-layout">
-      <div class="case-reveal">
-        <div class="browser browser--archive"><div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>static archive · scroll inside</span></div><div class="archive-scroll" tabindex="0" aria-label="Scrollable full-page image of the 346 Roosevelt Avenue listing microsite"><picture><source media="(max-width: 680px)" srcset="./images/derived/evidence/njjoe/roosevelt-full-page-mobile-390.jpg" width="390" height="13079"><img src="./images/derived/evidence/njjoe/roosevelt-full-page-960.jpg" srcset="./images/derived/evidence/njjoe/roosevelt-full-page-640.jpg 640w, ./images/derived/evidence/njjoe/roosevelt-full-page-960.jpg 960w, ./images/derived/evidence/njjoe/roosevelt-full-page-1280.jpg 1280w, ./images/derived/evidence/njjoe/roosevelt-full-page-1440.jpg 1440w" sizes="(max-width: 860px) calc(100vw - 50px), min(53vw, 596px)" width="1440" height="7703" alt="Full-page archival capture of the 346 Roosevelt Avenue listing microsite, including its gallery, property details, tour section, floorplans, and contact information." loading="lazy" decoding="sync"></picture></div></div>
-        <div class="figure-caption"><span>fig.01 · scrollable static capture</span><span>preserved while the property site remains live</span></div>
-      </div>
-      <div>
-        <div class="facts">
-          <div class="fact case-reveal"><strong>01 <small>URL</small></strong><span>property, gallery, tour, plans, map, and contact</span></div>
-          <div class="fact fact--qualitative case-reveal"><strong>human gate</strong><span>preview before publish</span></div>
-        </div>
-        <p class="boundary-note"><strong>Verified boundary:</strong> one listing microsite is live. The repeatable playbook exists. Time reduction is qualitatively clear from the removed assembly steps but has not yet been measured as a controlled before/after duration.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="outcome-title">
-    <div class="section-head"><div class="section-index"><span>04</span> outcome</div><div><h2 id="outcome-title">What became possible was more than a prettier page.</h2></div></div>
-    <div class="outcomes">
-      <article class="outcome case-reveal"><h3>One buyer experience</h3><p>Buyers can understand the property without reconstructing it across unrelated services.</p></article>
-      <article class="outcome case-reveal"><h3>One shareable object</h3><p>The same URL can travel through email, messages, social posts, listing channels, and direct conversations.</p></article>
-      <article class="outcome case-reveal"><h3>Lower assembly burden</h3><p>The realtor manages listing inputs once; the skill handles repeated composition, checking, packaging, and verification.</p></article>
-    </div>
-    <p class="closing">One property. One URL. <span class="mark">No seams for the buyer to carry.</span></p>
-    <nav class="page-nav" aria-label="Casebook page navigation"><a href="./building/njjoe/index.html"><span>← Previous</span><strong>Casebook overview</strong></a><a href="./building/njjoe/apa.html"><span>Next →</span><strong>APA campaign</strong></a></nav>
-    <footer class="footer"><span>Fred Yang · NJJoe casebook</span><span>listing microsite · July 2026</span></footer>
-  </section>
-</main>
 </body>
 </html>
