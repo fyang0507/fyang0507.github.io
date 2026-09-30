@@ -14,10 +14,12 @@
 // of layer should be correct at the first place"); the way back does overlap (the check has teeth), and its
 // most-overlapped pose is shot; a chapter move leaves nothing covering a tab at rest;
 // every project move's last frame: each group ends within 1 px of its element, the tabs inside the cork on the board;
+// after the way back lands, the card's pin is pushed in and the lead card's flower pressed with it (its re-pin cue);
 // the card you came back from (R1): NJJoe after the board was scrolled to its end, two chapter hops and 10 s, and Fred
 // Agent after a Back to a board left scrolled away, each inside the cork, its pin pushed in only after a move;
 // the back/forward cache: Back to a board left with its dossier out restores it (persisted), closes the dossier at once,
-// clears the names its pageswap set, and the move's ready resolves;
+// clears the names its pageswap set, and the move's ready resolves; Back to a board left under 2 s after a pan swings no
+// slip and lands within 1 px; without the Navigation API, a restored board ignores its stale referrer;
 // reduced motion: no transition, no pin hidden or pressed; WebKit: every move lands, with its own transitions or a hard
 // cut (it reports which), recorded to video (its screenshots are blank during a transition); 0 console or page errors.
 import { ORIGIN, hook, seek, drawn, check, bfcache, webkit } from './vt-lib.mjs';
@@ -200,8 +202,8 @@ export default async (_page, ctx) => {
       await page.evaluate(() => document.getAnimations().forEach((a) => { if (a.effect && a.effect.pseudoElement) a.finish(); }));
       await sleep(900);
       if (m.kind === 'out') {
-        const pin = await page.evaluate(() => ({ hidden: getComputedStyle(document.querySelector('.slot[data-id="fred-agent"] .board-pin')).visibility, pressed: window.__pins.filter((p) => p.id === 'fred-agent').length, names: document.querySelectorAll('.fy-vt-tabs, .fy-vt-card, .fy-vt-sheet').length }));
-        check(res, T(name + ': after the landing the pin is pushed in, and the names are gone'), pin.hidden === 'visible' && pin.pressed === 1 && !pin.names, pin);
+        const pin = await page.evaluate(() => ({ hidden: getComputedStyle(document.querySelector('.slot[data-id="fred-agent"] .board-pin')).visibility, pressed: window.__pins.filter((p) => p.id === 'fred-agent').length, flower: document.querySelector('.slot[data-id="fred-agent"]').dataset.flowerCause || null, names: document.querySelectorAll('.fy-vt-tabs, .fy-vt-card, .fy-vt-sheet').length }));
+        check(res, T(name + ': after the landing the pin is pushed in, the lead card\'s flower pressed with it, and the names are gone'), pin.hidden === 'visible' && pin.pressed === 1 && pin.flower === 're-pin' && !pin.names, pin);
       }
     }
 
@@ -237,6 +239,22 @@ export default async (_page, ctx) => {
     at = await page.evaluate(() => ({ persisted: window.__persisted, dossier: !!document.querySelector('.unpin-panel'), layer: !document.querySelector('.unpin-layer').hidden, stale: document.querySelectorAll('.fy-vt-tabs, .fy-vt-card, .fy-vt-sheet, [style*="clip-path"].slot').length }));
     const dup = Object.entries(r.names || {}).filter(([, k]) => k > 1).map(([n]) => n);
     check(res, T('bfcache · Back to a board left with its dossier out: persisted, the dossier closed at once, stale names cleared, ready resolves'), at.persisted && !at.dossier && !at.layer && !at.stale && r.vt && r.kind === 'out' && r.ready && !r.err && r.names && !r.names[SHEET] && r.names[CARD] === 1 && TABS.every((n) => r.names[n] === 1) && !dup.length, Object.assign(at, { kind: r.kind, ready: r.ready, names: r.names }));
+    // Back to a board left while it was still moving (under 2 s after a pan): it is set where the card is at once, and
+    // its own loop, running on under the held move, swings nothing (the pin's press comes after the landing)
+    await page.goto(B + 'Building.dc.html', { waitUntil: 'load' }); await sleep(1100);
+    await page.focus('.cork-viewport'); await page.keyboard.press('End'); await sleep(400);
+    await reset(page);
+    await page.evaluate(() => { location.href = 'building/fred-agent/'; }); await page.waitForURL(/fred-agent/); await sleep(1200);
+    await page.evaluate(() => sessionStorage.setItem('vt-freeze', '1'));
+    r = await arrive(page, () => page.goBack({ waitUntil: 'commit' }), /Building/);
+    await sleep(400);
+    const swing = await page.evaluate(() => Math.max(...[...document.querySelectorAll('.cork .slot')].map((s) => { const m = /rotate\((-?[\d.]+)deg\)/.exec(s.querySelector('.swing').style.transform || ''); return m ? Math.abs(parseFloat(m[1]) - parseFloat(getComputedStyle(s).getPropertyValue('--tilt'))) : 0; })));
+    await seek(page, Math.max(...r.anims.map((a) => a.dur)));
+    const late = await quads(page, TABS.concat(CARD), 'new'), lel = await boxes(page), lgap = Math.max(0, ...Object.keys(lel.els).map((n) => (late[n] ? off(late[n], lel.els[n]) : 99)));
+    check(res, T('bfcache · Back to a board left under 2 s after a pan: no slip swings, the last frame within 1 px'), r.kind === 'out' && swing < 0.5 && Object.keys(lel.els).length >= 6 && lgap <= 1, { kind: r.kind, swingDeg: +swing.toFixed(2), px: +lgap.toFixed(2) });
+    await page.evaluate(() => document.getAnimations().forEach((a) => { if (a.effect && a.effect.pseudoElement) a.finish(); })); await sleep(900);
+    const flower = await page.evaluate(() => document.querySelector('.slot[data-id="fred-agent"]').dataset.flowerCause || null);
+    check(res, T('bfcache · … and the flower, back in view with the card\'s pin out, is pressed by its re-pin, not on its return'), flower === 're-pin', flower);
     await page.context().close();
   }
 
@@ -268,6 +286,23 @@ export default async (_page, ctx) => {
       seen.push(name + ': ' + (r.vt ? r.kind : 'cut') + (r.fy === null ? '' : ' (fy-vt left)') + (pin.hidden || pin.pressed ? ' · pin hidden or pressed' : ''));
       check(res, 'reduced motion · ' + name + ': no transition, fy-vt consumed, no pin hidden or pressed', r.vt === false && r.fy === null && !pin.hidden && !pin.pressed, seen[seen.length - 1]);
     }
+    await page.context().close();
+  }
+
+  // no Navigation API (hidden here), a board first loaded from NJJoe, left for About and restored by Back: its referrer
+  // is still NJJoe's, and must not bring NJJoe into view again
+  {
+    const page = await open({ viewport: { width: 1440, height: 900 } });
+    await page.context().addInitScript(() => Object.defineProperty(window, 'navigation', { value: undefined, configurable: true }));
+    const x = () => page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector('.cork-track')).transform).m41);
+    await page.goto(B + 'building/njjoe/', { waitUntil: 'load' }); await sleep(600);
+    await arrive(page, () => click(page, '.case-back'), /Building/); await sleep(1400);
+    const fresh = await x();
+    await page.focus('.cork-viewport'); await page.keyboard.press('Home'); await sleep(1400);
+    await click(page, '.site-tab--about'); await page.waitForURL(/About/); await sleep(1400);
+    await arrive(page, () => page.goBack({ waitUntil: 'commit' }), /Building/); await sleep(1400);
+    const at = { api: await page.evaluate(() => window.navigation === undefined ? 'hidden' : 'there'), fresh: Math.round(fresh), persisted: await page.evaluate(() => window.__persisted), restored: Math.round(await x()) };
+    check(res, 'no Navigation API · a board restored by Back ignores its stale referrer: NJJoe came into view fresh, not again', at.api === 'hidden' && at.fresh < -100 && at.persisted && at.restored === 0, at);
     await page.context().close();
   }
   await browser.close();
