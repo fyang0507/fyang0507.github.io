@@ -37,8 +37,8 @@ v1.3 (`../v1.3/`, kept as it was) with Fred's six notes on it. From now on the f
    - The peg is in frame on every frame from the click to the landing: frames 888–938, never nearer than 34 px to the picture's edge.
    - The caption is fully visible over all of those frames.
    - The peg's path was read off the capture by hand (`checks/space.py`) and checked on the rendered frames (`/tmp/fyfilm/v14-check/peg.png`).
-6. **The baseline, credited** (`end.js`). The last sheet now sets two credit lines, a little larger than v1's single line:
-   - 「在 Claude Design (Fable 5) + GPT-5.6-sol 完成的基线上改进」 / "Improved from the baseline built with Claude Design (Fable 5) + GPT-5.6-sol";
+6. **The baseline, credited** (`end.js`). The last sheet now carries two credits. Each is set to read on a phone: at a 390 px feed width the Chinese is about 10.7 px and the English about 8.7 px. The English is in Fraunces, and each long line breaks at its natural point:
+   - 「在 Claude Design (Fable 5) + GPT-5.6-sol / 完成的基线上改进」, then "Improved from the baseline built with / Claude Design (Fable 5) + GPT-5.6-sol";
    - then 「用 Claude Opus 5.5 制作」 / "Made with Claude Opus 5.5".
 
    The last line lands 4.67 s into the card, and the card holds for 2.93 s after that. 继续写，继续造 and the seals are v1's, stroke for stroke and at the same times.
@@ -57,8 +57,8 @@ v1.3 (`../v1.3/`, kept as it was) with Fred's six notes on it. From now on the f
 
 | | runtime | size | loudness (integrated) | LRA | true peak | 1–2 frame luma glitches | zero-diff frames inside the ramps |
 |---|---|---|---|---|---|---|---|
-| `film-v1.4-promo.mp4` | 0:28.6 (1,716 frames) | 5.9 MB | −16.0 LUFS | 6.2 LU | −2.2 dBTP | none | 0 / 0 / 0 |
-| `film-v1.4.mp4` | 0:52.5 (1,716 + 1,434 frames) | 9.8 MB | −17.7 LUFS (part 1 −16.0 · part 2 −21.1) | 9.8 LU | −2.2 dBTP (part 2 −2.3) | none | 0 / 0 / 0 · 0 / 0 in part 2's pull and put-back |
+| `film-v1.4-promo.mp4` | 0:28.6 (1,716 frames) | 6.1 MB | −16.0 LUFS | 6.2 LU | −2.2 dBTP | none | 0 / 0 / 0 |
+| `film-v1.4.mp4` | 0:52.5 (1,716 + 1,434 frames) | 10.1 MB | −17.7 LUFS (part 1 −16.0 · part 2 −21.1) | 9.8 LU | −2.2 dBTP (part 2 −2.3) | none | 0 / 0 / 0 · 0 / 0 in part 2's pull and put-back |
 
 | ramp | footage (s) | on screen | slowest | ease in | at ⅓ | ease out | largest speed change between frames |
 |---|---|---|---|---|---|---|---|
@@ -93,9 +93,9 @@ What they found on the files in this folder:
    On every frame a caption is visible, the strip meets none of those boxes, and each box is whole in the picture on every one of its motion frames. The captions are fully visible for 3.08, 2.84, 2.80 and 3.50 s, and part 2's label for 20.4 s.
 3. **No chapter names, no ⅓ mark.** v1.4 imports no `CHAPTERS`, `NOTES` positions or slips. The only text the film draws is in the strip and on the last sheet (`captions.png`, `ramps.png`).
 4. **The peg.** It is inside the picture on every frame from the click to the landing, frames 888–938, and never nearer than 34 px to the edge. On the frames themselves: 890 shows it on the rope, 918 mid-flight, 938 landed (`peg.png`, `peg-crops.png`).
-5. **The end card.** Both credit lines are on the card from 25.67 s, which is held 2.93 s after the last line lands (`endcard.png`).
+5. **The end card.** Both credits are on the card from 25.67 s, and the card holds 2.93 s after the last line lands (`endcard.png`). At phone width, `phone-endcard.png` is frame 1570 of the promo scaled to 390 px. The credits span frame x 424–1454 and y 469–870, inside the sheet and 74 px above the strip.
 6. **Loudness and glitches** are in the numbers above.
-7. **The join and the ending.** Across the join, frames 1715 → 1716 differ by a mean absolute 0.020 on a 0–255 scale. `film-v1.4.mp4`'s last frame differs from the promo's by 0.58. Both are codec noise (`join.png`).
+7. **The join and the ending.** Across the join, frames 1715 → 1716 differ by a mean absolute 0.019 on a 0–255 scale. `film-v1.4.mp4`'s last frame differs from the promo's by 0.94. Both are codec noise (`join.png`).
 
 ## How it's made
 
