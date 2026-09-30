@@ -9,6 +9,8 @@
 //   · a click locks it: pressed and expanded, banded (tier 2), its links cooled to the band's edge, the explainer open
 //     with its title; a second module is not pressed;
 //   · Escape clears it and takes the focus to "Clear path"; keyboard focus on a module traces its path;
+//   · Tab walks the modules in the order they read, handles → protocols → outcomes, top to bottom in each (DOM order
+//     is reading order: no CSS order);
 //   · reduced motion lands every state at once (no stroke animation runs);
 //   · 0 console or page errors. Exit code 1 on any failure.
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
@@ -93,6 +95,14 @@ export default async (page) => {
       await p.keyboard.press('Escape'); await sleep(rm ? 150 : 600);
       s = await state(p);
       check(tag + ': Escape clears it and takes the focus to "Clear path"', s.pressed.length === 0 && s.banded.length === 0 && !s.open && s.title === 'Click any module' && s.shown.length === 0 && s.focus, { pressed: s.pressed, open: s.open, shown: s.shown.length, focus: s.focus });
+      const walk = [];   // where each module is on the page, not in the window: Tab scrolls
+      await p.focus('[data-map-clear]');
+      for (let i = 0; i < 14; i++) { await p.keyboard.press('Tab'); walk.push(await p.evaluate(() => { const a = document.activeElement, r = a.getBoundingClientRect(); return { id: a.dataset.nodeId || a.className, layer: a.dataset.layer, x: r.left + scrollX, y: r.top + scrollY }; })); }
+      const layers = ['capability', 'workflow', 'use-case'], rank = walk.map((n) => layers.indexOf(n.layer));
+      const reads = rank.every((r, i) => r >= 0 && (!i || r > rank[i - 1] || (r === rank[i - 1] && walk[i].y > walk[i - 1].y)));
+      const cols = walk.every((n, i) => !i || rank[i] === rank[i - 1] || (s.cols ? n.x > walk[i - 1].x : n.y > walk[i - 1].y));
+      check(tag + ': Tab walks the modules as they read, handles → protocols → outcomes', reads && cols && walk.length === 14, walk.map((n) => n.id).join(' '));
+      await p.keyboard.press('Escape'); await p.mouse.move(2, 2); await sleep(rm ? 150 : 500);
       await p.focus('[data-node-id="p-intake"]');
       await p.keyboard.press('Shift+Tab'); await p.keyboard.press('Tab'); await sleep(rm ? 150 : 700);   // focus-visible, from the keyboard
       const traced = await expect(p, 'p-intake');
