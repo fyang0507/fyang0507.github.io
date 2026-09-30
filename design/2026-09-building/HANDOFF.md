@@ -97,8 +97,7 @@ Decided for Fred and not objected to: Building becomes a static page; NJJoe's ch
 
 ## 7. Next actions
 
-1. Merge Demos' viewer from `building/demos` (§8).
-2. Fred's calls on §9, and his pass on real phones after the deploy.
+1. Fred's calls on §9, and his pass on real phones after the deploy.
 
 ## 8. Shipped
 
@@ -114,7 +113,7 @@ Every PR in `PORT-PLAN.md` §1 merged on 2026-09-30. Two landed out of the plan'
 | 2 · Fred Agent | #32 | Fred Agent: the five chapters on the site's architecture, in the dossier | 5th |
 | 3 · The moves | #35 | Building: the way in, the way back and the chapter move | 8th |
 | 4 · NJJoe | #34 | NJJoe: the casebook on the site's architecture, in the dossier | 7th |
-| Demos, PR 2's deferred viewer | `building/demos` | Fred Agent: Demos' evidence viewer, the round-4 board with Fred's corners | next |
+| Demos, PR 2's deferred viewer | #37 | Fred Agent: Demos' evidence viewer, round 4 with Fred's fine-tunes | 9th |
 
 What each review found, and what changed because of it:
 
@@ -126,7 +125,8 @@ What each review found, and what changed because of it:
 - **2 · #32.** The review found two bugs, the phone strip's ink measured from the hidden rail and System's map tabbing against its visual order, and six small items: the map's fades under reduced motion, print and forced colours, the skip link's scroll margin, "05 / 5", `lang` on the rail's Chinese, and a hard-coded test path. All were fixed, with checks. Demos kept main's viewer until its own round.
 - **3 · #35.** Fixed from the review, with checks: NJJoe's "Transition was skipped" (by merging PR 4 first), stray swings on a back/forward-cache way back after a pan, a stale referrer on those restores, the flower's re-pin on the way back, and a duplicated site-root parser. Q2's layering holds: with the card unnamed, the way back drew the tabs over it in 11 of 17 poses; now in none.
 - **4 · #34.** Fixed from the review, with checks: the APA code string overflowing at 761–900 px, cramped tab strips at tablet widths, an invented "another link ↗", and a missing space in "01 URL".
-- **Demos.** Round 4 as Fred approved it, with his fine-tunes: the pen's corners (A) thicker, coral in the enlargement, the put-back reworked, and no underline on the viewer's buttons. It deletes #32's loupes, focus mode and sideways canvases, and `project-demos.mjs` checks it.
+- **Demos.** Round 4 as Fred approved it, with his fine-tunes: the pen's corners (A) thicker, coral in the enlargement, the put-back reworked, and no underline on the viewer's buttons. It deletes #32's loupes, focus mode and sideways canvases, and `project-demos.mjs` checks it. Fixed from the review, with checks: a swipe at the phone window's edge landed on the next region out of view, carried on by the swipe's momentum (a swipe into the edge no longer scrolls the window); Chrome's synthetic pointer events, fired when the page scrolls under a still mouse, cleared the corners keyboard focus had drawn (mouse and keyboard now mark their own regions); selecting the note's text past the enlargement's edge put it back; a failed zoom load showed the broken-image glyph; entries were named by their whole note; the old corners lingered on a step to another print.
+- **#36**, a batch of small fixes, also moved each chapter's "← Building board" after its sheet (`</main>`), so the keyboard reaches it after the chapter, not between the tabs and the sheet. It is placed by grid-area, so nothing moves.
 
 ## 9. Open for Fred
 
