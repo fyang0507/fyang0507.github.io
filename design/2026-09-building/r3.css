@@ -11,10 +11,21 @@
   .cork-track{padding-right:34px}
 }
 
+/* The card in play is its own view-transition group, above the tabs (00-vt.css gives them z-index 4), so the tabs that
+   sit under it at rest are under it in every frame of a move (r3-board.js names it; r3-vt.js fades it with the page) */
+.r3-card{view-transition-name:pj-board-card}
+::view-transition-group(pj-board-card){z-index:5}
+
 /* ---- Q5 · the board's typeface: (a) today's stack, Noto Serif SC's Latin first; (b) Fraunces first ---- */
 html[data-q5="b"] body,html[data-q5="b"] .cork,html[data-q5="b"] .unpin-layer{font-family:"Fraunces","Noto Serif SC",Georgia,serif}
 
-/* ---- Q6 · the current chapter tab: (a) paper, pulled out, banded in wheat; (b) kraft with the wheat band (round 1) ---- */
+/* ---- Q6 · the current chapter tab: (a) paper, pulled out, banded in wheat; (b) kraft with the wheat band. Fred chose (b).
+   On kraft the band's wash can't carry the state (--hl multiplied by kraft is 1.50:1), so the band's own darker wheat
+   edge does: on kraft it is #8F7A3C at 2.6 px, which the wheat layer's multiply draws as #795D24, 3.56:1 against kraft
+   (the site's --hl-ink draws 2.58:1 there). The tab's text on the band stays --ink, 5.35:1. ---- */
+.c-c .pj-tabs a,.dos-tab{--hl-ink:#8F7A3C}
+.c-c .pj-tabs a .tm-line,.dos-tab .tm-line{stroke-width:2.6}
+html[data-q6="a"].c-c .pj-tabs a[aria-current="page"]{--hl-ink:#AD9650}
 html[data-q6="a"].c-c .pj-tabs a[aria-current="page"]{background:var(--paper);border-color:var(--line-strong);box-shadow:1px 1px 0 var(--line-strong);--pen:var(--pen-cream)}
 
 /* ---- Q7 · tabs on a phone ---- */

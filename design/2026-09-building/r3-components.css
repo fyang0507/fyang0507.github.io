@@ -33,3 +33,6 @@
 .cm-src--none{color:var(--soft)}
 @media (max-width:640px){.cm-index a{grid-template-columns:28px minmax(0,1fr)}.ci-k{grid-column:2}}
 .pj-frame>.pj-main,.pj-read,.pj-prose,.cm-slip{min-width:0}
+/* the closing section is prose after the five entries, not a sixth landmark: the rail marks the five components */
+.cm-close{scroll-margin-top:90px}
+.cm-close p{margin-top:16px;font-size:18px;line-height:1.72}
