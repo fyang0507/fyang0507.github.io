@@ -1,0 +1,155 @@
+/* Fred Agent · the five chapters (building/fred-agent/*.html), as the open dossier (design/2026-09-building, candidate
+   C): the frame, the tabs and the card are lib/building/dossier.css and card.css; this is what is written on the sheet.
+   Line-led: ruled entries, typed labels at the side, no boxes and no washes. Text is --ink, --soft (5.4:1) and --pencil
+   (4.5:1) on paper; the pen is the only highlighter; no coral at rest. Demos' exhibits are demos.css. */
+
+/* ---- page ---- */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--text);color:var(--ink)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+img{max-width:100%}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.pen-t{display:inline-block;position:relative}
+[data-pen-focus]:focus-visible{outline:none}
+code{font:.86em/1.4 var(--util)}
+.fa-footnote{margin-top:20px;color:var(--soft);font:11px/1.6 var(--util)}
+
+/* ---- the question on the overview's first page ---- */
+.fa-note{max-width:26em;margin:0 0 10px auto;padding:4px 0 4px 22px;border-left:2px dashed var(--line-strong);color:var(--ink);font:italic 400 clamp(22px,2.4vw,28px)/1.32 "Fraunces",serif}
+.fa-note small{display:block;margin-top:12px;color:var(--pencil);font:normal 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+
+/* ---- a section: its typed number at the side, the writing beside it ---- */
+.fa-sec{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:clamp(20px,4vw,56px);padding:clamp(44px,6vw,76px) 0;border-top:1px dashed var(--line-strong)}
+.pj-body>.fa-sec:first-child,.fa-note+.fa-sec{border-top:1px solid var(--ink)}
+.fa-sec-n{padding-top:10px;color:var(--pencil);font:500 11px/1.4 var(--util);letter-spacing:.1em;text-transform:uppercase}
+.fa-sec-n strong{display:block;margin-top:6px;color:var(--soft);font-weight:500}
+.fa-sec h2{max-width:20em;font:600 clamp(28px,3.4vw,42px)/1.1 var(--disp);letter-spacing:-.022em}
+.fa-sec-b{min-width:0}
+.fa-sec-b>p{max-width:680px;margin-top:16px;font-size:18px;line-height:1.66}
+.fa-sec-b>p.fa-intro{color:var(--soft)}
+.fa-sec-b>p.fa-lede{font-size:clamp(20px,2.1vw,24px);line-height:1.45}
+
+/* ---- ruled entries: the cards of a section, a kicker and a line of ink down their left ---- */
+.fa-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.fa-card{display:flex;flex-direction:column;padding:16px 0 18px 18px;border-left:1.5px solid var(--ink)}
+.fa-card:nth-child(n+3){border-left-color:var(--line-strong)}
+.fa-k{color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+h3.fa-k{font-weight:500}
+.fa-card h3:not(.fa-k){margin-top:10px;font:500 21px/1.22 var(--disp);letter-spacing:-.012em}
+.fa-card p{margin-top:10px;color:var(--soft);font-size:15.5px;line-height:1.58}
+.fa-go{align-self:flex-start;margin-top:auto;padding-top:18px;color:var(--ink);font:11.5px/1.3 var(--util);letter-spacing:.02em}
+/* the system in one line: three steps, handles → protocols → outcomes */
+.fa-line{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;margin-top:30px}
+.fa-line li{position:relative;padding:14px 0 16px 16px;border-left:1.5px solid var(--ink)}
+.fa-line li:not(:last-child)::after{content:"→";position:absolute;right:-26px;top:50%;color:var(--soft);font:15px/1 var(--util);transform:translateY(-50%)}
+.fa-line strong{display:block;margin-top:8px;font:500 19px/1.2 var(--disp)}
+.fa-line p{margin-top:8px;color:var(--soft);font-size:14.5px;line-height:1.55}
+
+/* ---- the long chapters: one text column, Reading's pencil margin to its left (rail.css, project-rail.js) ---- */
+.fa-read{position:relative;max-width:640px;margin-left:190px;padding:30px 0 40px;border-top:1px solid var(--ink)}
+.fa-prose{min-width:0}
+.fa-prose-intro p{margin-top:18px;font-size:clamp(19px,1.9vw,22px);line-height:1.55}
+.fa-prose-intro p:first-child{margin-top:4px}
+.pr-h{display:flex;flex-direction:column;gap:7px;margin:2.8em 0 1em;font-weight:400}
+.pr-no{font:500 12.5px/1.4 var(--util);letter-spacing:.08em;color:var(--soft)}
+.pr-no::before{content:"§ ";color:var(--pencil)}
+.pr-t{font:600 clamp(23px,2.4vw,27px)/1.25 var(--disp);letter-spacing:-.012em;color:var(--ink)}
+.fa-pr>p,.fa-close>p{margin-top:16px;font-size:18px;line-height:1.72}
+.fa-pr>p.fa-pull,.fa-close>p.fa-pull{margin:30px 0;padding:4px 0 4px 22px;border-left:2px solid var(--line-strong);font-style:italic;font-size:23px;line-height:1.4}
+
+/* ---- Components: five dossier entries, each with its kind typed at the side ---- */
+.fa-prose p.cm-how{display:flex;align-items:baseline;gap:10px;margin-top:0;color:var(--soft);font:500 12.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.fa-close{margin-top:3.2em;padding-top:10px;border-top:1px solid var(--ink)}
+.cm-h{margin-top:10px;font:600 clamp(23px,2.4vw,27px)/1.25 var(--disp);letter-spacing:-.012em}
+.cm-side{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:3.2em;padding-top:10px;border-top:1px solid var(--ink);color:var(--soft);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.cm-kind{color:var(--ink)}
+.cm .pr-h{margin-top:.9em}
+.cm>p.cm-line{font-size:19px;line-height:1.55}
+.cm-notes{margin-top:22px}
+.cm-notes>div{padding:13px 0 14px 16px;border-left:1.5px solid var(--ink)}
+.cm-notes>div+div{border-left-color:var(--line-strong)}
+.cm-notes dt{color:var(--soft);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.cm-notes dd{margin-top:6px;font-size:16.5px;line-height:1.62}
+.cm-notes ul{padding-left:1.1em}
+.cm-notes li+li{margin-top:6px}
+.cm-slip{min-width:0;margin-top:24px}
+.cm-slip figcaption{color:var(--soft);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.cm-slip pre{margin-top:8px;padding:14px 16px;overflow-x:auto;background:var(--paper2);border:1px solid var(--line);border-left:2px solid var(--ink);color:var(--ink);font:13px/1.6 var(--util)}
+.cm-slip code{font:inherit}
+.cm-slip code>span{color:var(--pencil)}
+.cm-src{display:inline-block;margin-top:16px;color:var(--ink);font:12px/1.4 var(--util)}
+.cm-src--none{color:var(--soft)}
+
+/* ---- the chapter's way on, and its foot ---- */
+.fa-pagenav{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:30px;border-top:1px solid var(--line)}
+.fa-pagenav a{display:flex;flex-direction:column;gap:14px;padding:16px 18px 18px;border:1px solid var(--line-strong);border-radius:4px}
+.fa-pagenav a:last-child{align-items:flex-end;text-align:right}
+.fa-pagenav a>span{color:var(--pencil);font:11px/1 var(--util);letter-spacing:.06em;text-transform:uppercase}
+.fa-pagenav strong{font:500 18px/1.2 var(--disp)}
+.fa-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 20px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--pencil);font:11.5px/1.5 var(--util)}
+.fa-foot-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.fa-foot a{color:var(--soft)}
+
+/* ---- System: the map, drawn by the pen (map.js). Columns read left to right, handles → protocols → outcomes; the
+   links are faint pencil at rest, drawn in the pen's coral while a path is noticed, cooled to the band's edge once a
+   module is locked. The locked module is the wheat band; the rails a path touches go from pencil to ink. ---- */
+.fa-sec--map{row-gap:14px}
+.map-shell{grid-column:1/-1;margin-top:6px}
+.map-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px}
+.map-bar p{max-width:40em;color:var(--soft);font:12px/1.5 var(--util)}
+.map-clear{padding:6px 0;color:var(--ink);font:11.5px/1 var(--util)}
+.map{position:relative;display:flex;flex-direction:column;margin-top:14px;padding:6px 0 4px}
+.map-lines{position:absolute;z-index:0;left:0;top:0;overflow:visible;pointer-events:none}
+.ml-base{fill:none;stroke:var(--line);stroke-width:1.1;stroke-linecap:round;transition:stroke .2s var(--ease-out)}
+.ml-base.is-path{stroke:var(--line-strong)}
+.ml-hot{fill:none;stroke:var(--pen);stroke-width:2.2;stroke-linecap:round}
+.ml-hot.cool{stroke:var(--hl-ink);stroke-width:2}
+.map-layer{position:relative;z-index:1;margin-top:26px}
+.map-layer--handle{order:1}.map-layer--workflow{order:2}.map-layer--outcome{order:3}
+.map-layer-label{margin-bottom:12px;color:var(--pencil);font:500 10.5px/1.3 var(--util);letter-spacing:.09em;text-transform:uppercase}
+.map-grid{display:grid;grid-template-columns:1fr;gap:6px}
+.map-node{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;width:100%;padding:6px 0 8px 12px;border-left:1.5px solid var(--ink);background:var(--paper);color:var(--ink);text-align:left;transition:opacity .2s var(--ease-out)}
+.map-node--policy{border-left-style:dashed}
+.map-node--crosscut{border-left-width:3px}
+.mn-k{color:var(--pencil);font:500 9.5px/1.3 var(--util);letter-spacing:.06em;text-transform:uppercase}
+.map-node strong{font:500 15.5px/1.25 var(--disp);letter-spacing:-.01em}
+.map.is-tracing .map-node:not(.is-path){opacity:.4}
+.map-rails{position:relative;z-index:1;order:4;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:30px}
+.map-rail{padding:8px 10px;border:1px dashed var(--line-strong);border-radius:3px;color:var(--pencil);font:500 10.5px/1 var(--util);letter-spacing:.08em;text-align:center;text-transform:uppercase;transition:color .2s,border-color .2s}
+.map-rail.is-path{border-style:solid;border-color:var(--ink);color:var(--ink)}
+.map-detail{display:grid;grid-template-columns:minmax(150px,210px) 1fr;gap:6px 30px;margin-top:22px;padding:18px 20px 20px;border:1px solid var(--line);border-radius:4px;background:var(--paper2)}
+.map-detail h3{grid-column:2;font:500 22px/1.2 var(--disp)}
+.map-detail p{grid-column:2;color:var(--soft);font-size:16px;line-height:1.55}
+.md-k{grid-row:span 3;color:var(--pencil);font:500 10.5px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.md-meta{grid-column:2;color:var(--pencil);font:11.5px/1.5 var(--util)}
+.map-detail.is-open{border-color:var(--line-strong);box-shadow:inset 3px 0 0 var(--ink)}
+@media (min-width:761px){
+  .map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(40px,6vw,90px);align-items:start}
+  .map-layer{margin-top:0}
+  .map-rails{grid-column:1/-1}
+}
+
+@media (max-width:1000px){
+  .fa-read{margin-left:0}
+}
+@media (max-width:760px){
+  .fa-sec{grid-template-columns:1fr;gap:10px}
+  .fa-sec-n{padding-top:0}
+  .fa-cards,.fa-line{grid-template-columns:1fr}
+  .fa-line{gap:26px}
+  .fa-line li:not(:last-child)::after{content:"↓";right:auto;left:22px;top:auto;bottom:-24px;transform:none}
+  .fa-note{margin:0 0 6px}
+  .map-rails{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .map-detail{grid-template-columns:1fr}
+  .map-detail h3,.map-detail p,.md-meta{grid-column:1}
+  .md-k{grid-row:auto}
+}
+@media (max-width:640px){
+  .fa-sec-b>p,.fa-pr>p,.fa-close>p{font-size:17px}
+  .fa-pr>p.fa-pull,.fa-close>p.fa-pull{font-size:21px}
+  .fa-pagenav{grid-template-columns:1fr}
+  .fa-pagenav a:last-child{align-items:flex-start;text-align:left}
+}
+@media (forced-colors:active){
+  .ml-hot{stroke:CanvasText}
+}

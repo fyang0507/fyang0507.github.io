@@ -29,6 +29,7 @@
   --pen-cream:#D9695A;--pen-cork:#CB5E49;--pen-wheat:#C85E47;--pen:var(--pen-cream);
   /* chosen state: the wheat highlighter band and its edge */
   --hl:#DCCF98;--hl-ink:#AD9650;
+  --hl-ink-kraft:#8F7A3C;   /* the band's edge on kraft, 2.6 px: multiplied, #795D24, 3.56:1 (pen.css) */
   /* corkboard, bookshelf and washes */
   --board:#EEE4CE;--plank:#EFE6D4;--lip:#E4D9C3;
   --wash-blue:#DCE8E7;--wash-peach:#F0D9CD;--wash-wheat:#E9DFC5;

@@ -12,8 +12,11 @@
 [data-paper="cork"]{--pen:var(--pen-cork)}
 [data-paper="wheat"]{--pen:var(--pen-wheat)}
 /* Kraft (Building's dossier tabs, #D8C29A) is the one paper where the multiplied coral fails: #B85036 reads 2.86:1
-   there. The pen on kraft is --mark-deep, 3.45:1. */
-[data-paper="kraft"]{--pen:var(--mark-deep)}
+   there. The pen on kraft is --mark-deep, 3.45:1. The wheat band can't carry a chosen tab there either (--hl
+   multiplied by kraft is 1.50:1), so its own edge does: --hl-ink-kraft at 2.6 px, which the wheat layer's multiply
+   draws as #795D24, 3.56:1 against kraft (the site's --hl-ink would draw 2.58:1). */
+[data-paper="kraft"]{--pen:var(--mark-deep);--hl-ink:var(--hl-ink-kraft)}
+[data-paper="kraft"] .tm-line{stroke-width:2.6}
 
 /* TierMark: the wheat layer multiplies with whatever paper it lands on; the coral layer does not */
 .tm{mix-blend-mode:multiply}

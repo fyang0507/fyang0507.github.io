@@ -11,6 +11,9 @@
 :root{
   --kraft:#D8C29A;--kraft-edge:#6E5A3A;          /* the dossier's kraft stock and its cut edge (3.8:1, an edge, never text) */
 }
+/* the project pages set their notes and pull quotes in Fraunces italic 400 (site-tokens.css declares the roman only) */
+@font-face{font-family:"Fraunces";font-style:italic;src:url("../../fonts/derived/Fraunces-Italic-latin-ext.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Fraunces";font-style:italic;src:url("../../fonts/derived/Fraunces-Italic-latin.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
 /* ---- the index tab: kraft, cut off the sheet's edge, a way into its chapter ---- */
 .dos-tab{display:flex;align-items:center;gap:8px;min-width:118px;height:31px;margin-left:-10px;padding:0 10px 0 18px;border:1px solid var(--kraft-edge);border-left:0;border-radius:0 9px 9px 0;background:var(--kraft);color:var(--ink);font:10.5px/1 var(--util);letter-spacing:.01em;white-space:nowrap}
@@ -53,3 +56,74 @@
 .dos--top .dos-tabs{position:relative;top:auto;left:auto;order:-1;flex-direction:row;gap:5px;margin:0 0 -5px 16px}
 .dos--top .dos-tab{min-width:0;height:31px;margin:0;padding:0 11px 5px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:8px 8px 0 0}
 .dos--top .dt-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+/* ---- a project page is the dossier, open (building/<id>/*.html) ----
+   One long sheet (.pj-sheet, the page's main: its head, then its body) with the folder's kraft back above its top edge, a typed file label,
+   the facts stamped, the board's own card clipped to its corner (cover.js builds it after first paint, in the box held
+   here) and the index tabs down its fore-edge, sticky while you read, the current one pulled out and banded. Up to
+   1000 px the tabs are a strip on the sheet's top edge, sticky at the top of the window; on a phone every tab shows its
+   number and the current one its name too. Whatever sticks at the top (--pj-stick) is what a section link lands under,
+   28 px below it. A page with the reading rail carries an empty .pj-count in its tabs, the rail's phone strip and
+   counter (project-rail.js), so the strip has its height at first paint. */
+.pj{--pj-pad:clamp(26px,4vw,60px);--pj-stick:0px;padding:0 4vw 60px}
+.pj-frame{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"sheet tabs";width:min(1180px,100%);margin:0 auto;padding-top:30px}
+.pj-sheet{grid-area:sheet;position:relative;min-width:0;background:var(--paper);border:1px solid var(--line-strong);border-right-width:1.5px}
+.pj-sheet::before{content:"";position:absolute;left:-1px;right:-1.5px;top:-10px;height:9px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:6px 26px 0 0;background:var(--kraft);clip-path:polygon(0 0,34% 0,37% 100%,0 100%)}
+.pj-sheet [id]{scroll-margin-top:calc(var(--pj-stick) + 28px)}
+.pj-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;padding:28px var(--pj-pad) 30px}
+.pj-body{padding:0 var(--pj-pad) 30px}
+.pj-sheethead{grid-column:1;grid-row:1;min-width:0}
+.pj-label{padding-bottom:10px;border-bottom:1px solid var(--ink);color:var(--ink);font:500 11px/1.3 var(--util);letter-spacing:.12em;text-transform:uppercase}
+.pj-eyebrow{margin-top:14px;color:var(--soft);font:12px/1.4 var(--util);letter-spacing:.04em}
+.pj-title{margin-top:10px;color:var(--ink);font:500 clamp(46px,6.2vw,84px)/.98 var(--disp);letter-spacing:-.04em}
+.pj-deck{max-width:30em;margin-top:18px;color:var(--soft);font-size:clamp(19px,2vw,24px);line-height:1.36}
+.pj-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;font:11.5px/1.5 var(--util);letter-spacing:.03em}
+.pj-meta span{padding:3px 8px 4px;border:1.2px solid var(--soft);border-radius:3px;color:var(--soft)}
+.pj-meta span:first-child{border-color:var(--ink);color:var(--ink);transform:rotate(-1.2deg)}
+/* the card's box, held before it arrives: the lead card at its board size (700 × 470) × 0.3, clipped on at a tilt */
+.pj-cover{position:relative;grid-column:2;grid-row:1;align-self:start;width:210px;height:141px;margin:-6px 6px 0 0;transform:rotate(2.4deg)}
+/* the card is laid out in a board-wide container (its sizes are the board's cqw), scaled; the frame clips that
+   container 20 px round the card, so its empty width never widens the page */
+.pj-cover-frame{position:absolute;inset:-20px;overflow:hidden;pointer-events:none}
+.pj-cover-board{position:absolute;left:20px;top:20px;width:1180px;container-type:inline-size;transform-origin:0 0}
+.pj-cover-board .slot{margin-top:0}
+.pj-cover-clip{position:absolute;z-index:3;left:24%;top:-13px;width:16px;height:38px;overflow:visible;pointer-events:none}
+/* the fore-edge: the tabs off the sheet's right edge; the current one pulled out further and banded (pen.css) */
+.pj-tabs{grid-area:tabs;position:sticky;top:26px;z-index:2;align-self:start;display:flex;flex-direction:column;gap:7px;margin-top:58px}
+.pj-tabs .dos-tab{margin-left:-1px;padding:0 12px 0 14px;font-size:11.5px;transition:transform .38s var(--ease-settle)}
+.pj-tabs .dos-tab[aria-current="page"]{transform:translateX(10px)}
+.pj-tabs .dos-tab:hover{transform:translateX(4px)}
+.pj-tabs .dos-tab[aria-current="page"]:hover{transform:translateX(10px)}
+.pj-count{display:none}
+.pj-back{grid-area:tabs;align-self:end;justify-self:start;margin:0 0 30px 16px;color:var(--soft);font:10.5px/1.4 var(--util);letter-spacing:.02em}
+.skip-link{position:fixed;z-index:500;left:14px;top:12px;padding:9px 13px;border:1.5px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);font:11px/1 var(--util);transform:translateY(-160%)}
+.skip-link:focus{transform:none}
+
+@media (max-width:1000px){
+  .pj{--pj-stick:40px}
+  .pj:has(.pj-count){--pj-stick:66px}
+  .pj-frame{grid-template-columns:minmax(0,1fr);grid-template-areas:"tabs" "sheet" "back";padding-top:18px}
+  .pj-sheet{border-top:0}
+  .pj-sheet::before{display:none}   /* the tabs are the folder's kraft now */
+  /* the strip: the tabs stand on its line, which is the sheet's top edge; the current one stands taller */
+  .pj-tabs{top:0;z-index:30;flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:0 5px;margin:0 -4vw;padding:6px 4vw 0;background:var(--paper)}
+  .pj-tabs::after{content:"";position:absolute;left:4vw;right:4vw;top:39px;border-top:1px solid var(--line-strong)}
+  .pj-tabs .dos-tab{position:relative;z-index:1;min-width:0;height:34px;margin:0;padding:0 11px 4px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:8px 8px 0 0;transition:none}
+  .pj-tabs .dos-tab:not([aria-current="page"]){height:30px;padding-bottom:0}
+  .pj-tabs .dos-tab[aria-current="page"],.pj-tabs .dos-tab:hover{transform:none}
+  /* the reading counter's line, under the tabs: the rail's ink and ticks lie on the sheet's edge above it */
+  .pj-count{position:relative;flex:0 0 100%;display:flex;justify-content:flex-end;align-items:center;height:26px}
+  .pj-count .rail-strip{top:-4px}
+  .pj-back{grid-area:back;margin:18px 0 0}
+}
+@media (max-width:640px){
+  .pj-tabs .dos-tab:not([aria-current="page"]) .dt-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .pj{--pj-pad:18px}
+  .pj-head{grid-template-columns:minmax(0,1fr);gap:18px;padding:22px var(--pj-pad) 24px}
+  .pj-cover{grid-column:1;grid-row:2;justify-self:end;width:147px;height:99px;margin:0 8px 0 0}
+  .pj-body{padding:0 var(--pj-pad) 24px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .pj-tabs .dos-tab{transition:none!important}
+}
