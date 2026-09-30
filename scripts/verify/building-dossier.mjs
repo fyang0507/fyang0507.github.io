@@ -14,7 +14,9 @@
 //   · no coral stroke at rest, on the board or in a dossier opened by a click;
 // and: keyboard (Enter unpins the card in view; focus starts on "pin it back" and Tab walks pin it back → the rows →
 // the repository → the tabs and wraps, Shift+Tab back, every stop with coral 「 」 in its paper's pen, a tab's clear of
-// the sheet its edge is tucked under; Esc re-pins and returns focus); a phone's layer scrolls to the end of a tall dossier and the card still flies home to its pin;
+// the sheet its edge is tucked under; Esc re-pins and returns focus); a phone's layer scrolls to the end of a tall
+// dossier and the card still flies home to its pin; posed every 4 ms, the slide's overshoot never opens a gap under
+// the card; the peek tucks on a spring; a phone's dossier is as wide as the card was before the peek narrowed it;
 // reduced motion shows and closes the dossier at once, nothing on the card or in it animating; every chapter link
 // returns 200, and a tab is a plain navigation to its chapter; 0 console or page errors. Exit code 1 on any failure.
 
@@ -219,6 +221,34 @@ export default async (page0, ctx) => {
     });
     note(home.home && home.jump !== null && home.jump < 4, `390: after the scroll the card flies home to its pin, no jump as it lands (${home.jump}px)`);
     note(!bad.length, '390 scroll: 0 errors' + (bad.length ? ' — ' + bad.join(' ; ') : ''));
+    await context.close();
+  }
+
+  /* ---- the slide, posed: its overshoot stays under the card at any sheet height; the peek tucks on a spring; a
+     phone's dossier is as wide as the card was before the peek narrowed it ---- */
+  for (const [w, h] of SIZES) {
+    const { context, page, bad } = await open(browser, w, h);
+    await page.click('.slot--lead .unpin-trigger');
+    const r = await page.evaluate(() => new Promise((res) => {
+      (function f() {
+        const d = document.querySelector('.unpin-panel .dos'), a = d && d.getAnimations()[0];
+        if (!a) { requestAnimationFrame(f); return; }
+        a.pause();
+        const pa = document.querySelector('.slot--lead .dos-peek').getAnimations()[0];
+        const peek = pa ? { spring: /^linear\(/.test(pa.effect.getTiming().easing), css: pa.constructor.name } : null;
+        setTimeout(() => {   // the card settles in hand; then pose the slide every 4 ms
+          const card = document.querySelector('.unpin-fly .swing').getBoundingClientRect().bottom, D = a.effect.getComputedTiming().duration;
+          let gap = -Infinity;
+          for (let t = 0; t <= D; t += 4) { a.currentTime = t; gap = Math.max(gap, d.getBoundingClientRect().top - card); }
+          const s = document.querySelector('.slot--lead');
+          res({ gap: +gap.toFixed(2), H: d.offsetHeight, peek, pw: document.querySelector('.unpin-panel').offsetWidth, slot: s.offsetWidth, room: parseFloat(getComputedStyle(s).getPropertyValue('--peek-room')) || 0 });
+        }, 1500);
+      })();
+    }));
+    note(r.gap <= 0.5, `${w}: the slide's overshoot on a ${r.H} px sheet stays under the card (its top at most ${r.gap} px below the card's edge)`);
+    note(r.peek && r.peek.spring && r.peek.css !== 'CSSTransition', `${w}: the peek tucks behind the card on a spring (${JSON.stringify(r.peek)})`);
+    note(w > 640 ? r.room === 0 : r.room === 22 && r.pw >= r.slot + r.room - 0.5, `${w}: the dossier is ${r.pw} px wide, sized from the card before the peek's narrowing (${r.slot} + ${r.room} px)`);
+    note(!bad.length, `${w} slide: 0 errors${bad.length ? ' — ' + bad.join(' ; ') : ''}`);
     await context.close();
   }
 
