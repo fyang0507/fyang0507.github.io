@@ -71,9 +71,10 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - the desk, the opener stage and the phone shots are static markup driven by `lib/home/`.
 - `Building.dc.html` works like `index.html`: nothing on it is templated, so it has no `support.js`, `<x-dc>` or `<helmet>`.
   - The intro, the board host (`.board-host`), the `<noscript>` list and `fig.02` are static markup after the static header.
-  - Its head keeps the order above without `support.js`, and its `expect` target stays `#site-nav`.
+  - Its head keeps the order above without `support.js`, and its `expect` target stays `#site-nav`. Its CSS is `lib/building/card.css` (the card), `dossier.css` (the kraft dossier behind it) and `building.css` (the page and the board), in that order.
+  - One change to the order: `content/building-projects.js` and `board.js` come before `pen.js`, `pen-tier.js` and `site.js`. A module runs only after every deferred script before it, and first render waits for `board.js`, so this keeps first render from waiting on the pen's downloads, which nothing needs until the board is wired.
   - `lib/building/board.js` loads as `type="module" blocking="render"` and builds the board as it evaluates, so every card exists at first render and at `pagereveal`, where a view transition captures the page.
-  - Building the markup measures nothing. What measures (the physics, unpin, the flower, the pen) waits for `FY.styled`, because WebKit runs deferred scripts and modules before the head's stylesheets apply.
+  - Building the markup measures nothing. What measures (the physics, unpin, the flower, the pen) waits for `FY.styled`, because WebKit runs deferred scripts and modules before the head's stylesheets apply. `board.js` asks for it at `DOMContentLoaded`, once `site.js` has run.
 - support.js takes the page template from the first literal `<x-dc>` in the raw page text. Never write that string anywhere before the real element: not in a head comment, a script or the static header.
 - Keep mount hosts out of any `sc-if` that can flip. A re-render replaces the host, and the module mounts again from scratch.
 - `transitions.css` assigns every view-transition name. Set `view-transition-name` nowhere else, and render one element per name per document:
@@ -163,8 +164,8 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Each card is a `.slot` holding a rotating `.swing` (the paper) and a `.board-pin` sibling. The pin is never inside the paper.
   - The paper rotates about `var(--pin-left) 14px`, the pin's tip (`top:-24px` plus 90% of its 42px height), and the pin rotates about its own tip.
   - Everything else uses the same point: the cork patch behind the card (`.ghost`), the pin hole (`top:13.8px`), and the physics (`pinPoint`, the unpin's `P.y = 14`).
-  - Changing the pin artwork, its `top` or `--pin-left` means updating all of them together. Otherwise the pin slides across the cork whenever the paper swings. See the comment at the top of `lib/building/building.css`.
-- A Building card with pages keeps its dossier behind it (`lib/building/dossier.js`; its rules and the kraft tokens are a section of `building.css`).
+  - Changing the pin artwork, its `top` or `--pin-left` means updating all of them together. Otherwise the pin slides across the cork whenever the paper swings. See the comment at the top of `lib/building/card.css`.
+- A Building card with pages keeps its dossier behind it (`lib/building/dossier.js`; its rules and the kraft tokens are in `lib/building/dossier.css`).
   - At rest its index tabs peek past the card's right edge, one per chapter, numbers only. They sit inside the `.swing`, so they hang from the same pin. On a phone the card narrows by the peek (`--peek-room`), so the tabs stay inside the cork.
   - A click unpins the card into your hand, and the dossier slides out from under it: its contents sheet, and the tabs down its fore-edge (on its top edge where the window has no room beside it), each a plain link to its chapter. The card's own link still goes straight in. A slip without pages gets one sheet and one tab, to its repository.
   - Its content lives with the project in `content/building-projects.js`: `contents` (the sheet's label), `chapters` (`n`, `tab`, the chapter's own `title`, one `line`, `href`), `figure` (`caption`, `steps`, `exit`), `status` and `source`. A slip may carry a `figure` and `lines`, shown instead of its note. Take every line from the project's own pages, and keep the chapters in step with the project's own chapter nav: the same pages, in the same order.

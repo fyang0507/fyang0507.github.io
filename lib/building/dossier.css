@@ -1,0 +1,55 @@
+/* Building · the dossier (design/2026-09-building, candidate C): the kraft stock and its index tabs, on two pages.
+   On the board (Building.dc.html, lib/building/dossier.js) a card with pages keeps its dossier behind it: at rest its
+   index tabs peek past the card's right edge; in your hand it slides out from under the card, open at its contents
+   sheet, with the tabs down its fore-edge, or on its top edge where the window has no room beside it.
+   Kraft is the tabs' paper. Every small text on it is --ink (7.57:1; --soft and --pencil read 3.31 and 3.07:1 there),
+   and the pen on it is --mark-deep (3.45:1, pen.css: the coral multiplied by kraft is 2.86:1). The wheat band's wash is
+   1.11:1 on kraft; on the board nothing is current, so nothing on kraft is banded there (on the project pages the
+   current tab is, and its darker edge carries the state). */
+
+/* ---- page tokens (site tokens live in site-tokens.css) ---- */
+:root{
+  --kraft:#D8C29A;--kraft-edge:#6E5A3A;          /* the dossier's kraft stock and its cut edge (3.8:1, an edge, never text) */
+}
+
+/* ---- the index tab: kraft, cut off the sheet's edge, a way into its chapter ---- */
+.dos-tab{display:flex;align-items:center;gap:8px;min-width:118px;height:31px;margin-left:-10px;padding:0 10px 0 18px;border:1px solid var(--kraft-edge);border-left:0;border-radius:0 9px 9px 0;background:var(--kraft);color:var(--ink);font:10.5px/1 var(--util);letter-spacing:.01em;white-space:nowrap}
+.dos-tab svg{width:13px;height:13px;flex:none}
+.dt-n{font-weight:600}
+
+/* ---- on the board, at rest: the index tabs peek from behind the card, one per chapter, numbers only ---- */
+.dos-peek{position:absolute;z-index:0;top:44px;right:-17px;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.slot--featured .dos-peek{top:30px}
+.dos-edge{display:flex;align-items:center;justify-content:flex-end;width:40px;height:25px;padding-right:4px;border:1px solid var(--kraft-edge);border-left:0;border-radius:0 7px 7px 0;background:var(--kraft);color:var(--ink);font:600 8px/1 var(--util);font-style:normal}
+.dos-peek.out{transform:translateX(-26px)}   /* the dossier is out: its tabs went with it, tucked behind the card (dossier.js) */
+
+/* ---- in your hand: the contents sheet ---- */
+.dos{position:relative;filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(0 -.6px 0 var(--line-strong)) drop-shadow(-6px 16px 20px rgba(60,50,35,.14))}
+.dos-sheet{position:relative;padding:20px 24px 24px;background:var(--paper);border-top:1px dashed var(--line-strong)}
+.dos-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding-bottom:9px;border-bottom:1px solid var(--line-strong);color:var(--soft);font:9px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.dos-list{list-style:none;margin:2px 0 0;padding:0}
+.dos-list a{display:grid;grid-template-columns:28px 1fr;column-gap:12px;padding:8px 0 9px;border-bottom:1px dashed color-mix(in srgb,var(--line-strong) 80%,transparent);color:var(--ink)}
+.dl-n{grid-row:span 2;color:var(--pencil);font:10.5px/1.5 var(--util)}
+.dl-t{font:500 16px/1.2 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.01em}
+/* the line sits ≥ 10 px and ≥ 2× the pen's drop under the title's hover line (scripts/verify/pen-spacing.mjs) */
+.dl-l{margin-top:12px;color:var(--pencil);font:9.5px/1.45 var(--util)}
+.dos-fig{margin-top:14px}
+.dos-fig figcaption{margin-bottom:8px;color:var(--pencil);font:9px/1.3 var(--util);letter-spacing:.08em;text-transform:uppercase}
+.fig-line{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 7px;margin:0;padding:0}
+.fig-step span{display:inline-block;padding:5px 9px 6px;border:1.3px solid var(--ink);border-radius:7px 10px 6px 9px;background:var(--paper);color:var(--ink);font:10px/1.2 var(--util);letter-spacing:.01em;white-space:nowrap}
+.dos--one .fig-step span{padding:3px 5px 4px;font-size:8.5px}
+.fig-arrow{color:var(--soft);font:12px/1 var(--util)}
+.fig-exit{margin-top:7px;color:var(--soft);font:9.5px/1.3 var(--util)}
+.dos-p{margin-top:10px;color:var(--note-ink);font-size:14px;line-height:1.55}
+.dos-foot{margin-top:14px}
+.dos-foot .project-meta{margin-top:0;color:var(--pencil)}
+.dos-foot .github-link{margin-top:10px}
+
+/* ---- the index tabs down the sheet's fore-edge, tucked 10 px under it ---- */
+.dos-tabs{position:absolute;z-index:-1;top:52px;left:100%;display:flex;flex-direction:column;gap:6px}
+.dos--one .dos-tab{min-width:150px}
+/* no room beside the sheet: the tabs stand on its top edge, their feet under it; a chapter tab shows its number only */
+.dos--top{display:flex;flex-direction:column;padding-top:12px}
+.dos--top .dos-tabs{position:relative;top:auto;left:auto;order:-1;flex-direction:row;gap:5px;margin:0 0 -5px 16px}
+.dos--top .dos-tab{min-width:0;height:31px;margin:0;padding:0 11px 5px;border:1px solid var(--kraft-edge);border-bottom:0;border-radius:8px 8px 0 0}
+.dos--top .dt-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
