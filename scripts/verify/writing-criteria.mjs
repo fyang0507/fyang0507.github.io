@@ -4,8 +4,8 @@
 //        (used before the page itself was integrated) · WRITING_SHOTS=<prefix> saves screenshots
 // Checks, per width (1440, 1024, 390, 360): no console errors, every request 200, posts-index.js and never
 // posts.js, nothing from /design/, no horizontal overflow, planks (2 / 3 / strip / strip); real pointer paths
-// (hover a spine → the held book is under the pointer → a click there reaches Reading.dc.html?post=<id>), the
-// phone's tap-tap; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
+// (hover a spine → the held book is under the pointer → a click there reaches Reading.dc.html?post=<id>&lang=zh),
+// the phone's tap-tap; a filter reflows and the live readout says "N / 27"; a ledger drag selects a span and Esc
 // clears it; the shelf is one tab stop with arrows and Enter; tabs are a radiogroup and the ledger a
 // multiselectable listbox; a chosen tab is wheat with no coral at rest; keyboard focus draws coral 「 」;
 // Back from Reading leaves no book held; under reduced motion a filter leaves no running animation after
@@ -15,6 +15,7 @@ import fs from 'fs';
 const BASE = process.env.WRITING_BASE || 'http://127.0.0.1:4173/';
 const URL = BASE + 'Writing.dc.html', DRAFT = process.env.WRITING_DRAFT, SHOTS = process.env.WRITING_SHOTS;
 const CORAL = 'rgb(217, 105, 90)';
+const LANG = '&lang=zh';   // a fresh context has no fy-lang, so every book leads to the essay in Chinese (lib/writing/lang.js)
 let fails = 0;
 function check(ctx, name, ok, info) { if (!ok) fails++; ctx.log((ok ? '  ✓ ' : '  ✗ ') + name + (info ? '  ' + info : '')); }
 
@@ -47,7 +48,7 @@ async function pointerPaths(ctx, page, w) {
     const under = await heldAt(page, p), held = (await state(page)).held;
     if (SHOTS && n === 5) await ctx.shot(`${SHOTS}-${w}-held.png`);
     await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), page.mouse.click(p.x, p.y)]);
-    const url = page.url(), ok = under && held === p.id && url.endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id));
+    const url = page.url(), ok = under && held === p.id && url.endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id) + LANG);
     got.push(ok ? 'ok' : `✗ under=${under} held=${held} id=${p.id} url=${url.split('/').pop()}`);
   }
   check(ctx, `pointer paths: held book under the pointer, click reaches Reading ?post=<id> (${w})`, got.every((g) => g === 'ok'), got.join(' · '));
@@ -61,7 +62,7 @@ async function phoneTaps(ctx, page, w) {
     await tap(p.x, p.y); await page.waitForTimeout(1500);
     const under = await heldAt(page, p);
     await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), tap(p.x, p.y)]);
-    const ok = under && page.url().endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id));
+    const ok = under && page.url().endsWith('Reading.dc.html?post=' + encodeURIComponent(p.id) + LANG);
     got.push(ok ? 'ok' : `✗ under=${under} url=${page.url().split('/').pop()}`);
   }
   check(ctx, `phone: tap a spine, tap the book it becomes → Reading ?post=<id> (${w})`, got.every((g) => g === 'ok'), got.join(' · '));
@@ -135,7 +136,7 @@ export default async (page, ctx) => {
   const moved = await page.evaluate(() => document.activeElement.classList.contains('bk-hit') && document.activeElement.dataset.i === '1');
   const id = await page.evaluate(() => document.activeElement.dataset.post);
   await Promise.all([page.waitForURL(/Reading\.dc\.html\?post=/, { timeout: 6000 }).catch(() => {}), page.keyboard.press('Enter')]);
-  check(ctx, 'arrow walks the shelf, Enter opens the focused book', moved && page.url().endsWith('?post=' + encodeURIComponent(id)), page.url().split('/').pop());
+  check(ctx, 'arrow walks the shelf, Enter opens the focused book', moved && page.url().endsWith('?post=' + encodeURIComponent(id) + LANG), page.url().split('/').pop());
   await page.goBack({ waitUntil: 'load' }); await page.waitForTimeout(900);
   const back = await page.evaluate(() => ({ persisted: performance.getEntriesByType('navigation')[0]?.type, held: document.querySelector('[data-mount=writing]').dataset.held || '', open: document.querySelectorAll('.book.held').length, opening: document.querySelector('[data-mount=writing]').hasAttribute('data-opening') }));
   check(ctx, 'Back from Reading leaves no book held', !back.held && !back.open && !back.opening, JSON.stringify(back));
@@ -187,7 +188,7 @@ export default async (page, ctx) => {
   await page.keyboard.down('Meta'); await page.mouse.click(m.x, m.y); await page.keyboard.up('Meta');
   const tab = await popup; await page.waitForTimeout(300);
   const tabUrl = tab ? tab.url() : ''; if (tab) await tab.close();
-  check(ctx, 'the held book is a link; ⌘-click opens the essay in a new tab', link === 'Reading.dc.html?post=' + encodeURIComponent(m.id) && /Reading\.dc\.html\?post=/.test(tabUrl) && /Writing\.dc\.html/.test(page.url()) && !(await page.evaluate(() => document.querySelector('[data-mount=writing]').hasAttribute('data-opening'))), `href ${link} · new tab ${tabUrl.split('/').pop()}`);
+  check(ctx, 'the held book is a link; ⌘-click opens the essay in a new tab', link === 'Reading.dc.html?post=' + encodeURIComponent(m.id) + LANG && /Reading\.dc\.html\?post=/.test(tabUrl) && /Writing\.dc\.html/.test(page.url()) && !(await page.evaluate(() => document.querySelector('[data-mount=writing]').hasAttribute('data-opening'))), `href ${link} · new tab ${tabUrl.split('/').pop()}`);
   // the keyboard's book is kept in view, obi included
   for (const [w, h] of [[1280, 800], [1024, 700]]) {
     await open(page, w, h);
