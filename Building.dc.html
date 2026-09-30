@@ -7,7 +7,6 @@
 <meta name="description" content="Projects, systems, and experiments by Fred Yang.">
 <link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="./favicon.png">
-<script src="./lib/shared/support.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Caveat:wght@500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
@@ -26,7 +25,7 @@
 <script src="./lib/shared/pen-tier.js" defer fetchpriority="high"></script>
 <script src="./lib/shared/site.js" defer fetchpriority="high"></script>
 <script src="./content/building-projects.js" defer fetchpriority="high"></script>
-<script type="module" src="./lib/building/board.js" fetchpriority="high"></script>
+<script type="module" src="./lib/building/board.js" blocking="render" fetchpriority="high"></script>
 <link rel="modulepreload" href="./lib/building/cards.js" fetchpriority="high">
 <link rel="modulepreload" href="./lib/building/physics.js" fetchpriority="low">
 <link rel="modulepreload" href="./lib/building/unpin.js" fetchpriority="low">
@@ -50,7 +49,6 @@
     </nav>
   </header>
 </div>
-<x-dc>
 <div class="building-page" data-screen-label="building">
   <main class="building-stage" id="main-content">
     <section class="building-intro" aria-labelledby="building-title">
@@ -62,7 +60,7 @@
       </header>
     </section>
 
-    <div class="board-host" data-mount="board"></div>
+    <div class="board-host"></div>
     <noscript>
       <div class="no-script-list">
         <ul>
@@ -79,6 +77,5 @@
     <div class="util building-figure">fig.02</div>
   </main>
 </div>
-</x-dc>
 </body>
 </html>

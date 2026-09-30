@@ -30,11 +30,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .building-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 4vw 64px}
 .building-stage{width:min(1180px,100%);margin-top:38px}
 .building-intro{display:block}
-.board-host{margin-top:26px;container-type:inline-size}
-/* Until the board is built, its footprint is held: the cork's padding, toolbar and viewport around the track's
-   min-height (the cards never exceed it), in the same container units the cork uses. Nothing below jumps. */
-.board-host:empty::before{content:"";display:block;box-sizing:border-box;height:calc(2px + clamp(14px,2.4cqw,28px) + 52px + 24px + 560px + 32px + clamp(18px,2.6cqw,30px));border:1px solid rgba(140,120,85,.22);border-radius:clamp(12px,1.4cqw,16px);background:var(--board) linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px) 0 0/28px 28px}
-@container (max-width:640px){.board-host:empty::before{height:calc(2px + clamp(14px,2.4cqw,28px) + 52px + 24px + 640px + 32px + clamp(18px,2.6cqw,30px))}}
+.board-host{margin-top:26px}
 .no-script-list{margin-top:26px;padding:24px;border:1px solid var(--line-strong);background:var(--paper)}
 .no-script-list ul{padding-left:20px}
 .no-script-list a{border-bottom:1px solid var(--pencil)}
