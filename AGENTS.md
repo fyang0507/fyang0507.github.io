@@ -6,11 +6,11 @@ This is a dependency-free static personal website exported as standalone `.dc.ht
 
 - Entry page: `index.html` (static markup; no `<x-dc>` and no `support.js`)
 - Shared code: `lib/shared/`
-  - Browser runtime: `support.js` (renders each `.dc.html` page's `<x-dc>` template)
+  - Browser runtime: `support.js` (renders each templated `.dc.html` page's `<x-dc>` template)
   - Tokens and first-paint base: `site-tokens.css` (the one `:root`, the shared `@font-face` rules, the `.site-top` header frame)
   - Header and object-tab nav: `site-nav.css` (the `building/` sub-sites load it too)
   - Motion and pen modules: `motion.js` (`window.Motion`: the two clocks, springs, sleeping loops, reduced motion), `pen.js` (`window.Pen`: seeded hand strokes and the point arrow), `pen-tier.js` (`TierMark`, `FocusMark`, `Tier.wire`: the pen's states), `pen.css`
-  - Page glue: `site.js` (`FY.mount`, the nav's pen marks)
+  - Page glue: `site.js` (`FY.mount`, `FY.styled`, the nav's pen marks)
   - Cross-document view transitions: `transitions.js` (home ↔ page, and the shared plumbing), `transitions-tab.js` (page → page), `transitions.css`
 - Page code: `lib/<page>/` (`home`, `writing`, `building`, `gallery`, `about`, `reading`), each with its own `<page>.css`
 - Local fonts: `fonts/`
@@ -49,7 +49,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
 
 ## Page architecture
 
-- Every `.dc.html` page has three layers:
+- Every templated `.dc.html` page (all but `Building.dc.html`) has three layers:
   - a static header before `<x-dc>`: `<div class="site-top"><header class="site-shell-header" id="site-nav">`;
   - the `<x-dc>` template, which holds only static template text;
   - interactive surfaces from `lib/<page>/*.js`, which mount into an empty template host through `FY.mount('[data-mount=<name>]', fn)`.
@@ -57,7 +57,7 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - Keep the header's class names.
   - `.site-rule` and `.site-tabmark` stay the last two children of `.site-index`.
   - Put no inline styles, animation classes or `view-transition-name` on header parts.
-- Head order on every `.dc.html` page (the shared files are in `lib/shared/`):
+- Head order on every templated `.dc.html` page (the shared files are in `lib/shared/`):
   1. `support.js`, first, so React's fetch from unpkg starts before the stylesheets claim the connections (the page's largest paint waits for React). Don't preload React: arriving before parsing ends makes support.js wait for DOMContentLoaded.
   2. `site-tokens.css`, `site-nav.css`, `pen.css`, `transitions.css`, `lib/<page>/<page>.css`
   3. the `expect` link
@@ -69,6 +69,11 @@ When changing a home destination, keep all of these in sync in `index.html`: the
   - its `expect` target is `#desk`;
   - a small inline script before `motion.js` decides whether the opener plays;
   - the desk, the opener stage and the phone shots are static markup driven by `lib/home/`.
+- `Building.dc.html` works like `index.html`: nothing on it is templated, so it has no `support.js`, `<x-dc>` or `<helmet>`.
+  - The intro, the board host (`.board-host`), the `<noscript>` list and `fig.02` are static markup after the static header.
+  - Its head keeps the order above without `support.js`, and its `expect` target stays `#site-nav`.
+  - `lib/building/board.js` loads as `type="module" blocking="render"` and builds the board as it evaluates, so every card exists at first render and at `pagereveal`, where a view transition captures the page.
+  - Building the markup measures nothing. What measures (the physics, unpin, the flower, the pen) waits for `FY.styled`, because WebKit runs deferred scripts and modules before the head's stylesheets apply.
 - support.js takes the page template from the first literal `<x-dc>` in the raw page text. Never write that string anywhere before the real element: not in a head comment, a script or the static header.
 - Keep mount hosts out of any `sc-if` that can flip. A re-render replaces the host, and the module mounts again from scratch.
 - `transitions.css` assigns every view-transition name. Set `view-transition-name` nowhere else, and render one element per name per document:

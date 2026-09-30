@@ -2,10 +2,11 @@
 //   node /tmp/fyshot/run.mjs scripts/verify/building-board.mjs
 //   env: BASE (default http://127.0.0.1:4173/) · SHOTS (screenshot prefix, default /tmp/fyshot/p2b)
 // At 1440×900, 390×844 and 360×800: 0 console errors, every request 200, no /design/, posts.js or font
-// masters, no horizontal overflow, the project count, the F1 flower on the lead card with an ink pin, no
-// arrow element, no coral stroke at rest, every interactive element reaching coral 「 」 by keyboard,
-// the dialog (Enter unpins, Tab stays inside, Esc re-pins and returns focus), and reduced motion (no
-// running animation after settle, the flower present, hover does nothing). Exit code 1 on any failure.
+// masters, no horizontal overflow, the project count, every card on the board at pagereveal (where a view
+// transition captures the page), the F1 flower on the lead card with an ink pin, no arrow element, no
+// coral stroke at rest, every interactive element reaching coral 「 」 by keyboard, the dialog (Enter
+// unpins, Tab stays inside, Esc re-pins and returns focus), and reduced motion (no running animation
+// after settle, the flower present, hover does nothing). Exit code 1 on any failure.
 
 const BASE = process.env.BASE || 'http://127.0.0.1:4173/';
 const SHOTS = process.env.SHOTS || '/tmp/fyshot/p2b';
@@ -25,6 +26,7 @@ async function open(browser, w, h, opts = {}) {
     if (/\/content\/posts\.js/.test(u)) bad.push('requests posts.js');
     if (/\/fonts\/[^/]+\.woff2/.test(u)) bad.push('requests a font master: ' + u);
   });
+  await page.addInitScript(() => addEventListener('pagereveal', () => { window.__revealSlots = document.querySelectorAll('.cork .slot').length; }));
   if (process.env.BUILDING_PRE) await (await import(process.env.BUILDING_PRE)).devSetup(page);
   await page.goto(BASE + 'Building.dc.html', { waitUntil: 'load' });
   await page.waitForSelector('.cork .slot--lead .stk', { state: 'attached', timeout: 10000 });
@@ -42,7 +44,7 @@ const staticFacts = (page) => page.evaluate(({ CORAL, INK }) => {
   }).length;
   return {
     overflow: document.documentElement.scrollWidth - innerWidth,
-    count: ($('[data-project-count]') || {}).textContent || '', projects: (window.BUILDING_PROJECTS || []).length, slots: document.querySelectorAll('.cork .slot').length,
+    count: ($('[data-project-count]') || {}).textContent || '', projects: (window.BUILDING_PROJECTS || []).length, slots: document.querySelectorAll('.cork .slot').length, revealSlots: window.__revealSlots,
     flower: !!(lead && lead.querySelector('.wm-mark .stk') && vis(lead.querySelector('.stk'))),
     leadPin: lead ? getComputedStyle(lead.querySelector('.pin-head')).fill === INK : false,
     arrow: document.querySelectorAll('svg.pt, .pt-s').length,
@@ -81,6 +83,7 @@ export default async (page0, ctx) => {
     const f = await staticFacts(page);
     note(f.overflow <= 0, `${w}: no horizontal overflow (${f.overflow}px)`);
     note(f.slots === f.projects && f.count.includes(f.projects + ' 件'), `${w}: data-project-count "${f.count}" = ${f.projects} projects on the board`);
+    note(f.revealSlots === f.projects, `${w}: every card on the board at pagereveal (${f.revealSlots}/${f.projects})`);
     note(f.flower, `${w}: F1 flower on the lead card`);
     note(f.leadPin, `${w}: lead pin is ink`);
     note(f.arrow === 0, `${w}: no arrow element`);
