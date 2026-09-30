@@ -4,6 +4,10 @@ Fred's brief: "Can we be more creative in this promo video? This is a case for y
 
 Execution mode: **multi-stage** (the visual guide's workflow). This is stage 1: three genuinely different directions, each as a finished 12-second style test, a treatment of the whole film and a storyboard. Stage 2 (the full film in one direction) waits for Fred's pick.
 
+**v1.3 is in [`v1.3/`](v1.3/README.md)**: v1.1's 30 s cut unchanged as part 1, the promo, and appended to it the site before #17 as one camera on part 1's route (part 2), at 16:9 and 9:16, plus part 1 alone. The long film stays v1.2's.
+
+**v1.2 is in [`v1.2/`](v1.2/README.md)**: the 30 s cuts rebuilt around interleaved before/after comparisons with stamps, and the long film with another essay in Reading.
+
 **v1.1 is in [`v1.1/`](v1.1/README.md)**: v1 with Demos (#37), the film's own hand, and footage re-recorded on main (321ee2c) at a true DPR 2, with DPR 3 close-ups. Erratum for v1: its footage is 1280 × 1000 (1×), not DPR 2 as v1's README says. `Page.captureScreenshot` returns CSS pixels unless its clip asks for a scale, whatever the context's deviceScaleFactor. The recorder now asks for one.
 
 **Stage 2b, v1, is in [`v1/`](v1/README.md)**: the film at 1:28, 1080p60, and its 30 s cuts at 16:9 and 9:16. It's one real take of the site recorded on a virtual clock (`cap/`, deterministic, 60 fps and 180 fps for the ⅓× replays, DPR 2), one camera with one match cut, and the site before #17 under the page before seven clicks. It follows the critic's notes on the rough cut ([`rough/CRITIQUE.md`](rough/CRITIQUE.md)).
