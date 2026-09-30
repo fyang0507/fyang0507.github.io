@@ -3,8 +3,8 @@
 //   node /tmp/fyshot/run.mjs scripts/verify/vt-project.mjs
 //   env: VT_ORIGIN (:4173) · VT_W (1440,390) · SHOTS (/tmp/fyshot/vt-project) · WEBKIT=0 skips WebKit
 //        PJ_BEFORE=1 unnames the card and the sheet (the round-3 bug): the layering checks must then fail
-// Every move (the way in by a dossier tab and by the card's own link, the way back, a chapter later and earlier, and
-// home ↔ Building, a project page ↔ home and Writing):
+// Every move, for Fred Agent and NJJoe (the way in by a dossier tab and by the card's own link, the way back, a chapter
+// later and earlier), and home ↔ Building, a project page ↔ home and Writing:
 //   · its kind, ready resolves (a duplicate name would abort it) and it finishes; fy-vt is consumed; no overflow after;
 //   · one element per name on both sides (counted at pageswap and at ready), and the names each move needs;
 //   · compositor only: every animation it adds moves only transform or opacity, and Chrome's trace composites every
@@ -15,22 +15,25 @@
 // most-overlapped pose is shot; a chapter move leaves nothing covering a tab at rest;
 // every project move's last frame: each group ends within 1 px of its element, the tabs inside the cork on the board;
 // after the way back lands, the card's pin is pushed in and the lead card's flower pressed with it (its re-pin cue);
-// the card you came back from (R1): NJJoe after the board was scrolled to its end, two chapter hops and 10 s, and Fred
-// Agent after a Back to a board left scrolled away, each inside the cork, its pin pushed in only after a move;
+// the card you came back from (R1): NJJoe, taken by its link, after two chapter hops and 10 s, and Fred Agent after a
+// Back to a board left scrolled away, each inside the cork, its pin pushed in only after a move;
 // the back/forward cache: Back to a board left with its dossier out restores it (persisted), closes the dossier at once,
 // clears the names its pageswap set, and the move's ready resolves; Back to a board left under 2 s after a pan swings no
 // slip and lands within 1 px; without the Navigation API, a restored board ignores its stale referrer;
 // reduced motion: no transition, no pin hidden or pressed; WebKit: every move lands, with its own transitions or a hard
-// cut (it reports which), recorded to video (its screenshots are blank during a transition); 0 console or page errors.
+// cut (it reports which), recorded to video (its screenshots are blank during a transition); 0 console or page errors anywhere, a skipped
+// transition's rejection included.
 import { ORIGIN, hook, seek, drawn, check, bfcache, webkit } from './vt-lib.mjs';
 import fs from 'fs';
 
 const B = ORIGIN + '/', SHOTS = process.env.SHOTS || '/tmp/fyshot/vt-project', BEFORE = process.env.PJ_BEFORE === '1';
-const TABS = [1, 2, 3, 4, 5].map((n) => 'pj-tab-' + n), CARD = 'pj-card', SHEET = 'pj-sheet';
-const FA = 'building/fred-agent/', NJ = '.slot[data-id="njjoe"]', FAS = '.slot[data-id="fred-agent"]';
+const TABS = [1, 2, 3, 4, 5].map((n) => 'pj-tab-' + n), TABS3 = TABS.slice(0, 3), CARD = 'pj-card', SHEET = 'pj-sheet';
+const FA = 'building/fred-agent/', NJP = 'building/njjoe/', NJ = '.slot[data-id="njjoe"]', FAS = '.slot[data-id="fred-agent"]';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const area = (a, b) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
 const click = (page, sel) => page.evaluate((s) => document.querySelector(s).click(), sel);
+// NJJoe is the board's second card: one step along brings it into view, as a reader would before taking it
+const toNJJoe = async (p) => { await p.focus('.cork-viewport'); await p.keyboard.press('ArrowRight'); await sleep(1300); };
 const MOVES = {
   'in · the card\'s own link': { from: 'Building.dc.html', go: FAS + ' .project-cta', url: /fred-agent\/$/, kind: 'in', part: 'old', old: TABS.concat(CARD), now: TABS },
   'in · a dossier tab': { from: 'Building.dc.html', prep: async (p) => { await click(p, FAS + ' .swing'); await sleep(1700); }, go: '.dos-tabs .dos-tab:nth-child(3)', url: /principles/, kind: 'in', part: 'old', old: TABS.concat(CARD, SHEET), now: TABS },
@@ -38,6 +41,11 @@ const MOVES = {
   'out · the building tab': { from: FA + 'demos.html', go: '.site-tab--building', url: /Building/, kind: 'out', old: TABS, now: TABS.concat(CARD) },
   'chapter · later': { from: FA + 'index.html', go: '.pj-tabs a[href*="principles"]', url: /principles/, kind: 'chapter', old: TABS, now: TABS },
   'chapter · earlier': { from: FA + 'principles.html', go: '.pj-tabs a[href*="system"]', url: /system/, kind: 'chapter', old: TABS, now: TABS },
+  'NJJoe in · its own link': { from: 'Building.dc.html', prep: toNJJoe, go: NJ + ' .featured-cta', url: /njjoe\/$/, kind: 'in', part: 'old', card: NJ, old: TABS3.concat(CARD), now: TABS3 },
+  'NJJoe in · a dossier tab': { from: 'Building.dc.html', prep: async (p) => { await toNJJoe(p); await click(p, NJ + ' .swing'); await sleep(1700); }, go: '.dos-tabs .dos-tab:nth-child(2)', url: /microsite/, kind: 'in', part: 'old', card: NJ, old: TABS3.concat(CARD, SHEET), now: TABS3 },
+  'NJJoe out · the way back': { from: NJP + 'apa.html', go: '.pj-back', url: /Building/, kind: 'out', part: 'new', card: NJ, old: TABS3, now: TABS3.concat(CARD) },
+  'NJJoe chapter · later': { from: NJP + 'index.html', go: '.pj-tabs a[href*="apa"]', url: /apa/, kind: 'chapter', old: TABS3, now: TABS3 },
+  'NJJoe chapter · earlier': { from: NJP + 'apa.html', go: '.pj-tabs a[href*="microsite"]', url: /microsite/, kind: 'chapter', old: TABS3, now: TABS3 },
   'home → Building': { from: 'index.html?opx=1&opener=none', go: 'a[href="Building.dc.html"][aria-label]', visible: true, url: /Building/, kind: 'enter' },
   'Building → home': { from: 'Building.dc.html', go: '.site-home', url: /index\.html/, kind: 'leave' },
   'project → home': { from: FA + 'system.html', go: '.site-home', url: /index\.html/, kind: 'leave' },
@@ -188,37 +196,37 @@ export default async (_page, ctx) => {
       await page.evaluate(() => sessionStorage.setItem('vt-freeze', '1'));
       const r = await arrive(page, going(page, m), m.url), end = Math.max(...r.anims.map((a) => a.dur));
       if (m.part) {
-        const ps = await poses(page, m.part, end, FAS), s = summary(ps);
+        const ps = await poses(page, m.part, end, m.card || FAS), s = summary(ps);
         check(res, T(name + ': no tab drawn over the card (or the sheet) it is under at rest, pose by pose'), !s.tabsAbove && (m.kind !== 'out' || s.overlapping), s);
         if (m.kind === 'out' && m.part) {
           const worst = ps.filter((p) => p.cover > 1).sort((a, b) => b.cover - a.cover)[0];
-          if (worst) { const to = `${SHOTS}/way-back-${w}-${BEFORE ? 'before' : 'after'}.png`; await seek(page, worst.t); await page.screenshot({ path: to }); ctx.log('saved ' + to + ' (' + worst.t + ' ms)'); }
+          if (worst) { const to = `${SHOTS}/way-back-${m.card ? 'njjoe-' : ''}${w}-${BEFORE ? 'before' : 'after'}.png`; await seek(page, worst.t); await page.screenshot({ path: to }); ctx.log('saved ' + to + ' (' + worst.t + ' ms)'); }
         }
       }
       await seek(page, end);
       const now = await quads(page, m.now, 'new'), el = await boxes(page), gap = Math.max(0, ...Object.keys(el.els).map((n) => (now[n] ? off(now[n], el.els[n]) : 99)));
       const outside = m.kind === 'out' ? Object.keys(el.els).filter((n) => n !== CARD && (el.els[n].x < el.cork.x - 1 || el.els[n].x + el.els[n].w > el.cork.x + el.cork.w + 1)) : [];
-      check(res, T(name + ': its last frame is the settled page, every group within 1 px of its element' + (m.kind === 'out' ? ', the tabs inside the cork' : '')), Object.keys(el.els).length >= 5 && gap <= 1 && !outside.length, { groups: Object.keys(el.els).length, px: +gap.toFixed(2), outside });
+      check(res, T(name + ': its last frame is the settled page, every group within 1 px of its element' + (m.kind === 'out' ? ', the tabs inside the cork' : '')), Object.keys(el.els).length >= m.now.length && gap <= 1 && !outside.length, { groups: Object.keys(el.els).length, px: +gap.toFixed(2), outside });
       await page.evaluate(() => document.getAnimations().forEach((a) => { if (a.effect && a.effect.pseudoElement) a.finish(); }));
       await sleep(900);
       if (m.kind === 'out') {
-        const pin = await page.evaluate(() => ({ hidden: getComputedStyle(document.querySelector('.slot[data-id="fred-agent"] .board-pin')).visibility, pressed: window.__pins.filter((p) => p.id === 'fred-agent').length, flower: document.querySelector('.slot[data-id="fred-agent"]').dataset.flowerCause || null, names: document.querySelectorAll('.fy-vt-tabs, .fy-vt-card, .fy-vt-sheet').length }));
-        check(res, T(name + ': after the landing the pin is pushed in, the lead card\'s flower pressed with it, and the names are gone'), pin.hidden === 'visible' && pin.pressed === 1 && pin.flower === 're-pin' && !pin.names, pin);
+        const id = m.card ? 'njjoe' : 'fred-agent', pin = await page.evaluate((id) => ({ hidden: getComputedStyle(document.querySelector(`.slot[data-id="${id}"] .board-pin`)).visibility, pressed: window.__pins.filter((p) => p.id === id).length, flower: document.querySelector('.slot[data-id="fred-agent"]').dataset.flowerCause || null, names: document.querySelectorAll('.fy-vt-tabs, .fy-vt-card, .fy-vt-sheet').length }), id);
+        check(res, T(name + ': after the landing the pin is pushed in' + (m.card ? '' : ', the lead card\'s flower pressed with it') + ', and the names are gone'), pin.hidden === 'visible' && pin.pressed === 1 && (m.card || pin.flower === 're-pin') && !pin.names, pin);
       }
     }
 
-    // the card you came back from (R1): NJJoe, after the board was scrolled to its end, two hops and 10 s (a hard cut).
-    // NJJoe's pages take no view transition until they are ported (PR 4): taken by its link, the board offers one and
-    // Chromium logs the skipped transition's rejection on NJJoe's page, so the test goes there as a typed URL does
+    // the card you came back from (R1): NJJoe, taken by its own link from a board stepped along to it, two chapter hops
+    // and 10 s (past fy-vt's FRESH), then the way back to a fresh board, which starts at its first card
     await page.goto(B + 'Building.dc.html', { waitUntil: 'load' }); await sleep(1100);
-    await page.focus('.cork-viewport'); await page.keyboard.press('End'); await sleep(1400);
-    await page.goto(B + 'building/njjoe/', { waitUntil: 'load' }); await sleep(500);
-    await click(page, '.case-nav a[href*="microsite"]'); await page.waitForURL(/microsite/); await sleep(500);
-    await click(page, '.case-nav a[href*="apa"]'); await page.waitForURL(/apa/); await sleep(10500);
-    let r = await arrive(page, () => click(page, '.case-back'), /Building/);
+    await toNJJoe(page);
+    let r = await arrive(page, () => click(page, NJ + ' .featured-cta'), /njjoe\/$/); await sleep(600);
+    const hops = [r.kind];
+    r = await arrive(page, () => click(page, '.pj-tabs a[href*="microsite"]'), /microsite/); hops.push(r.kind); await sleep(600);
+    r = await arrive(page, () => click(page, '.pj-tabs a[href*="apa"]'), /apa/); hops.push(r.kind); await sleep(10500);
+    r = await arrive(page, () => click(page, '.pj-back'), /Building/); hops.push(r.kind);
     await sleep(1500);
-    let at = await page.evaluate((sel) => { const v = document.querySelector('.cork-viewport').getBoundingClientRect(), s = document.querySelector(sel), b = [s, s.querySelector('.dos-peek')].map((n) => n.getBoundingClientRect()); return { l: Math.min(...b.map((x) => x.left)) - v.left, r: Math.max(...b.map((x) => x.right)) - v.right, hidden: window.__pinHidden, pressed: window.__pins.length }; }, NJ);
-    check(res, T('R1 · NJJoe after the board\'s end, two hops and 10 s: brought into the cork, pinned, no pin hidden or pressed (no move)'), !r.vt && at.l >= 0 && at.r <= 0 && !at.hidden && !at.pressed, at);
+    let at = await page.evaluate((sel) => { const v = document.querySelector('.cork-viewport').getBoundingClientRect(), s = document.querySelector(sel), b = [s, s.querySelector('.dos-peek')].map((n) => n.getBoundingClientRect()); return { l: Math.min(...b.map((x) => x.left)) - v.left, r: Math.max(...b.map((x) => x.right)) - v.right, pressed: window.__pins.filter((p) => p.id === 'njjoe').length }; }, NJ);
+    check(res, T('R1 · NJJoe by its link, two chapter hops and 10 s, then back: every hop a move, the card brought into the cork, its pin pressed after the landing'), hops.join() === 'in,chapter,chapter,out' && at.l >= 0 && at.r <= 0 && at.pressed === 1, Object.assign(at, { hops }));
     // Fred Agent, after a Back to a board left scrolled to its end (from the back/forward cache, with the way back)
     await page.goto(B + 'Building.dc.html', { waitUntil: 'load' }); await sleep(1100);
     await page.focus('.cork-viewport'); await page.keyboard.press('End'); await sleep(1400);
@@ -267,7 +275,7 @@ export default async (_page, ctx) => {
       const r = await arrive(page, going(page, m), m.url), end = Math.max(...r.anims.map((a) => a.dur));
       await seek(page, end);
       const now = await quads(page, m.now, 'new'), el = await boxes(page), gap = Math.max(0, ...Object.keys(el.els).map((n) => (now[n] ? off(now[n], el.els[n]) : 99)));
-      check(res, '360 ' + name + ': its last frame is the settled page, every group within 1 px of its element', Object.keys(el.els).length >= 5 && gap <= 1, { groups: Object.keys(el.els).length, px: +gap.toFixed(2) });
+      check(res, '360 ' + name + ': its last frame is the settled page, every group within 1 px of its element', Object.keys(el.els).length >= m.now.length && gap <= 1, { groups: Object.keys(el.els).length, px: +gap.toFixed(2) });
       await page.evaluate(() => document.getAnimations().forEach((a) => { if (a.effect && a.effect.pseudoElement) a.finish(); })); await sleep(600);
     }
     await page.context().close();
@@ -277,7 +285,7 @@ export default async (_page, ctx) => {
   {
     const page = await open({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
     const seen = [];
-    for (const name of ['in · the card\'s own link', 'chapter · later', 'out · the way back']) {
+    for (const name of ['in · the card\'s own link', 'chapter · later', 'out · the way back', 'NJJoe in · a dossier tab', 'NJJoe out · the way back']) {
       const m = MOVES[name];
       await begin(page, m);
       const r = await arrive(page, going(page, m), m.url);
@@ -296,7 +304,7 @@ export default async (_page, ctx) => {
     await page.context().addInitScript(() => Object.defineProperty(window, 'navigation', { value: undefined, configurable: true }));
     const x = () => page.evaluate(() => new DOMMatrix(getComputedStyle(document.querySelector('.cork-track')).transform).m41);
     await page.goto(B + 'building/njjoe/', { waitUntil: 'load' }); await sleep(600);
-    await arrive(page, () => click(page, '.case-back'), /Building/); await sleep(1400);
+    await arrive(page, () => click(page, '.pj-back'), /Building/); await sleep(1400);
     const fresh = await x();
     await page.focus('.cork-viewport'); await page.keyboard.press('Home'); await sleep(1400);
     await click(page, '.site-tab--about'); await page.waitForURL(/About/); await sleep(1400);
@@ -318,7 +326,7 @@ export default async (_page, ctx) => {
         p.on('console', (m) => { if (m.type() === 'error') errs.push('webkit ' + p.url() + ' ' + m.text()); });
         await hook(c, []);
         const seen = [];
-        for (const name of ['in · the card\'s own link', 'chapter · later', 'out · the way back', 'in · a dossier tab', 'chapter · earlier', 'project → home']) {
+        for (const name of ['in · the card\'s own link', 'chapter · later', 'out · the way back', 'in · a dossier tab', 'chapter · earlier', 'project → home', 'NJJoe in · its own link', 'NJJoe chapter · later', 'NJJoe out · the way back']) {
           const m = MOVES[name];
           await begin(p, m);
           await click(p, m.go); await p.waitForURL(m.url, { timeout: 8000 }); await sleep(1400);
