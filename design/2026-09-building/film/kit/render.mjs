@@ -27,7 +27,8 @@ const unlock = () => { try { fs.rmdirSync(lock); } catch {} };
 process.on('exit', unlock); process.on('SIGINT', () => { unlock(); process.exit(1); });
 
 const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--use-angle=metal', '--enable-gpu-rasterization', '--ignore-gpu-blocklist'] });
-const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+const VW = +arg('w', 1920), VH = Math.round(VW * 9 / 16);   // --w 1280 for a 720p draft (the page reads ?w= too)
+const page = await browser.newPage({ viewport: { width: VW, height: VH }, deviceScaleFactor: 1 });
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
@@ -36,8 +37,8 @@ await page.goto(url, { waitUntil: 'load' });
 await page.waitForFunction(() => window.READY !== undefined, null, { timeout: 60000 });
 const ready = await page.evaluate(() => window.READY);
 if (ready !== true) { console.log('not ready:', ready, errors); await browser.close(); process.exit(1); }
-const { dur, fps, cues } = await page.evaluate(() => ({ dur: window.DUR, fps: window.FPS, cues: window.CUES }));
-if (!arg('page')) fs.writeFileSync(path.join(dir, 'cues.json'), JSON.stringify({ dur, fps, cues }, null, 1));
+const { dur, fps, cues, timeline } = await page.evaluate(() => ({ dur: window.DUR, fps: window.FPS, cues: window.CUES, timeline: window.TIMELINE }));
+if (!arg('page') || rest.includes('--cues')) fs.writeFileSync(path.join(dir, 'cues.json'), JSON.stringify({ dur, fps, timeline, cues }, null, 1));
 
 const frame = async (t) => { await page.evaluate((t) => window.render(t), t); return page.screenshot({ type: 'png' }); };
 const stillsDir = path.join(dir, 'stills'); fs.mkdirSync(stillsDir, { recursive: true });

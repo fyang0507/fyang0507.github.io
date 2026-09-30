@@ -4,6 +4,8 @@ Fred's brief: "Can we be more creative in this promo video? This is a case for y
 
 Execution mode: **multi-stage** (the visual guide's workflow). This is stage 1: three genuinely different directions, each as a finished 12-second style test, a treatment of the whole film and a storyboard. Stage 2 (the full film in one direction) waits for Fred's pick.
 
+**Stage 2a, the rough cut, is in [`rough/`](rough/README.md)**: the whole film (2:07) as one dossier and one camera, every live-footage placement, the before as the page underneath, draft sound and a timing sheet. Fred's notes on stage 1 moved the scope to everything from #17, with the site's own motion recorded live as the star.
+
 Board: <http://127.0.0.1:4218/design/2026-09-building/film/> (serve the repository root; the three tests side by side, their storyboards and the records).
 
 | | Direction | Test | Storyboard |

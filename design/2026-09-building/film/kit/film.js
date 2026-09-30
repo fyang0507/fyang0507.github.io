@@ -117,7 +117,8 @@
   F.film = function (o) {
     window.DUR = o.dur; window.FPS = o.fps || 60; window.CUES = o.cues || [];
     var ready = Promise.resolve(o.setup ? o.setup() : null);
-    window.render = function (t) { o.render(t); return t; };
+    // render may return a promise (a frame that has to load its footage first); the renderer awaits it
+    window.render = function (t) { return Promise.resolve(o.render(t)).then(function () { return t; }); };
     ready.then(function () { o.render(0); window.READY = true; }, function (e) { window.READY = 'error: ' + e.message; console.error(e); });
     // Preview in a normal browser: ?play plays it in real time; ?t=4.2 holds one frame.
     var q = new URLSearchParams(location.search);
