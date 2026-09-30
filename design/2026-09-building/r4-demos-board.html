@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building · round 4 · Demos: the region and its note, as a pair</title>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="./r4-demos.css">
+<script src="../../lib/shared/motion.js" defer></script>
+<script src="../../lib/shared/pen.js" defer></script>
+<script type="module">
+  // the three pointing options, live, on real patches of the captures, drawn once they load; a mouse over a patch redraws it
+  import { highlight } from './r4-demos-hl.js';
+  document.querySelectorAll('.sp-hl').forEach((rg, i) => {
+    const h = highlight(rg, rg.dataset.kind, 'board-' + i);
+    setTimeout(() => h.show(), 300 + i * 60);
+    rg.closest('.pt').addEventListener('pointerenter', () => { h.hide(); setTimeout(() => h.show(), 220); });
+  });
+</script>
+<style>
+body{margin:0;background:#F6F1E6;color:#2B2722;font:16px/1.6 Georgia,serif}
+main{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:34px;line-height:1.15;margin:0 0 10px}
+h2{margin:48px 0 10px;padding-top:18px;border-top:1px solid #2B2722;font-size:22px}
+h3{margin:26px 0 6px;font-size:17px}
+p,li{max-width:78ch}
+code,.k{font:13px/1.5 ui-monospace,Menlo,monospace}
+a{color:#2B2722;text-decoration:underline}
+blockquote{margin:12px 0;padding:4px 0 4px 18px;border-left:2px solid #2B2722;font-style:italic}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;align-items:start;margin-top:14px}
+.row.ph{grid-template-columns:2.6fr 1fr}
+figure{margin:0}
+figure img{display:block;width:100%;height:auto;box-shadow:0 0 0 1px #CFC4AE}
+figcaption{margin-top:6px;color:#5F574C;font:12.5px/1.45 ui-monospace,Menlo,monospace}
+table{border-collapse:collapse;margin-top:10px;font-size:15px}
+td,th{padding:7px 12px 7px 0;border-bottom:1px dashed #CFC4AE;text-align:left;vertical-align:top}
+.q{margin-top:48px;padding:18px 20px;border:1.5px solid #2B2722;background:#FBF7EE}
+.cap td:first-child{white-space:nowrap}
+.was{color:#6D6559}
+/* live specimens on real patches of the captures, at the size they have on the page at 1440 */
+.spec{display:grid;gap:14px;margin-top:16px}
+.sp-row{display:grid;grid-template-columns:170px repeat(3,240px) minmax(150px,1fr);gap:14px;align-items:center}
+.sp-row.hl{grid-template-columns:170px 441px 300px minmax(150px,1fr)}
+.sp-h{font:13px/1.4 ui-monospace,Menlo,monospace}
+.sp-h b{display:block;font:600 15px/1.3 Georgia,serif}
+.sp-h.rec b::after{content:" · recommended";color:#6D6559;font-weight:400}
+.pt{position:relative;width:240px;height:150px;background-repeat:no-repeat;box-shadow:0 0 0 1px #CFC4AE;overflow:hidden}
+.pt i.at{position:absolute;left:120px;top:75px;width:0;height:0}
+.pt .rg-m{pointer-events:none}
+.sp-cols{display:grid;grid-template-columns:170px repeat(3,240px) minmax(150px,1fr);gap:14px;color:#5F574C;font:12px/1.4 ui-monospace,Menlo,monospace}
+.sp-cols.hl{grid-template-columns:170px 441px 300px minmax(150px,1fr)}
+.sp-leg{display:flex;flex-direction:column;gap:14px;padding:14px 16px;background:var(--paper);box-shadow:0 0 0 1px #CFC4AE;font:500 16px/1.3 "Fraunces",serif}
+.sp-leg>span{display:flex;align-items:center;gap:12px}
+.sp-leg small{color:#6D6559;font:11px/1.3 ui-monospace,Menlo,monospace}
+.tp{background-image:url("../../assets/fred-agent/demo/trash-patrol.png");background-size:911px auto}
+.di{background-image:url("../../assets/fred-agent/demo/discord-intake.png");background-size:360px auto;background-color:#fff}
+.pt.wide{width:441px;height:220px}
+.pt.mid{width:300px;height:170px}
+.sp-hl{position:absolute;color:var(--pen)}
+.sp-hl .rg-m{position:absolute}
+/* round 3's B, for comparison: a 2.25 px ring and a paper halo, nothing outside it */
+.r3b .mk{border-width:2.25px;box-shadow:0 0 0 3px rgba(251,246,236,.94),0 3px 7px 2px rgba(20,18,15,.3)}
+.r3b .mk.on{box-shadow:0 0 0 3px rgba(251,246,236,.94),0 3px 7px 2px rgba(20,18,15,.26)}
+@media (max-width:1100px){.sp-row,.sp-cols,.sp-row.hl,.sp-cols.hl{grid-template-columns:repeat(2,minmax(0,1fr))}.sp-cols{display:none}.sp-h{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<main>
+<p class="k">design/2026-09-building · round 4 · C 档案, the dossier · Demos</p>
+<h1>Demos, round 4: the region and its note as a pair, B tuned, the pen at the region's corners, and play at the centre</h1>
+<p>Fred's notes on round 3 (<a href="./r3-demos-board.html">r3-demos-board.html</a>), in his words:</p>
+<blockquote>The play video button should be more salient, now it's easy to miss if just skimmed through because it's unintuitive, most people will try to find the play button at the center of a video.</blockquote>
+<blockquote>I'd choose B for the marker.</blockquote>
+<blockquote>The current zoom in factor is too aggressive, and the zoomed-in window spends most on image whereas I think we need a balance of the image itself + the explanation notes.</blockquote>
+<blockquote>The hand-sketched circle looks really raw and not elegant; plus when zoomed-in we don't need the circle anymore, it's only needed in the zoomed-out version to direct the attention.</blockquote>
+<p>Live: <a href="./r4-demos.html?h=a">r4-demos.html?h=a</a>, where the pen marks a region's four corners (recommended) · <a href="./r4-demos.html?h=b">?h=b</a>, a thin outline · <a href="./r4-demos.html?h=c">?h=c</a>, a smooth stroke. The switcher in the page's lower-left corner changes how the pen points at a region; "reduced" previews reduced motion. The marker is always B, tuned. Everything else is round 3's: the enlargement still opens over the capture's frame, from the region's own place, and nothing below it moves.</p>
+
+<h2>1 · Play, at the centre of the poster</h2>
+<div class="row ph">
+<figure><img src="shots/r4-demos-video-1440.png" alt="Exhibit 01 at 1440: a paper play disc at the centre of the dimmed poster, with play the recorded run 0:58 typed under it"><figcaption>1440 · a 72 px paper disc at the poster's centre, with the label typed under it</figcaption></figure>
+<figure><img src="shots/r4-demos-video-390.png" alt="Exhibit 01 at 390 with a 64 px play disc"><figcaption>390 · 64 px, and the label and disc together are the tap target</figcaption></figure>
+</div>
+<div class="row">
+<figure><img src="shots/r4-demos-video-hover-1440.png" alt="The play control under a mouse: the disc lifted, the label underlined in coral"><figcaption>Under a mouse, the disc lifts a little and the label takes the pen's coral underline. Keyboard focus gets the coral 「 」.</figcaption></figure>
+</div>
+<ul>
+<li>The control sits where people look for one: a 72 px paper disc (64 px on phones) with a 2.5 px ink ring and an ink triangle, set a little right of centre so it looks centred. It has B's paper halo, hairline and contact shadow, so the play control and the capture markers share one family. The typed label, "play the recorded run 0:58", sits under the disc on a paper slip. It uses the site's paper and ink, not a video player's red.</li>
+<li>A flat ink veil (40 %) holds the poster back until it plays. This poster is a call screen full of round buttons (reply, more, decline, accept), and without the veil the disc read as one more of them. The veil is a flat tint, not a gradient, and it's gone once the video plays.</li>
+<li>The disc, its label, or the poster itself starts playback in place. Nothing downloads before that: the video stays <code>preload="none"</code>.</li>
+<li>Motion: under a mouse the disc scales to 1.07 on the site's settle curve (one small overshoot), and it presses to 0.97. Transform only, and nothing moves under reduced motion.</li>
+</ul>
+
+<h2>2 · Markers: B, the paper token, tuned</h2>
+<p>B keeps its character: a paper disc, an ink numeral and an ink ring. Round 3's B nearly disappeared on white UI, because its paper halo is invisible against white. The tuned B changes three things:</p>
+<ul>
+<li>A firmer ink ring: 2.5 px, up from 2.25.</li>
+<li>An ink hairline at 40 % outside the paper halo, so the token keeps an outer edge on white.</li>
+<li>A two-part contact shadow (2 px tight, 14 px soft), so it sits on the capture instead of in it.</li>
+</ul>
+<p>On dark UI the paper disc already stood out; the hairline and shadow change nothing there. The legend uses the same token, and an open region takes the wheat band. Below, both versions sit live on the same three patches the round-3 board used.</p>
+<div class="spec c-c">
+<div class="sp-cols"><span></span><span>Codex, light UI (Fig. 02)</span><span>Discord, dark UI (Fig. 02)</span><span>a phone capture, white (Fig. 03)</span><span>in the legend · open</span></div>
+<div class="sp-row r3b" data-m="b">
+<div class="sp-h"><b>B · round 3</b>2.25 px ring, paper halo</div>
+<div class="pt tp" style="background-position:-45.3px -106.8px"><i class="at"><span class="rg-m mk"><span>3</span></span></i></div>
+<div class="pt tp" style="background-position:-475.1px -347.6px"><i class="at"><span class="rg-m mk"><span>1</span></span></i></div>
+<div class="pt di" style="background-position:-59.1px -268.3px"><i class="at"><span class="rg-m mk"><span>2</span></span></i></div>
+<div class="sp-leg"><span><span class="mk" style="--mk:28px;font-size:14.5px"><span>2</span></span>Quiet when nothing is owed.</span><span><span class="mk on" style="--mk:28px;font-size:14.5px"><span>2</span></span><small>open: the wheat band</small></span></div>
+</div>
+<div class="sp-row" data-m="b">
+<div class="sp-h rec"><b>B · tuned</b>2.5 px ring, halo, ink hairline, contact shadow</div>
+<div class="pt tp" style="background-position:-45.3px -106.8px"><i class="at"><span class="rg-m mk"><span>3</span></span></i></div>
+<div class="pt tp" style="background-position:-475.1px -347.6px"><i class="at"><span class="rg-m mk"><span>1</span></span></i></div>
+<div class="pt di" style="background-position:-59.1px -268.3px"><i class="at"><span class="rg-m mk"><span>2</span></span></i></div>
+<div class="sp-leg"><span><span class="mk" style="--mk:28px;font-size:14.5px"><span>2</span></span>Quiet when nothing is owed.</span><span><span class="mk on" style="--mk:28px;font-size:14.5px"><span>2</span></span><small>open: the wheat band</small></span></div>
+</div>
+</div>
+<div class="row ph">
+<figure><img src="shots/r4-demos-rest-1440.png" alt="Fig. 02 at rest at 1440 with the tuned B tokens"><figcaption>At rest, 1440 · 30 px tokens on Codex's white UI, on Discord's sidebar and on its message list</figcaption></figure>
+<figure><img src="shots/r4-demos-rest-390.png" alt="Fig. 02 at rest at 390 with the tuned B tokens"><figcaption>At rest, 390 · 32 px tokens, 48 px targets</figcaption></figure>
+</div>
+
+<h2>3 · Pointing at a region: the pen at its edge, never across it</h2>
+<p>Round 3's coral loop was a rough lap that crossed the very text it meant to show. Each option below marks the region's edge and leaves its inside alone. Each draws only while the region is noticed, when a mouse is over its token or its note, or keyboard focus is on the note. There's no coral at rest. The enlargement draws nothing: the region sits in its window with its own token at the corner, and the note beside it says what to look at. Below, each option is live on two real patches. Move the mouse over a patch to redraw its mark.</p>
+<div class="spec c-c">
+<div class="sp-cols hl"><span></span><span>Discord, dark UI (Fig. 02, region 2)</span><span>a phone capture, white (Fig. 03, region 1)</span><span></span></div>
+<div class="sp-row hl" data-m="b">
+<div class="sp-h rec"><b>A · the four corners</b>the pen's 「 」 at each corner, like crop marks on a print</div>
+<div class="pt tp wide" style="background-position:-467.7px -113.8px"><div class="sp-hl" data-kind="a" style="left:36px;top:36px;width:369px;height:148px"><span class="rg-m mk"><span>2</span></span></div></div>
+<div class="pt di mid" style="background-position:7.2px -95.2px"><div class="sp-hl" data-kind="a" style="left:40px;top:40px;width:190px;height:93px"><span class="rg-m mk"><span>1</span></span></div></div>
+<p class="sp-h">Four corners 6 px outside the region, drawn one after another, as the site draws its focus 「 」, and lifted the same way</p>
+</div>
+<div class="sp-row hl" data-m="b">
+<div class="sp-h"><b>B · a thin outline</b>a 1.5 px rounded rule</div>
+<div class="pt tp wide" style="background-position:-467.7px -113.8px"><div class="sp-hl" data-kind="b" style="left:36px;top:36px;width:369px;height:148px"><span class="rg-m mk"><span>2</span></span></div></div>
+<div class="pt di mid" style="background-position:7.2px -95.2px"><div class="sp-hl" data-kind="b" style="left:40px;top:40px;width:190px;height:93px"><span class="rg-m mk"><span>1</span></span></div></div>
+<p class="sp-h">It fades in and out, and nothing is drawn: the cleanest, but it reads as a selection box, a system's mark rather than a hand's</p>
+</div>
+<div class="sp-row hl" data-m="b">
+<div class="sp-h"><b>C · a smooth stroke</b>one pass round a rounded rectangle</div>
+<div class="pt tp wide" style="background-position:-467.7px -113.8px"><div class="sp-hl" data-kind="c" style="left:36px;top:36px;width:369px;height:148px"><span class="rg-m mk"><span>2</span></span></div></div>
+<div class="pt di mid" style="background-position:7.2px -95.2px"><div class="sp-hl" data-kind="c" style="left:40px;top:40px;width:190px;height:93px"><span class="rg-m mk"><span>1</span></span></div></div>
+<p class="sp-h">Round 3's loop, calmed: a steady pass that overshoots its start a little. It's still a closed line drawn round the content</p>
+</div>
+</div>
+<h3>Recommended: A, the four corners</h3>
+<ul>
+<li>It marks exactly the region's extent and touches nothing inside it, so the text the note points at stays clear. It's also the least ink: four short strokes.</li>
+<li>It's the site's own vocabulary. The pen's 「 」 is how the site marks what's in focus. At a region's size it reads as an editor's crop marks on a print, which is what the dossier is. A pair of corners wasn't enough, because the token sits on the top-left corner and would hide the 「. With four, the token reads as pinned to one of them.</li>
+<li>The trade-off: on a mouse hover it borrows the focus mark's shape, where text would get an underline. For a region of a picture, an underline has nothing to hang from, and with keyboard focus the note's 「 」 and the region's corners read as a pair.</li>
+</ul>
+<div class="row">
+<figure><img src="shots/r4-demos-hover-1440.png" alt="A mouse over note 1: the pen draws the region's four corners in coral on the Discord capture"><figcaption>1440 · a mouse over note 1: the four corners on region 1, and the pen's underline on the note's title</figcaption></figure>
+<figure><img src="shots/r4-demos-notice-390.png" alt="Keyboard focus on note 2 at 390: the region's corners and the note's 「 」"><figcaption>390 · phones don't hover, so this is keyboard focus: the region's corners and the note's 「 」</figcaption></figure>
+</div>
+
+<h2>4 · The enlargement: less zoom, and the note given real room</h2>
+<div class="row ph">
+<figure><img src="shots/r4-demos-open-1440.png" alt="Fig. 02 at 1440 with region 2 open: the Discord window at 0.75 beside a 347 px note column"><figcaption>1440 · Fig. 02, region 2: the region with its surroundings in a 566 px window, the note in a 347 px column beside it</figcaption></figure>
+<figure><img src="shots/r4-demos-open-390.png" alt="Fig. 02 at 390 with region 1 open: image over note"><figcaption>390 · the image over the note; Discord's body text at 11 px</figcaption></figure>
+</div>
+<div class="row">
+<figure><img src="shots/r4-demos-open-fig3-1440.png" alt="Fig. 03 at 1440 with region 1 open, side by side"><figcaption>1440 · Fig. 03: the phone capture at 1.35 × its print, beside its note</figcaption></figure>
+<figure><img src="shots/r4-demos-open-fig4-1440.png" alt="Fig. 04 at 1440 with region 1 open: the note in a band under the window"><figcaption>1440 · Fig. 04: a caption band, because the skill file's step 5 would read at 10 px beside a note and reads at 13 px over one</figcaption></figure>
+<figure><img src="shots/r4-demos-open-fig4-390.png" alt="Fig. 04 at 390 with region 1 open, the window starting at step 5"><figcaption>390 · Fig. 04: a region wider than the window starts at its token, where its text starts</figcaption></figure>
+</div>
+<ul>
+<li><strong>The pair.</strong> At desktop widths the note gets its own column beside the window, 38 % of the enlargement (300–380 px), with its token and key, a 24 px title, 17 px text, and ← n / N → and "put it back · 放回" at its foot. When a capture has a region too wide to sit beside its note with its text at 11 px, the note becomes a band under the window instead (Fig. 04). On phones it's image over note. ← → step both together: the window pans to the next region while the note slides in from that side. The note area keeps the height of the capture's longest note, so the window's edges never move.</li>
+<li><strong>No circle inside.</strong> The region's own token marks its corner in the window, in the wheat band.</li>
+<li><strong>Zoom comes from the text, not from filling the window.</strong> Each capture carries its body text height (<code>data-text</code>, in its own pixels). On a phone the zoom is the smallest at which that text renders at 11 CSS px, the smallest size Apple recommends. A region wider than the window pans, starting at its token. At desktop widths the text renders at about 13 px, or less when the region needs it to fit with its surroundings, and never under 10 px. The enlargement is always at least 1.35 × the print's own size, so it always enlarges.</li>
+</ul>
+<table>
+<tr><th>Capture (body text)</th><th>Phone, round 3 → 4</th><th>Desktop, round 3 → 4</th></tr>
+<tr><td>Trash Patrol, Fig. 02 (15.5 px)</td><td>0.85 → <strong>0.71</strong> (body 13 → 11 px)</td><td>1.04–1.25 → <strong>0.75–0.84</strong> (16–19 → 11.5–13 px)</td></tr>
+<tr><td>the skill file, Fig. 04 (14 px)</td><td>0.85 → <strong>0.79</strong> (12 → 11 px)</td><td>0.73 → <strong>0.93</strong> (10 → 13 px; the region is now step 5 alone, so it fits at size)</td></tr>
+<tr><td>phone captures, Fig. 04 (44 px)</td><td>0.30 → <strong>0.25</strong> (13 → 11 px)</td><td>0.55 → <strong>0.30</strong> (24 → 13 px)</td></tr>
+<tr><td>Discord intake, Fig. 03 (44 px)</td><td>0.30 → <strong>0.27</strong> (13 → 12 px; 1.35 × its print)</td><td>0.55 → <strong>0.40</strong> (24 → 18 px; 1.35 × its print, which already reads at 13 px)</td></tr>
+</table>
+<p>One data fix came with it: Fig. 04's region 1 was drawn across the file tree and the editor, and a third of it was the tree. It now covers step 5 alone, the text its note is about.</p>
+
+<h2>5 · Captions for Fred to approve</h2>
+<p>Fig. 02's caption changes with the pair; Fig. 04's still holds.</p>
+<table class="cap">
+<tr><th></th><th>Round 3</th><th>Round 4</th></tr>
+<tr><td>Fig. 02</td><td class="was">The numbers on the capture are the notes below it. Choose one to read it at size, in place; ← → step to the next, and Esc puts it back.</td><td>The numbers on the capture are the notes below it. Choose one to see that part closer, beside its note; ← → step through the rest, and Esc puts it back.</td></tr>
+<tr><td>Fig. 04</td><td class="was">The numbers mark the auto-investigation rule and the task → error → fixed loop. Open one and ← → walk the loop in order; the second report shows the same recovery again.</td><td>Unchanged.</td></tr>
+</table>
+
+<h2>6 · Keyboard, touch and motion</h2>
+<p>As in round 3: the legend entries are the controls, and opening moves focus into the enlargement. ← → step, ↑ ↓ pan the window, and Esc, "put it back" or a click outside closes it, with focus returning to the entry. A swipe steps, except inside a window that can still pan that way. Every control is 44 px. The enlargement grows out of the region's own place on a spring with one small overshoot, and it moves only transform and opacity. The pen's corners draw on the hand's clock, as its focus 「 」 do. Under reduced motion everything lands at once.</p>
+
+<h2>For the port</h2>
+<ul>
+<li><code>data-text</code> (each capture's body text height) joins its width and height in the evidence data. The zoom tier is fetched only when an enlargement opens, as in round 3.</li>
+<li>The corners, the outline and the stroke live in <code>r4-demos-hl.js</code>. The corners are built the way <code>pen-tier.js</code> builds FocusMark: the same corner strokes with the same slight jitter, drawn and lifted on the pen's easing. The port can build them from FocusMark itself, with a region-sized arm and four corners.</li>
+</ul>
+
+<h2>Known gaps</h2>
+<ul>
+<li>Fig. 03 at desktop widths still covers its own legend while open; its note is in the column beside the window.</li>
+<li>On a phone the enlargement lies over the notes after the capture, as in round 3. They're inert until it's put back.</li>
+<li>Trash Patrol's region 2 (Discord's sidebar and messages) is wider than a phone's window at 11 px, so it opens at its token and pans.</li>
+</ul>
+
+<div class="q">
+<p><strong>Questions for Fred (Q3, round 4):</strong> (1) Does the tuned B hold up for you on the white and the dark captures? (2) Which mark should point at a region: A, the four corners (recommended), B, the outline, or C, the smooth stroke? (3) Is the zoom right now: 11 px text on phones, about 13 px at desktop widths, the note beside the image, or under it for Fig. 04? (4) Does Fig. 02's new caption stand?</p>
+</div>
+</main>
+</body>
+</html>
