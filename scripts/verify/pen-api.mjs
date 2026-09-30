@@ -1,4 +1,5 @@
-// pen-api.mjs — the P1-pen success criteria (PORT-PLAN §2), on scripts/verify/pen-harness.html.
+// pen-api.mjs — the P1-pen success criteria (PORT-PLAN §2), on scripts/verify/pen-harness.html, and Pen.annotate:
+// its layer adds no layout box, hide() never sweeps a stroke through, show() right after it draws (no pop).
 //   node /tmp/fyshot/run.mjs scripts/verify/pen-api.mjs        (exit code 1 if any check fails)
 // Screenshots: /tmp/fyshot/p1pen-*.png
 
@@ -141,6 +142,58 @@ export default async (page, ctx) => {
 
   const se = await page.evaluate(() => { const e = Motion.springEase(300, 20.8, 1); return [CSS.supports('animation-timing-function', e), Motion.springEase.duration(300, 20.8, 1)]; });
   check("CSS.supports('animation-timing-function', springEase(...))", se[0], `settles in ${se[1]} ms`);
+
+  // Pen.annotate on a word made for each check: HX.vis is the stroke's visible fraction, HX.sample [ms, fraction] per frame
+  await page.evaluate(() => {
+    HX.vis = (a) => { const p = a.svg.querySelector('path'), L = p.getTotalLength(), o = parseFloat(getComputedStyle(p).strokeDashoffset) || 0; return Math.max(0, Math.min(L, L - o) - Math.max(0, -o)) / L; };
+    HX.sample = (a, ms, t0 = performance.now()) => new Promise((done) => { const s = []; (function f() { s.push([Math.round(performance.now() - t0), +HX.vis(a).toFixed(3)]); if (performance.now() - t0 < ms) requestAnimationFrame(f); else done(s); })(); });
+    HX.word = (css) => { const el = document.createElement('span'); el.textContent = 'annotated'; el.style.cssText = 'position:absolute;top:120px;font:16px/1.3 var(--text);' + css; document.body.appendChild(el); return el; };
+    HX.frames = (n) => new Promise((r) => { (function f(k) { if (k) requestAnimationFrame(() => f(k - 1)); else r(); })(n); });
+  });
+  const wide = await page.evaluate(async () => {
+    const el = HX.word('right:8px'), a = Pen.annotate(el, 'loop', { manual: true }); a.show(); await HX.frames(2);
+    const b = a.svg.getBoundingClientRect(), r = [document.documentElement.scrollWidth, innerWidth, Math.round(b.width) + 'x' + Math.round(b.height)];
+    a.destroy(); el.remove(); return r;
+  });
+  check('annotate adds no layout box: a loop at the right edge leaves the page as wide as the window', wide[0] === wide[1], `scrollWidth ${wide[0]} · window ${wide[1]} · svg ${wide[2]}`);
+
+  const hides = await page.evaluate(async () => {
+    const el = HX.word('left:40px'), a = Pen.annotate(el, 'loop', { manual: true, duration: 400 }), max = (s) => Math.max(...s.map((x) => x[1])), o = {};
+    await HX.frames(3); a.hide(); o.never = max(await HX.sample(a, 300));
+    a.rebuild(); a.hide(); o.rebuiltNew = max(await HX.sample(a, 300));
+    a.show(); await new Promise((r) => setTimeout(r, 600)); a.hide(); const end = await HX.sample(a, 500); o.shownEnd = end[end.length - 1][1];
+    a.rebuild(); a.hide(); o.rebuilt = max(await HX.sample(a, 300));
+    a.show(); await new Promise((r) => setTimeout(r, 120)); const at = HX.vis(a); a.hide(); o.mid = [+at.toFixed(3), max(await HX.sample(a, 300))];
+    a.destroy(); el.remove(); return o;
+  });
+  check('hide() never sweeps a stroke through: never shown, rebuilt or half drawn, it shows no more than it did',
+    hides.never === 0 && hides.rebuiltNew === 0 && hides.rebuilt === 0 && hides.shownEnd === 0 && hides.mid[1] <= hides.mid[0] + 0.02,
+    `max shown: never shown ${hides.never} · rebuilt before a show ${hides.rebuiltNew} · rebuilt after a hide ${hides.rebuilt} · half drawn ${hides.mid[0]} → ${hides.mid[1]} · a shown stroke ends at ${hides.shownEnd}`);
+
+  // show() straight after annotate() draws over its 400 ms (nothing past 90% in the first half), and a box that
+  // changes mid-draw rebuilds without popping the stroke in whole; under reduced motion the stroke is whole at once
+  const draws = await page.evaluate(async () => {
+    const early = (s) => s.filter((x) => x[0] < 200).map((x) => x[1]), o = {};
+    let el = HX.word('left:40px'), a = Pen.annotate(el, 'loop', { manual: true, duration: 400 }); a.show();
+    let s = await HX.sample(a, 520); o.fresh = { early: Math.max(...early(s)), mid: s.some((x) => x[1] > 0 && x[1] < 0.9), end: s[s.length - 1][1] };
+    a.destroy(); el.remove();
+    el = HX.word('left:40px'); a = Pen.annotate(el, 'loop', { manual: true, duration: 400 }); await HX.frames(3);
+    const t0 = performance.now(); a.show(); await new Promise((r) => setTimeout(r, 120));
+    const p0 = a.svg.querySelector('path'); el.style.width = el.offsetWidth + 24 + 'px';
+    s = await HX.sample(a, 400, t0); o.resized = { rebuilt: a.svg.querySelector('path') !== p0, early: Math.max(...early(s)), end: s[s.length - 1][1] };
+    a.destroy(); el.remove(); return o;
+  });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const still = await page.evaluate(async () => {
+    const el = HX.word('left:40px'), a = Pen.annotate(el, 'loop', { manual: true, duration: 400 }); a.show();
+    const s = await HX.sample(a, 120); a.hide(); const off = HX.vis(a); a.destroy(); el.remove();
+    return { on: Math.min(...s.map((x) => x[1])), off };
+  });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  const f = draws.fresh, z = draws.resized;
+  check('show() right after annotate() draws the stroke, a mid-draw resize carries the draw on, and reduced motion is whole at once',
+    f.early <= 0.9 && f.mid && f.end === 1 && z.rebuilt && z.early <= 0.9 && z.end === 1 && still.on === 1 && still.off === 0,
+    `fresh: max ${f.early} in the first 200 ms, ends ${f.end} · resized at 120 ms: rebuilt ${z.rebuilt}, max ${z.early} in the first 200 ms, ends ${z.end} · reduced: ${still.on} shown, ${still.off} after hide`);
 
   // destroy leaves nothing behind
   const gone = await page.evaluate(() => { HX.w.twin.destroy(); const h = document.querySelector('#twin'); return [h.querySelectorAll('svg').length, h.hasAttribute('data-pen-tier'), h.hasAttribute('data-pen-t'), h.hasAttribute('data-pen-focus')]; });
