@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<title>Building · round 1 · board index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./00-live.css">
+<style>
+  /* the board index: plain paper, the site's tokens; every thumbnail opens the full frame */
+  body{margin:0;font-family:var(--text);color:var(--ink);background:var(--paper)}
+  .ix{width:min(1240px,92vw);margin:0 auto;padding:44px 0 90px}
+  .k{color:var(--pencil);font:500 11px/1.4 var(--util);letter-spacing:.1em;text-transform:uppercase}
+  h1{margin:10px 0 0;font:500 clamp(34px,4.4vw,56px)/1.02 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.03em}
+  .lede{max-width:46em;margin:18px 0 0;color:var(--soft);font-size:18px;line-height:1.55}
+  .lede a,.links a,.row a,.q a{color:var(--ink);border-bottom:1px solid var(--pencil)}
+  .links{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;font:12px/1.5 var(--util)}
+  section{margin-top:54px;padding-top:26px;border-top:1px solid var(--line-strong)}
+  h2{margin:0;font:500 28px/1.15 "Fraunces","DingTalk JinBuTi",serif;letter-spacing:-.015em}
+  h2 small{display:block;margin-top:6px;color:var(--soft);font:400 16px/1.45 var(--text);letter-spacing:0}
+  .row{display:flex;flex-wrap:wrap;gap:6px 18px;margin:14px 0 0;font:12px/1.6 var(--util)}
+  .row b{color:var(--pencil);font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 16px;margin-top:20px}
+  .grid.wide{grid-template-columns:repeat(2,minmax(0,1fr))}
+  figure{margin:0}
+  figure a{display:block;border:1px solid var(--line-strong);background:var(--paper2);line-height:0}
+  figure img{display:block;width:100%;height:auto}
+  figure.phone{max-width:160px}
+  figcaption{margin-top:7px;color:var(--soft);font:11.5px/1.45 var(--util)}
+  .phones{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px}
+  .q{margin-top:60px;padding:24px 26px;border:1px solid var(--line-strong);border-radius:6px;background:var(--paper2)}
+  .q p{margin:8px 0 0;font-size:19px;line-height:1.5}
+  @media (max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.wide{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="ix">
+  <p class="k">design/2026-09-building · round 1 · 2026-09-29</p>
+  <h1>Building: the preview, the way in, and the project pages</h1>
+  <p class="lede">Three complete stories from the Building board into a project's own pages, each shown on the flagship (Fred Agent), the WIP project (NJJoe) and a small repo card (Audio Processing CLI). Every frame is live: open a board, take a card down, go in, come back. Every page has a switcher in its lower-left corner (A / B / C, the same page on the live site, and a reduced-motion preview). The audit, each candidate's record, the costs and the question for Fred are in <a href="./README.md">README.md</a>.</p>
+  <div class="links"><a href="./README.md">README.md · audit and records</a><a href="../../Building.dc.html">live board ↗</a><a href="../../building/fred-agent/index.html">live Fred Agent ↗</a><a href="../../building/njjoe/index.html">live NJJoe ↗</a></div>
+
+  <section id="now">
+    <h2>The current site<small>The board works; the preview adds almost nothing the card doesn't show; the sub-sites predate the redesign and break most of its rules (README.md § audit).</small></h2>
+    <div class="grid">
+      <figure><a href="./shots/now-board-1440.jpg"><img src="./shots/now-board-1440.jpg" alt="The live Building board" loading="lazy"></a><figcaption>board · 1440</figcaption></figure>
+      <figure><a href="./shots/now-preview-fred-agent-1440.jpg"><img src="./shots/now-preview-fred-agent-1440.jpg" alt="The live preview of Fred Agent" loading="lazy"></a><figcaption>preview · Fred Agent: the same card again, plus two links</figcaption></figure>
+      <figure><a href="./shots/now-preview-njjoe-390.jpg"><img src="./shots/now-preview-njjoe-390.jpg" alt="The live preview of NJJoe on a phone" loading="lazy"></a><figcaption>preview · NJJoe · 390: the way in twice</figcaption></figure>
+      <figure><a href="./shots/now-preview-audio-processing-cli-1440.jpg"><img src="./shots/now-preview-audio-processing-cli-1440.jpg" alt="The live preview of Audio Processing CLI" loading="lazy"></a><figcaption>preview · Audio CLI: the note</figcaption></figure>
+      <figure><a href="./shots/now-fa-overview-1440.jpg"><img src="./shots/now-fa-overview-1440.jpg" alt="Fred Agent overview on the live site" loading="lazy"></a><figcaption>Fred Agent overview: gradient title, glass strip</figcaption></figure>
+      <figure><a href="./shots/now-fa-principles-toc-1440.jpg"><img src="./shots/now-fa-principles-toc-1440.jpg" alt="Fred Agent principles table of contents" loading="lazy"></a><figcaption>principles: a coral-numbered TOC, not Reading's margin</figcaption></figure>
+      <figure><a href="./shots/now-fa-system-map-1440.jpg"><img src="./shots/now-fa-system-map-1440.jpg" alt="Fred Agent system map, a path locked" loading="lazy"></a><figcaption>system map: coral dashes at rest</figcaption></figure>
+      <figure><a href="./shots/now-nj-index-1440.jpg"><img src="./shots/now-nj-index-1440.jpg" alt="NJJoe casebook index" loading="lazy"></a><figcaption>NJJoe index: a coral band on the title; no WIP left</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="a">
+    <h2>A · 翻面 · the back of the card<small>Unpin as it is; in your hand the card turns over, and its back is what the face doesn't say. Open it and it turns the rest of the way, landing face up, taped to the project page's corner, while the page prints out of the rule. The page is the card's colour on a strip torn off its bottom edge (the chapter nav); chapters swap in place under it.</small></h2>
+    <div class="row"><b>live</b><a href="./01-board.html?c=a">board → take Fred Agent down</a><a href="./02-overview.html?c=a">overview</a><a href="./03-principles.html?c=a">principles</a><a href="./04-system.html?c=a">system map</a><a href="./05-njjoe.html?c=a">NJJoe</a></div>
+    <div class="grid">
+      <figure><a href="./shots/a-01-preview-fred-agent-1440.jpg"><img src="./shots/a-01-preview-fred-agent-1440.jpg" alt="A: the back of Fred Agent's card" loading="lazy"></a><figcaption>preview · Fred Agent's back</figcaption></figure>
+      <figure><a href="./shots/a-01-preview-njjoe-1440.jpg"><img src="./shots/a-01-preview-njjoe-1440.jpg" alt="A: the back of NJJoe's card" loading="lazy"></a><figcaption>preview · NJJoe's back, WIP on Case 02</figcaption></figure>
+      <figure><a href="./shots/a-01-preview-audio-1440.jpg"><img src="./shots/a-01-preview-audio-1440.jpg" alt="A: the back of the Audio CLI slip" loading="lazy"></a><figcaption>preview · Audio CLI's back</figcaption></figure>
+      <figure><a href="./shots/a-02-overview-1440.jpg"><img src="./shots/a-02-overview-1440.jpg" alt="A: Fred Agent overview" loading="lazy"></a><figcaption>overview · the card taped on</figcaption></figure>
+      <figure><a href="./shots/a-03-principles-1440.jpg"><img src="./shots/a-03-principles-1440.jpg" alt="A: principles with the margin rail" loading="lazy"></a><figcaption>principles · the margin rail</figcaption></figure>
+      <figure><a href="./shots/a-04-system-locked-1440.jpg"><img src="./shots/a-04-system-locked-1440.jpg" alt="A: system map, a path locked" loading="lazy"></a><figcaption>system · cards lift on the path</figcaption></figure>
+      <figure><a href="./shots/a-05-njjoe-wip-1440.jpg"><img src="./shots/a-05-njjoe-wip-1440.jpg" alt="A: NJJoe with the WIP treatment" loading="lazy"></a><figcaption>NJJoe · WIP on the campaign results</figcaption></figure>
+      <figure><a href="./shots/a-03-principles-peek-1440.jpg"><img src="./shots/a-03-principles-peek-1440.jpg" alt="A: the rail's preview slip" loading="lazy"></a><figcaption>rail · hover preview slip</figcaption></figure>
+    </div>
+    <div class="grid wide">
+      <figure><a href="./shots/a-vt-in-1440.jpg"><img src="./shots/a-vt-in-1440.jpg" alt="A: the way in, frame by frame" loading="lazy"></a><figcaption>way in · the card turns over as it flies to the corner; the page prints under it</figcaption></figure>
+      <figure><a href="./shots/a-vt-out-1440.jpg"><img src="./shots/a-vt-out-1440.jpg" alt="A: the way back, frame by frame" loading="lazy"></a><figcaption>way back · the page feeds up into the rule, the card flies home, the pin goes in</figcaption></figure>
+      <figure><a href="./shots/a-vt-chapter-1440.jpg"><img src="./shots/a-vt-chapter-1440.jpg" alt="A: the in-place chapter swap" loading="lazy"></a><figcaption>chapter · kept in place: the next chapter prints under the strip</figcaption></figure>
+      <figure><a href="./shots/a-vt-in-390.jpg"><img src="./shots/a-vt-in-390.jpg" alt="A: the way in on a phone" loading="lazy"></a><figcaption>way in · 390</figcaption></figure>
+    </div>
+    <div class="phones">
+      <figure class="phone"><a href="./shots/a-01-preview-fred-agent-390.jpg"><img src="./shots/a-01-preview-fred-agent-390.jpg" alt="A on a phone: the back" loading="lazy"></a><figcaption>preview · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/a-02-overview-390.jpg"><img src="./shots/a-02-overview-390.jpg" alt="A on a phone: overview" loading="lazy"></a><figcaption>overview · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/a-03-principles-390.jpg"><img src="./shots/a-03-principles-390.jpg" alt="A on a phone: the rail on the strip" loading="lazy"></a><figcaption>rail · strip + counter</figcaption></figure>
+      <figure class="phone"><a href="./shots/a-04-system-390.jpg"><img src="./shots/a-04-system-390.jpg" alt="A on a phone: system map" loading="lazy"></a><figcaption>system · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/a-05-njjoe-wip-390.jpg"><img src="./shots/a-05-njjoe-wip-390.jpg" alt="A on a phone: NJJoe WIP" loading="lazy"></a><figcaption>NJJoe · 390</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="b">
+    <h2>B · 推近 · go in close<small>Changes the preview step: nothing comes off the board. Each project's chapters are pinned beside it as slips, with its one figure, and every card carries small print. A click leans the camera in until the cluster fills the frame; a chapter slip goes the rest of the way in, and the page grows out of it. Coming back, the page shrinks into its slip and the camera pulls out to the wall. The pages are the wall, close up: cork, the chapter slips along the top, one large pinned sheet.</small></h2>
+    <div class="row"><b>live</b><a href="./01-board.html?c=b">board → click Fred Agent</a><a href="./02-overview.html?c=b">overview</a><a href="./03-principles.html?c=b">principles</a><a href="./04-system.html?c=b">system map</a><a href="./05-njjoe.html?c=b">NJJoe</a></div>
+    <div class="grid">
+      <figure><a href="./shots/b-01-board-1440.jpg"><img src="./shots/b-01-board-1440.jpg" alt="B: the board with chapter slips" loading="lazy"></a><figcaption>board · chapters pinned beside the card</figcaption></figure>
+      <figure><a href="./shots/b-01-preview-fred-agent-1440.jpg"><img src="./shots/b-01-preview-fred-agent-1440.jpg" alt="B: the camera leaned in on Fred Agent" loading="lazy"></a><figcaption>preview · the camera in on Fred Agent</figcaption></figure>
+      <figure><a href="./shots/b-01-preview-njjoe-1440.jpg"><img src="./shots/b-01-preview-njjoe-1440.jpg" alt="B: the camera leaned in on NJJoe" loading="lazy"></a><figcaption>preview · NJJoe</figcaption></figure>
+      <figure><a href="./shots/b-01-preview-audio-1440.jpg"><img src="./shots/b-01-preview-audio-1440.jpg" alt="B: the camera on the Audio CLI slip" loading="lazy"></a><figcaption>preview · Audio CLI's small print</figcaption></figure>
+      <figure><a href="./shots/b-02-overview-1440.jpg"><img src="./shots/b-02-overview-1440.jpg" alt="B: overview on the wall" loading="lazy"></a><figcaption>overview · the sheet on the wall</figcaption></figure>
+      <figure><a href="./shots/b-03-principles-1440.jpg"><img src="./shots/b-03-principles-1440.jpg" alt="B: principles with the rail" loading="lazy"></a><figcaption>principles · the rail in the sheet</figcaption></figure>
+      <figure><a href="./shots/b-04-system-hover-1440.jpg"><img src="./shots/b-04-system-hover-1440.jpg" alt="B: system map, threads pulled taut" loading="lazy"></a><figcaption>system · the path's threads pulled taut</figcaption></figure>
+      <figure><a href="./shots/b-05-njjoe-wip-1440.jpg"><img src="./shots/b-05-njjoe-wip-1440.jpg" alt="B: NJJoe with the WIP treatment" loading="lazy"></a><figcaption>NJJoe · WIP</figcaption></figure>
+    </div>
+    <div class="grid wide">
+      <figure><a href="./shots/b-vt-in-1440.jpg"><img src="./shots/b-vt-in-1440.jpg" alt="B: the way in, frame by frame" loading="lazy"></a><figcaption>way in · the camera goes on through the slip; the page grows out of it</figcaption></figure>
+      <figure><a href="./shots/b-vt-out-1440.jpg"><img src="./shots/b-vt-out-1440.jpg" alt="B: the way back, frame by frame" loading="lazy"></a><figcaption>way back · into the slip, then out to the whole wall</figcaption></figure>
+      <figure><a href="./shots/b-vt-chapter-1440.jpg"><img src="./shots/b-vt-chapter-1440.jpg" alt="B: a chapter move" loading="lazy"></a><figcaption>chapter · the swap dropped: a plain paper swap</figcaption></figure>
+      <figure><a href="./shots/b-vt-in-390.jpg"><img src="./shots/b-vt-in-390.jpg" alt="B: the way in on a phone" loading="lazy"></a><figcaption>way in · 390</figcaption></figure>
+    </div>
+    <div class="phones">
+      <figure class="phone"><a href="./shots/b-01-preview-fred-agent-390.jpg"><img src="./shots/b-01-preview-fred-agent-390.jpg" alt="B on a phone: leaned in" loading="lazy"></a><figcaption>preview · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/b-02-overview-390.jpg"><img src="./shots/b-02-overview-390.jpg" alt="B on a phone: overview" loading="lazy"></a><figcaption>overview · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/b-03-principles-390.jpg"><img src="./shots/b-03-principles-390.jpg" alt="B on a phone: the rail on the strip" loading="lazy"></a><figcaption>rail · strip + counter</figcaption></figure>
+      <figure class="phone"><a href="./shots/b-04-system-390.jpg"><img src="./shots/b-04-system-390.jpg" alt="B on a phone: system map" loading="lazy"></a><figcaption>system · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/b-05-njjoe-wip-390.jpg"><img src="./shots/b-05-njjoe-wip-390.jpg" alt="B on a phone: NJJoe WIP" loading="lazy"></a><figcaption>NJJoe · 390</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="c">
+    <h2>C · 档案 · the dossier<small>Unpin as it is; a dossier is pinned behind each project card, its index tabs peeking past the card's edge. In your hand it slides out from behind the card and opens at its contents, tabs down the fore-edge. A tab is the way in: the tabs travel to the project page's fore-edge, and back they tuck behind the card. The pages are the open dossier: a typed file label, stamps, the card clipped on, and Writing's side-index tabs; chapters change by pulling the sheet in front aside.</small></h2>
+    <div class="row"><b>live</b><a href="./01-board.html?c=c">board → take Fred Agent down</a><a href="./02-overview.html?c=c">overview</a><a href="./03-principles.html?c=c">principles</a><a href="./04-system.html?c=c">system map</a><a href="./05-njjoe.html?c=c">NJJoe</a></div>
+    <div class="grid">
+      <figure><a href="./shots/c-01-board-1440.jpg"><img src="./shots/c-01-board-1440.jpg" alt="C: the board with tabs peeking" loading="lazy"></a><figcaption>board · the dossier's tabs peek out</figcaption></figure>
+      <figure><a href="./shots/c-01-preview-fred-agent-1440.jpg"><img src="./shots/c-01-preview-fred-agent-1440.jpg" alt="C: Fred Agent's dossier" loading="lazy"></a><figcaption>preview · Fred Agent's dossier</figcaption></figure>
+      <figure><a href="./shots/c-01-preview-njjoe-1440.jpg"><img src="./shots/c-01-preview-njjoe-1440.jpg" alt="C: NJJoe's dossier" loading="lazy"></a><figcaption>preview · NJJoe's dossier</figcaption></figure>
+      <figure><a href="./shots/c-01-preview-audio-1440.jpg"><img src="./shots/c-01-preview-audio-1440.jpg" alt="C: the Audio CLI's one sheet" loading="lazy"></a><figcaption>preview · Audio CLI's one sheet</figcaption></figure>
+      <figure><a href="./shots/c-02-overview-1440.jpg"><img src="./shots/c-02-overview-1440.jpg" alt="C: overview as a dossier" loading="lazy"></a><figcaption>overview · the dossier, fore-edge tabs</figcaption></figure>
+      <figure><a href="./shots/c-03-principles-1440.jpg"><img src="./shots/c-03-principles-1440.jpg" alt="C: principles with the rail and tabs" loading="lazy"></a><figcaption>principles · rail left, tabs right</figcaption></figure>
+      <figure><a href="./shots/c-04-system-hover-1440.jpg"><img src="./shots/c-04-system-hover-1440.jpg" alt="C: the pen draws a path" loading="lazy"></a><figcaption>system · the pen draws the path (hover)</figcaption></figure>
+      <figure><a href="./shots/c-04-system-locked-1440.jpg"><img src="./shots/c-04-system-locked-1440.jpg" alt="C: a locked path cooled to wheat" loading="lazy"></a><figcaption>system · locked: cooled to the wheat edge</figcaption></figure>
+    </div>
+    <div class="grid wide">
+      <figure><a href="./shots/c-vt-in-1440.jpg"><img src="./shots/c-vt-in-1440.jpg" alt="C: the way in, frame by frame" loading="lazy"></a><figcaption>way in · the tabs travel to the page's fore-edge</figcaption></figure>
+      <figure><a href="./shots/c-vt-out-1440.jpg"><img src="./shots/c-vt-out-1440.jpg" alt="C: the way back, frame by frame" loading="lazy"></a><figcaption>way back · the tabs tuck behind the card; the pin goes in</figcaption></figure>
+      <figure><a href="./shots/c-vt-chapter-1440.jpg"><img src="./shots/c-vt-chapter-1440.jpg" alt="C: a chapter move" loading="lazy"></a><figcaption>chapter · the sheet in front is pulled aside</figcaption></figure>
+      <figure><a href="./shots/c-vt-in-390.jpg"><img src="./shots/c-vt-in-390.jpg" alt="C: the way in on a phone" loading="lazy"></a><figcaption>way in · 390</figcaption></figure>
+    </div>
+    <div class="phones">
+      <figure class="phone"><a href="./shots/c-01-preview-fred-agent-390.jpg"><img src="./shots/c-01-preview-fred-agent-390.jpg" alt="C on a phone: the dossier" loading="lazy"></a><figcaption>preview · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/c-02-overview-390.jpg"><img src="./shots/c-02-overview-390.jpg" alt="C on a phone: overview" loading="lazy"></a><figcaption>overview · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/c-03-principles-390.jpg"><img src="./shots/c-03-principles-390.jpg" alt="C on a phone: the rail on the tab strip" loading="lazy"></a><figcaption>rail · strip + counter</figcaption></figure>
+      <figure class="phone"><a href="./shots/c-04-system-390.jpg"><img src="./shots/c-04-system-390.jpg" alt="C on a phone: system map" loading="lazy"></a><figcaption>system · 390</figcaption></figure>
+      <figure class="phone"><a href="./shots/c-05-njjoe-wip-390.jpg"><img src="./shots/c-05-njjoe-wip-390.jpg" alt="C on a phone: NJJoe WIP" loading="lazy"></a><figcaption>NJJoe · 390</figcaption></figure>
+    </div>
+  </section>
+
+  <div class="q">
+    <p class="k">the question for round 2</p>
+    <p>Which story do we refine: A (the card turns over and lands on the page), B (the camera goes in; chapters pinned beside each card) or C (a dossier behind the card; its tabs become the chapter nav)? If you would mix, say which candidate's preview goes with which candidate's pages.</p>
+  </div>
+</main>
+</body>
+</html>

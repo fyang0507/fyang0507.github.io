@@ -1,0 +1,40 @@
+/* design/2026-09-building · B · 推近 · the project page is the wall, close up: below the site header the cork carries on,
+   the project's card and its chapter slips are pinned along the top (the same slips as on the board, the one you are
+   reading marked by the pen's wheat band), and the chapter is a large sheet pinned under them, one pin at its head.
+   Hybrid: the cork field and the paper carry colour, pins and slips carry the structure. */
+.c-b .pj{padding-top:22px;background-color:var(--board);background-image:linear-gradient(rgba(207,193,169,.52) 1px,transparent 1px),linear-gradient(90deg,rgba(207,193,169,.52) 1px,transparent 1px);background-size:28px 28px;background-position:center top}
+.c-b .site-top{background:var(--paper);padding-bottom:10px}
+.c-b .pj-frame{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"cover strip back" "head head head" "main main main";align-items:start;column-gap:26px}
+.c-b .pj-head{display:contents}
+.c-b .pj-cover{grid-area:cover;margin:18px 0 0 6px}
+.c-b .pj-cover .board-pin{display:block}
+.c-b .pj-file,.c-b .pj-eyebrow{display:none}
+.c-b .pj-back{grid-area:back;align-self:start;margin-top:8px;padding:8px 12px;border-radius:999px;background:var(--paper);color:var(--ink)}
+/* the chapter slips, pinned in a row on the cork (one point each: a head and a shaft drawn in CSS) */
+.c-b .pj-strip{grid-area:strip;display:flex;flex-wrap:wrap;align-items:flex-start;gap:18px 16px;padding:22px 0 26px}
+.c-b .pj-strip a{flex-direction:column;align-items:flex-start;gap:6px;width:128px;min-height:62px;padding:12px 11px 12px;background:var(--paper);color:var(--ink);clip-path:none;
+  filter:drop-shadow(.6px 0 0 var(--line-strong)) drop-shadow(-.6px 0 0 var(--line-strong)) drop-shadow(0 .6px 0 var(--line-strong)) drop-shadow(-4px 8px 8px rgba(60,50,35,.14));transform:rotate(var(--t,-1.4deg));transform-origin:50% 6px;transition:transform .42s var(--ease-settle)}
+.c-b .pj-strip a:nth-child(2){--t:1.2deg}.c-b .pj-strip a:nth-child(3){--t:-.6deg}.c-b .pj-strip a:nth-child(4){--t:1.8deg}.c-b .pj-strip a:nth-child(5){--t:-1.9deg}
+.c-b .pj-strip a::before{content:"";position:absolute;z-index:2;left:50%;top:-9px;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;background:var(--ink);box-shadow:0 2px 2px rgba(60,50,35,.25)}
+.c-b .pj-strip a::after{content:"";position:absolute;z-index:1;left:50%;top:1px;width:2px;height:9px;margin-left:-1px;background:var(--pin-steel);border-radius:1px}
+.c-b .pj-strip a:hover{transform:rotate(calc(var(--t,-1.4deg) * .3)) translateY(-2px)}
+.c-b .pj-strip .pt{font:500 15px/1.1 "Fraunces",serif;letter-spacing:-.01em}
+.c-b .pj-strip .plive{position:absolute;right:9px;top:11px}
+/* the sheet: the chapter's head and body are one paper, pinned at its head */
+.c-b .pj-sheethead,.c-b .pj-main{position:relative;width:min(1100px,100%);margin:0 auto;background:var(--paper);box-shadow:0 0 0 1px var(--line-strong),-8px 16px 26px rgba(60,50,35,.12)}
+.c-b .pj-sheethead{grid-area:head;margin-top:14px;padding:clamp(40px,5vw,64px) clamp(28px,5vw,72px) 26px;clip-path:inset(-20px -40px 0 -40px)}
+.c-b .pj-sheethead::before{content:"";position:absolute;left:50%;top:-12px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--ink);box-shadow:0 3px 3px rgba(60,50,35,.28)}
+.c-b .pj-sheethead::after{content:"";position:absolute;left:50%;top:4px;width:2.4px;height:11px;margin-left:-1.2px;background:var(--pin-steel);border-radius:1px}
+.c-b .pj-main{grid-area:main;padding:0 clamp(28px,5vw,72px) 34px;clip-path:inset(0 -40px -40px -40px)}
+.c-b .pj-note{margin-top:0}
+.c-b .pj-card{border:1px solid var(--line);background:var(--slip)}
+.c-b .pj-line li{border:1px solid var(--line);background:var(--slip)}
+@media (max-width:760px){
+  .c-b .pj-frame{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"cover back" "strip strip" "head head" "main main"}
+  .c-b .pj-back{justify-self:end}
+  .c-b .pj-strip{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -4vw;padding:22px 4vw 22px}
+  .c-b .pj-strip::-webkit-scrollbar{display:none}
+  .c-b .pj-strip a{flex:none;width:112px}
+  .c-b .pj-sheethead{padding:40px 20px 20px}
+  .c-b .pj-main{padding:0 20px 26px}
+}

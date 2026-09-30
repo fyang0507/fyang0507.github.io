@@ -1,0 +1,40 @@
+/* design/2026-09-building · round 3 · what every r3 page changes on top of round 1's C, and each question's options
+   (html[data-q2] … from r3-kit.js). The fixes PORT-PLAN.md settles, applied whatever the options:
+   · kraft inks that pass: tab text and numbers in --ink (7.57:1; the boards' #6E5A3A was 3.80:1), the pen on kraft
+     in --mark-deep (3.45:1; the coral multiplied by kraft is 2.86:1);
+   · on a phone the board's cards narrow by the peek (22 px), so the peeking tabs sit inside the cork. */
+.dos-tab,.c-c .pj-tabs a{--pen:var(--mark-deep)}
+.dos-edge,.dos-tab,.dos-tab .dt-n,.c-c .pj-tabs a,.c-c .pj-tabs a .pn{color:var(--ink)}
+@container (max-width:640px){
+  .slot--lead{width:calc(100cqw - 54px)}
+  .slot--featured{width:calc(82cqw - 22px)}
+  .cork-track{padding-right:34px}
+}
+
+/* The card in play is its own view-transition group, above the tabs (00-vt.css gives them z-index 4), so the tabs that
+   sit under it at rest are under it in every frame of a move (r3-board.js names it; r3-vt.js fades it with the page) */
+.r3-card{view-transition-name:pj-board-card}
+::view-transition-group(pj-board-card){z-index:5}
+
+/* ---- Q5 · the board's typeface: (a) today's stack, Noto Serif SC's Latin first; (b) Fraunces first ---- */
+html[data-q5="b"] body,html[data-q5="b"] .cork,html[data-q5="b"] .unpin-layer{font-family:"Fraunces","Noto Serif SC",Georgia,serif}
+
+/* ---- Q6 · the current chapter tab: (a) paper, pulled out, banded in wheat; (b) kraft with the wheat band. Fred chose (b).
+   On kraft the band's wash can't carry the state (--hl multiplied by kraft is 1.50:1), so the band's own darker wheat
+   edge does: on kraft it is #8F7A3C at 2.6 px, which the wheat layer's multiply draws as #795D24, 3.56:1 against kraft
+   (the site's --hl-ink draws 2.58:1 there). The tab's text on the band stays --ink, 5.35:1. ---- */
+.c-c .pj-tabs a,.dos-tab{--hl-ink:#8F7A3C}
+.c-c .pj-tabs a .tm-line,.dos-tab .tm-line{stroke-width:2.6}
+html[data-q6="a"].c-c .pj-tabs a[aria-current="page"]{--hl-ink:#AD9650}
+html[data-q6="a"].c-c .pj-tabs a[aria-current="page"]{background:var(--paper);border-color:var(--line-strong);box-shadow:1px 1px 0 var(--line-strong);--pen:var(--pen-cream)}
+
+/* ---- Q7 · tabs on a phone ---- */
+@media (max-width:760px){
+  /* (a) every tab shows: numbers only, the current one named; the reading counter on the line under the tabs */
+  html[data-q7="a"].c-c .pj-tabs{flex-wrap:wrap;overflow:visible;row-gap:0}
+  html[data-q7="a"].c-c .pj-tabs a{padding:0 11px}
+  html[data-q7="a"].c-c .pj-tabs a:not([aria-current="page"]) .pt,html[data-q7="a"].c-c .pj-tabs .plive{display:none}
+  html[data-q7="a"].c-c .pj-tabs a:not([aria-current="page"]){gap:0}
+  html[data-q7="a"].c-c.strip-mode .pj-tabs .rail-count{order:9;flex:0 0 100%;position:static;justify-content:flex-end;margin:0;padding:7px 0 6px;box-shadow:none;border-top:1px solid var(--dos-kraft-ink);background:none}
+  /* (b) round 1's strip: every tab named, scrolling sideways, the counter riding at its end */
+}
