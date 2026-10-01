@@ -15,7 +15,8 @@ import fs from 'fs';
 const [scn, side, out] = process.argv.slice(2);
 const here = path.dirname(new URL(import.meta.url).pathname);
 const exe = process.env.HOME + '/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
-const BASE = { after: 'http://127.0.0.1:4219/main', before: 'http://127.0.0.1:4219/r0' }[side];
+// SITE=main75 records the after side on another snapshot under /tmp/fyfilm (v1.5's second take: origin/main at 75e9790)
+const BASE = process.env.SITE ? 'http://127.0.0.1:4219/' + process.env.SITE : { after: 'http://127.0.0.1:4219/main', before: 'http://127.0.0.1:4219/r0' }[side];
 const DPR = +(process.env.DPR || 2), Q = +(process.env.Q || 90);
 const mod = await import(pathToFileURL(path.resolve(scn)).href);
 fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(out + '/f', { recursive: true });
