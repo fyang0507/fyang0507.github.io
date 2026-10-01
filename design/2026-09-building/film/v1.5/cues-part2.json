@@ -1,0 +1,244 @@
+{
+ "dur": 26.10000000000026,
+ "fps": 60,
+ "timeline": [
+  {
+   "k": "join",
+   "t0": 0,
+   "t1": 1.2999999999999998
+  },
+  {
+   "k": "play",
+   "t0": 0.3,
+   "t1": 23.5,
+   "u0": 0,
+   "u1": 23.20000000000026
+  },
+  {
+   "k": "end",
+   "t0": 23.5,
+   "t1": 26.1
+  }
+ ],
+ "cues": [
+  {
+   "t": 0.08,
+   "type": "pull",
+   "dur": 1.0999999999999999
+  },
+  {
+   "t": 0.3,
+   "type": "site",
+   "kind": "nav",
+   "name": "home",
+   "what": "a fresh session opens the old home: its loading screen, then the desk",
+   "u": 0
+  },
+  {
+   "t": 0.8,
+   "type": "label"
+  },
+  {
+   "t": 4.2,
+   "type": "frame",
+   "name": "whole"
+  },
+  {
+   "t": 4.75,
+   "type": "frame",
+   "name": "lock"
+  },
+  {
+   "t": 5.35,
+   "type": "frame",
+   "name": "lock"
+  },
+  {
+   "t": 6.15,
+   "type": "frame",
+   "name": "nav"
+  },
+  {
+   "t": 6.6,
+   "type": "site",
+   "kind": "click",
+   "name": "click-book",
+   "what": "the book: a hard cut to Writing",
+   "u": 6.3
+  },
+  {
+   "t": 6.7,
+   "type": "press"
+  },
+  {
+   "t": 8.9,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-building",
+   "what": "the building tab: a hard cut to the board",
+   "u": 8.6
+  },
+  {
+   "t": 9,
+   "type": "press"
+  },
+  {
+   "t": 9.05,
+   "type": "frame",
+   "name": "nav"
+  },
+  {
+   "t": 9.75,
+   "type": "frame",
+   "name": "card"
+  },
+  {
+   "t": 10.9,
+   "type": "site",
+   "kind": "click",
+   "name": "take-card",
+   "what": "the lead card: a hard cut into the field notes",
+   "u": 10.6
+  },
+  {
+   "t": 11,
+   "type": "press"
+  },
+  {
+   "t": 11.05,
+   "type": "frame",
+   "name": "card"
+  },
+  {
+   "t": 11.5,
+   "type": "frame",
+   "name": "notes"
+  },
+  {
+   "t": 11.9,
+   "type": "frame",
+   "name": "notes"
+  },
+  {
+   "t": 12.5,
+   "type": "frame",
+   "name": "tabs"
+  },
+  {
+   "t": 12.8,
+   "type": "site",
+   "kind": "nav",
+   "name": "open-principles",
+   "what": "Principles: a hard cut",
+   "u": 12.5
+  },
+  {
+   "t": 12.9,
+   "type": "press"
+  },
+  {
+   "t": 14.600000000000001,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-shooting",
+   "what": "the shooting tab: a hard cut to the gallery",
+   "u": 14.3
+  },
+  {
+   "t": 14.700000000000001,
+   "type": "press"
+  },
+  {
+   "t": 14.75,
+   "type": "frame",
+   "name": "tabs"
+  },
+  {
+   "t": 15.4,
+   "type": "frame",
+   "name": "print"
+  },
+  {
+   "t": 16.6,
+   "type": "site",
+   "kind": "click",
+   "name": "open-print",
+   "what": "a print: the dark lightbox",
+   "u": 16.3
+  },
+  {
+   "t": 16.7,
+   "type": "press"
+  },
+  {
+   "t": 18.2,
+   "type": "site",
+   "kind": "click",
+   "name": "close-print",
+   "what": "a click anywhere closes it",
+   "u": 17.9
+  },
+  {
+   "t": 18.3,
+   "type": "press"
+  },
+  {
+   "t": 18.5,
+   "type": "frame",
+   "name": "print"
+  },
+  {
+   "t": 19.05,
+   "type": "frame",
+   "name": "whole"
+  },
+  {
+   "t": 19.6,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-about",
+   "what": "the about tab: a hard cut to About",
+   "u": 19.3
+  },
+  {
+   "t": 19.7,
+   "type": "press"
+  },
+  {
+   "t": 21.3,
+   "type": "frame",
+   "name": "homeLink"
+  },
+  {
+   "t": 21.900000000000002,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-home",
+   "what": "home: a hard cut, the desk fades in",
+   "u": 21.6
+  },
+  {
+   "t": 22,
+   "type": "press"
+  },
+  {
+   "t": 22.1,
+   "type": "frame",
+   "name": "homeLink"
+  },
+  {
+   "t": 22.8,
+   "type": "frame",
+   "name": "whole"
+  },
+  {
+   "t": 23.50000000000026,
+   "type": "putback",
+   "dur": 0.784
+  },
+  {
+   "t": 24.284,
+   "type": "land"
+  }
+ ]
+}
