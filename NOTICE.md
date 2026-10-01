@@ -12,7 +12,7 @@ The MIT License applies to Fred Yang's original HTML, CSS, JavaScript, Python, a
 
 `support.js` loads React 18.3.1, ReactDOM 18.3.1, and Babel Standalone 7.29.0 from unpkg at runtime. They are not bundled in this repository. React and Babel are MIT-licensed; their terms remain with their upstream projects.
 
-The `building/` sub-sites request Fraunces, Caveat, and IBM Plex Mono from Google Fonts, and the Fred Agent pages Noto Serif SC and Noto Sans SC as well. Those remote font resources are not included in this repository and remain subject to their upstream licenses. Every other page loads the self-hosted subsets described below.
+No page requests a font from Google Fonts or any other CDN: every page, the `building/` sub-sites included, loads the self-hosted subsets described below.
 
 ### Noto Serif SC and Noto Sans SC
 
