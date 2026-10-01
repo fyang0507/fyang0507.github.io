@@ -8,8 +8,11 @@ Pages are standalone `.dc.html` files with no server-side logic. Essays render a
 
 ## Writing
 
-Bilingual essays and travel writing, 2015–2025, newest first.
+Bilingual essays and travel writing, 2015–2026, newest first.
 
+- [Google Just Wants to Coast to a Win](https://fyang0507.github.io/Reading.dc.html?post=2026-08-29_google-just-wants-to-coast-to-a-win&lang=en): A Google for Startups “masterclass” on AI agents at NYC Tech Week, and a Google content to coast in the AI race. 2026-08-29.
+- [“Nobody Likes Me, and It Must Be Your Fault”](https://fyang0507.github.io/Reading.dc.html?post=2026-06-21_nobody-likes-me-and-it-must-be-your-fault&lang=en): An ordinary person's dread at AI's advance, starting from Anthropic pulling Fable 5 under a US government directive. 2026-06-21.
+- [The God in the Edit (A Short History of the GOAT Narrative)](https://fyang0507.github.io/Reading.dc.html?post=2026-05-02_the-god-in-the-edit&lang=en): Michael Jordan in May 1995, before the second three-peat, and how the GOAT story is made in the edit. 2026-05-02.
 - [The Stories We Live 05 (Or: Those Who Refuse to Sink)](https://fyang0507.github.io/Reading.dc.html?post=2025-12-06_the-stories-we-live-05&lang=en): Prologue — on the era of no longer bothering to pretend, and the people who refuse to sink anyway. 2025-12-06.
 - [Sacramento's Absent](https://fyang0507.github.io/Reading.dc.html?post=2025-11-01_sacramentos-absent&lang=en): On the alluvial plain where the Sacramento and American rivers meet, and who is missing from that landscape. 2025-11-01.
 - [Workplace Vultures](https://fyang0507.github.io/Reading.dc.html?post=2025-07-27_workplace-vultures&lang=en): On starting a first corporate job expecting a precision machine, and finding something else. 2025-07-27.
