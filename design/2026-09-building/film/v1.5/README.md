@@ -41,14 +41,14 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 ## Note 2: "the last scene of tribute uses a very out-of-character font and size … Please change."
 
 - **The site's register** (`end.js`, compared in `endcard/index.html`). The dossier's rule for writing on a sheet is "line-led: ruled entries, typed labels at the side, no boxes and no washes" (`lib/building/dossier.css`). About's specimen card sets its facts as ruled rows: an ink rule over the first row, hairlines between the rest, and a Chinese line over IBM Plex Mono.
-- **Specimen fields** (recommended, rendered). The two credits take that form, in a column centred under the lockup:
+- **Stamped facts** (Fred's pick from the board, and what v1.5 renders with). The dossier stamps a project's facts onto its sheet: thin boxes in IBM Plex Mono, the first in ink and tipped a degree, the rest in `--soft`. Each credit becomes one stamp under the lockup:
   - left-aligned and at regular weight;
-  - the Chinese in Noto Serif SC in ink, the English in Plex Mono in `--soft`;
+  - the Chinese in Noto Serif SC, the English in Plex Mono, both in the stamp's colour;
   - at 390 px wide, the Chinese is about 9.4 px and the English about 7.6 px.
 
-  Long lines break where the phrase does. The seals stay the only solid shapes on the sheet.
-- **The other two** are on the board: stamped facts (the dossier's thin boxes) and ruled entries (a line down each credit's left, the English in Fraunces).
-- **Switching.** Set `ENDCARD` in `end.js`, or add `?end=stamps` / `?end=entries` to both pages, then re-render.
+  Long lines break where the phrase does. On the last frame, both stamps are whole, 42 px under the seals and 91 px above the bottom of the picture.
+- **The other two** are on the board: specimen fields (About's ruled rows, which I had recommended) and ruled entries (a line down each credit's left, the English in Fraunces).
+- **Switching.** Set `ENDCARD` in `end.js` (now `'stamps'`), or add `?end=fields` / `?end=entries` to both pages, then re-render.
 - **Unchanged.** The words, their order, the seals, 继续写，继续造 and the hold: the last line lands at 34.91 s and the card holds 2.73 s.
 
 ## The side-by-side (Fred's addition: "pairing it up with the prev version … no need to do the camera motion")
@@ -90,8 +90,8 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 
 | | runtime | size | loudness (integrated) | LRA | true peak | 1–2 frame luma glitches | zero-diff frames inside the ramps |
 |---|---|---|---|---|---|---|---|
-| `film-v1.5-promo.mp4` | 0:37.6 (2,259 frames) | 7.4 MB | −16.1 LUFS | 6.0 LU | −2.6 dBTP | none | 0 / 0 / 0 |
-| `film-v1.5.mp4` | 1:03.8 (2,259 + 1,566 frames) | 11.5 MB | −17.5 LUFS (part 1 −16.1 · part 2 −21.1) | 9.3 LU | −2.6 dBTP (part 2 −2.8) | none | 0 / 0 / 0 · 0 / 0 in part 2's pull and put-back |
+| `film-v1.5-promo.mp4` | 0:37.6 (2,259 frames) | 7.5 MB | −16.1 LUFS | 6.0 LU | −2.6 dBTP | none | 0 / 0 / 0 |
+| `film-v1.5.mp4` | 1:03.8 (2,259 + 1,566 frames) | 11.7 MB | −17.5 LUFS (part 1 −16.1 · part 2 −21.1) | 9.3 LU | −2.6 dBTP (part 2 −2.8) | none | 0 / 0 / 0 · 0 / 0 in part 2's pull and put-back |
 | `film-v1.5-side-by-side.mp4` | 0:37.6 (2,259 frames) | 4.2 MB | −16.1 LUFS (the promo's mix) | 6.0 LU | −2.6 dBTP | none | (the promo's ramps, on the right) |
 
 | ramp | footage (s) | on screen | slowest | ease in | at ⅓ | ease out | largest speed change between frames |
@@ -124,8 +124,8 @@ uv run --with numpy --with pillow python v1.5/checks/sheets.py /tmp/fyfilm/v15-c
 4. **The develop** (`develop.png`). Antwerp, Hong Kong and Garden of the Gods, cropped from the film at frames 945, 966, 990, 1014, 1038 and 1068, go from the pale chemical green to full colour.
 5. **The tab moves** (`tabmoves.png`). Building → Shooting (frames 903–945) and Shooting → About (1299–1347) both run: 29 and 21 frames in a row each change the picture, and the largest single step (4.3 and 8.4) sits between neighbours of 4.0 / 4.3 and 8.0 / 7.2. That is a curve, not a cut.
 6. **The card** (`card.png`). In its sleeve 1389, the stick 1422, the lip and the pop 1446, in the hand 1488, turning 1545, the night face 1596.
-7. **The end card** holds 2.73 s after the last line (`endcard.png`, `phone-endcard.png`, `endcard-board-phone.png`).
-8. **The join.** Frames 2258 → 2259 differ by 0.029 (0–255), and the last frame differs from the promo's by 0.90: codec noise (`join.png`).
+7. **The end card** holds 2.73 s after the last line. The stamps are whole and clear of the seals (`endcard-stamps-full.png`, `endcard-stamps-390.png`, `endcard-stamps-landed.png`).
+8. **The join.** Frames 2258 → 2259 differ by 0.031 (0–255), and the last frame differs from the promo's by 0.93: codec noise (`join.png`).
 
 ## How it's made
 

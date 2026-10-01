@@ -4,14 +4,14 @@
    lockup, left-aligned, regular weight, the Chinese in ink and the English in --soft, at the smallest size that still
    reads on a phone (at 390 px wide: the Chinese about 9.4 px, the English about 7.6 px).
    Three treatments, compared in endcard/index.html; ENDCARD is the one the film renders, ?end= overrides it:
-     fields   About's specimen card: ruled rows, an ink rule over the first, hairlines between      (recommended)
-     stamps   the dossier's stamped facts: each credit in a thin stamped box, the first in ink and tipped
+     fields   About's specimen card: ruled rows, an ink rule over the first, hairlines between
+     stamps   the dossier's stamped facts: each credit in a thin stamped box, the first in ink and tipped   (Fred's pick)
      entries  the dossier's ruled entries: a line down each credit's left, the English in Fraunces
    The words and their order are unchanged; long lines break at a natural point to fit the column. The last line
    lands at 4.67 s, and the promo holds the card 2.73 s after that (edl.js: end, d 7.4). */
 import { endCard as V1 } from '../v1/end.js';
 const F = window.FILM;
-export const ENDCARD = 'fields';
+export const ENDCARD = 'stamps';   // Fred's pick from endcard/index.html
 const NAME = new URLSearchParams(location.search).get('end') || ENDCARD;
 // each credit: its Chinese, then its English, each as the break sets to try, widest first
 export const CREDITS = [

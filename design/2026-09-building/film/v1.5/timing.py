@@ -29,7 +29,7 @@ for s in TL:
         out.append(f"| {a}–{b} | | the sheet in front pulled aside to the left; the next moment already under it, both still playing | | | |")
     else:
         land = next(x['t'] for x in C if x['type'] == 'landed')
-        out.append(f"| {a}–{b} | | the take pulled aside; the last sheet: 继续写，继续造 written, the seals stamped, the two credits in ruled rows (the last lands {tc(land)}, held {D1 - land:.2f} s) | | | |")
+        out.append(f"| {a}–{b} | | the take pulled aside; the last sheet: 继续写，继续造 written, the seals stamped, the two credits stamped as the dossier stamps its facts (the last lands {tc(land)}, held {D1 - land:.2f} s) | | | |")
 out += ['', '### Captions against their motions', '', '| caption | fully on screen | motion | in before it | still in after it | fully visible |', '|---|---|---|---|---|---|']
 for k in (x for x in C if x['type'] == 'caption'):
     f0, f1 = k['t'] + .2, k['t'] + k['dur'] - .2; m0, m1 = k['motion']
