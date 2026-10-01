@@ -1,5 +1,7 @@
 # Before/after video
 
+> **Renders removed 2026-10-01.** All three are gone: `fyang0507-redesign-before-after.mp4`, `fyang0507-redesign-30s-16x9.mp4` and `fyang0507-redesign-30s-9x16.mp4`. They are in git history at `deb66a6`. `poster.png`, the specs and the pipeline stay.
+
 `fyang0507-redesign-before-after.mp4` puts the site as it was (commit `6237120`, `main` before the redesign) beside the motion redesign (`redesign/motion-revamp`): same viewport, same input, same moment on both sides. `poster.png` is a frame from it for the PR.
 
 Every interaction is real input, driven headless: eased `page.mouse` paths on desk, CDP touch on phones. Both sides are recorded through a CDP screencast with real frame timestamps. Text is rendered as HTML (`chrome.html`) because the system ffmpeg has no `drawtext`.

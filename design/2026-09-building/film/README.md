@@ -1,5 +1,7 @@
 # The round-two film · stage 1: three style tests
 
+> **Renders removed 2026-10-01.** Only three videos stay: `v1.5/film-v1.5-promo.mp4`, `v1.5/film-v1.5-side-by-side.mp4` and `v1.5/film-v1.5-stacked.mp4`. Removed: the three style tests (`a-night/test.mp4`, `b-machine/test.mp4`, `c-shot/test.mp4`), `rough/rough-cut.mp4`, every render in `v1/`, `v1.1/`, `v1.2/`, `v1.3/` and `v1.4/`, and `v1.5/film-v1.5.mp4`. They are in git history at `deb66a6` (`git show deb66a6:design/2026-09-building/film/<path> > <path>`). The board shows their posters, and the version folders' own READMEs still describe them as they were.
+
 Fred's brief: "Can we be more creative in this promo video? This is a case for you to really showcase your capability." The film has two jobs: show the elevation (the site before and after, what changed and why it's better), and be a piece of code-rendered film craft in itself, not a screen-recording montage with captions (the drafts in `../video/` and `../../2026-09-motion/video/` are that).
 
 Execution mode: **multi-stage** (the visual guide's workflow). This is stage 1: three genuinely different directions, each as a finished 12-second style test, a treatment of the whole film and a storyboard. Stage 2 (the full film in one direction) waits for Fred's pick.
@@ -22,9 +24,9 @@ Board: <http://127.0.0.1:4218/design/2026-09-building/film/> (serve the reposito
 
 | | Direction | Test | Storyboard |
 |---|---|---|---|
-| A | 一夜 · One night, many hands | [`a-night/test.mp4`](a-night/test.mp4) | [`a-night/storyboard.png`](a-night/storyboard.png) |
-| B | 纸机器 · Paper machine | [`b-machine/test.mp4`](b-machine/test.mp4) | [`b-machine/storyboard.png`](b-machine/storyboard.png) |
-| C | 一镜到底 · One continuous shot | [`c-shot/test.mp4`](c-shot/test.mp4) | [`c-shot/storyboard.png`](c-shot/storyboard.png) |
+| A | 一夜 · One night, many hands | `a-night/test.mp4` (removed) | [`a-night/storyboard.png`](a-night/storyboard.png) |
+| B | 纸机器 · Paper machine | `b-machine/test.mp4` (removed) | [`b-machine/storyboard.png`](b-machine/storyboard.png) |
+| C | 一镜到底 · One continuous shot | `c-shot/test.mp4` (removed) | [`c-shot/storyboard.png`](c-shot/storyboard.png) |
 
 Every test is 1920×1080, 60 fps, H.264 yuv420p with AAC 48 kHz, loudness-normalised to −16 LUFS integrated, true peak under −1.5 dBTP.
 

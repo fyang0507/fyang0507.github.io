@@ -1,5 +1,7 @@
 # Round two: promo clips and cuts (drafts)
 
+> **Renders removed 2026-10-01.** All four drafts are gone: `fyang0507-round2-30s-16x9.mp4`, `fyang0507-round2-30s-9x16.mp4`, `fyang0507-redesign-before-after-r2-draft.mp4` and `fyang0507-round2-extras.mp4`. They are in git history at `deb66a6`. `poster.png`, the specs and the pipeline stay. The round's film is `../film/v1.5/`.
+
 Drafts for Fred's review. They show this round's Building redesign beside the site as the motion round's videos left it, with the motion round's pipeline (`design/2026-09-motion/video/`, copied here and adjusted; nothing there is edited).
 
 - **Before** is `5983c8b`, the #17 merge: the site the motion round's videos show as "after". **After** is `origin/main` at `e96efe9` (#23, #28, #31, #32, #33, and #22, #27 for Writing).
