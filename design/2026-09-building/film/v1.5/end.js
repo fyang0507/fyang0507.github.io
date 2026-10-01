@@ -7,7 +7,8 @@
      fields   About's specimen card: ruled rows, an ink rule over the first, hairlines between
      stamps   the dossier's stamped facts: each credit in a thin stamped box, the first in ink and tipped   (Fred's pick)
      entries  the dossier's ruled entries: a line down each credit's left, the English in Fraunces
-   The words and their order are unchanged; long lines break at a natural point to fit the column. The last line
+   The words and their order are unchanged; long lines break at a natural point to fit the column (the stacked film's
+   narrower column takes the last break set, which no wider column reaches). The last line
    lands at 4.67 s, and the promo holds the card 2.73 s after that (edl.js: end, d 7.4). */
 import { endCard as V1 } from '../v1/end.js';
 const F = window.FILM;
@@ -16,14 +17,17 @@ const NAME = new URLSearchParams(location.search).get('end') || ENDCARD;
 // each credit: its Chinese, then its English, each as the break sets to try, widest first
 export const CREDITS = [
   [[['在 Claude Design (Fable 5) + GPT-5.6-sol 完成的基线上改进'], ['在 Claude Design (Fable 5) + GPT-5.6-sol', '完成的基线上改进'], ['在 Claude Design (Fable 5)', '+ GPT-5.6-sol 完成的基线上改进']],
-   [['Improved from the baseline built with Claude Design (Fable 5) + GPT-5.6-sol'], ['Improved from the baseline built with', 'Claude Design (Fable 5) + GPT-5.6-sol'], ['Improved from the baseline', 'built with Claude Design (Fable 5)', '+ GPT-5.6-sol']]],
+   [['Improved from the baseline built with Claude Design (Fable 5) + GPT-5.6-sol'], ['Improved from the baseline built with', 'Claude Design (Fable 5) + GPT-5.6-sol'], ['Improved from the baseline', 'built with Claude Design (Fable 5)', '+ GPT-5.6-sol'],
+    ['Improved from the baseline', 'built with Claude Design', '(Fable 5) + GPT-5.6-sol']]],
   [[['用 Claude Opus 5.5 制作']], [['Made with Claude Opus 5.5']]]
 ];
 export const PEN0 = 1.55, PEN1 = 2.65, STAMP = [3.3, 3.62], LINE0 = 4.15, LINE = 0.42, WRITE = 0.1;   // v1's
 export const LANDED = LINE0 + (CREDITS.length - 1) * LINE + WRITE;
 const INK = '#33302B', SOFT = '#6D6559', RULE = '#CFC1A9';
 const ZH = (px) => `400 ${px}px "Noto Serif SC"`, MONO = (px) => `400 ${px}px "IBM Plex Mono"`, FRAUNCES = (px) => `400 ${px}px Fraunces`;
-const X0 = 260, X1 = 1140, Y0 = 500;   // the column under the lockup, centred on it (canvas px; the lockup spans x 330–1070, y 150–449)
+// the column under the lockup, centred on it (canvas px; the lockup spans x 330–1070, y 150–449); the stacked film's
+// tall frame sets it to the lockup's own width (endCard.column)
+let X0 = 260, X1 = 1140, Y0 = 500;
 const ZS = 46, ES = 37, ZL = 58, EL = 45;
 
 function fit(x, sets, font, w) { x.font = font; return sets.find((s) => s.every((l) => x.measureText(l).width <= w)) || sets[sets.length - 1]; }
@@ -76,6 +80,7 @@ const T = {
 let L = null;
 export const endCard = {
   name: NAME,
+  column(x0, x1) { X0 = x0; X1 = x1; },
   async load() { L = await V1.load(); return L; },
   cues(t0) {
     const c = [{ t: t0, type: 'pull', dur: 1.4 }];

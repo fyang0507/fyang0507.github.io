@@ -27,7 +27,7 @@ const unlock = () => { try { fs.rmdirSync(lock); } catch {} };
 process.on('exit', unlock); process.on('SIGINT', () => { unlock(); process.exit(1); });
 
 const browser = await chromium.launch({ executablePath: exe, headless: true, args: ['--use-angle=metal', '--enable-gpu-rasterization', '--ignore-gpu-blocklist'] });
-const VW = +arg('w', 1920), VH = arg('ar') === '9x16' ? Math.round(VW * 16 / 9) : Math.round(VW * 9 / 16);   // --w 1280 for a 720p draft, --ar 9x16 for a tall one (the page reads ?w= and ?ar= too)
+const VW = +arg('w', 1920), VH = Math.round(VW * ({ '9x16': 16 / 9, '3x4': 4 / 3 }[arg('ar')] || 9 / 16));   // --w 1280 for a 720p draft, --ar 9x16 or 3x4 for a tall one (the page reads ?w= and ?ar= too)
 const page = await browser.newPage({ viewport: { width: VW, height: VH }, deviceScaleFactor: 1 });
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
