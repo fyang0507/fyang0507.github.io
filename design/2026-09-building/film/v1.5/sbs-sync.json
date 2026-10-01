@@ -1,0 +1,243 @@
+{
+ "take": "take15-before",
+ "shots": [
+  {
+   "shot": "op",
+   "t0": 0,
+   "t1": 4.98,
+   "segments": [
+    [
+     0,
+     4.98,
+     0.0,
+     1
+    ]
+   ]
+  },
+  {
+   "shot": "desk",
+   "t0": 5.58,
+   "t1": 8.76,
+   "segments": [
+    [
+     5.58,
+     8.76,
+     5.050000000000001,
+     1
+    ]
+   ]
+  },
+  {
+   "shot": "tabs",
+   "t0": 9.36,
+   "t1": 13.7475,
+   "segments": [
+    [
+     9.36,
+     10.143329999999997,
+     10.600000000000001,
+     1
+    ],
+    [
+     10.143329999999997,
+     11.043329999999997,
+     11.383329999999999,
+     0,
+     {
+      "still": [
+       10.85,
+       11.433
+      ],
+      "change": 0.095,
+      "gap": 0.9
+     }
+    ],
+    [
+     11.043329999999997,
+     13.409999999999998,
+     11.383329999999999,
+     1
+    ],
+    [
+     13.409999999999998,
+     13.7475,
+     13.75,
+     0
+    ]
+   ]
+  },
+  {
+   "shot": "home",
+   "t0": 14.3475,
+   "t1": 30.2425,
+   "segments": [
+    [
+     14.3475,
+     15.68083,
+     13.75,
+     1
+    ],
+    [
+     15.68083,
+     17.180830000000004,
+     15.08333,
+     0,
+     {
+      "still": [
+       14.55,
+       15.133
+      ],
+      "change": 0.236,
+      "gap": 1.5
+     }
+    ],
+    [
+     17.180830000000004,
+     19.380830000000003,
+     15.08333,
+     1
+    ],
+    [
+     19.380830000000003,
+     19.58083,
+     17.28333,
+     0,
+     {
+      "still": [
+       16.55,
+       17.333
+      ],
+      "change": 0.0,
+      "gap": 0.2
+     }
+    ],
+    [
+     19.58083,
+     20.539165000000004,
+     17.28333,
+     1,
+     {
+      "still": [
+       18.15,
+       18.433
+      ],
+      "change": 0.037,
+      "gap": -0.1
+     }
+    ],
+    [
+     20.539165000000004,
+     22.78083,
+     18.341665000000003,
+     1
+    ],
+    [
+     22.78083,
+     26.73083,
+     20.58333,
+     0,
+     {
+      "still": [
+       19.55,
+       20.633
+      ],
+      "change": 0.011,
+      "gap": 3.95
+     }
+    ],
+    [
+     26.73083,
+     29.34750000000026,
+     20.58333,
+     1
+    ],
+    [
+     29.34750000000026,
+     30.2425,
+     23.20000000000026,
+     0
+    ]
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "name": "click-book",
+   "after_t": 6.93,
+   "before_u": 6.4,
+   "after_frame": 416,
+   "before_frame": 416,
+   "after_frame_first": 416
+  },
+  {
+   "name": "take-card",
+   "after_t": 9.459999999999997,
+   "before_u": 10.7,
+   "after_frame": 568,
+   "before_frame": 568,
+   "after_frame_first": 568
+  },
+  {
+   "name": "open-principles",
+   "after_t": 12.259999999999998,
+   "before_u": 12.6,
+   "after_frame": 736,
+   "before_frame": 736,
+   "after_frame_first": 736
+  },
+  {
+   "name": "click-shooting",
+   "after_t": 14.9975,
+   "before_u": 14.4,
+   "after_frame": 900,
+   "before_frame": 900,
+   "after_frame_first": 900
+  },
+  {
+   "name": "open-print",
+   "after_t": 18.497500000000002,
+   "before_u": 16.4,
+   "after_frame": 1110,
+   "before_frame": 1110,
+   "after_frame_first": 1110
+  },
+  {
+   "name": "close-print",
+   "after_t": 20.2975,
+   "before_u": 18,
+   "after_frame": 1218,
+   "before_frame": 1218,
+   "after_frame_first": 1218
+  },
+  {
+   "name": "click-about",
+   "after_t": 21.5975,
+   "before_u": 19.4,
+   "after_frame": 1296,
+   "before_frame": 1296,
+   "after_frame_first": 1296
+  },
+  {
+   "name": "pull-card",
+   "after_t": 23.0975,
+   "before_u": null,
+   "after_frame": 1386,
+   "before_frame": null
+  },
+  {
+   "name": "flip",
+   "after_t": 25.497500000000002,
+   "before_u": null,
+   "after_frame": 1530,
+   "before_frame": null
+  },
+  {
+   "name": "click-home",
+   "after_t": 27.8475,
+   "before_u": 21.7,
+   "after_frame": 1671,
+   "before_frame": 1671,
+   "after_frame_first": 1671
+  }
+ ]
+}

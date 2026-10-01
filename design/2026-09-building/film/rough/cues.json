@@ -1,0 +1,805 @@
+{
+ "dur": 126.934,
+ "fps": 30,
+ "timeline": [
+  {
+   "name": "s1-home-writing-reading",
+   "t0": 4.2,
+   "t1": 40.967000000000006
+  },
+  {
+   "name": "s2-building",
+   "t0": 42.467000000000006,
+   "t1": 75.867
+  },
+  {
+   "name": "s3-gallery-about-home",
+   "t0": 77.367,
+   "t1": 115.934
+  }
+ ],
+ "cues": [
+  {
+   "t": 1.4,
+   "type": "cover-open"
+  },
+  {
+   "t": 4.2,
+   "type": "site",
+   "kind": "nav",
+   "name": "home-first-visit",
+   "what": "a fresh session opens home",
+   "session": "s1-home-writing-reading",
+   "u": 0
+  },
+  {
+   "t": 4.2,
+   "type": "chapter",
+   "name": "s1-home-writing-reading"
+  },
+  {
+   "t": 4.83,
+   "type": "site",
+   "kind": "event",
+   "name": "op-cut",
+   "what": "the OP's first hard cut (弗)",
+   "session": "s1-home-writing-reading",
+   "u": 0.63
+  },
+  {
+   "t": 5.6,
+   "type": "site",
+   "kind": "event",
+   "name": "objects-fall",
+   "what": "after the OP, the desk objects fall into place",
+   "session": "s1-home-writing-reading",
+   "u": 1.4
+  },
+  {
+   "t": 7.605,
+   "type": "site",
+   "kind": "event",
+   "name": "op-done",
+   "what": "the OP ends: the motto is written, then the two seals are stamped",
+   "session": "s1-home-writing-reading",
+   "u": 3.405
+  },
+  {
+   "t": 7.630000000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "motto-start",
+   "what": "the pen starts writing 继续写，继续造",
+   "session": "s1-home-writing-reading",
+   "u": 3.43
+  },
+  {
+   "t": 8.7,
+   "type": "site",
+   "kind": "event",
+   "name": "motto-done",
+   "what": "the motto written",
+   "session": "s1-home-writing-reading",
+   "u": 4.5
+  },
+  {
+   "t": 8.77,
+   "type": "site",
+   "kind": "event",
+   "name": "seal-1",
+   "what": "the 弗雷德 seal stamped, with its impact ticks",
+   "session": "s1-home-writing-reading",
+   "u": 4.57
+  },
+  {
+   "t": 9.030000000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "seal-2",
+   "what": "the FRED YANG seal stamped",
+   "session": "s1-home-writing-reading",
+   "u": 4.83
+  },
+  {
+   "t": 9.505,
+   "type": "lift",
+   "at": "op-done",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 11.005,
+   "type": "drop",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 12.202000000000002,
+   "type": "site",
+   "kind": "hover",
+   "name": "hover-book",
+   "what": "the pointer goes to the book",
+   "session": "s1-home-writing-reading",
+   "u": 8.002
+  },
+  {
+   "t": 13.8,
+   "type": "site",
+   "kind": "click",
+   "name": "click-book",
+   "what": "the book: after, the desk becomes the nav; before, a hard cut",
+   "session": "s1-home-writing-reading",
+   "u": 9.6
+  },
+  {
+   "t": 14,
+   "type": "site",
+   "kind": "event",
+   "name": "desk-nav-flight",
+   "what": "the table folds into the header rule, the objects fly into their tabs (to ~10.6)",
+   "session": "s1-home-writing-reading",
+   "u": 9.8
+  },
+  {
+   "t": 15.05,
+   "type": "lift",
+   "at": "click-book",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 16.3,
+   "type": "drop",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 16.602,
+   "type": "site",
+   "kind": "hover",
+   "name": "hover-spine",
+   "what": "a book pulled toward you, its cover turns out",
+   "session": "s1-home-writing-reading",
+   "u": 12.402
+  },
+  {
+   "t": 19.608,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-switch",
+   "what": "to the 中文 · EN switch",
+   "session": "s1-home-writing-reading",
+   "u": 15.408
+  },
+  {
+   "t": 21,
+   "type": "site",
+   "kind": "click",
+   "name": "switch-en",
+   "what": "EN: the spines retitle in English",
+   "session": "s1-home-writing-reading",
+   "u": 16.8
+  },
+  {
+   "t": 22.602999999999998,
+   "type": "site",
+   "kind": "hover",
+   "name": "hover-spine-2",
+   "what": "the latest essay pulled out, its cover in English",
+   "session": "s1-home-writing-reading",
+   "u": 18.403
+  },
+  {
+   "t": 25.198999999999998,
+   "type": "site",
+   "kind": "click",
+   "name": "open-book",
+   "what": "the book in your hand opens Reading (a same-tab cut on both)",
+   "session": "s1-home-writing-reading",
+   "u": 20.999
+  },
+  {
+   "t": 25.47,
+   "type": "site",
+   "kind": "event",
+   "name": "reading-cut",
+   "what": "Reading arrives (a same-tab hard cut on both sides)",
+   "session": "s1-home-writing-reading",
+   "u": 21.27
+  },
+  {
+   "t": 28.601,
+   "type": "site",
+   "kind": "scroll",
+   "name": "scroll-hero",
+   "what": "off the cover: the hero dissolves into halftone, the title flies into the header",
+   "session": "s1-home-writing-reading",
+   "u": 24.401
+  },
+  {
+   "t": 30.201,
+   "type": "lift",
+   "at": "scroll-hero",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 31.701,
+   "type": "drop",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 33.201,
+   "type": "site",
+   "kind": "scroll",
+   "name": "scroll-text",
+   "what": "into the text; after, the margin rail",
+   "session": "s1-home-writing-reading",
+   "u": 29.001
+  },
+  {
+   "t": 36.004,
+   "type": "site",
+   "kind": "hover",
+   "name": "hover-footnote",
+   "what": "a footnote: the pen brackets the claim, loops the number, the slip is tugged over",
+   "session": "s1-home-writing-reading",
+   "u": 31.804
+  },
+  {
+   "t": 38.204,
+   "type": "lift",
+   "at": "hover-footnote",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 39.504,
+   "type": "drop",
+   "session": "s1-home-writing-reading"
+  },
+  {
+   "t": 40.967000000000006,
+   "type": "pull",
+   "dur": 1.5
+  },
+  {
+   "t": 42.467000000000006,
+   "type": "chapter",
+   "name": "s2-building"
+  },
+  {
+   "t": 42.767,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-building-tab",
+   "what": "to the nav's building tab",
+   "session": "s2-building",
+   "u": 0.3
+  },
+  {
+   "t": 44.36900000000001,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-building",
+   "what": "building: after, the tab move (and the flower pressed on first view); before, a hard cut",
+   "session": "s2-building",
+   "u": 1.902
+  },
+  {
+   "t": 44.467000000000006,
+   "type": "site",
+   "kind": "event",
+   "name": "tab-move",
+   "what": "the tab move into Building (to ~2.5); the flower pressed on first view",
+   "session": "s2-building",
+   "u": 2
+  },
+  {
+   "t": 45.269000000000005,
+   "type": "lift",
+   "at": "click-building",
+   "session": "s2-building"
+  },
+  {
+   "t": 46.36900000000001,
+   "type": "drop",
+   "session": "s2-building"
+  },
+  {
+   "t": 47.093,
+   "type": "site",
+   "kind": "hover",
+   "name": "point-lead",
+   "what": "pointing at the lead card: the flower pops and is pressed again",
+   "session": "s2-building",
+   "u": 4.626
+  },
+  {
+   "t": 49.86800000000001,
+   "type": "site",
+   "kind": "drag",
+   "name": "fling",
+   "what": "the board flung left: the cards swing on their pins",
+   "session": "s2-building",
+   "u": 7.401
+  },
+  {
+   "t": 49.91700000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "cards-swing",
+   "what": "the board flung: cards swing on their pins",
+   "session": "s2-building",
+   "u": 7.45
+  },
+  {
+   "t": 52.46900000000001,
+   "type": "site",
+   "kind": "drag",
+   "name": "fling-back",
+   "what": "and brought back",
+   "session": "s2-building",
+   "u": 10.002
+  },
+  {
+   "t": 52.66900000000001,
+   "type": "lift",
+   "at": "fling-back",
+   "session": "s2-building"
+  },
+  {
+   "t": 54.06900000000001,
+   "type": "drop",
+   "session": "s2-building"
+  },
+  {
+   "t": 55.071000000000005,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-card",
+   "what": "to the Fred Agent card",
+   "session": "s2-building",
+   "u": 12.604
+  },
+  {
+   "t": 56.068000000000005,
+   "type": "site",
+   "kind": "click",
+   "name": "take-card",
+   "what": "after: the pin pops, the card comes to your hand, the dossier slides out; before: into the old field notes",
+   "session": "s2-building",
+   "u": 13.601
+  },
+  {
+   "t": 56.167,
+   "type": "site",
+   "kind": "event",
+   "name": "pin-pop",
+   "what": "the pin pops, the card comes to the hand, the dossier slides out (to ~15.0)",
+   "session": "s2-building",
+   "u": 13.7
+  },
+  {
+   "t": 58.87800000000001,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-principles",
+   "what": "the dossier's 03 principles tab",
+   "session": "s2-building",
+   "u": 16.411
+  },
+  {
+   "t": 60.068000000000005,
+   "type": "site",
+   "kind": "nav",
+   "name": "open-principles",
+   "what": "after: the tabs fly to the chapter's fore-edge (#35), the rail is drawn; before: the pill nav swaps Principles in",
+   "session": "s2-building",
+   "u": 17.601
+  },
+  {
+   "t": 60.26700000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "tabs-fly",
+   "what": "the tabs fly from the dossier to the chapter's fore-edge (#35), the sheet swaps under them (to ~18.3)",
+   "session": "s2-building",
+   "u": 17.8
+  },
+  {
+   "t": 60.867000000000004,
+   "type": "site",
+   "kind": "event",
+   "name": "rail-draws",
+   "what": "the margin rail drawn down the page",
+   "session": "s2-building",
+   "u": 18.4
+  },
+  {
+   "t": 62.668000000000006,
+   "type": "lift",
+   "at": "open-principles",
+   "session": "s2-building"
+  },
+  {
+   "t": 63.67,
+   "type": "site",
+   "kind": "scroll",
+   "name": "scroll-principles",
+   "what": "down to principle 03: the graphite follows, the loop moves down the rail",
+   "session": "s2-building",
+   "u": 21.203
+  },
+  {
+   "t": 64.06800000000001,
+   "type": "drop",
+   "session": "s2-building"
+  },
+  {
+   "t": 67.47300000000001,
+   "type": "site",
+   "kind": "scroll",
+   "name": "scroll-end",
+   "what": "on down to the chapter's end",
+   "session": "s2-building",
+   "u": 25.006
+  },
+  {
+   "t": 70.071,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-back",
+   "what": "← Building board",
+   "session": "s2-building",
+   "u": 27.604
+  },
+  {
+   "t": 71.269,
+   "type": "site",
+   "kind": "nav",
+   "name": "way-back",
+   "what": "after: the way back, the card brought into view, the tabs tuck under it, the pin pressed in; before: a hard cut",
+   "session": "s2-building",
+   "u": 28.802
+  },
+  {
+   "t": 71.56700000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "way-back",
+   "what": "the way back: the board, the card brought into view, the tabs tucking under it",
+   "session": "s2-building",
+   "u": 29.1
+  },
+  {
+   "t": 72.26700000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "pin-pressed",
+   "what": "the pin pressed in, its impact ticks",
+   "session": "s2-building",
+   "u": 29.8
+  },
+  {
+   "t": 73.66900000000001,
+   "type": "lift",
+   "at": "way-back",
+   "session": "s2-building"
+  },
+  {
+   "t": 74.86900000000001,
+   "type": "drop",
+   "session": "s2-building"
+  },
+  {
+   "t": 75.867,
+   "type": "pull",
+   "dur": 1.5
+  },
+  {
+   "t": 77.367,
+   "type": "chapter",
+   "name": "s3-gallery-about-home"
+  },
+  {
+   "t": 77.66600000000001,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-shooting-tab",
+   "what": "to the nav's shooting tab",
+   "session": "s3-gallery-about-home",
+   "u": 0.299
+  },
+  {
+   "t": 79.27000000000001,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-shooting",
+   "what": "shooting: after, the tab move, the prints develop on the lines; before, a hard cut to a grid",
+   "session": "s3-gallery-about-home",
+   "u": 1.903
+  },
+  {
+   "t": 79.367,
+   "type": "site",
+   "kind": "event",
+   "name": "tab-move",
+   "what": "the tab move into Gallery (to ~2.5); the prints develop on the lines",
+   "session": "s3-gallery-about-home",
+   "u": 2
+  },
+  {
+   "t": 80.17000000000002,
+   "type": "lift",
+   "at": "click-shooting",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 81.27000000000001,
+   "type": "drop",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 82.768,
+   "type": "site",
+   "kind": "hover",
+   "name": "pass-line",
+   "what": "a fast pass along the first line: the prints swing",
+   "session": "s3-gallery-about-home",
+   "u": 5.401
+  },
+  {
+   "t": 82.967,
+   "type": "site",
+   "kind": "event",
+   "name": "prints-swing",
+   "what": "the fast pass swings the first line",
+   "session": "s3-gallery-about-home",
+   "u": 5.6
+  },
+  {
+   "t": 86.066,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-print",
+   "what": "onto the third print",
+   "session": "s3-gallery-about-home",
+   "u": 8.699
+  },
+  {
+   "t": 87.468,
+   "type": "site",
+   "kind": "click",
+   "name": "open-print",
+   "what": "after: unclipped into the viewer with its peg, the rope springs up; before: the dark lightbox",
+   "session": "s3-gallery-about-home",
+   "u": 10.101
+  },
+  {
+   "t": 87.56700000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "print-unclip",
+   "what": "the print unclipped into the viewer with its peg; the rope springs up (to ~10.7)",
+   "session": "s3-gallery-about-home",
+   "u": 10.2
+  },
+  {
+   "t": 88.768,
+   "type": "lift",
+   "at": "open-print",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 90.068,
+   "type": "drop",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 91.066,
+   "type": "site",
+   "kind": "click",
+   "name": "close-print",
+   "what": "after: it flies home and clips back onto the rope, which sags again",
+   "session": "s3-gallery-about-home",
+   "u": 13.699
+  },
+  {
+   "t": 91.167,
+   "type": "site",
+   "kind": "event",
+   "name": "print-home",
+   "what": "the print flies home and clips onto the rope, which sags",
+   "session": "s3-gallery-about-home",
+   "u": 13.8
+  },
+  {
+   "t": 92.771,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-about-tab",
+   "what": "to the nav's about tab",
+   "session": "s3-gallery-about-home",
+   "u": 15.404
+  },
+  {
+   "t": 94.268,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-about",
+   "what": "about: after, the tab move; before, a hard cut",
+   "session": "s3-gallery-about-home",
+   "u": 16.901
+  },
+  {
+   "t": 94.367,
+   "type": "site",
+   "kind": "event",
+   "name": "tab-move-about",
+   "what": "the tab move into About (to ~17.4)",
+   "session": "s3-gallery-about-home",
+   "u": 17
+  },
+  {
+   "t": 95.168,
+   "type": "lift",
+   "at": "click-about",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 96.268,
+   "type": "drop",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 96.96700000000001,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-sleeve",
+   "what": "the sleeve: the lip answers the pointer",
+   "session": "s3-gallery-about-home",
+   "u": 19.6
+  },
+  {
+   "t": 98.56800000000001,
+   "type": "site",
+   "kind": "drag",
+   "name": "pull-card",
+   "what": "the specimen card pulled out of its sleeve: stick, the lip catches, it pops free",
+   "session": "s3-gallery-about-home",
+   "u": 21.201
+  },
+  {
+   "t": 98.667,
+   "type": "site",
+   "kind": "event",
+   "name": "card-out",
+   "what": "the card pulled from its sleeve: stick, lip catch, pop (to ~22.6)",
+   "session": "s3-gallery-about-home",
+   "u": 21.3
+  },
+  {
+   "t": 101.569,
+   "type": "site",
+   "kind": "hover",
+   "name": "tilt",
+   "what": "in the hand: a small tilt shows the card's thickness",
+   "session": "s3-gallery-about-home",
+   "u": 24.202
+  },
+  {
+   "t": 103.97300000000001,
+   "type": "site",
+   "kind": "drag",
+   "name": "flip",
+   "what": "dragged right: the card turns over where it is",
+   "session": "s3-gallery-about-home",
+   "u": 26.606
+  },
+  {
+   "t": 104.06700000000001,
+   "type": "site",
+   "kind": "event",
+   "name": "flip",
+   "what": "the card turns over in place, the night face (to ~27.7)",
+   "session": "s3-gallery-about-home",
+   "u": 26.7
+  },
+  {
+   "t": 106.07300000000001,
+   "type": "lift",
+   "at": "flip",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 107.27300000000001,
+   "type": "drop",
+   "session": "s3-gallery-about-home"
+  },
+  {
+   "t": 107.56800000000001,
+   "type": "site",
+   "kind": "drag",
+   "name": "flip-back",
+   "what": "dragged left: it turns back",
+   "session": "s3-gallery-about-home",
+   "u": 30.201
+  },
+  {
+   "t": 107.667,
+   "type": "site",
+   "kind": "event",
+   "name": "flip-back",
+   "what": "it turns back (to ~31.2)",
+   "session": "s3-gallery-about-home",
+   "u": 30.3
+  },
+  {
+   "t": 110.171,
+   "type": "site",
+   "kind": "hover",
+   "name": "to-home",
+   "what": "to home",
+   "session": "s3-gallery-about-home",
+   "u": 32.804
+  },
+  {
+   "t": 111.569,
+   "type": "site",
+   "kind": "nav",
+   "name": "click-home",
+   "what": "home: after, the nav falls back into a desk; before, a hard cut",
+   "session": "s3-gallery-about-home",
+   "u": 34.202
+  },
+  {
+   "t": 111.667,
+   "type": "site",
+   "kind": "event",
+   "name": "gravity-return",
+   "what": "home: the nav falls back into a desk (to ~34.8)",
+   "session": "s3-gallery-about-home",
+   "u": 34.3
+  },
+  {
+   "t": 115.934,
+   "type": "pull",
+   "dur": 1.5
+  },
+  {
+   "t": 116.83399999999999,
+   "type": "motto",
+   "dur": 1.6999999999999997
+  },
+  {
+   "t": 118.83399999999999,
+   "type": "stamp",
+   "k": 1
+  },
+  {
+   "t": 119.234,
+   "type": "stamp",
+   "k": 0.6
+  },
+  {
+   "t": 119.734,
+   "type": "type",
+   "dur": 1.3636363636363635
+  },
+  {
+   "t": 121.34763636363635,
+   "type": "type",
+   "dur": 1.0545454545454545
+  },
+  {
+   "t": 122.6521818181818,
+   "type": "type",
+   "dur": 1.2363636363636363
+  },
+  {
+   "t": 124.13854545454544,
+   "type": "type",
+   "dur": 1
+  },
+  {
+   "t": 125.38854545454544,
+   "type": "type",
+   "dur": 0.45454545454545453
+  }
+ ]
+}

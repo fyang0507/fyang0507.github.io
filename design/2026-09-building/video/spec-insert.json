@@ -1,0 +1,37 @@
+{"fps": 60, "crf": 18,
+ "labels": {"before": "round one", "after": "round two"},
+ "segments": [
+ {"kind": "card", "k": "round two · building", "title": "Then Building got *a second round*.", "zh": "然后，在造又改了一轮。", "cap": "From here on, left is the board as round one left it, and right is the board today: every card keeps a dossier, and every project has its chapters.", "capzh": "从这里开始，左边是第一轮改完的板子，右边是现在的：每张卡片背后都有一份档案，每个项目都有自己的章节。", "dur": 4.5},
+ {"kind": "split", "mode": "desk", "n": "04b", "title": "Building · the dossier", "zh": "在造 · 档案", "before": "12-dossier-before", "after": "12-dossier-after", "hold": 0.6, "beats": [
+  {"t": 0, "b": "Point at Fred Agent's title.", "bzh": "指向 Fred Agent 的标题。", "a": "At rest, its dossier's **five index tabs** peek past the card's edge.", "azh": "平时，档案的五个索引标签从卡片右边探出来。"},
+  {"t": 1.6, "b": "Click: the card comes to your hand, and a field note opens under it.", "bzh": "点一下：卡片拿到面前，下面展开一页笔记。", "a": "Click: the card comes to your hand, and **the dossier slides out** from under it.", "azh": "点一下：卡片拿到面前，档案从它底下滑出来。"},
+  {"t": 4.0, "b": "The note holds one way in.", "bzh": "笔记里只有一个入口。", "a": "Its contents: each chapter's own title and one line, the one figure, status and dates.", "azh": "目录上是每一章的标题和一句话，一张图，状态和日期。"},
+  {"t": 5.8, "b": "And the repository.", "bzh": "还有代码仓库。", "a": "Its tabs run down the fore-edge. The ones that peeked have tucked behind the card.", "azh": "索引标签排在书口；刚才探出来的那几个，已经收到卡片后面。"},
+  {"t": 7.6, "b": "“Pin it back” sends it home.", "bzh": "点「钉回去」，卡片回到原位。", "a": "“Pin it back”: the dossier slides up behind the card, the pin goes in, and the tabs **spring back out**.", "azh": "点「钉回去」：档案滑回卡片后面，图钉按下去，标签又弹出来。"}],
+  "replay": {"t0": 1.55, "t1": 2.75, "rate": 0.4, "b": "Slowed down: the note unfolds under the card.", "bzh": "放慢看：笔记在卡片下面展开。", "a": "Slowed down: one small overshoot, then it settles. None of it shows before it has slid out from under the card.", "azh": "放慢看：冲过头一点，再停稳。它从卡片底下滑出来之前，一点都看不见。"}},
+ {"kind": "split", "mode": "desk", "n": "04c", "title": "Building · into a chapter", "zh": "在造 · 进入一章", "before": "13-chapter-before", "after": "13-chapter-after", "hold": 0.6, "beats": [
+  {"t": 0, "b": "Take the card down.", "bzh": "把卡片取下来。", "a": "Take the card down.", "azh": "把卡片取下来。"},
+  {"t": 3.2, "b": "The note's one way in: “Enter the field notes”.", "bzh": "笔记里唯一的入口：「进入笔记」。", "a": "Every tab is a way in. This one is **03 principles**.", "azh": "每个标签都是一个入口；这个是「03 原则」。"},
+  {"t": 4.4, "b": "Click: a cut to the old sub-site's overview, drawn once React arrives.", "bzh": "点一下：切到旧的子站首页，要等 React 到了才画出来。", "a": "Click: the chapter itself, a static page in the dossier's look. (A cut for now: next, the tabs fly.)", "azh": "点一下：直接到这一章，一张静态页面，长得像档案。（现在是硬切；下一步，标签会飞过去。）"},
+  {"t": 6.6, "b": "Its own pill nav swaps Principles in, in place.", "bzh": "再用它自己的胶囊导航，原地换成「原则」。", "a": "A kraft edge, a typed file label, the card clipped on; the current tab is **pulled out and banded**.", "azh": "牛皮纸的书口，打字机印的档案标签，卡片夹在角上；当前这一章的标签被抽出来，涂上麦色。"}]},
+ {"kind": "split", "mode": "desk", "n": "04d", "title": "Building · reading the principles", "zh": "在造 · 读原则", "before": "14-principles-before", "after": "14-principles-after", "lead": 0.5, "hold": 0.6, "beats": [
+  {"t": 0, "b": "The chapter opens with a gradient in its title.", "bzh": "这一章打开，标题里是一段渐变。", "a": "The chapter opens with **Reading's pencil margin** as its contents.", "azh": "这一章打开，目录就是「读」页面上的那条铅笔页边。"},
+  {"t": 2.8, "b": "Scroll: the “On this page” list waits in the left column.", "bzh": "往下滚：「本页目录」待在左栏。", "a": "Scroll: the graphite follows your reading, and the pen's loop rings **the current principle**.", "azh": "往下滚：铅笔线跟着读到的地方走，笔圈住正在读的那一条。"},
+  {"t": 7.6, "b": "Point at an entry.", "bzh": "指向一条目录。", "a": "Point at a number and its **preview slip** comes out.", "azh": "指向一个编号，它的预览纸条就出来。"},
+  {"t": 10.0, "b": "Read on, to principle 06.", "bzh": "接着读到第 06 条。", "a": "Read on, and the loop moves down to 06.", "azh": "接着读，圈就移到 06。"}]},
+ {"kind": "split", "mode": "desk", "n": "04e", "title": "Building · the system map", "zh": "在造 · 系统图", "before": "15-system-before", "after": "15-system-after", "hold": 0.6, "beats": [
+  {"t": 0, "b": "Outcomes on top, handles at the bottom. Hover an outcome: its path lights up in dashed red.", "bzh": "结果在上，接口在下。指向一个结果：它的路径亮成红色虚线。", "a": "Handles → protocols → outcomes, the way the argument reads. Hover: the pen **draws the path**.", "azh": "接口 → 协议 → 结果，和文字的顺序一样。指上去：笔把这条路径画出来。"},
+  {"t": 2.4, "b": "Headless Recovery wraps every outcome.", "bzh": "Headless Recovery 包住每一个结果。", "a": "Headless Recovery wraps every outcome. The lines retract faster than they draw.", "azh": "Headless Recovery 包住每一个结果；线收回去比画出来快。"},
+  {"t": 4.4, "b": "Click a handle to lock its path; the explainer opens below.", "bzh": "点一个接口，锁住路径，下面展开说明。", "a": "Click to lock: the module is banded in wheat, and its lines **cool into the band's edge**.", "azh": "点一下锁住：这个模块涂上麦色，线也冷下来，变成荧光笔边缘的颜色。"},
+  {"t": 7.2, "b": "The lock holds.", "bzh": "锁住的路径一直在。", "a": "Leave the map: the locked path stays.", "azh": "指针离开，锁住的路径还在。"},
+  {"t": 8.8, "b": "Clear path.", "bzh": "清除路径。", "a": "“Clear path”: the pen takes them back.", "azh": "点「清除路径」：笔把线收回去。"}]},
+ {"kind": "split", "mode": "phone", "n": "04f", "title": "On a phone · the dossier", "zh": "手机上 · 档案", "before": "16b-phone-dossier-before", "after": "16b-phone-dossier-after", "lead": 1.2, "hold": 0.6, "beats": [
+  {"t": 0, "b": "Tap Fred Agent.", "bzh": "点 Fred Agent。", "a": "Tap Fred Agent.", "azh": "点 Fred Agent。"},
+  {"t": 0.6, "b": "It comes up with its field note.", "bzh": "卡片拿起来，带着那页笔记。", "a": "The dossier slides out. Its tabs stand on its **top edge**, numbers only.", "azh": "档案滑出来；标签立在它的上沿，只写编号。"},
+  {"t": 3.0, "b": "Scroll the note, and back.", "bzh": "滚动笔记，再滚回来。", "a": "Scroll the hand's layer to read the whole sheet, and back.", "azh": "滚动手上这一层，读完整页，再滚回来。"},
+  {"t": 7.0, "b": "Pin it back.", "bzh": "钉回去。", "a": "Pin it back: the tabs peek out again, inside the cork.", "azh": "钉回去：标签又探出来，就在软木板里面。"}]},
+ {"kind": "split", "mode": "phone", "n": "04g", "title": "On a phone · a chapter", "zh": "手机上 · 一章", "before": "16a-phone-chapter-before", "after": "16a-phone-chapter-after", "lead": 1.2, "hold": 0.6, "beats": [
+  {"t": 0, "b": "Principles: the old pill nav, sticky at the top.", "bzh": "「原则」：旧的胶囊导航，贴在顶上。", "a": "The fore-edge tabs become **a strip**: numbers, and the current one named.", "azh": "书口的标签变成一条：只写编号，当前这一章写出名字。"},
+  {"t": 0.5, "b": "Read down.", "bzh": "往下读。", "a": "Read down: the counter under the strip counts the principles, **01 / 11, 02 / 11…**", "azh": "往下读：标签下面的计数跟着走，01 / 11，02 / 11……"},
+  {"t": 6.8, "b": "Components, swapped in place.", "bzh": "「组件」，原地换进来。", "a": "Tap 04: Components opens, and the strip names it.", "azh": "点 04：打开「组件」，标签条写出它的名字。"}]}
+ ]}
