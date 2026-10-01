@@ -21,7 +21,9 @@ h1{font-weight:500;font-size:44px;line-height:1.1;margin:10px 0 14px;letter-spac
 .col h2{font-weight:500;font-size:26px;margin:14px 0 4px}
 .col h2 .zh{font-family:"Noto Serif SC",serif;font-weight:600;margin-right:.4em}
 .col p{margin:6px 0 10px}
-video{width:100%;aspect-ratio:16/9;display:block;background:var(--paper2);border:1px solid var(--line-strong)}
+video,img.still{width:100%;aspect-ratio:16/9;display:block;background:var(--paper2);border:1px solid var(--line-strong)}
+img.still{object-fit:contain}
+.gone{font:400 12.5px/1.5 "IBM Plex Mono",monospace;color:var(--pencil);margin:6px 0 0}
 dl{margin:10px 0 0;display:grid;grid-template-columns:128px 1fr;gap:4px 12px;font:400 13.5px/1.5 "IBM Plex Mono","Noto Serif SC",monospace;color:var(--soft)}
 dt{color:var(--pencil);text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;padding-top:2px}
 dd{margin:0}
@@ -30,8 +32,6 @@ dd{margin:0}
 .boards h3{font-weight:500;font-size:22px;margin:40px 0 10px}
 .boards img{width:100%;display:block;border:1px solid var(--line-strong)}
 .q{margin-top:56px;padding:18px 22px;background:var(--paper2);border-left:3px solid var(--hl-ink);max-width:980px}
-.play{margin:22px 0 30px;font:500 13px "IBM Plex Mono",monospace}
-.play button{font:inherit;background:none;border:1px solid var(--line-strong);padding:6px 12px;cursor:pointer;color:var(--ink)}
 @media (max-width:1100px){.row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -45,7 +45,7 @@ dd{margin:0}
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">From the shooting tab to home in one shot, and credits stamped like the site's facts</h2>
   <div class="row" style="grid-template-columns:1fr 1fr;align-items:start;margin:10px 0 18px">
     <div><div class="util">part 1, the promo, alone · 16:9 · 0:37.6</div><video src="v1.5/film-v1.5-promo.mp4" poster="v1.5/poster.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">part 1 + part 2 · 16:9 · 1:03.8</div><video src="v1.5/film-v1.5.mp4" poster="v1.5/poster.png" controls preload="metadata" playsinline></video></div>
+    <div><div class="util">part 1 + part 2 · 16:9 · 1:03.8</div><img class="still" src="v1.5/poster.png" alt="Poster frame of v1.5/film-v1.5.mp4" loading="lazy"><p class="gone">v1.5/film-v1.5.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
   <div class="util" style="margin-top:6px">side by side · the site before #17 (left) and the promo (right), the same clicks on the same frames · 0:37.6</div>
   <video src="v1.5/film-v1.5-side-by-side.mp4" poster="v1.5/poster-side-by-side.png" controls preload="metadata" playsinline style="max-width:1280px;margin:6px 0 18px"></video>
@@ -58,8 +58,8 @@ dd{margin:0}
   <div class="util">v1.4 · the promo with speed ramps, captions in the film's own strip, and the before</div>
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">No replays: the take slows down inside its own motion, and the film speaks only under the picture</h2>
   <div class="row" style="grid-template-columns:1fr 1fr;align-items:start;margin:10px 0 18px">
-    <div><div class="util">part 1, the promo, alone · 16:9 · 0:28.6</div><video src="v1.4/film-v1.4-promo.mp4" poster="v1.4/poster.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">part 1 + part 2 · 16:9 · 0:52.5</div><video src="v1.4/film-v1.4.mp4" poster="v1.4/poster.png" controls preload="metadata" playsinline></video></div>
+    <div><div class="util">part 1, the promo, alone · 16:9 · 0:28.6</div><img class="still" src="v1.4/poster.png" alt="Poster frame of v1.4/film-v1.4-promo.mp4" loading="lazy"><p class="gone">v1.4/film-v1.4-promo.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
+    <div><div class="util">part 1 + part 2 · 16:9 · 0:52.5</div><img class="still" src="v1.4/poster.png" alt="Poster frame of v1.4/film-v1.4.mp4" loading="lazy"><p class="gone">v1.4/film-v1.4.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
   <p class="lede">Fred's six notes on v1.3. The three ⅓× replays are gone. The desk flight, #35's tabs and the gravity return each slow down inside the running take instead, from real time to ⅓ and back, on true 180 fps frames. The pen's chapter names and slips are gone. Four captions now sit in an ink strip under the picture, off the page: each is in before its motion, stays until after it, and is fully visible for at least 2.8 s. The print is framed so its peg stays in view from the click to the viewer. The last sheet credits the baseline. Part 2 is v1.3's before, landing on the new last sheet, with its label in the same strip. The three caption treatments that were compared: <a href="v1.4/captions/index.html">v1.4/captions/</a>. Every shot: <a href="v1.4/TIMING.md">v1.4/TIMING.md</a>; everything else: <a href="v1.4/README.md">v1.4/README.md</a>.</p>
 </section>
@@ -68,13 +68,13 @@ dd{margin:0}
   <div class="util">v1.3 · the promo, then the before as one camera</div>
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">Part 1 is the promo. Part 2, for whoever keeps watching, is the same route before #17</h2>
   <div class="row" style="grid-template-columns:2fr 1fr;align-items:start;margin:10px 0 18px">
-    <div><div class="util">part 1 + part 2 · 16:9 · 0:53.6</div><video src="v1.3/film-v1.3-16x9.mp4" poster="v1.3/poster-part1-16x9.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">part 1 + part 2 · 9:16, reframed shot by shot</div><video src="v1.3/film-v1.3-9x16.mp4" poster="v1.3/poster-part1-9x16.png" controls preload="metadata" playsinline style="aspect-ratio:9/16;max-height:720px;width:auto"></video></div>
+    <div><div class="util">part 1 + part 2 · 16:9 · 0:53.6</div><img class="still" src="v1.3/poster-part1-16x9.png" alt="Poster frame of v1.3/film-v1.3-16x9.mp4" loading="lazy"><p class="gone">v1.3/film-v1.3-16x9.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
+    <div><div class="util">part 1 + part 2 · 9:16, reframed shot by shot</div><img class="still" src="v1.3/poster-part1-9x16.png" alt="Poster frame of v1.3/film-v1.3-9x16.mp4" loading="lazy" style="aspect-ratio:9/16;max-height:720px;width:auto"><p class="gone">v1.3/film-v1.3-9x16.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
   <p class="lede">Part 1 (0:00–0:29.7) is v1.1's 30 s cut, unchanged: the complete after, ending on the seals. Part 2 turns off that end card in 1.3 s. The last sheet is pulled aside, and the site before #17 is already loading under it, with 「#17 之前 · BEFORE」 stamped in its margin. Then it plays as one take, in real time: home, the book, Writing, the board's lead card, the field notes, a print into the lightbox, and home. Part 1's framings are used for the same beats, so the same clicks land as hard cuts. A quieter, sparser bed plays under the old site's clicks. At the end the last sheet is put back, landing on part 1's last frame. Shot list: <a href="v1.3/TIMING-part2.md">v1.3/TIMING-part2.md</a>; everything else: <a href="v1.3/README.md">v1.3/README.md</a>.</p>
   <div class="row" style="grid-template-columns:2fr 1fr;align-items:start;margin:10px 0 18px">
-    <div><div class="util">part 1 alone · 16:9 · 0:29.7 (v1.1's file)</div><video src="v1.3/film-v1.3-part1-16x9.mp4" poster="v1.3/poster-part1-16x9.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">part 1 alone · 9:16</div><video src="v1.3/film-v1.3-part1-9x16.mp4" poster="v1.3/poster-part1-9x16.png" controls preload="metadata" playsinline style="aspect-ratio:9/16;max-height:720px;width:auto"></video></div>
+    <div><div class="util">part 1 alone · 16:9 · 0:29.7 (v1.1's file)</div><img class="still" src="v1.3/poster-part1-16x9.png" alt="Poster frame of v1.3/film-v1.3-part1-16x9.mp4" loading="lazy"><p class="gone">v1.3/film-v1.3-part1-16x9.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
+    <div><div class="util">part 1 alone · 9:16</div><img class="still" src="v1.3/poster-part1-9x16.png" alt="Poster frame of v1.3/film-v1.3-part1-9x16.mp4" loading="lazy" style="aspect-ratio:9/16;max-height:720px;width:auto"><p class="gone">v1.3/film-v1.3-part1-9x16.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
 </section>
 <div class="util" style="margin:40px 0 8px">v1.2</div>
@@ -82,49 +82,48 @@ dd{margin:0}
   <div class="util">v1.2 · the 30 s cuts, rebuilt around the comparison</div>
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">Four comparisons in 27 s, stamped before and after</h2>
   <div class="row" style="grid-template-columns:2fr 1fr;align-items:start;margin:10px 0 18px">
-    <div><div class="util">16:9</div><video src="v1.2/film-30s-16x9.mp4" poster="v1.2/poster-30s-16x9.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">9:16, reframed for the vertical frame</div><video src="v1.2/film-30s-9x16.mp4" poster="v1.2/poster-30s-9x16.png" controls preload="metadata" playsinline style="aspect-ratio:9/16;max-height:720px;width:auto"></video></div>
+    <div><div class="util">16:9</div><img class="still" src="v1.2/poster-30s-16x9.png" alt="Poster frame of v1.2/film-30s-16x9.mp4" loading="lazy"><p class="gone">v1.2/film-30s-16x9.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
+    <div><div class="util">9:16, reframed for the vertical frame</div><img class="still" src="v1.2/poster-30s-9x16.png" alt="Poster frame of v1.2/film-30s-9x16.mp4" loading="lazy" style="aspect-ratio:9/16;max-height:720px;width:auto"><p class="gone">v1.2/film-30s-9x16.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
   <p class="lede">A 1.3 s hook (the OP), then the desk → nav flight, the card into your hand, the print peg and all, and the way home. At each hero click the page lifts, the site before #17 makes the same click with its real hard cut under a stamped 「#17 之前 · BEFORE #17」, the page falls, 「之后 · AFTER」 is stamped, and the new motion plays. The first hard cut lands at 2.7 s. Every shot: <a href="v1.2/README.md">v1.2/README.md</a>.</p>
   <div class="util" style="margin-top:28px">v1.2 · the long film</div>
-  <video src="v1.2/film-v1.2.mp4" poster="v1.2/poster.png" controls preload="metadata" playsinline style="max-width:1280px"></video>
+  <img class="still" src="v1.2/poster.png" alt="Poster frame of v1.2/film-v1.2.mp4" loading="lazy" style="max-width:1280px"><p class="gone">v1.2/film-v1.2.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
   <p class="lede" style="margin-top:16px">v1.1 with the BEFORE and AFTER stamps at its seven lifts, and another essay in Reading: <em>The God in the Edit</em> (被剪辑的神), whose pulled board is the middle of the hero's cover (the match cut at 2.67×), and whose first footnote is an LA Times citation.</p>
 </section>
 <div class="util" style="margin:40px 0 8px">v1.1</div>
 <section class="v11" id="v11">
   <div class="util">stage 2b · v1.1 · 1:36 · 1080p60</div>
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">v1.1: Demos in the dossier, the film's own hand, and true 2× footage</h2>
-  <video src="v1.1/film-v1.1.mp4" poster="v1.1/poster.png" controls preload="metadata" playsinline style="max-width:1280px"></video>
+  <img class="still" src="v1.1/poster.png" alt="Poster frame of v1.1/film-v1.1.mp4" loading="lazy" style="max-width:1280px"><p class="gone">v1.1/film-v1.1.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
   <p class="lede" style="margin-top:16px">v1 with Demos (#37) in the Building chapter: 05 demos by #35's chapter move, one region of Fig. 02 noticed with its coral corners, enlarged in place, stepped once and put back. The hand is now the film's own, a small ink cursor at the pen's weight with the site's three impact ticks, the same size at every zoom. Everything was re-recorded on main (321ee2c) at a true DPR 2, with the seal and the footnote close-ups at DPR 3. What changed and why: <a href="v1.1/README.md">v1.1/README.md</a>; every shot: <a href="v1.1/TIMING.md">v1.1/TIMING.md</a>.</p>
   <div class="row" style="grid-template-columns:2fr 1fr;align-items:start;margin:10px 0 56px">
-    <div><div class="util">the 30 s cut · 16:9</div><video src="v1.1/film-30s-16x9.mp4" poster="v1.1/poster-30s-16x9.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">the 30 s cut · 9:16</div><video src="v1.1/film-30s-9x16.mp4" poster="v1.1/poster-30s-9x16.png" controls preload="metadata" playsinline style="aspect-ratio:9/16;max-height:720px;width:auto"></video></div>
+    <div><div class="util">the 30 s cut · 16:9</div><img class="still" src="v1.1/poster-30s-16x9.png" alt="Poster frame of v1.1/film-30s-16x9.mp4" loading="lazy"><p class="gone">v1.1/film-30s-16x9.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
+    <div><div class="util">the 30 s cut · 9:16</div><img class="still" src="v1.1/poster-30s-9x16.png" alt="Poster frame of v1.1/film-30s-9x16.mp4" loading="lazy" style="aspect-ratio:9/16;max-height:720px;width:auto"><p class="gone">v1.1/film-30s-9x16.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
 </section>
 <div class="util" style="margin-bottom:8px">v1, as it was, for comparison</div>
 <section class="v1" id="v1">
   <div class="util">stage 2b · v1 · 1:28 · 1080p60</div>
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">One take of the real site, one camera, the old site under the page</h2>
-  <video src="v1/film-v1.mp4" poster="v1/poster.png" controls preload="metadata" playsinline style="max-width:1280px"></video>
+  <img class="still" src="v1/poster.png" alt="Poster frame of v1/film-v1.mp4" loading="lazy" style="max-width:1280px"><p class="gone">v1/film-v1.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
   <p class="lede" style="margin-top:16px">The site recorded as one visit on a virtual clock: every frame deterministic at 60 fps (180 fps for the three ⅓× replays), DPR 2, real input throughout. The camera never cuts but once, a match cut on the essay's cover into Reading's hero, over the site's own same-tab cut. Before seven clicks the page is lifted, and the site before #17 is seen making the same click from its own take, with its real hard cut. Structure, capture and QA: <a href="v1/README.md">v1/README.md</a>; every shot and cue: <a href="v1/TIMING.md">v1/TIMING.md</a>.</p>
   <div class="row" style="grid-template-columns:2fr 1fr;align-items:start;margin:10px 0 56px">
-    <div><div class="util">the 30 s cut · 16:9</div><video src="v1/film-30s-16x9.mp4" poster="v1/poster-30s-16x9.png" controls preload="metadata" playsinline></video></div>
-    <div><div class="util">the 30 s cut · 9:16</div><video src="v1/film-30s-9x16.mp4" poster="v1/poster-30s-9x16.png" controls preload="metadata" playsinline style="aspect-ratio:9/16;max-height:720px;width:auto"></video></div>
+    <div><div class="util">the 30 s cut · 16:9</div><img class="still" src="v1/poster-30s-16x9.png" alt="Poster frame of v1/film-30s-16x9.mp4" loading="lazy"><p class="gone">v1/film-30s-16x9.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
+    <div><div class="util">the 30 s cut · 9:16</div><img class="still" src="v1/poster-30s-9x16.png" alt="Poster frame of v1/film-30s-9x16.mp4" loading="lazy" style="aspect-ratio:9/16;max-height:720px;width:auto"><p class="gone">v1/film-30s-9x16.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p></div>
   </div>
 </section>
 <div class="util" style="margin-bottom:8px">stage 2a · the rough cut, with the critic's notes in <a href="rough/CRITIQUE.md">rough/CRITIQUE.md</a></div>
 <section class="rough" id="rough">
   <div class="util">stage 2a · the rough cut · for notes on structure</div>
   <h2 style="font-weight:500;font-size:36px;margin:6px 0 14px">The whole film, one dossier, one camera</h2>
-  <video src="rough/rough-cut.mp4" poster="rough/poster.png" controls preload="metadata" playsinline style="max-width:1280px"></video>
+  <img class="still" src="rough/poster.png" alt="Poster frame of rough/rough-cut.mp4" loading="lazy" style="max-width:1280px"><p class="gone">rough/rough-cut.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
   <p class="lede" style="margin-top:16px">2:07 at 1280×720, 30 fps, draft sound. The site's real motion, recorded live with real input on origin/main (#35) and on 6237120 (main before #17), printed on sheets in a kraft dossier. The camera never cuts. Inside each sheet the site carries continuity itself (the desk becomes the nav, the tab moves, #35's flight, the way back); between the three sessions the finished sheet is pulled aside to the left, the way a chapter gives way to the next. The before is always the page underneath: at the moments that compare, the top page is flipped up like a pad's, and the old site is seen doing the same thing at the same moment. Structure and continuity: <a href="rough/README.md">rough/README.md</a>; every shot and cue: <a href="rough/TIMING.md">rough/TIMING.md</a>.</p>
   
 </section>
 <div class="util" style="margin-bottom:8px">stage 1 · the three style tests</div>
-<div class="play"><button id="all">play all three together</button> <span class="util">sound on · A and B 12 s, C 15 s</span></div>
 <div class="row">
   <section class="col" id="a">
-    <video src="a-night/test.mp4" poster="a-night/poster.png" controls preload="metadata" playsinline></video>
+    <img class="still" src="a-night/poster.png" alt="Poster frame of a-night/test.mp4" loading="lazy"><p class="gone">a-night/test.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
     <h2><span class="zh">一夜</span>A · One night, many hands</h2>
     <p>The round as the night it happened: every merged PR pegged over the round-one print it replaced, at its real merge time, tagged with the agent that made it, developing the way the Gallery's prints develop.</p>
     <dl>
@@ -137,7 +136,7 @@ dd{margin:0}
     <p class="zhr">把这一轮当作那一夜来讲：每个合并的 PR 都用夹子夹在它替换掉的第一轮照片前面，时间是 GitHub 上真实的合并时刻，挂着做它的那个代理的小吊牌，像画廊里的照片一样慢慢显影。线条是主角：绳子、夹子、审过的勾、写出来的格言都是同一支笔；颜色只有照片本身、显影液的灰绿、最新一张的麦色高亮，和结尾唯一一次珊瑚红的印章。</p>
   </section>
   <section class="col" id="b">
-    <video src="b-machine/test.mp4" poster="b-machine/poster.png" controls preload="metadata" playsinline></video>
+    <img class="still" src="b-machine/poster.png" alt="Poster frame of b-machine/test.mp4" loading="lazy"><p class="gone">b-machine/test.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
     <h2><span class="zh">纸机器</span>B · Paper machine</h2>
     <p id="b-pitch">The old pages go into a paper machine: each is folded up, turned over, and unfolds as the new page, because the new page was printed on its back. Cut to a beat made of the site's own sounds.</p>
     <dl id="b-dl">
@@ -150,7 +149,7 @@ dd{margin:0}
     <p class="zhr" id="b-zh">旧页面进纸机：收成手风琴、立成一扇、翻个跟头、再打开，出来的就是新页面，因为新页面本来就印在它的背面。颜色是主角：牛皮纸、奶油纸、麦色带子，珊瑚色只留给最后那一枚印。调子只用数得清的网点，只在纸倾斜或折痕合拢的地方出现；折过的痕迹一直留着，是机器（也是手）的证据。节奏全部来自网站自己的声音：落纸、合折、翻转、盖章，同一条 100 BPM 的时间线。</p>
   </section>
   <section class="col" id="c">
-    <video src="c-shot/test.mp4" poster="c-shot/poster.png" controls preload="metadata" playsinline></video>
+    <img class="still" src="c-shot/poster.png" alt="Poster frame of c-shot/test.mp4" loading="lazy"><p class="gone">c-shot/test.mp4 · render removed 2026-10-01, in git history at <code>deb66a6</code></p>
     <h2><span class="zh">一镜到底</span>C · One continuous shot</h2>
     <p id="c-pitch">One unbroken camera move through Fred's world: from the desk into the laptop, into the corkboard, a card lifts into your hand and its dossier slides out, a tab flies to the chapter and the margin rail draws.</p>
     <dl id="c-dl">
@@ -171,12 +170,5 @@ dd{margin:0}
 </div>
 <div class="q" id="question"><div class="util">the question</div><p>Which one becomes the full film: A, B or C? If you would combine, name the part (say, C's one camera move with A's merge-time clock rolling in the corner).</p><p class="util" style="text-transform:none;letter-spacing:0">Since these were cut, PR 3 merged as #35 (10:21, 30 Sep), so stage 2 can film the tab's flight and the way back from the live site. The tests stop at #34.</p></div>
 </main>
-<script>
-document.getElementById('all').onclick = function () {
-  var v = [].slice.call(document.querySelectorAll('.row video'));
-  v.forEach(function (x, i) { x.currentTime = 0; x.muted = i > 0; });
-  Promise.all(v.map(function (x) { return x.play(); }));
-};
-</script>
 </body>
 </html>
