@@ -7,6 +7,7 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 | `film-v1.5-promo.mp4` | part 1, the promo, alone: 1920×1080, 60 fps, H.264 yuv420p, AAC 48 kHz | 0:37.6 |
 | `film-v1.5.mp4` | part 1 + part 2 (the before, one camera) | 1:03.8 (37.65 + 26.10) |
 | `film-v1.5-side-by-side.mp4` | the site before #17 on the left, the promo on the right, the same route, clicks on the same frames | 0:37.6 |
+| `film-v1.5-stacked.mp4` | the same comparison stacked for a vertical feed (Xiaohongshu): 3:4, 1080 × 1440, before on top | 0:37.6 |
 | `endcard/index.html` | the three end-card treatments, at full size and at 390 px wide | |
 | `TIMING.md` | every shot, ramp and caption on the film's clock, and part 2's shot list | |
 
@@ -86,6 +87,25 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 - **No cropping.** The before page's corners stay inside its panel on all 1,815 frames before the end, never nearer than 28 px to the panel's edge. The after panel is the promo's whole picture, scaled.
 - **Stills:** `/tmp/fyfilm/v15-check/sbs-book.png`, `sbs-print.png`, `sbs-about.png`, `sbs-end.png`.
 
+## The stacked comparison (Fred: "小红书我想发对比视频；但是side by side改成上下的，这样竖屏更方便看")
+
+- **The frame.** 3:4 at 1080 × 1440, as recommended.
+  - Two promo-shaped panels (1920 × 944 proportions) stacked at 1032 × 507 each, with a 48 px gutter and a label off each picture.
+  - That leaves only 107 px of kraft above and below.
+  - 9:16 wasn't needed: 3:4 keeps both panels above 1,000 px wide.
+- **The same film as the side-by-side.** It is the same page (`sbs.html?layout=stacked`), with the same timeline, sync, holds, jumps and sound.
+  - Before is on top: the whole old page on a still camera.
+  - After is below: the promo as it is, with no caption band.
+  - Every click lands on the same frame as in the side-by-side table above.
+  - Nothing is cropped: the before page's corners stay at least 31.7 px inside its panel on all 1,815 frames before the end, and the after panel is the promo's whole picture.
+- **The labels.** 「#17 之前 · BEFORE」 above the top panel and 「之后 · AFTER」 below the bottom one, at 40 px (about 14 px at a 390 px feed width).
+- **The end.** The before panel is pulled aside, and the after panel opens out to the frame.
+  - The camera eases onto a framing of the last sheet made for the tall frame. The stamps' column narrows to the lockup's width (`endCard.column`), so the long lines break once more.
+  - From the moment the pen starts, the motto, the seals and both stamps are whole in the frame on all 351 frames, never nearer than 68 px to its edge.
+  - At 390 px wide, the Chinese is about 20 px and the English about 16 px. The hold is 2.73 s.
+- **The kit.** `kit/render.mjs` takes `--ar 3x4`.
+- **Stills:** `/tmp/fyfilm/v15-check/stk-book.png`, `stk-print.png`, `stk-about.png`, `stk-end.png`, `stk-end-390.png`, and `stk-phone-390.png` (all four at a 390 px feed width).
+
 ## Numbers
 
 | | runtime | size | loudness (integrated) | LRA | true peak | 1–2 frame luma glitches | zero-diff frames inside the ramps |
@@ -93,6 +113,7 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 | `film-v1.5-promo.mp4` | 0:37.6 (2,259 frames) | 7.5 MB | −16.1 LUFS | 6.0 LU | −2.6 dBTP | none | 0 / 0 / 0 |
 | `film-v1.5.mp4` | 1:03.8 (2,259 + 1,566 frames) | 11.7 MB | −17.5 LUFS (part 1 −16.1 · part 2 −21.1) | 9.3 LU | −2.6 dBTP (part 2 −2.8) | none | 0 / 0 / 0 · 0 / 0 in part 2's pull and put-back |
 | `film-v1.5-side-by-side.mp4` | 0:37.6 (2,259 frames) | 4.2 MB | −16.1 LUFS (the promo's mix) | 6.0 LU | −2.6 dBTP | none | (the promo's ramps, on the right) |
+| `film-v1.5-stacked.mp4` | 0:37.6 (2,259 frames), 1080 × 1440 | 4.0 MB | −16.1 LUFS (the promo's mix) | 6.0 LU | −2.6 dBTP | none | (the promo's ramps, below) |
 
 | ramp | footage (s) | on screen | slowest | ease in | at ⅓ | ease out | largest speed change between frames |
 |---|---|---|---|---|---|---|---|
@@ -145,6 +166,12 @@ uv run --with numpy python v1.5/finish.py
   node kit/render.mjs v1.5 --page "sbs.html" --out pictures/sbs.mp4
   uv run --with numpy python v1.5/sbs_finish.py
   node v1.5/checks/probe.mjs sbs.html /tmp/fyfilm/v15-check/probe-sbs.json && uv run --with numpy --with pillow python v1.5/checks/sbs.py /tmp/fyfilm/v15-check/probe-sbs.json
+  ```
+- **The stacked comparison**, after the side-by-side's sync:
+  ```sh
+  node kit/render.mjs v1.5 --page "sbs.html?layout=stacked" --w 1080 --ar 3x4 --out pictures/stk.mp4
+  uv run --with numpy python v1.5/sbs_finish.py stacked
+  node v1.5/checks/probe.mjs "sbs.html?layout=stacked" /tmp/fyfilm/v15-check/probe-stk.json && uv run --with numpy --with pillow python v1.5/checks/sbs.py /tmp/fyfilm/v15-check/probe-stk.json stacked
   ```
 - **The end-card board's frames** are `node kit/render.mjs v1.5 --page "index.html?end=<treatment>" --stills 37.6`, saved in `endcard/` as JPEG and as 390 px PNG.
 - **What's not committed.** `pictures/`, `stills/` and `footage` (a link to `/tmp/fyfilm/cap`) are ignored.
