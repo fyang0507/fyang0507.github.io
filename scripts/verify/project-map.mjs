@@ -46,8 +46,8 @@ const state = (page) => page.evaluate((CORAL) => {
     cols: getComputedStyle(document.querySelector('.map')).display === 'grid'
   };
 }, CORAL);
-// the path fred-agent.js always traced: an outcome back through its protocol to its handles, a handle forward to what
-// it enables, a protocol both ways
+// the path the retired assets/fred-agent/fred-agent.js always traced: an outcome back through its protocol to its
+// handles, a handle forward to what it enables, a protocol both ways
 const expect = (page, id) => page.evaluate((id) => {
   const E = [...document.querySelectorAll('.map-edge')].map((e) => ({ from: e.dataset.from, to: e.dataset.to }));
   const layer = document.querySelector(`[data-node-id="${id}"]`).dataset.layer, ids = new Set([id]);
