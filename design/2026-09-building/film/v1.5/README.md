@@ -6,6 +6,7 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 |---|---|---|
 | `film-v1.5-promo.mp4` | part 1, the promo, alone: 1920×1080, 60 fps, H.264 yuv420p, AAC 48 kHz | 0:37.6 |
 | `film-v1.5.mp4` | part 1 + part 2 (the before, one camera) | 1:03.8 (37.65 + 26.10) |
+| `film-v1.5-side-by-side.mp4` | the site before #17 on the left, the promo on the right, the same route, clicks on the same frames | 0:37.6 |
 | `endcard/index.html` | the three end-card treatments, at full size and at 390 px wide | |
 | `TIMING.md` | every shot, ramp and caption on the film's clock, and part 2's shot list | |
 
@@ -50,12 +51,48 @@ v1.4 (`../v1.4/`, kept as it was) with Fred's two notes on it: "Other than these
 - **Switching.** Set `ENDCARD` in `end.js`, or add `?end=stamps` / `?end=entries` to both pages, then re-render.
 - **Unchanged.** The words, their order, the seals, 继续写，继续造 and the hold: the last line lands at 34.91 s and the card holds 2.73 s.
 
+## The side-by-side (Fred's addition: "pairing it up with the prev version … no need to do the camera motion")
+
+- **After** (right): the promo exactly as it is, with the same edit, camera, ramps and jumps (`cut.js` and `after.js`, the code the promo itself now runs on).
+  - Its picture keeps the promo's own proportions (1920 × 944) scaled into a 920 × 452 panel, with no caption band and no captions.
+  - **The refactor.** I moved the promo's cut and world out of `promo.js` into those two modules. The promo then re-rendered byte for byte identical: the same md5 for its master, `24b7fba3…`.
+- **Before** (left): `take15-before` (6237120) on a still camera holding the whole page for the whole film (the promo's whole-page framing).
+  - **Sync.** `sbs_sync.py` writes `sbs-sync.json`. Every click lands on the same frame as the promo's, and between clicks the before plays its own take in real time.
+  - **Holds and the trim.** Where its gap is shorter it holds a frame: 0.9 s on the old field notes, 1.5 s on the old gallery, 0.2 s in the lightbox, and 3.95 s on the old About while the promo's card comes out and turns over. Where its gap is longer, 0.1 s is left out after the lightbox closes. Each falls at the last still moment before its hand starts for the next click.
+  - **Jumps.** Where the promo jumps, the before jumps at the same instant with the same sheet pull, both its sheets held.
+  - **Ramps.** While the promo ramps, the before plays on in real time.
+- **The old About** is in it: the before reaches it on the about click and holds there.
+  - The promo's card pull and flip have no partner, because the old About has nothing to pull or turn. That difference is the comparison.
+- **Layout.**
+  - Two panels of the same size on the dossier's kraft, each in an ink keyline, with a 40 px gutter between them.
+  - Under each, off both pictures, a small label in the ink band's register: 「#17 之前 · BEFORE」 left, 「之后 · AFTER」 right.
+  - Nothing else is written on either side.
+- **The end.** As the promo's own last pull begins, the before panel is pulled aside to the left and the after panel opens out to the full frame. The film ends on v1.5's last sheet, full frame, with the same credits and hold.
+- **Sound.** The promo's own mix, its AAC stream copied as it is. Nothing is added: the before's old site makes no sound.
+
+| click | promo frame | before frame |
+|---|---|---|
+| the book | 416 | 416 |
+| the lead card | 568 | 568 |
+| Principles | 736 | 736 |
+| the shooting tab | 900 | 900 |
+| the print | 1110 | 1110 |
+| the print closed | 1218 | 1218 |
+| the about tab | 1296 | 1296 |
+| the card pulled | 1386 | (the old About: held) |
+| the card turned | 1530 | (the old About: held) |
+| home | 1671 | 1671 |
+
+- **No cropping.** The before page's corners stay inside its panel on all 1,815 frames before the end, never nearer than 28 px to the panel's edge. The after panel is the promo's whole picture, scaled.
+- **Stills:** `/tmp/fyfilm/v15-check/sbs-book.png`, `sbs-print.png`, `sbs-about.png`, `sbs-end.png`.
+
 ## Numbers
 
 | | runtime | size | loudness (integrated) | LRA | true peak | 1–2 frame luma glitches | zero-diff frames inside the ramps |
 |---|---|---|---|---|---|---|---|
 | `film-v1.5-promo.mp4` | 0:37.6 (2,259 frames) | 7.4 MB | −16.1 LUFS | 6.0 LU | −2.6 dBTP | none | 0 / 0 / 0 |
 | `film-v1.5.mp4` | 1:03.8 (2,259 + 1,566 frames) | 11.5 MB | −17.5 LUFS (part 1 −16.1 · part 2 −21.1) | 9.3 LU | −2.6 dBTP (part 2 −2.8) | none | 0 / 0 / 0 · 0 / 0 in part 2's pull and put-back |
+| `film-v1.5-side-by-side.mp4` | 0:37.6 (2,259 frames) | 4.2 MB | −16.1 LUFS (the promo's mix) | 6.0 LU | −2.6 dBTP | none | (the promo's ramps, on the right) |
 
 | ramp | footage (s) | on screen | slowest | ease in | at ⅓ | ease out | largest speed change between frames |
 |---|---|---|---|---|---|---|---|
@@ -102,5 +139,12 @@ node kit/render.mjs v1.5 --page "part2.html" --cues --out pictures/p2.mp4 && mv 
 uv run --with numpy python v1.5/finish.py
 ```
 
+- **The side-by-side**, after the promo's render and finish:
+  ```sh
+  uv run --with numpy --with pillow python v1.5/sbs_sync.py
+  node kit/render.mjs v1.5 --page "sbs.html" --out pictures/sbs.mp4
+  uv run --with numpy python v1.5/sbs_finish.py
+  node v1.5/checks/probe.mjs sbs.html /tmp/fyfilm/v15-check/probe-sbs.json && uv run --with numpy --with pillow python v1.5/checks/sbs.py /tmp/fyfilm/v15-check/probe-sbs.json
+  ```
 - **The end-card board's frames** are `node kit/render.mjs v1.5 --page "index.html?end=<treatment>" --stills 37.6`, saved in `endcard/` as JPEG and as 390 px PNG.
 - **What's not committed.** `pictures/`, `stills/` and `footage` (a link to `/tmp/fyfilm/cap`) are ignored.
