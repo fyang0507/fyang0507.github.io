@@ -1,0 +1,8 @@
+/* design/2026-10-essays/pn-kit.css — what the three candidates share on the board (pn-a/b/c.css).
+   Design-only: the hand's full master stands behind the site's subset, so a glyph the subset doesn't carry yet (你, 手,
+   还) still comes in the hand here. A port adds the text to the page and reruns scripts/generate-fonts.py instead.
+   (つづく is in neither, on Writing either: it falls back to the system's face there too.) */
+@font-face{font-family:"PN Muyao";src:url("../../fonts/MuyaoSuixin.woff2") format("woff2");font-display:swap}
+.pn.pn-a,.pn.pn-b,.pn.pn-c{--hand-cn:"MuyaoPleased","PN Muyao",cursive}
+/* production's card (reading.css .pn a) stays off the candidates' links */
+.pn.pn-a a,.pn.pn-b a,.pn.pn-c a{flex:none;padding:0;border:0;border-radius:0;background:none;box-shadow:none;text-align:inherit}
