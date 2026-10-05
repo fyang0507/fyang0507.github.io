@@ -94,7 +94,7 @@ html[data-vt=leave]::view-transition-old(site-rule){animation:none;opacity:0}
 ::view-transition-old(pj-tab-1),::view-transition-new(pj-tab-1),::view-transition-old(pj-tab-2),::view-transition-new(pj-tab-2),::view-transition-old(pj-tab-3),::view-transition-new(pj-tab-3),
 ::view-transition-old(pj-tab-4),::view-transition-new(pj-tab-4),::view-transition-old(pj-tab-5),::view-transition-new(pj-tab-5){height:100%}
 
-/* ---- Writing ↔ Reading: the book's cover becomes the essay's plate (FYBook, transitions-tab.js). Named only for the move they
+/* ---- Writing ↔ Reading: the book's cover becomes the essay's plate (FYBook, transitions-book.js). Named only for the move they
    travel in: the book's front board (.fy-book-cover, with the pages behind it hidden while it travels) and its obi on the
    shelf; on the essay the whole cover where the plate shows it (arriving) or the same drawn into a canvas (leaving) ---- */
 .fy-book-cover{view-transition-name:book-cover}

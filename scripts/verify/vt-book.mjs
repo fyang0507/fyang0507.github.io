@@ -26,7 +26,7 @@ async function instrument(c) {
     addEventListener('load', () => addEventListener('pageswap', () => { try { sessionStorage.setItem('vt-names-old', JSON.stringify(count())); } catch (e) { /* storage off */ } }));
     addEventListener('pagereveal', (e) => { if (e.viewTransition) e.viewTransition.ready.then(() => { window.__names = count(); }, () => {}); });
     addEventListener('pageshow', (e) => { window.__persisted = e.persisted; });
-    addEventListener('pagereveal', () => { window.__rv = (window.__rv || 0) + 1; });
+    addEventListener('pagereveal', () => { window.__rv = (window.__rv || 0) + 1; const w = document.querySelector('[data-mount=writing]'); window.__langAt = w ? w.dataset.lang : null; });
   });
 }
 // the move as Chrome traces it: every animation's compositor record, and every frame it presents (decoded in a scratch page)
@@ -70,7 +70,7 @@ async function pull(page, W) {
   await sleep(400);
   return page.evaluate(() => { const r = document.querySelector('.book.held .leaf-front').getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height * 0.6 }; });
 }
-const state = (page) => page.evaluate(() => Object.assign({}, window.__vt, { names: window.__names, old: JSON.parse(sessionStorage.getItem('vt-names-old') || 'null'), left: sessionStorage.getItem('fy-vt'), persisted: window.__persisted, vtAttr: document.documentElement.getAttribute('data-vt') }));
+const state = (page) => page.evaluate(() => Object.assign({}, window.__vt, { names: window.__names, old: JSON.parse(sessionStorage.getItem('vt-names-old') || 'null'), left: sessionStorage.getItem('fy-vt'), persisted: window.__persisted, langAt: window.__langAt, vtAttr: document.documentElement.getAttribute('data-vt') }));
 // n: the page's pagereveal count before it was left, so a page back from the cache is waited for until its new reveal has finished
 const reveals = (page) => page.evaluate(() => window.__rv || 0);
 async function settle(page, n = 0) {
@@ -137,6 +137,17 @@ export default async (_p, ctx) => {
     await page.evaluate(() => document.querySelector('.pn').scrollIntoView({ block: 'center' })); await sleep(400);
     r = await traced(page, scratch, async () => { await page.evaluate(() => document.querySelector('.pn-tag').click()); await page.waitForFunction(() => /Writing\.dc\.html$/.test(location.pathname), null, { timeout: 9000 }); return settle(page, n); });
     check(res, tag + ' shelf tag: it is Back (restored from the cache, a book move), the book put back', r.persisted === true && r.kind === 'book' && await page.evaluate(() => !document.querySelector('[data-opening]')), { persisted: r.persisted, kind: r.kind });
+    // the language chosen on Reading is the one the shelf shows when Back restores it from the cache: already at the first frame of the move
+    const lg = await context.newPage();
+    await lg.goto(ORIGIN + '/Writing.dc.html', { waitUntil: 'load' }); await lg.evaluate(() => localStorage.setItem('fy-lang', 'zh')); await lg.reload({ waitUntil: 'load' }); await sleep(1500);
+    const at4 = await pull(lg, W), n4 = await reveals(lg);
+    await Promise.all([lg.waitForURL(/Reading\.dc\.html/, { timeout: 9000 }), lg.mouse.click(at4.x, at4.y)]);
+    await settle(lg); await sleep(900);
+    await lg.click('[data-act=lang]'); await lg.waitForFunction(() => localStorage.getItem('fy-lang') === 'en', null, { timeout: 4000 });
+    await lg.goBack({ waitUntil: 'commit' }); r = await settle(lg, n4); await sleep(900);
+    const sh = await lg.evaluate(() => ({ lang: document.querySelector('[data-mount=writing]').dataset.lang, shows: document.querySelector('.wr-sign').dataset.shows, open: !!document.querySelector('[data-opening]') }));
+    check(res, tag + ' language chosen on Reading: Back shows English on the shelf and the sign, from the move\'s first frame', r.persisted === true && r.langAt === 'en' && sh.lang === 'en' && sh.shows === 'en' && !sh.open, { persisted: r.persisted, atReveal: r.langAt, ...sh });
+    await lg.close();
     // an essay opened with nothing from the shelf before it (a page of its own): the link is a plain link (a fresh shelf, the paper swap)
     const lone = await context.newPage();
     lone.on('pageerror', (e) => errs.push(e.message));
