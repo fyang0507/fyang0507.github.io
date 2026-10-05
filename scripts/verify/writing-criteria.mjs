@@ -118,7 +118,7 @@ async function handBack(ctx, page) {
   got.push('resize: ' + ((await stuck(page)).join(', ') || 'ok'));
   // A filter clicked with no pointer move takes the book in your hand off the shelf on its way back; all brings it back.
   await open(page, 1440, 900); await page.mouse.move(2, 2);
-  await page.focus('.site-tab--about'); await page.keyboard.press('Tab');
+  await page.focus('.site-tab--about'); await page.keyboard.press('Tab'); await page.keyboard.press('Tab');   // the sign, then the shelf
   while (await page.evaluate(() => window.FY_POST_INDEX.find((e) => e.id === document.activeElement.dataset.post).tags.includes('travel log'))) await page.keyboard.press('ArrowRight');
   await page.waitForTimeout(1500);
   const id = await page.evaluate(() => document.querySelector('[data-mount=writing]').dataset.held);
@@ -313,7 +313,7 @@ export default async (page, ctx) => {
   // the keyboard's book is kept in view, obi included
   for (const [w, h] of [[1280, 800], [1024, 700]]) {
     await open(page, w, h);
-    await page.focus('.site-tab--about'); await page.keyboard.press('Tab'); await page.waitForTimeout(1500);
+    await page.focus('.site-tab--about'); await page.keyboard.press('Tab'); await page.keyboard.press('Tab'); await page.waitForTimeout(1500);   // the sign, then the shelf
     const first = await page.evaluate(() => { const b = document.querySelector('.book.held'), o = b && b.querySelector('.obi'); if (!o) return null; const r = o.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight }; });
     await page.keyboard.press('End'); await page.waitForTimeout(1600);
     const end = await page.evaluate(() => { const b = document.querySelector('.book.held'), o = b && b.querySelector('.obi'); if (!o) return null; const r = o.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: innerHeight, y: Math.round(scrollY) }; });
