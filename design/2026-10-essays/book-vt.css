@@ -1,0 +1,41 @@
+/* design/2026-10-essays · book-vt.css — the names and pseudo-element rules the book move needs (book-vt.js): what the
+   port would add to lib/shared/transitions.css. Names go on with classes, only for the move they travel in. */
+.fy-book-page{view-transition-name:book-page}     /* A, C: the title page (.p1) of the book in your hand */
+.fy-book-title{view-transition-name:book-title}   /* A: its title (.p1-t) ↔ the essay's title */
+.fy-book-cover{view-transition-name:book-cover}   /* B: the front board (.leaf-front) ↔ the whole cover where the plate shows it */
+.fy-book-obi{view-transition-name:book-obi}       /* B: the obi (.obi), which slips off */
+.fy-book-lifted .p1,.fy-book-lifted .leaf-back{visibility:hidden}   /* B: the pages behind the board that travels */
+
+/* stacking: the page (root) < the sheet or the frame < the obi < the header < the title */
+::view-transition-group(book-page),::view-transition-group(book-cover){z-index:1}
+::view-transition-group(book-obi){z-index:2}
+html[data-book]::view-transition-group(site-head),html[data-book]::view-transition-group(identity),html[data-book]::view-transition-group(site-rule),html[data-book]::view-transition-group(tabmark){z-index:3}
+::view-transition-group(book-title){z-index:5}
+/* A: the title page's paper is the sheet: it grows to the window and the essay prints through it */
+html[data-book=a]::view-transition-group(book-page){background:var(--page)}
+/* B: the frame is a clip that holds still in the group's own box; the transform carries that box */
+::view-transition-group(book-cover){overflow:clip}
+/* The header strip: the new strip is whole from the first frame and the old one fades off it, on top (a fade out over
+   a fade in lets the bare paper through, and that read as the page reloading). C, the way back: the essay is the leaf
+   turning back over the shelf */
+html[data-book]::view-transition-old(site-head),html[data-book-back=c]::view-transition-old(root){z-index:1}
+/* C: a leaf seen edge-on has no back to show */
+::view-transition-group(book-page){backface-visibility:hidden}
+
+/* the essay's intro laid out unseen where React will put it (A's title lands on its title, B's plate ends at its foot);
+   while A plays, the essay's own title waits for the one that flew */
+.rd-main.fy-book-intro{position:absolute;left:0;right:0;visibility:hidden;pointer-events:none}
+.fy-book-intro .title.fy-book-title{visibility:visible}
+html[data-book=a] .rd-main:not(.fy-book-intro) .article-intro .title{visibility:hidden}
+/* B: the whole cover where the plate shows it, looking as the plate does (paper under it at 50%); only seen in the move */
+.fy-book-photo{position:fixed;z-index:0;pointer-events:none;background:var(--paper);overflow:hidden}
+.fy-book-photo img{display:block;width:100%;height:100%;object-fit:cover;opacity:.5;filter:saturate(.78) sepia(.05)}
+html:not(:active-view-transition) .fy-book-photo{opacity:0}
+/* B, the way back: the same drawn into a canvas at pageswap, for the snapshot of the essay you leave */
+.fy-book-shot{position:fixed;z-index:0;pointer-events:none}
+
+/* The browser's own animations of every part are held at their first frame (the old page whole, the new one not yet, each
+   group in the old box) until book-vt.js replaces them in vt.ready.then. Real Chrome can draw the first frame before that
+   runs, and with the animations killed that frame was the move's last pose: the sheet already open, one frame, then the move.
+   Whatever the script leaves to the browser (the nav's parts) is let go with data-book-go, in the same task. */
+html[data-book]:not([data-book-go])::view-transition-group(*),html[data-book]:not([data-book-go])::view-transition-image-pair(*),html[data-book]:not([data-book-go])::view-transition-old(*),html[data-book]:not([data-book-go])::view-transition-new(*){animation-play-state:paused}

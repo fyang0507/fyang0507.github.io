@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>书 → 文章 · the book move · design/2026-10-essays</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<style>
+body{margin:0;font:16px/1.6 var(--text);color:var(--ink);background:var(--paper)}
+main{max-width:860px;margin:0 auto;padding:44px 24px 80px}
+h1{font:600 30px/1.2 var(--disp);margin:0}
+h1 span{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;font-weight:600}
+.k{font:12px/1.5 var(--util);letter-spacing:.06em;color:var(--pencil);margin:0 0 10px}
+.ask{font:15px/1.6 "PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;color:var(--soft);border-left:2px solid var(--line-strong);padding:2px 0 2px 12px;margin:18px 0 26px}
+h2{font:600 19px/1.3 var(--disp);margin:34px 0 8px}
+.play{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 6px}
+.play a{font:13px/1 var(--util);padding:9px 12px;border:1.5px solid var(--ink);border-radius:4px;background:var(--paper2)}
+.play a b{font-weight:500}
+.play a span{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;color:var(--soft);margin-left:4px}
+.play a.rec{background:var(--hl);border-color:var(--hl-ink)}
+.note{font:13px/1.6 var(--util);color:var(--pencil)}
+.cand{border:1.5px solid var(--line-strong);border-radius:6px;padding:16px 18px 12px;margin:14px 0;background:color-mix(in srgb,var(--paper2) 45%,var(--paper))}
+.cand h3{font:600 18px/1.3 var(--disp);margin:0 0 8px}
+.cand h3 span{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;font-weight:600;margin-right:8px}
+.cand h3 i{font:500 11px/1 var(--util);font-style:normal;letter-spacing:.06em;background:var(--hl);border:1px solid var(--hl-ink);padding:3px 6px;border-radius:3px;margin-left:8px;vertical-align:3px}
+.zh{font:15px/1.75 "PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;margin:0 0 8px}
+.en{margin:0 0 8px;color:var(--soft)}
+dl{display:grid;grid-template-columns:7.5em 1fr;gap:4px 12px;margin:8px 0 4px;font-size:14px}
+dt{font:12px/1.9 var(--util);color:var(--pencil)}
+dd{margin:0}
+dd[lang=zh]{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif}
+ul{padding-left:1.2em;margin:6px 0}
+li{margin:3px 0}
+code{font:13px var(--util);background:var(--paper2);padding:1px 4px;border-radius:3px}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:2px}
+.play a{text-decoration:none}
+</style>
+</head>
+<body>
+<main>
+<p class="k">design/2026-10-essays · the book move · round 1, candidates (Fred picks, then refine and port)</p>
+<h1><span>书 → 文章</span> · the book in your hand → the essay</h1>
+<p class="ask" lang="zh">“书架页点击选中的书到文章页之间没有 transition。” 今天：书从书架抽出、转向你、翻开到扉页，然后硬切到文章页（同一 tab 内的跳转被 transitions.js 故意跳过）。</p>
+
+<h2>Play</h2>
+<p>The board's two pages are the real Writing and Reading pages, run from <code>design/</code> with the real shelf, essays, header and fonts; only the move between them is the board's (<code>book-vt.js</code>). Pick a candidate, pull a book off the shelf (hover; on a phone tap a spine), then click it. Back (⌘[) is the way back, with the book still in your hand; “← 全部文章” loads a fresh shelf. The switcher in the lower left changes the candidate and plays the move at a quarter speed (×¼). Resize the window to 390 px for the phone.</p>
+<div class="play">
+  <a class="rec" href="book-writing.dc.html?c=a"><b>A</b><span lang="zh">扉页铺开</span></a>
+  <a href="book-writing.dc.html?c=b"><b>B</b><span lang="zh">封面成题图</span></a>
+  <a href="book-writing.dc.html?c=c"><b>C</b><span lang="zh">翻过扉页</span></a>
+  <a href="book-writing.dc.html?c=now"><b>now</b><span lang="zh">现在：硬切</span></a>
+</div>
+<p class="note">Chrome or Safari 18.2+ (cross-document view transitions). Firefox keeps the hard cut, as everywhere on the site.</p>
+
+<h2>Three candidates</h2>
+<div class="cand">
+  <h3><span lang="zh">A 扉页铺开</span>the title page opens out<i>RECOMMENDED</i></h3>
+  <p class="zh" lang="zh">扉页的纸铺开成整页，书名从扉页飞到文章标题的位置：书上读到的，就是页上读到的。保留现在的翻开动作，只把最后的硬切换成连续；这正是 2026-09 那轮书架板子上“纸从扉页长成阅读页、标题飞过去”的设想，第一次真的跨页实现。</p>
+  <p class="en">The paper of the title page grows from the book to the window on a spring, the print on it goes, and the title flies to where the essay prints it. Once the sheet fills the window, the essay prints through it.</p>
+  <dl><dt>way back</dt><dd>The essay unprints to paper, the sheet folds back onto the title page and the title flies back down onto it; then the book goes back on the shelf.</dd>
+  <dt>costs</dt><dd>On a phone, a title that wraps differently on the narrow title page and in the essay re-sets itself mid-flight (a short crossfade).</dd></dl>
+</div>
+<div class="cand">
+  <h3><span lang="zh">B 封面成题图</span>the cover becomes the plate</h3>
+  <p class="zh" lang="zh">取下腰封，封面的照片展开成文章顶部的题图：手里那本书的封面，就是文章的头图。省掉“翻开”那一下，书架早 0.25 秒交出页面。</p>
+  <p class="en">The book comes square to you and the obi slips off; the board's photo opens out into the essay's plate: its frame grows from the board to the band at the top of the window while the photo inside stays the same photo, at one scale.</p>
+  <dl><dt>way back</dt><dd>The plate folds back into the cover, and the obi slides back on.</dd>
+  <dt>costs</dt><dd>Changes the open gesture: the board no longer swings open to the title page. The essay's title and nav appear only as the plate lands. Needs the cover fetched while the book opens, and its aspect.</dd></dl>
+</div>
+<div class="cand">
+  <h3><span lang="zh">C 翻过扉页</span>turn the title page</h3>
+  <p class="zh" lang="zh">像读书一样翻过扉页：扉页绕书脊翻过来，它的背面就是文章，翻到底时铺满整个窗口。沿用书页翻动的语言（Writing 的 tab 动作也是翻页）。</p>
+  <p class="en">The title page lifts and turns over on the spine toward you; its other side is the essay, which comes round to fill the window.</p>
+  <dl><dt>way back</dt><dd>The essay turns back over onto the title page.</dd>
+  <dt>costs</dt><dd>The loudest of the three: a full-window 3-D turn. The essay is seen in perspective while it may still be mounting.</dd></dl>
+</div>
+
+<h2>The same in all three</h2>
+<ul>
+  <li>The header strip rides from Writing's place to Reading's on the tab moves' spring; the identity lifts away with Writing.</li>
+  <li>Every animation is transform or opacity on the pseudo-elements; a clip (B's frame) is set but holds still. Chrome's own trace composites every one, both ways, at 1440 and 390.</li>
+  <li>Reduced motion: no transition (the inline opt-in), the hard cut. Back through the back/forward cache: the move in reverse onto the book in your hand, then the book goes back. The “all writing” link (a fresh shelf, not drawn yet when the page arrives): the tab moves' paper swap.</li>
+  <li>Safari (WebKit 26.6) plays all three as Chrome does.</li>
+  <li>From the click to the essay at rest (measured, 1440): today 1.0 s (the open gesture, then the cut); A 1.6 s, B 1.5 s, C 1.7 s. The essay mounts underneath while the move plays.</li>
+</ul>
+
+<h2>Design record</h2>
+<dl>
+  <dt>mode</dt><dd lang="zh">多阶段：三个候选，等 Fred 选，再细化与移植。</dd>
+  <dt>distance</dt><dd lang="zh">低：书自己的部件（扉页、书名、封面、腰封）变成文章自己的部件（纸、标题、题图）。</dd>
+  <dt>carrier</dt><dd lang="zh">A 纸与字（线条为主）；B 照片（色彩为主）；C 纸（线条为主）。</dd>
+  <dt>clock</dt><dd lang="zh">物理时钟：弹簧，一次小回弹后停住；腰封按重力落下；C 的翻页先慢后快（手先拿起，再落下）。</dd>
+  <dt>anchor</dt><dd lang="zh">A 一张纸铺开；B 一张照片的两种取景；C 书脊上的一翻。</dd>
+</dl>
+</main>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/* design/2026-10-essays/switch-cands.css — the three candidates for Writing's CN/EN switch, scoped by html[data-c]
+   (set in switch-writing.html's head from ?c=), and the board's bar. Only tokens from site-tokens.css; the pen
+   (pen.css) is the only highlighter. Under a candidate, today's row is hidden: one switch per page. */
+html:not([data-c=now]) .wr-lang{display:none}
+
+/* ---- the board's bar: furniture, not a candidate ---- */
+.sw-bar{position:fixed;left:12px;bottom:12px;z-index:200;display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;max-width:calc(100vw - 24px);
+  padding:7px 11px 6px;background:var(--paper);border:1.5px solid var(--ink);border-radius:3px;font:11px/1.4 var(--util);letter-spacing:.03em;color:var(--soft)}
+.sw-bar a{color:var(--soft);white-space:nowrap}
+.sw-bar a:hover{color:var(--ink);text-decoration:underline}
+.sw-bar a[aria-current]{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.sw-bar-home{color:var(--pencil)!important;margin-right:4px}
+
+/* ---- A · 题头: the pair stands on the title's baseline, right of 在写。 ---- */
+/* the 。 already leaves half an em of paper after the title, so the gap itself is small */
+html[data-c=a] .subpage-title-group{display:grid;grid-template-columns:max-content max-content;column-gap:clamp(4px,.6vw,10px);align-items:last baseline;justify-content:start}
+html[data-c=a] .subpage-title-kicker{grid-column:1 / -1}
+.swa-box{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.swa-cap{display:flex;align-items:baseline;gap:6px;margin-left:2px;font:10.5px/1 var(--util);letter-spacing:.08em;color:var(--pencil)}
+.swa-cap [lang=zh]{font:500 11.5px/1 "Noto Sans SC",sans-serif;letter-spacing:.06em;color:var(--soft)}
+.swa{display:flex;align-items:baseline;gap:8px}
+.swa-b{position:relative;padding:5px 2px;color:var(--soft);white-space:nowrap}
+.swa-b[aria-pressed=true]{color:var(--ink);cursor:default}
+.swa-t{position:relative}
+.swa-t[lang=zh]{font:400 23px/1 "DingTalk JinBuTi",serif;letter-spacing:.05em}
+.swa-t[lang=en]{font:500 21.5px/1 "Fraunces",serif;letter-spacing:.005em}
+.swa-sep{font:300 21px/1 "Fraunces",serif;color:var(--pencil)}
+@media (max-width:640px){
+  .swa-t[lang=zh]{font-size:20px}
+  .swa-t[lang=en]{font-size:18.5px}
+  .swa-sep{font-size:18px}
+  .swa{gap:6px}
+}
+
+/* ---- B · 挂牌: a two-sided sign on a nail at the head of the bookcase (switch-b.js turns it) ---- */
+/* Desk: the sign takes a row of its own over the case's left column and hangs into the case's empty top, its foot
+   clear of the tallest spine's head. Pen spacing on the card: the band's edge under the big word and the hint's hover
+   line each keep ≥ 10 px (and ≥ 2× their drop) of paper above what follows them; the rows are set, not centred, so
+   the clearances hold (measured, with the spines' heads, by the round's checks). */
+.swb{--cw:142px;--ch:102px;--drop:19px;--row:76px;position:relative;z-index:3;grid-area:1 / 1;justify-self:start;width:var(--cw);height:var(--row);margin-left:4px;pointer-events:none}
+.swb-hang,.swb-flip{position:absolute;left:0;top:0;width:var(--cw);height:calc(var(--drop) + var(--ch));transform-origin:50% 0}
+.swb-hang{top:6px}
+.swb-flip{transform-style:preserve-3d}
+.swb-string{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.swb-string path{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.swb-nail{position:absolute;left:calc(var(--cw) / 2 - 3px);top:-3px;width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.swb-card{position:absolute;left:0;top:var(--drop);width:var(--cw);height:var(--ch);transform-style:preserve-3d;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.swb-card:focus-visible{outline:none}
+/* switch-b.js shows the face toward you by the card's angle; the English face is printed on the back */
+.swb-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding-top:9px;background:var(--page);border:1.5px solid var(--ink);border-radius:3px}
+.swb-en{transform:rotateY(180deg)}
+/* the two punched holes the string goes through */
+.swb-face::before,.swb-face::after{content:"";position:absolute;top:7px;width:5px;height:5px;border-radius:50%;border:1px solid var(--ink);background:var(--paper2)}
+.swb-face::before{left:13.5px}
+.swb-face::after{right:13.5px}
+.swb-k{display:flex;gap:5px;align-items:baseline;height:11px;font:9.5px/11px var(--util);letter-spacing:.12em;color:var(--pencil)}
+.swb-k [lang=zh]{font:500 10.5px/11px "Noto Sans SC",sans-serif;letter-spacing:.08em;color:var(--soft)}
+.swb-big{position:relative;height:34px;margin-top:3px;color:var(--ink)}
+.swb-big[lang=zh]{font:400 30px/34px "DingTalk JinBuTi",serif;letter-spacing:.08em}
+.swb-big[lang=en]{font:500 26px/34px "Fraunces",serif}
+.swb-hint{height:13px;margin-top:15px;font:10.5px/13px var(--util);letter-spacing:.03em;color:var(--soft);white-space:nowrap}
+.swb-hint [lang=zh]{font:500 11px/13px "Noto Sans SC",sans-serif}
+.swb-to{position:relative;color:var(--ink)}
+.swb-to[lang=en]{font:500 12px/13px "Fraunces",serif;letter-spacing:0}
+/* a book in your hand passes in front of the sign */
+.wr[data-held]:not([data-held=""]) .swb{z-index:0}
+/* Phone: hung at the top left of the swipe shelf, its foot clear of the tallest spine's head (83 px down the 346 px
+   strip): a wide, short card with the hint beside the big word. The small 书架 · shelf line stays on the desk (on a
+   phone the sign's place on the shelf says it). The cue moves right to make room. */
+.swb--phone{--cw:178px;--ch:56px;--drop:12px;position:absolute;left:2px;top:0;height:calc(var(--drop) + var(--ch) + 6px);margin:0;grid-area:auto}
+.swb--phone .swb-face{flex-direction:row;align-items:baseline;justify-content:center;gap:11px;padding-top:12px}
+.swb--phone .swb-face::before,.swb--phone .swb-face::after{top:6px}
+.swb--phone .swb-k{display:none}
+.swb--phone .swb-big{height:30px;margin:0}
+.swb--phone .swb-big[lang=zh]{font-size:24px;line-height:30px}
+.swb--phone .swb-big[lang=en]{font-size:20px;line-height:30px}
+.swb--phone .swb-hint{margin:0;font-size:9.5px}
+html[data-c=b] .wr.is-phone .case-cue{text-align:right;padding-right:2px}
+html[data-c=b] .wr.is-phone .case-cue span{display:block;margin:1px 0 0}
+
+/* ---- C · 拨片: a paper slot at the head of the index, a slide under the chosen half (switch-c.js moves it) ---- */
+.swc{grid-area:1 / 2;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.wr.is-phone .swc{margin-bottom:12px}
+.swc-label{display:flex;flex-direction:column;gap:5px;white-space:nowrap}
+.swc-label [lang=zh]{font:500 12.5px/1 "Noto Sans SC",sans-serif;letter-spacing:.06em;color:var(--soft)}
+.swc-label span:not([lang]){font:10.5px/1 var(--util);letter-spacing:.06em;color:var(--pencil)}
+.swc-slot{position:relative;flex:none;width:198px;height:40px;padding:3px;background:var(--paper2);border:1.5px solid var(--ink);border-radius:5px}
+.swc-thumb{position:absolute;left:3px;top:3px;bottom:3px;width:calc(50% - 4.5px);background:var(--page);border:1.5px solid var(--ink);border-radius:3px}
+.swc-sw{position:relative;display:grid;grid-template-columns:1fr 1fr;height:100%}
+.swc-sw-b{position:relative;display:flex;align-items:center;justify-content:center;color:var(--soft);white-space:nowrap;touch-action:manipulation}
+.swc-sw-b[aria-pressed=true]{color:var(--ink);cursor:default}
+.swc-sw-t{position:relative}
+.swc-sw-t[lang=zh]{font:400 17px/1 "DingTalk JinBuTi",serif;letter-spacing:.06em}
+.swc-sw-t[lang=en]{font:500 16px/1 "Fraunces",serif}

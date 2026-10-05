@@ -1,0 +1,70 @@
+/* design/2026-10-essays/pn-b.css — candidate B, in hand (pn-b.js). The front board, the obi, the bookplate and the
+   つづく ghost are Writing's (lib/writing/writing.css: .leaf-front, .cv-img, .obi, .exlib, .g-front), drawn flat and
+   square on, at one size: a board never stretches to fill the column. Dark paper gets its own board and plate. */
+.pn.pn-b{display:block;max-width:640px;margin:58px auto 8px}
+.pb{--bw:192px;--bh:calc(var(--bw) * 25 / 16);--pages:var(--page);--wood:var(--plank);
+  display:flex;justify-content:center;align-items:flex-start;gap:60px}
+html.dark .pb{--pages:#2F271D;--wood:#2C241B}
+.pb-item{position:relative;display:flex;flex-direction:column;gap:13px;width:var(--bw);color:var(--ink);-webkit-tap-highlight-color:transparent}
+.pb-prev{align-items:flex-start}
+.pb-next{align-items:flex-end}
+a.pb-item:focus-visible{outline:none}
+.pb-k{font:500 11px/1.3 var(--util);letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
+html.lang-zh .pb-k{font:500 12px/1.3 var(--util-cn);letter-spacing:.06em;text-transform:none}
+
+/* ---- the front board: the cover, the hinge by the spine, the obi over its lower half ---- */
+.pb-board,.pb-plate,.pb-ghost{position:relative;display:block;width:var(--bw);height:var(--bh);transition:transform .5s var(--ease-settle)}
+.pb-board{overflow:hidden;background:var(--paper2);border:1.5px solid var(--ink)}
+/* held, a little askew in each hand; pointed at (or focused), it comes square and up */
+.pb-prev .pb-board,.pb-prev .pb-plate{transform:rotate(-1.6deg)}
+.pb-next .pb-board,.pb-next .pb-ghost{transform:rotate(1.3deg)}
+@media (hover:hover){a.pb-item:hover .pb-board{transform:translateY(-7px)}}
+a.pb-item:focus-visible .pb-board{transform:translateY(-7px)}
+.pb-board::before{content:"";position:absolute;z-index:2;left:7px;top:0;bottom:0;border-left:1px solid color-mix(in srgb,var(--ink) 24%,transparent)}
+.pb-img{position:absolute;inset:0;overflow:hidden;background:var(--paper2)}
+.pb-img img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.12);filter:saturate(.58) contrast(.88) sepia(.18) brightness(1.06)}
+html.dark .pb-img img{filter:saturate(.5) contrast(.92) sepia(.12) brightness(.8)}
+.pb-obi{position:absolute;z-index:1;left:0;right:0;bottom:0;min-height:47%;display:flex;flex-direction:column;align-items:flex-start;
+  padding:13px 13px 11px 16px;background:var(--slip);border-top:1.4px solid var(--ink);text-align:left}
+.pb-obi::after{content:"";position:absolute;right:5px;top:0;bottom:0;border-right:1px solid color-mix(in srgb,var(--ink) 22%,transparent)}
+.pb-t{position:relative;display:inline-block;max-width:100%;font:500 16.5px/1.22 "Fraunces",serif;color:var(--ink)}
+html.lang-zh .pb-t{font:400 16.5px/1.3 var(--disp-cn);letter-spacing:.02em}
+.pb-s{margin-top:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html.lang-en .pb-board[data-long-en] .pb-s,html.lang-zh .pb-board[data-long-zh] .pb-s{display:none}
+.pb-s [lang=en]{font:12px/1.28 "Fraunces",serif;color:var(--soft)}
+.pb-s [lang=zh]{font:12.5px/1.35 var(--disp-cn);letter-spacing:.02em;color:var(--soft)}
+.pb-m{margin-top:11px;font:10.5px/1.55 var(--util);letter-spacing:.02em;color:var(--pencil)}
+.pb-ml{display:block}
+.pb-ml b,.pb-note b{font-weight:inherit;white-space:nowrap}
+.pb-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 7px;margin-top:auto;padding-top:10px;font:600 16px/1.2 "Caveat",cursive;color:var(--soft);transform:rotate(-2.5deg);transform-origin:0 50%}
+.pb-note [lang=zh]{font:15px/1.2 var(--hand-cn);color:var(--ink)}
+
+/* ---- no older essay: the bookplate inside the front cover; no newer one: the つづく ghost ---- */
+.pb-plate{display:grid;place-items:center;align-content:center;gap:22px;border:1.5px solid var(--ink);
+  background:var(--wood) repeating-linear-gradient(135deg,transparent 0 9px,color-mix(in srgb,var(--ink) 5%,transparent) 9px 10px)}
+.pb-exlib{padding:12px 16px 10px;border:1.5px solid color-mix(in srgb,var(--ink) 70%,transparent);background:var(--pages);transform:rotate(-2deg);
+  font:10px/1.7 var(--util);letter-spacing:.14em;color:var(--soft);text-align:center;white-space:nowrap}
+.pb-exlib b{display:block;font:600 18px/1.3 "Caveat",cursive;letter-spacing:0;color:var(--ink)}
+.pb-exlib span{display:block;font-family:var(--util-cn);letter-spacing:.1em}
+.pb-ghost{display:grid;place-items:center;align-content:center;gap:18px;border:1.5px dashed var(--pencil)}
+.pb-ghost [lang=ja]{font:24px/1 var(--hand-cn);letter-spacing:.12em;color:var(--pencil);writing-mode:vertical-rl}
+.pb-from{max-width:80%;font:500 11px/1.45 var(--util);letter-spacing:.05em;color:var(--pencil);text-align:center}
+.pb-plate .pb-from{color:var(--soft)}
+.pb-from i{display:block;font-style:normal}
+html.lang-zh .pb-from{font-family:var(--util-cn)}
+
+/* phone: the two boards side by side, at the width that leaves both whole */
+@media (max-width:640px){
+  .pn.pn-b{margin-top:44px}
+  .pb{--bw:min(166px,calc((100vw - 2 * var(--gutter) - 16px) / 2));gap:16px}
+  .pb-obi{padding:11px 10px 10px 14px}
+  .pb-t,html.lang-zh .pb-t{font-size:15px}
+  .pb-s{display:none}
+  .pb-m{font-size:10px}
+  .pb-note{font-size:15px}.pb-note [lang=zh]{font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pb-board{transition:none}
+  a.pb-prev:hover .pb-board,a.pb-prev:focus-visible .pb-board{transform:rotate(-1.6deg)}
+  a.pb-next:hover .pb-board,a.pb-next:focus-visible .pb-board{transform:rotate(1.3deg)}
+}
