@@ -12,16 +12,13 @@ from urllib.parse import urlparse
 
 
 REFERENCE_ENTRY_RE = re.compile(r"^\s*(?:\[(\d+)\]|(\d+)[.)])\s+(.+?)\s*$")
-REFERENCE_HEADINGS = {
+REFERENCE_HEADINGS = {   # only headings that name references: the list is titled 参考资料 / References whatever they say
     "reference",
     "references",
-    "appendix",
     "参考",
     "参考资料",
     "参考信息",
     "参考信息列表",
-    "注释",
-    "附录",
 }
 
 
