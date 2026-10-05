@@ -12,16 +12,13 @@ from urllib.parse import urlparse
 
 
 REFERENCE_ENTRY_RE = re.compile(r"^\s*(?:\[(\d+)\]|(\d+)[.)])\s+(.+?)\s*$")
-REFERENCE_HEADINGS = {
+REFERENCE_HEADINGS = {   # only headings that name references: the list is titled 参考资料 / References whatever they say
     "reference",
     "references",
-    "appendix",
     "参考",
     "参考资料",
     "参考信息",
     "参考信息列表",
-    "注释",
-    "附录",
 }
 
 
@@ -39,15 +36,15 @@ def safe_image_src(url: str) -> str:
     return html.escape(url, quote=True)
 
 
-def reference_heading(line: str) -> str | None:
+def reference_heading(line: str) -> bool:
+    """A line that heads the reference list ("## References", "参考资料："). It only marks where the list
+    starts: the list's title is its body's language (markdown_to_html)."""
     cleaned = re.sub(r"^[#*_\s]+|[#*_\s]+$", "", line).strip().rstrip(":：").strip()
-    if cleaned.lower() in REFERENCE_HEADINGS:
-        return cleaned
-    return None
+    return cleaned.lower() in REFERENCE_HEADINGS
 
 
-def split_reference_appendix(markdown: str) -> tuple[str, list[tuple[str, str]], str, list[str]]:
-    """Separate the imported numeric reference list from the essay body."""
+def split_reference_appendix(markdown: str) -> tuple[str, list[tuple[str, str]], list[str]]:
+    """Separate the imported numeric reference list, and the heading line above it, from the essay body."""
     lines = markdown.strip().splitlines()
     entry_starts: list[int] = []
     for index, line in enumerate(lines):
@@ -88,8 +85,7 @@ def split_reference_appendix(markdown: str) -> tuple[str, list[tuple[str, str]],
         cursor = entry_start - 1
         while cursor >= 0 and not lines[cursor].strip():
             cursor -= 1
-        heading = reference_heading(lines[cursor]) if cursor >= 0 else None
-        if heading:
+        if cursor >= 0 and reference_heading(lines[cursor]):
             heading_index = cursor
 
         appendix_start = heading_index if heading_index is not None else entry_start
@@ -100,11 +96,10 @@ def split_reference_appendix(markdown: str) -> tuple[str, list[tuple[str, str]],
             appendix_start = cursor
 
         body = "\n".join(lines[:appendix_start]).strip()
-        title = heading or ("参考资料" if re.search(r"[\u3400-\u9fff]", body) else "References")
         postscript = lines[index:]
-        return body, references, title, postscript
+        return body, references, postscript
 
-    return markdown.strip(), [], "", []
+    return markdown.strip(), [], []
 
 
 def margin_note(number: str | int, target: str, note_html: str, classes: str = "mn") -> str:
@@ -254,7 +249,8 @@ def markdown_to_html(markdown: str, prefix: str) -> str:
     Both language bodies share one Reading page, so every footnote and
     reference anchor carries the body's `prefix` ("zh-ref-1", "#en-fn-a").
     """
-    markdown, reference_items, appendix_title, appendix_postscript = split_reference_appendix(markdown)
+    markdown, reference_items, appendix_postscript = split_reference_appendix(markdown)
+    appendix_title = "参考资料" if prefix == "zh-" else "References"   # every list, whatever heading marks it
     references = dict(reference_items)
     source_lines = markdown.strip().splitlines()
     footnotes: dict[str, str] = {}
