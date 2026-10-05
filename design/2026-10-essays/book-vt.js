@@ -414,14 +414,14 @@
       var I = made.filter(function (n) { return n.classList.contains('fy-book-intro'); })[0];
       // the replica title stays until React has printed the real one (usually long before)
       var real = function () { return document.querySelector('.rd-main[data-ready]:not(.fy-book-intro)'); };
-      var end = function () { html.removeAttribute('data-book'); if (I) I.remove(); };
+      var end = function () { html.removeAttribute('data-book'); html.removeAttribute('data-book-go'); if (I) I.remove(); };
       if (!I || real()) end(); else new MutationObserver(function (l, ob) { if (real()) { ob.disconnect(); end(); } }).observe(document.body, { subtree: true, attributes: true, childList: true });
       reset();
     };
     vt.finished.then(done, done);
     vt.ready.then(function () {
-      try { var A = uaAnims(); if (kind === 'in') IN[c](A, rec); else if (kind === 'back') BACK[c](A, rec); else paper(A); slow(); }
-      catch (err) { vt.skipTransition(); setTimeout(function () { throw err; }); }
+      try { var A = uaAnims(); if (kind === 'in') IN[c](A, rec); else if (kind === 'back') BACK[c](A, rec); else paper(A); slow(); html.setAttribute('data-book-go', ''); }
+      catch (err) { html.setAttribute('data-book-go', ''); vt.skipTransition(); setTimeout(function () { throw err; }); }
     }, done);
   });
 

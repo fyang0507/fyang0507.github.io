@@ -33,3 +33,9 @@ html[data-book=a] .rd-main:not(.fy-book-intro) .article-intro .title{visibility:
 html:not(:active-view-transition) .fy-book-photo{opacity:0}
 /* B, the way back: the same drawn into a canvas at pageswap, for the snapshot of the essay you leave */
 .fy-book-shot{position:fixed;z-index:0;pointer-events:none}
+
+/* The browser's own animations of every part are held at their first frame (the old page whole, the new one not yet, each
+   group in the old box) until book-vt.js replaces them in vt.ready.then. Real Chrome can draw the first frame before that
+   runs, and with the animations killed that frame was the move's last pose: the sheet already open, one frame, then the move.
+   Whatever the script leaves to the browser (the nav's parts) is let go with data-book-go, in the same task. */
+html[data-book]:not([data-book-go])::view-transition-group(*),html[data-book]:not([data-book-go])::view-transition-image-pair(*),html[data-book]:not([data-book-go])::view-transition-old(*),html[data-book]:not([data-book-go])::view-transition-new(*){animation-play-state:paused}
