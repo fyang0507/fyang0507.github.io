@@ -5,7 +5,7 @@
 //        transform or opacity and Chrome composites it (compositeFailed 0); one element per view-transition name, at pageswap and
 //        at ready, with book-cover and book-obi among them; fy-vt consumed; no horizontal overflow after
 // back   Back, the page restored from the back/forward cache: the same, the book put back afterwards (no data-opening, no data-vt)
-// link   "← 全部文章" on an essay opened from the shelf is Back (restored from the cache, the book move); on an essay opened fresh (nothing before it
+// link   "← 全部文章" (the top bar's, and the tag on the end-of-essay shelf) on an essay opened from the shelf is Back (restored from the cache, the book move); on an essay opened fresh (nothing before it
 //        but Writing's URL typed) it stays a plain link: the paper swap onto a fresh shelf, composited
 // frames every frame the compositor presents in the move, in and back: none bare paper (almost no variance) and none that jumps
 //        (mean change from the frame before) past what the move's own speed makes
@@ -128,6 +128,15 @@ export default async (_p, ctx) => {
     check(res, tag + ' link back: it is Back (restored from the cache, the book move)', r.persisted === true && r.kind === 'book' && !!r.names && !!r.names['book-cover'], { persisted: r.persisted, kind: r.kind, names: r.names && Object.keys(r.names) });
     await sleep(900);
     check(res, tag + ' link back: the shelf as you left it, the book put back', await page.evaluate(() => !document.querySelector('[data-opening]')));
+    // the tag hanging from the end-of-essay shelf says the same and does the same, from the foot of the essay: Back, from the cache
+    const at3 = await pull(page, W);
+    n = await reveals(page);
+    await Promise.all([page.waitForURL(/Reading\.dc\.html/, { timeout: 9000 }), page.mouse.click(at3.x, at3.y)]);
+    await settle(page); await sleep(900);
+    await page.waitForSelector('.pn-tag', { timeout: 15000 });
+    await page.evaluate(() => document.querySelector('.pn').scrollIntoView({ block: 'center' })); await sleep(400);
+    r = await traced(page, scratch, async () => { await page.evaluate(() => document.querySelector('.pn-tag').click()); await page.waitForFunction(() => /Writing\.dc\.html$/.test(location.pathname), null, { timeout: 9000 }); return settle(page, n); });
+    check(res, tag + ' shelf tag: it is Back (restored from the cache, a book move), the book put back', r.persisted === true && r.kind === 'book' && await page.evaluate(() => !document.querySelector('[data-opening]')), { persisted: r.persisted, kind: r.kind });
     // an essay opened with nothing from the shelf before it (a page of its own): the link is a plain link (a fresh shelf, the paper swap)
     const lone = await context.newPage();
     lone.on('pageerror', (e) => errs.push(e.message));
@@ -135,6 +144,10 @@ export default async (_p, ctx) => {
     r = await traced(lone, scratch, async () => { await lone.evaluate(() => document.querySelector('.rnav .back').click()); await lone.waitForURL(/Writing\.dc\.html/, { timeout: 9000 }); return settle(lone); });
     check(res, tag + ' link back, nothing before it: the paper swap onto a fresh shelf, composited',
       r.vt && r.fin && r.persisted !== true && r.anims.filter((a) => !a.ua).every((a) => a.moving.every((p) => p === 'transform' || p === 'opacity')) && !r.trace.some((d) => d.compositeFailed), { vt: r.vt, persisted: r.persisted, kind: r.kind });
+    const lone2 = await context.newPage();
+    await lone2.goto(ORIGIN + '/Reading.dc.html?post=' + POST, { waitUntil: 'load' }); await lone2.waitForSelector('.pn-tag', { timeout: 15000 }); await sleep(800);
+    await lone2.evaluate(() => document.querySelector('.pn-tag').click()); await lone2.waitForFunction(() => /Writing\.dc\.html$/.test(location.pathname), null, { timeout: 9000 });
+    check(res, tag + ' shelf tag, nothing before it: a plain link (a fresh page)', await lone2.evaluate(() => window.__persisted !== true && !!document.querySelector('.wr')));
     await context.close();
     if (dark) continue;
     // reduced motion: no transition either way
