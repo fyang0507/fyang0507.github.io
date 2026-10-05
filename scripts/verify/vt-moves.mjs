@@ -13,7 +13,7 @@
 //        of the four pages, every animation transitions-tab.js makes changes only transform and opacity, so the
 //        compositor runs it whatever the page is doing on the main thread
 // Every move that should carry a view transition checks that it did, and its kind, so a page without the opt-in fails.
-// none   reduced motion, same tab (Writing ↔ Reading), 404, direct load and reload get no transition; fy-vt is
+// none   reduced motion, Writing → Reading with no book in your hand (Reading → Writing is the book move's paper swap), 404, direct load and reload get no transition; fy-vt is
 //        consumed every time. Plus: no console errors, no horizontal overflow after each move.
 import { ORIGIN, hook, seek, xy, check, drawn, deskBoxes, gap } from './vt-lib.mjs';
 
@@ -133,7 +133,12 @@ export default async (page, ctx) => {
     // no transition: same tab, 404, direct load, reload
     await page.goto(B + 'Writing.dc.html'); await page.waitForTimeout(500);
     r = await arrive(page, () => page.evaluate(() => { location.href = 'Reading.dc.html' + (document.querySelector('.hz-main') ? '' : '?post=2025-12-06_the-stories-we-live-05'); }));
-    check(res, T('same tab (Writing → Reading): none'), r.vt === false);
+    check(res, T('Writing → Reading with no book in your hand: none'), r.vt === false);
+    // Writing ↔ Reading is the book move (vt-book.mjs checks it in full): leaving the essay by a link is the paper swap
+    r = await arrive(page, () => page.evaluate(() => { location.href = 'Writing.dc.html'; }));
+    check(res, T('Reading → Writing: the book move (paper swap)'), r.vt && r.kind === 'book', r.kind);
+    r = await arrive(page, () => page.evaluate(() => { location.href = 'Reading.dc.html?post=2025-12-06_the-stories-we-live-05'; }));
+    check(res, T('Writing → Reading again, still no book: none'), r.vt === false);
     r = await arrive(page, () => page.evaluate(() => { location.href = 'Building.dc.html'; }));
     check(res, T('Reading → Building: tab'), r.vt && r.kind === 'tab', r.kind);
     r = await arrive(page, () => page.evaluate(() => { location.href = '404.html'; }));

@@ -93,3 +93,25 @@ html[data-vt=leave]::view-transition-old(site-rule){animation:none;opacity:0}
 ::view-transition-group(pj-card){z-index:6}
 ::view-transition-old(pj-tab-1),::view-transition-new(pj-tab-1),::view-transition-old(pj-tab-2),::view-transition-new(pj-tab-2),::view-transition-old(pj-tab-3),::view-transition-new(pj-tab-3),
 ::view-transition-old(pj-tab-4),::view-transition-new(pj-tab-4),::view-transition-old(pj-tab-5),::view-transition-new(pj-tab-5){height:100%}
+
+/* ---- Writing ↔ Reading: the book's cover becomes the essay's plate (FYBook, transitions-tab.js). Named only for the move they
+   travel in: the book's front board (.fy-book-cover, with the pages behind it hidden while it travels) and its obi on the
+   shelf; on the essay the whole cover where the plate shows it (arriving) or the same drawn into a canvas (leaving) ---- */
+.fy-book-cover{view-transition-name:book-cover}
+.fy-book-obi{view-transition-name:book-obi}
+.fy-book-lifted .p1,.fy-book-lifted .leaf-back{visibility:hidden}
+/* the frame is a clip that holds still in the group's own box; the transform carries that box. Stacking: the page (root) < the frame < the obi < the header */
+::view-transition-group(book-cover){z-index:1;overflow:clip}
+::view-transition-group(book-obi){z-index:2}
+html[data-vt=book]::view-transition-group(site-head),html[data-vt=book]::view-transition-group(identity),html[data-vt=book]::view-transition-group(site-rule),html[data-vt=book]::view-transition-group(tabmark){z-index:3}
+/* the new header strip is whole from the first frame and the old one fades off it, on top (a fade out over a fade in lets bare paper through, and that read as the page reloading) */
+html[data-vt=book]::view-transition-old(site-head){z-index:1}
+/* the essay's intro laid out unseen where React will put it, and the cover as the plate shows it (paper under it at 50%) */
+.rd-main.fy-book-intro{position:absolute;left:0;right:0;visibility:hidden;pointer-events:none}
+.fy-book-photo{position:fixed;z-index:0;pointer-events:none;background:var(--paper);overflow:hidden}
+.fy-book-photo img{display:block;width:100%;height:100%;object-fit:cover;opacity:.5;filter:saturate(.78) sepia(.05)}
+html:not(:active-view-transition) .fy-book-photo{opacity:0}
+.fy-book-shot{position:fixed;z-index:0;pointer-events:none}
+/* the browser's own animations of every part are held at their first frame until transitions-tab.js replaces them (data-vt-go):
+   real Chrome can draw the first frame before that runs, and with them killed that frame was the move's last pose */
+html[data-vt=book]:not([data-vt-go])::view-transition-group(*),html[data-vt=book]:not([data-vt-go])::view-transition-image-pair(*),html[data-vt=book]:not([data-vt-go])::view-transition-old(*),html[data-vt=book]:not([data-vt-go])::view-transition-new(*){animation-play-state:paused}
