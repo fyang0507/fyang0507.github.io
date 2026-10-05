@@ -104,7 +104,7 @@ async function traced(page, go) {
 function quads(page, names, part) {
   return page.evaluate(([names, part]) => {
     const html = document.documentElement;
-    const mat = (s) => { if (!s || s === 'none') return [1, 0, 0, 1, 0, 0]; const n = s.slice(s.indexOf('(') + 1).match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number); return s.startsWith('matrix3d') ? [n[0], n[1], n[4], n[5], n[12], n[13]] : n.slice(0, 6); };
+    const mat = (s) => { if (!s || s === 'none') return [1, 0, 0, 1, 0, 0]; const n = s.slice(s.indexOf('(') + 1).match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number); return s.startsWith('matrix3d') ? [n[0] / n[15], n[1] / n[15], n[4] / n[15], n[5] / n[15], n[12] / n[15], n[13] / n[15]] : n.slice(0, 6); };
     const mul = (A, B) => [A[0] * B[0] + A[2] * B[1], A[1] * B[0] + A[3] * B[1], A[0] * B[2] + A[2] * B[3], A[1] * B[2] + A[3] * B[3], A[0] * B[4] + A[2] * B[5] + A[4], A[1] * B[4] + A[3] * B[5] + A[5]];
     const eff = (cs) => { const o = cs.transformOrigin.split(' ').map(parseFloat); return mul([1, 0, 0, 1, o[0], o[1]], mul(mat(cs.transform), [1, 0, 0, 1, -o[0], -o[1]])); };
     const out = {};
