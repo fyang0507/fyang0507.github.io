@@ -1,7 +1,8 @@
-// reading-notes.mjs — footnotes: citations set in serif, unrotated; a ref's gesture strokes in coral and its slip is
-// pulled to the arrow's point; the multi-citation post opens both notes with 0 errors; keyboard focus draws the 「 」
-// and Esc lets go; at ≤1080 the margin is hidden and a tap pulls the slip from the slot (swipe it back in); previous
-// and next links are kept.
+// reading-notes.mjs — footnotes: citations set in serif, unrotated; a ref's gesture is a loop round the number and an
+// arrow, in coral, starting on the number with nothing drawn on the words before it, and its slip is pulled to the
+// arrow's point; the multi-citation post opens both notes with 0 errors; keyboard focus draws the 「 」 and Esc lets
+// go; at ≤1080 the margin is hidden and a tap pulls the slip from the slot, never over its own ref (swipe it back in);
+// previous and next links are kept.
 //   node /tmp/fyshot/run.mjs scripts/verify/reading-notes.mjs      (env: see reading-lib.mjs)
 import { POSTS, url, context, watch, ready, report, sleep } from './reading-lib.mjs';
 
@@ -17,8 +18,16 @@ const noteState = (page, ref) => page.evaluate((ref) => {
   const probe = document.createElement('i'); probe.style.color = pen; document.body.appendChild(probe);
   const coral = getComputedStyle(probe).color; probe.remove();
   const paths = [...document.querySelectorAll('.pa-g path')];
+  // nothing on the words: the long stroke begins on the number's loop, and no ink lies left of that loop
+  const ar = document.querySelector('.fnref a[data-ref="' + ref + '"]').getBoundingClientRect(), main = paths.slice().sort((p, q) => q.getTotalLength() - p.getTotalLength())[0];
+  let fromRef = null, left = null;
+  if (main) {
+    const m = main.getScreenCTM(), o = main.getPointAtLength(0), x = m.a * o.x + m.c * o.y + m.e, y = m.b * o.x + m.d * o.y + m.f;
+    fromRef = Math.round(Math.hypot(x - (ar.left + ar.right) / 2, y - (ar.top + ar.bottom) / 2) - Math.max(ar.width, ar.height) / 2);
+    left = Math.round(Math.min(...paths.map((p) => p.getBoundingClientRect().left)) - ar.left);
+  }
   return { on: !!mn && mn.classList.contains('on'), paths: paths.length, coral: paths.length > 0 && paths.every((p) => getComputedStyle(p).stroke === coral),
-    moved: mn ? mn.querySelector('.mn-in').style.transform : '' };
+    fromRef: fromRef, left: left, moved: mn ? mn.querySelector('.mn-in').style.transform : '' };
 }, ref);
 
 export default async (page, ctx) => {
@@ -37,7 +46,8 @@ export default async (page, ctx) => {
     await p.mouse.move(r.x - 80, r.y + 60); await sleep(200);
     await p.mouse.move(r.x, r.y, { steps: 6 }); await sleep(1400);
     const on = await noteState(p, r.ref);
-    rows.push([lang + ' hover a ref: the gesture strokes coral and the slip comes to the arrow', on.on && on.paths === 3 && on.coral && /translate\(-/.test(on.moved), on]);
+    rows.push([lang + ' hover a ref: a loop and an arrow in coral, and the slip comes to the arrow', on.on && on.paths === 2 && on.coral && /translate\(-/.test(on.moved), on]);
+    rows.push([lang + ' hover a ref: the ink starts on the number and nothing is drawn on the words', on.fromRef !== null && on.fromRef <= 12 && on.left >= -12, { fromRef: on.fromRef, left: on.left }]);
     await p.screenshot({ path: '/tmp/fyshot/p2r-note-' + lang + '.png' });
     await p.mouse.move(40, 450, { steps: 4 }); await sleep(1300);
     const off = await noteState(p, r.ref);
@@ -98,6 +108,22 @@ export default async (page, ctx) => {
         if (w === 390 && i === idx[0]) await p.screenshot({ path: '/tmp/fyshot/p2r-slip-' + key + '.png' });
       }
       rows.push([w + ' ' + key + ': margin hidden, a tap pulls the right slip (coral loop on the ref)', hidden && got.every(Boolean), { hidden, got }]);
+      // a slip never hides its own ref: tapped low in the window, the page glides up so the ref sits above the slip
+      await p.keyboard.press('Escape'); await sleep(700);
+      const lo = await p.evaluate((i) => {
+        const lang = document.documentElement.classList.contains('lang-en') ? 'en' : 'zh';
+        const a = [...document.querySelectorAll('.post-body.' + lang + ' .fnref a[data-ref]')][i];
+        window.scrollTo(0, a.getBoundingClientRect().top + scrollY - (innerHeight - 60));
+        const r = a.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + r.height / 2, ref: a.dataset.ref, below: Math.round(innerHeight - r.bottom) };
+      }, idx[idx.length - 1]);
+      await sleep(300);
+      await p.touchscreen.tap(lo.x, lo.y); await sleep(1300);
+      const clear = await p.evaluate((ref) => {
+        const r = document.querySelector('.fnref a[data-ref="' + ref + '"]').getBoundingClientRect(), s = document.querySelector('.fs-slip').getBoundingClientRect();
+        return { open: document.querySelector('.fs-root').classList.contains('open'), gap: Math.round(s.top - r.bottom) };
+      }, lo.ref);
+      rows.push([w + ' ' + key + ': a ref tapped low in the window stays in view above its slip', clear.open && clear.gap >= 8, { tappedAt: lo.below + 'px from the foot', ...clear }]);
       if (key === 'cover') {
         // keyboard: Tab cycles inside the open slip; Esc from outside it still closes it and hands focus to the ref
         const cyc = [];
