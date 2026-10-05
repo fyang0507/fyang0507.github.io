@@ -27,10 +27,13 @@ function show(c) {
   pn.innerHTML = '';
   if (c === 'now' || !BUILD[c]) { original.forEach((n) => pn.appendChild(n.cloneNode(true))); return; }
   const i = Math.max(0, LIST.findIndex((p) => p.id === WANT));
-  BUILD[c](pn, { self: LIST[i], prev: LIST[i + 1] || null, next: i > 0 ? LIST[i - 1] : null });
+  BUILD[c](pn, { self: LIST[i], prev: LIST[i + 1] || null, next: i > 0 ? LIST[i - 1] : null, count: LIST.length });
 }
 
-window.PN = { show, get current() { return cur; } };
+// A's way back to all writing (pn-a-back.js): set it and rebuild A in place
+function back(kind) { html.dataset.pnBack = kind; if (cur === 'a') { cur = ''; show('a'); } }
+
+window.PN = { show, back, get current() { return cur; } };
 
 (function wait() {
   const root = document.querySelector('[data-mount="reading"][data-ready]');

@@ -19,12 +19,14 @@ iframe{display:block;width:100%;height:100%;border:0}
 .bar button[aria-pressed="true"]{background:var(--hl);border-color:var(--hl-ink)}
 .bar button:focus-visible,.bar a:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
 .bar.min .g:not(.keep){display:none}
+.g[hidden]{display:none}
 </style>
 </head>
 <body>
 <iframe id="f" title="Reading, with the ending you picked"></iframe>
 <div class="bar" role="toolbar" aria-label="Pick an ending">
   <div class="g"><span class="k">ending</span><button type="button" data-c="now">now</button><button type="button" data-c="a">A 书架</button><button type="button" data-c="b">B 拿在手里</button><button type="button" data-c="c">C 铅笔线</button></div>
+  <div class="g" data-for="a"><span class="k">A's way back</span><button type="button" data-b="tag">吊牌</button><button type="button" data-b="tab">「全部」签</button><button type="button" data-b="print">印在板边</button><button type="button" data-b="slip">round 1</button></div>
   <div class="g"><span class="k">essay</span><button type="button" data-p="mid">middle</button><button type="button" data-p="newest">newest</button><button type="button" data-p="oldest">oldest</button></div>
   <div class="g keep"><button type="button" data-act="end">↓ end</button><a href="./pn-index.html">☰ board</a><button type="button" data-act="min" aria-label="Fold or unfold the bar">–</button></div>
 </div>
@@ -32,13 +34,15 @@ iframe{display:block;width:100%;height:100%;border:0}
 import { inject, ready } from './pn-inject.js';
 const CASES = { mid: '2025-03-23_hawaii-has-no-anger', newest: '2026-08-29_google-just-wants-to-coast-to-a-win', oldest: '2015-04-12_notes-on-resurrection-time-and-life-in-flow-and-superposition' };
 const q = new URLSearchParams(location.search), f = document.getElementById('f'), bar = document.querySelector('.bar');
-let c = q.get('c') || 'a', post = q.get('post') || CASES[q.get('case')] || CASES.mid, toEnd = q.get('end') !== '0';
+let c = q.get('c') || 'a', back = q.get('back') || 'tab', post = q.get('post') || CASES[q.get('case')] || CASES.mid, toEnd = q.get('end') !== '0';
 
 function sync() {
-  const u = new URL(location.href); u.searchParams.set('c', c); u.searchParams.set('post', post); u.searchParams.delete('case'); u.searchParams.delete('end');
+  const u = new URL(location.href); u.searchParams.set('c', c); u.searchParams.set('back', back); u.searchParams.set('post', post); u.searchParams.delete('case'); u.searchParams.delete('end');
   history.replaceState(null, '', u);
   bar.querySelectorAll('[data-c]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.c === c)));
   bar.querySelectorAll('[data-p]').forEach((b) => b.setAttribute('aria-pressed', String(CASES[b.dataset.p] === post)));
+  bar.querySelectorAll('[data-b]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.b === back)));
+  bar.querySelector('[data-for="a"]').hidden = c !== 'a';
 }
 function end() { const w = f.contentWindow; w.scrollTo({ top: w.document.documentElement.scrollHeight, behavior: 'instant' }); }
 function open(p, e) { post = p; toEnd = e !== false; f.src = '../../Reading.dc.html?post=' + encodeURIComponent(p); sync(); }
@@ -47,13 +51,14 @@ f.addEventListener('load', async () => {
   const p = new URLSearchParams(f.contentWindow.location.search).get('post');   // a neighbour opened inside the frame
   if (p) post = p;
   sync();
-  if (!inject(f, c)) return;
+  if (!inject(f, c, back)) return;
   await ready(f);
   if (toEnd) { toEnd = false; end(); }
 });
 bar.addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
-  if (b.dataset.c) { c = b.dataset.c; inject(f, c); sync(); }
+  if (b.dataset.c) { c = b.dataset.c; inject(f, c, back); sync(); }
+  else if (b.dataset.b) { back = b.dataset.b; f.contentWindow.PN && f.contentWindow.PN.back(back); sync(); }
   else if (b.dataset.p) open(CASES[b.dataset.p]);
   else if (b.dataset.act === 'end') end();
   else if (b.dataset.act === 'min') { bar.classList.toggle('min'); b.textContent = bar.classList.contains('min') ? '+' : '–'; }

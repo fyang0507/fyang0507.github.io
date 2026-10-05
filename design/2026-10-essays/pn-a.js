@@ -6,6 +6,7 @@
    Time runs left to right here (older | gap | newer), as previous / next do; Writing's own shelf runs newest first.
    Hover: the book is lifted out of its lean on the physics clock and the pen underlines its name; focus: 「 」. */
 import { esc, bi, href, book, minutes, pen, keep } from './pn-util.js';
+import { backHTML, wireBack } from './pn-a-back.js';
 
 const html = document.documentElement;
 
@@ -23,7 +24,7 @@ function label(b, k) {
 const K_PREV = bi('previous', '上一篇'), K_NEXT = bi('next', '下一篇');
 
 export function buildA(pn, n) {
-  const self = book(n.self), prev = n.prev && book(n.prev), next = n.next && book(n.next);
+  const self = book(n.self), prev = n.prev && book(n.prev), next = n.next && book(n.next), back = html.dataset.pnBack || 'tab';
   const left = prev
     ? '<a class="pa-item pa-prev" href="' + href(n.prev) + '">' + label(prev, K_PREV) + spine(prev, 'l') + '</a>'
     : '<span class="pa-item pa-prev pa-quiet"><span class="pa-lab"><span class="pa-k">' + K_PREV + '</span><span class="pa-q">' + bi('this is the first one', '这是最早的一篇') + '</span></span></span>';
@@ -31,18 +32,17 @@ export function buildA(pn, n) {
     ? '<a class="pa-item pa-next" href="' + href(n.next) + '">' + spine(next, 'r') + label(next, K_NEXT) + '</a>'
     : '<span class="pa-item pa-next pa-quiet"><span class="pa-ghost"><i class="pa-gtop"></i><span class="pa-gfront"><span lang="ja">つづく</span></span></span>' +
       '<span class="pa-lab"><span class="pa-k">' + K_NEXT + '</span><span class="pa-q">' + bi('still being written', '还在写') + '</span></span></span>';
-  pn.innerHTML = '<div class="pa">' +
+  pn.innerHTML = '<div class="pa" data-back="' + back + '">' +
     '<div class="pa-row">' + left +
       '<span class="pa-gap" style="--w:' + self.w + '"></span>' +
       right + '</div>' +
     '<div class="pa-plank"><svg class="pa-wood" aria-hidden="true"><path class="pa-ptop"/><path class="pa-lip"/><g class="pa-stip pa-stip-l"></g><g class="pa-stip pa-stip-r"></g></svg>' +
       '<span class="pa-here" aria-hidden="true">' + bi('↑ in your hand', '↑ 在你手里') + '</span>' +
-      '<a class="pa-slip" href="Writing.dc.html"><span class="pa-slip-t">' + bi('← the shelf', '← 书架') + '</span></a></div>' +
+      backHTML(back, n.count) + '</div>' +
     '</div>';
 
   pn.querySelectorAll('a.pa-item').forEach((a) => pen(a, a.querySelector('.pa-t')));
-  const slip = pn.querySelector('.pa-slip');
-  pen(slip, slip.querySelector('.pa-slip-t'), { focus: { gap: 3, gy: 2 } });
+  wireBack(pn, back);
 
   // the spine titles, in the page's language, fitted the way Writing fits a spine; refitted when the language flips
   const fit = () => pn.querySelectorAll('.pa-book').forEach((bk) => fitSpine(bk));
