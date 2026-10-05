@@ -103,7 +103,7 @@ export default async (page, ctx) => {
     rows.push([lang + ' keyboard: the ref gets the pen 「 」 and plays the gesture', kb.ref && kb.focus && kb.on, kb]);
     await p.keyboard.press('Escape'); await sleep(900);
     rows.push([lang + ' Esc lets go', await p.evaluate(() => !document.querySelector('.mn.on')), '']);
-    const pn = await p.evaluate(() => [...document.querySelectorAll('.pn a')].map((a) => a.getAttribute('href')));
+    const pn = await p.evaluate(() => [...document.querySelectorAll('.pn a.pn-item')].map((a) => a.getAttribute('href')));
     rows.push([lang + ' latest post: previous kept (no next)', pn.length === 1 && /post=/.test(pn[0]), pn]);
     rows.push([lang + ' desktop: no console errors', errors.length === 0, errors.slice(0, 3)]);
     await c.close();
@@ -139,7 +139,7 @@ export default async (page, ctx) => {
       await p.mouse.move(40, 450, { steps: 3 }); await sleep(900);
     }
     rows.push(['multi-citation: both notes open', pair.length === 2 && opened.every(Boolean), { pair, opened }]);
-    const pn = await p.evaluate(() => [...document.querySelectorAll('.pn a')].map((a) => a.getAttribute('href')));
+    const pn = await p.evaluate(() => [...document.querySelectorAll('.pn a.pn-item')].map((a) => a.getAttribute('href')));
     rows.push(['multi-citation post: previous and next kept', pn.length === 2, pn]);
     rows.push(['multi-citation: 0 errors', errors.length === 0, errors.slice(0, 3)]);
     await c.close();

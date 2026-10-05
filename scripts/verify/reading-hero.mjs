@@ -224,7 +224,7 @@ export default async (page, ctx) => {
     await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: 165, downloadThroughput: 9e6 / 8, uploadThroughput: 1.5e6 / 8 });
     await p.addInitScript(() => { window.__cls = 0; new PerformanceObserver((l) => l.getEntries().forEach((e) => { if (!e.hadRecentInput) window.__cls += e.value; })).observe({ type: 'layout-shift', buffered: true }); });
     await p.goto(url(POSTS.multi), { waitUntil: 'load', timeout: 60000 }); await ready(p); await sleep(800);
-    const r = await p.evaluate(() => ({ title: document.querySelector('.article-intro .title').textContent.trim(), pn: document.querySelectorAll('.pn a').length, cls: +window.__cls.toFixed(3) }));
+    const r = await p.evaluate(() => ({ title: document.querySelector('.article-intro .title').textContent.trim(), pn: document.querySelectorAll('.pn a.pn-item').length, cls: +window.__cls.toFixed(3) }));
     rows.push([w + ' slow first visit: title and neighbours filled', r.title.length > 0 && r.pn === 2, r]);
     rows.push([w + ' slow first visit: no layout shift (CLS < 0.02)', r.cls < .02, r.cls]);
     rows.push([w + ' slow first visit: no console errors', errors.length === 0, errors.slice(0, 3)]);

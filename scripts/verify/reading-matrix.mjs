@@ -35,7 +35,7 @@ export default async (page, ctx) => {
             const solid = (c) => { if (!c || c === 'transparent') return null; const v = rgba(c); if (v[3] < .8) return null; return 'rgb(' + v.slice(0, 3).map((x, i) => x * v[3] + paper[i] * (1 - v[3])).join(',') + ')'; };
             const bg = (el) => { for (let e = el; e; e = e.parentElement) { const b = solid(getComputedStyle(e).backgroundColor), bf = getComputedStyle(e, '::before'); if (b) return b; if (bf.content !== 'none' && bf.position === 'absolute' && solid(bf.backgroundColor)) return solid(bf.backgroundColor); } return getComputedStyle(document.body).backgroundColor; };
             const out = {}; let ok = true;
-            [['.pn .lab', 4.5], ['.mn .num', 4.5], ['.mn .d', 4.5], ['.fs-lab', 4.5], ['.fs-foot span', 4.5], ['.rail-lab', 4.5], ['.appendix-number', 4.5], ['footer .row', 4.5], ['.meta', 4.5], ['.kicker', 4.5], ['.eyebrow', 3]].forEach(([sel, min]) => {
+            [['.pn-k', 4.5], ['.pn-m', 4.5], ['.pn-tag-t', 4.5], ['.mn .num', 4.5], ['.mn .d', 4.5], ['.fs-lab', 4.5], ['.fs-foot span', 4.5], ['.rail-lab', 4.5], ['.appendix-number', 4.5], ['footer .row', 4.5], ['.meta', 4.5], ['.kicker', 4.5], ['.eyebrow', 3]].forEach(([sel, min]) => {
               const el = document.querySelector(sel); if (!el) return;
               const r = ratio(rgb(getComputedStyle(el).color), rgb(bg(el))); out[sel] = +r.toFixed(2); if (r < min) ok = false;
             });

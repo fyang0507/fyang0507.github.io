@@ -167,13 +167,7 @@ html.lang-zh .post-body .appendix-item{line-height:1.75}
 html.lang-zh .post-body .appendix-postscript{font-family:var(--util-cn);line-height:1.7}
 .foot{margin-top:16px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--soft);line-height:1.6}.foot .fn{display:flex;gap:10px;margin-bottom:8px}.foot .num{color:var(--pencil);font-family:var(--util);font-size:12px;flex:none;padding-top:2px}
 
-/* ---- ending: previous and next, then the footer ---- */
-.pn{display:flex;justify-content:space-between;gap:16px;margin:14px 0 8px}
-.pn a{position:relative;flex:1;border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--paper2);box-shadow:var(--card-shadow)}
-.pn a:hover{border-color:var(--ink)}
-.pn .lab{font-family:var(--util);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
-html.lang-zh .pn .lab{font-family:var(--util-cn);letter-spacing:.04em;text-transform:none}
-.pn .t{margin-top:6px;font-size:16px}.pn .next{text-align:right}
+/* ---- the footer, after the shelf (shelf.css) ---- */
 footer{padding:26px 0 60px}
 footer .row{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);padding-top:20px;font-family:var(--util);font-size:12.5px;color:var(--pencil)}
 html.lang-zh footer .row{font-family:var(--util-cn)}
@@ -185,7 +179,6 @@ html.lang-zh footer .row{font-family:var(--util-cn)}
   .post-body p,.post-body li{font-size:17px}
   .post-body .lm-t,.post-body .lm-head{font-size:21px}
   .post-body .lm-no{font-size:17px}
-  .pn{flex-direction:column}.pn .next{text-align:left}
   footer .row{align-items:flex-start;flex-direction:column}
   .title{overflow-wrap:anywhere}
 }
