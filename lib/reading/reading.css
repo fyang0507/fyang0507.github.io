@@ -71,7 +71,13 @@ html.narrow .rnav.landed .back-t,html.narrow .rnav.titled .back-t{opacity:0}
 .plate{position:fixed;z-index:0;left:0;top:0;width:100%;height:var(--b0);overflow:hidden;pointer-events:none}
 .plate-art{position:absolute;inset:0;overflow:hidden}
 .plate-img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 42%;transform:scale(1.14);opacity:.5;filter:saturate(.78) sepia(.05)}
-html.dark .plate-img{opacity:.3;filter:saturate(.6) brightness(.92)}
+html.dark .plate-img{opacity:.45;filter:saturate(.6) brightness(.92)}
+/* on dark paper the light labels over the cover sit in a thin paper case (the pen's on Demos, as type), so they read
+   over its brightest parts: the subtitle and the header's tab labels; the kicker, meta and nav have their own paper.
+   The stroke draws the case, under the fill; the shadow fills what a stroke can't reach, a letter's counters and the
+   gap under an i's dot */
+html.dark .eyebrow,html.dark .site-index--reading .site-nav-label{-webkit-text-stroke:3px var(--paper);paint-order:stroke fill;
+  text-shadow:0 0 2px var(--paper),0 0 1px var(--paper)}
 .plate-cv{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
 .nav-plate .plate-cv{height:var(--n0)}
 .fly{position:fixed;z-index:60;left:0;top:0;pointer-events:none;visibility:hidden}
