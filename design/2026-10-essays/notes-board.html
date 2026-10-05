@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Essays · notes · how a footnote points back to the text · round 1</title>
+<link rel="icon" href="../../favicon.png" type="image/png" sizes="512x512">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<link rel="stylesheet" href="notes-board.css">
+</head>
+<body class="nb">
+<main>
+<p class="kicker">design 2026-10 · essays · notes · round 1</p>
+<h1>How a footnote points back to the text <span class="cn">注释如何连回原文</span></h1>
+<blockquote lang="zh">文章页的右侧的reference note高亮后连接回原文：但是原文的quote总是会错——这个确实是数据缺失的问题：有些引用是对应一个词；有些是对应一个引用的话；有些对应一个整句子。所以现在这种高亮后给出quote范围的design实际是有问题的。<br>— Fred, 2026-10-05</blockquote>
+<p class="lede">Fred is right, and it isn't a tuning problem. The source never says what a note refers to, so any range the pen draws on the text is a guess. I read all 268 margin notes on the site against the range the pen draws today: it is right for about a third of them. Below: how the range is chosen, the measurements, and three candidates that never claim a range the data can't support. Each one runs on the real Reading page, in both languages.</p>
+<div class="try"><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=en&amp;cand=a">open the live page ↗</a><a href="notes-catalogue.html">the full catalogue (268 notes) ↗</a></div>
+<p class="note">On the live page, a switch at the bottom-left flips between today and A, B, C. It keeps the essay, the language (the nav's 中 / EN button) and your scroll position. For the phone version, narrow the window to 390 px or use the browser's device toolbar: margin notes show from 1164 px wide, and below that the note opens as a slip.</p>
+
+<h2>Today, measured <span class="cn">现状</span></h2>
+<h3>How the range is chosen</h3>
+<p>On a desktop, pointing at a ref (or focusing it, or tapping it on a wide touch screen) plays one pen gesture. First, <code>phrase()</code> in <code>lib/reading/notes.js</code> guesses the words the note is about. It walks back from the ref through the paragraph to the previous clause stop (<code>，。；：！？ , ; : ! ?</code>, or a full stop followed by a space). It skips other notes and refs, never crosses a line break, takes at least 16 Latin or 6 CJK characters, and stops at about 70 or 34. Then <code>pen-note.js</code> draws <b>⌜ at the start of that range and ⌟ at its end</b>, loops the number, and flings an arrow into the margin, where the slip is pulled to the arrow's point. That bracket is the claim Fred is objecting to.</p>
+<p>On a phone the slip rises from a slot at the bottom of the window, and the pen loops only the number, with no range. The references list at the end has no link back into the text. The slip's "全部参考 ↓" link jumps to the list entry, which gets highlighted. When a ref is cited a second time (8 marks in the text), that mark has no note and no pen: it is a plain link to the list.</p>
+<div class="shots">
+  <figure><img src="notes-shots/today-desk-en-6.jpg" alt="Today at 1440, English, ref 6: the pen brackets 'trusting his teammates'" loading="lazy"><figcaption>today · 1440 · EN · [6] brackets “trusting his teammates”</figcaption></figure>
+  <figure><img src="notes-shots/today-desk-zh-13.jpg" alt="Today at 1440, Chinese, ref 13" loading="lazy"><figcaption>today · 1440 · 中 · [13]</figcaption></figure>
+  <figure><img src="notes-shots/today-phone-en-14.jpg" alt="Today at 390, English: ref 14 hidden behind its slip" loading="lazy"><figcaption>today · 390 · EN · [14] hidden behind its slip</figcaption></figure>
+  <figure><img src="notes-shots/today-phone-zh-13.jpg" alt="Today at 390, Chinese, ref 13" loading="lazy"><figcaption>today · 390 · 中 · [13]</figcaption></figure>
+</div>
+
+<div class="big">
+  <div><b>268</b><span>margin notes · 144 EN, 124 ZH · in 13 of 27 essays (4 only in English)</span></div>
+  <div><b>37%</b><span>right · 99 notes. In English 28%, in Chinese 48%</span></div>
+  <div><b>24%</b><span>near-miss · 63: holds the target, a few words over or under</span></div>
+  <div><b>40%</b><span>wrong · 106: misses or mangles what the note is about</span></div>
+</div>
+<h3>Why: notes refer to different kinds of text, and the guess is always a clause</h3>
+<table>
+  <tr><th>what the note is about</th><th>notes</th><th>today's range right</th></tr>
+  <tr><td>the clause just before the ref</td><td>91</td><td>55 · 60%</td></tr>
+  <tr><td>a quotation</td><td>71</td><td>29 · 41%: stops at the first comma inside the quotation</td></tr>
+  <tr><td>one word, name or title</td><td>34</td><td>10 · 29%: brackets the whole clause around it</td></tr>
+  <tr><td>the whole sentence</td><td>51</td><td>4 · 8%</td></tr>
+  <tr><td>a passage of several sentences</td><td>19</td><td>1 · 5%</td></tr>
+  <tr><td>words after the ref, or in an earlier sentence</td><td>2</td><td>0</td></tr>
+</table>
+<p>Of the 169 ranges that are not right, 86 are <b>too short</b> (the last clause of a sentence, half a quotation). 46 are <b>cut by the length cap</b>, which chops a name, a number, a word or the subject. 24 are <b>too long</b> (a clause bracketed around one title). 8 mark <b>other words</b> entirely, 4 are <b>two notes on one spot that get one range</b>, and 1 <b>runs back across another ref and its note</b>.</p>
+<div class="ex">
+  <div><span class="w">god-in-the-edit [6], both languages · too short</span><br>The note is Jan Hubbard's “The moment Michael Jordan became the NBA's best player”, which backs the whole sentence. The pen brackets only <mark>trusting his teammates</mark> (zh <mark>还防守、篮板、信任队友</mark>).</div>
+  <div><span class="w">god-in-the-edit [18][19], both languages · two notes, one range</span><br>Horace Grant's note and Pippen's note sit side by side, so both get the Pippen clause. Grant's note points at <mark>Pippen was also reported to be unhappy with how he was portrayed</mark>.</div>
+  <div><span class="w">sacramentos-absent [5] EN and [4] ZH · cut mid-number</span><br>“At its peak, 5,000 Chinese people lived here.” becomes <mark>000 Chinese people lived here.</mark>, because the thousands comma counts as a clause stop. In Chinese, “1100公里” becomes <mark>100公里西段线工程…</mark>.</div>
+  <div><span class="w">god-in-the-edit [15] EN, workplace-vultures [1] EN · cut by the cap</span><br>“a Washington Post data article…” starts at <mark>Post data article used a value model…</mark>. The Surge AI estimate loses its number: <mark>of the employees at such companies were doing meaningless work.</mark></div>
+  <div><span class="w">the-stories-we-live-04 [5] EN, the-stories-we-live-02 [2] both · other words</span><br>The note is the photo book <i>Our Generation</i>, but the bracket is <mark>a collection of photographs.</mark>, with the title left outside. Elsewhere the note is “You Are What You Measure”, but the bracket is the <i>other</i> saying, <mark>you can't improve it”</mark>.</div>
+</div>
+<div class="shots" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+  <figure><img src="notes-shots/today-desk-en-18.jpg" alt="Today, ref 18: the pen brackets the Pippen clause for Horace Grant's note" loading="lazy"><figcaption>today · [18] Grant's note, bracketing Pippen's clause</figcaption></figure>
+  <figure><img src="notes-shots/today-desk-en-repeat.jpg" alt="Today: pointing at the second citation of ref 2 does nothing" loading="lazy"><figcaption>today · the second [2] (nobody-likes-me): pointed at, nothing happens</figcaption></figure>
+</div>
+<p class="note">Every row, with the range in context and the reason for each verdict: <a href="notes-catalogue.html">notes-catalogue.html</a> (made by <code>notes-catalogue.mjs</code> and <code>notes-catalogue.py</code>). The phone has its own failure, shown in the candidates' screenshots below: a ref in the lower part of the window ends up behind its own slip, loop and all.</p>
+
+<h2>Three candidates <span class="cn">三个方案</span></h2>
+<p>All three keep today's slip: the punched eyelet, the seeded tilt, the citation in upright serif, and the spring that pivots on the eyelet. All three keep keyboard focus as the pen's 「 」 and leave no coral at rest. They differ in what the pen is allowed to claim. Each works on today's data, with nothing new to author.</p>
+
+<article class="cand rec" id="a">
+  <div class="cand-h"><span class="letter">A</span><h3>Loop the number, nothing else <span class="cn">只圈注号</span></h3><span class="tag">recommended · claims: where the ref is</span></div>
+  <p class="why-cn" lang="zh">只圈注号，不划原文：笔在注号上绕一圈，不抬笔把箭头甩进页边，纸条被拉到箭尖。数据只能证明“注在这里”，那就只标这里；手机上纸条若会挡住注号，页面先让一让。</p>
+  <p>The pen loops the number and flings the arrow, with no ⌜ ⌟. The only fact the data holds is where the ref sits, so that is all the pen marks. On a phone, the slip never hides its own ref.</p>
+  <div class="try"><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=en&amp;cand=a">A · English ↗</a><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=zh&amp;cand=a">A · 中文 ↗</a><a href="notes-reading.dc.html?post=2025-12-06_the-stories-we-live-05&amp;lang=en&amp;cand=a">A · 32 refs ↗</a></div>
+  <div class="shots">
+    <figure><img src="notes-shots/a-desk-en-6.jpg" alt="A at 1440, English, ref 6" loading="lazy"><figcaption>1440 · EN · [6]</figcaption></figure>
+    <figure><img src="notes-shots/a-desk-zh-13.jpg" alt="A at 1440, Chinese, ref 13" loading="lazy"><figcaption>1440 · 中 · [13]</figcaption></figure>
+    <figure><img src="notes-shots/a-phone-en-14.jpg" alt="A at 390, English, ref 14 kept above the slip" loading="lazy"><figcaption>390 · EN · [14] kept in view</figcaption></figure>
+    <figure><img src="notes-shots/a-phone-zh-13.jpg" alt="A at 390, Chinese, ref 13" loading="lazy"><figcaption>390 · 中 · [13]</figcaption></figure>
+  </div>
+  <dl class="spec">
+    <dt>desktop</dt><dd>Today's gesture without the corners: one stroke from the loop to the arrowhead, careful round the number and flung through the leading. The slip is pulled to the point as it lands. The first reveal inks in about 0.35 s and the slip is still by about 1 s. Later reveals are one quick stroke of about 0.2 s.</dd>
+    <dt>phone</dt><dd>Today's slip out of the slot, with the loop on the number. If the ref's line would end up under the slip, the page first glides up just enough that the line rests 14 px above the slip's top edge.</dd>
+    <dt>pen rules</dt><dd>The loop and arrow are the shipped note gesture, and focus is 「 」. Nothing is drawn on the words.</dd>
+    <dt>port</dt><dd>Delete <code>phrase()</code> from <code>notes.js</code> and the ⌜ ⌟ strokes from <code>pen-note.js</code> (about 40 lines out), and add the clearance to <code>slip.js</code> (about 4 lines in). The page ends up with less code than today.</dd>
+  </dl>
+</article>
+
+<article class="cand" id="b">
+  <div class="cand-h"><span class="letter">B</span><h3>The line, not the words <span class="cn">对行</span></h3><span class="tag">claims: which line the ref is on</span></div>
+  <p class="why-cn" lang="zh">正文上一笔不画：电脑上注号下出现悬停线，纸条滑到注号所在的那一行；手机上纸条直接从注号那一行下面抽出来。注释和原文靠“同一行”相连，而不是靠一段猜出来的引文。</p>
+  <p>No ink on the text. The ref takes the pen's hover line and its slip comes level with that line. On a phone, the slip is pulled out from under the ref's own line instead of rising from the bottom of the window.</p>
+  <div class="try"><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=en&amp;cand=b">B · English ↗</a><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=zh&amp;cand=b">B · 中文 ↗</a><a href="notes-reading.dc.html?post=2025-12-06_the-stories-we-live-05&amp;lang=en&amp;cand=b">B · 32 refs ↗</a></div>
+  <div class="shots">
+    <figure><img src="notes-shots/b-desk-en-6.jpg" alt="B at 1440, English, ref 6" loading="lazy"><figcaption>1440 · EN · [6]</figcaption></figure>
+    <figure><img src="notes-shots/b-desk-zh-13.jpg" alt="B at 1440, Chinese, ref 13" loading="lazy"><figcaption>1440 · 中 · [13]</figcaption></figure>
+    <figure><img src="notes-shots/b-phone-en-14.jpg" alt="B at 390, English, the slip pulled out under ref 14's line" loading="lazy"><figcaption>390 · EN · [14] slip under its line</figcaption></figure>
+    <figure><img src="notes-shots/b-phone-zh-13.jpg" alt="B at 390, Chinese, ref 13" loading="lazy"><figcaption>390 · 中 · [13]</figcaption></figure>
+  </div>
+  <dl class="spec">
+    <dt>desktop</dt><dd>The pen's hover line goes under the number (TierMark tier 1: coral, level, at baseline + max(3 px, 0.18 em)). About 0.2 s later the slip comes level, with its eyelet and number on the line's centre, 26 px clear of the text, on the same spring. There is no loop and no arrow. The slip's own number gets no line, because there it would hang about 5 px over the citation's next line, under the 10 px spacing rule.</dd>
+    <dt>phone</dt><dd>The pen cuts a slot along the bottom of the ref's line, and the slip slides down out of it over the lines below. The ref stays in view, banded wheat (chosen) while its note is out. If the slip would run past the bottom of the window, the page glides up just enough, but never pushes the line under the nav. Tapping the ref again, tapping elsewhere, Esc or 收起 pushes the slip back in.</dd>
+    <dt>trade-off</dt><dd>It is the quietest of the three. The tie is position plus a small line, and it gives up the flung arrow chosen in round 3. The phone slip becomes a new module (about 120 lines) in place of the slot.</dd>
+  </dl>
+</article>
+
+<article class="cand" id="c">
+  <div class="cand-h"><span class="letter">C</span><h3>Bracket only what punctuation proves <span class="cn">有据才圈</span></h3><span class="tag">claims: a range only where the author's quote marks show it</span></div>
+  <p class="why-cn" lang="zh">只有作者自己写了引号或书名号、注号紧跟其后时，笔才描出 ⌜ ⌟——引号就是证据；其余与 A 相同，只圈注号。手机纸条顶上也只在有据时引出那句原文。</p>
+  <p>⌜ ⌟ appear only where the author's own quotation or title marks close right before the ref. Everywhere else C behaves like A. On a phone, those slips open with the quotation at the top, the way a scholarly edition repeats the quoted words before each note.</p>
+  <div class="try"><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=en&amp;cand=c">C · English ↗</a><a href="notes-reading.dc.html?post=2026-05-02_the-god-in-the-edit&amp;lang=zh&amp;cand=c">C · 中文 ↗</a><a href="notes-reading.dc.html?post=2022-11-27_the-stories-we-live-02&amp;lang=en&amp;cand=c">C · quotation-heavy ↗</a></div>
+  <div class="shots">
+    <figure><img src="notes-shots/c-desk-en-6.jpg" alt="C at 1440, English, ref 6: no bracket" loading="lazy"><figcaption>1440 · EN · [6] nothing proven: as A</figcaption></figure>
+    <figure><img src="notes-shots/c-desk-zh-13.jpg" alt="C at 1440, Chinese, ref 13: bracket on the quotation" loading="lazy"><figcaption>1440 · 中 · [13] a quotation: bracketed</figcaption></figure>
+    <figure><img src="notes-shots/c-phone-en-14.jpg" alt="C at 390, English, ref 14" loading="lazy"><figcaption>390 · EN · [14] as A</figcaption></figure>
+    <figure><img src="notes-shots/c-phone-zh-13.jpg" alt="C at 390, Chinese, ref 13 with the quotation in the slip" loading="lazy"><figcaption>390 · 中 · [13] the quotation in the slip</figcaption></figure>
+  </div>
+  <dl class="spec">
+    <dt>coverage</dt><dd>56 of 268 notes (21%) get a bracket. 49 are right, 5 are near-misses (for example, only the second of two quoted terms), and 2 are wrong: in stories-02 [2], the note names the <i>other</i> saying. Today's range gets 28 of those same 56 right.</dd>
+    <dt>proof</dt><dd>The closing mark (” " 」 』 》) comes right before the ref, with at most one sentence stop in between. Its opening mark is in the same paragraph and source line. No other ref sits between the marks, and no second closing mark of the same kind comes first, so a stray ” proves nothing (stories-05 ZH [18] has one).</dd>
+    <dt>trade-off</dt><dd>A bracket appears on one ref and not the next, which may read as inconsistency. It costs A plus a matcher of about 45 lines (<code>notes-proven.js</code>).</dd>
+  </dl>
+</article>
+
+<h2>Side by side <span class="cn">对照</span></h2>
+<div class="sheet"><img src="notes-shots/contact-sheet.jpg" alt="Contact sheet: today, A, B and C at 1440 in English and Chinese, and at 390 in English and Chinese" loading="lazy"></div>
+
+<h2>Recommendation <span class="cn">建议</span></h2>
+<p><b>A.</b> It removes the bug at its root: the data says only where a ref sits, and A marks only that. It keeps the gesture Fred picked in round 3 (the loop, the flung arrow, and the slip pulled to the point by its eyelet), so the page keeps its character and only the false claim goes. It is also the smallest port, leaving less code than today. The phone fix, where the slip never hides its ref, is independent and would ship with any choice. B's slip-from-the-line also works with A's or C's desktop.</p>
+<p>If brackets come back, they should be exact: a span Fred marks in the Markdown (for example <code>{the quoted words}[3]</code>), drawn only where marked. C is the middle ground if he wants some brackets now. Whichever wins, the 8 repeated refs should get the same tie as their first mention (not built here).</p>
+
+<h2>Questions only Fred can answer <span class="cn">需要 Fred 定的</span></h2>
+<ol>
+  <li>Should the pen ever mark words? If yes, only where certain: where quote marks prove it (C, 21% of notes) now, or spans you mark later.</li>
+  <li>Phone: keep the slip rising from the bottom of the window (A, C, now never hiding the ref), or pull it out from under the ref's own line (B)?</li>
+  <li>Would you mark spans in the Markdown for the notes where it matters? Every candidate works without it.</li>
+  <li>Should the references list link back to each ref in the text (↩)? Today it doesn't.</li>
+</ol>
+
+<h2>Design record <span class="cn">设计记录</span></h2>
+<div class="record" lang="zh">执行模式：多阶段 · 第一轮，三个候选，等 Fred 选
+来源：Fred 2026-10-05 反馈；Reading 上 268 条页边注释逐条判定（notes-catalogue.html）
+事实：注释的对象有时是一个词或书名（34），有时是一段引文（71），有时是注号前的分句（91）、整句（51），甚至几句话（19）；现在的短语推断只在“分句”上大多猜对，总体对 37%
+取舍：留下第三轮选定的笔势（圈号、甩箭头、纸条被孔眼拽到箭尖）和纸条本身；去掉对原文范围的推断（⌜ ⌟）
+表达锚点：拿笔读书的人，只在有把握的地方落笔
+动作时钟：笔迹走手的时钟（一笔到底，收笔比落笔快）；纸条走物理时钟（以孔眼为轴，一次小回弹），与现在相同
+映射：A 注号 → 圈 + 箭头 → 纸条；B 注号 → 悬停线 → 纸条到同一行，手机上从这一行抽出；C 作者的引号或书名号 → ⌜ ⌟（只在有据处），其余同 A
+线条计划：一支笔，1.7px 圆头，按注号定种子；A、C 的圈与箭头一笔不抬；B 只有注号下的悬停线（TierMark 第一层）和手机上的切口
+色彩计划：珊瑚色只属于这一笔（A、C）或悬停线（B）；B 手机上打开的注号用麦色带（已选）；静止时无珊瑚色
+字体：注释一律直立衬线，注号与日期用 utility 等宽；C 纸条顶上的引文用正文衬线、墨色</div>
+</main>
+</body>
+</html>

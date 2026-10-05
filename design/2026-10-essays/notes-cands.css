@@ -1,0 +1,33 @@
+/* design/2026-10-essays/notes-cands.css — what the notes candidates add to Reading (notes-reading.dc.html), on top of
+   lib/reading/notes.css: C's lemma in the phone slip, B's slip pulled out from under a line, and the board's switch.
+   Tokens are site-tokens.css's; nothing here is coral. */
+
+/* ---- C: the proven quotation keys the phone slip, as a lemma keys a note in a critical edition ---- */
+.fs-lemma{display:block;margin:0 0 7px;padding-left:10px;border-left:2px solid var(--line-strong);color:var(--ink)}
+
+/* ---- B: the slip pulled out of the ref's own line (notes-lineslip.js) ---- */
+.ls-root{position:absolute;left:-10px;right:-10px;z-index:8;display:none}
+.ls-root.open{display:block}
+.ls-slot{position:absolute;left:0;top:-3px;height:8px;overflow:visible}
+.ls-cut{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round}
+/* the slot edge clips the slip exactly; its sides and foot may lean and cast past the column */
+.ls-well{position:relative;clip-path:inset(0 -24px -60px -24px)}
+.ls-slip{position:relative;display:flex;flex-direction:column;transform-origin:0 0;will-change:transform;
+  filter:drop-shadow(0 1px 1px rgba(60,50,35,.08)) drop-shadow(0 8px 14px rgba(60,50,35,.12))}
+.ls-slip:focus{outline:none}
+.ls-slip::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--slip);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 1.6px),93% calc(100% - .4px),85% calc(100% - 2.1px),76% calc(100% - .6px),66% calc(100% - 2.2px),57% calc(100% - .5px),47% calc(100% - 1.9px),37% calc(100% - .4px),27% calc(100% - 2px),17% calc(100% - .6px),8% calc(100% - 2.1px),0 calc(100% - .7px))}
+.ls-slip .fs-head{padding-top:12px}
+.ls-slip .fs-foot{padding-bottom:16px}
+.ls-x{margin-left:auto;padding:4px 2px;border:0;background:none;font:10.5px/1 var(--util);letter-spacing:.03em;color:var(--pencil);cursor:pointer}
+
+/* ---- the board's switch: flips candidates in place (notes-main.js) ---- */
+.nc-switch{position:fixed;left:12px;bottom:12px;z-index:30;display:flex;flex-wrap:wrap;align-items:center;gap:4px;max-width:calc(100vw - 24px);
+  padding:5px 6px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);box-shadow:var(--card-shadow);font:11px/1 var(--util)}
+.nc-k{padding:0 6px 0 4px;color:var(--pencil);letter-spacing:.04em}
+.nc-switch a{padding:5px 8px;border-radius:999px;color:var(--soft);text-decoration:none;white-space:nowrap}
+.nc-switch a:hover{color:var(--ink)}
+.nc-switch a[aria-current]{background:var(--hl);color:var(--ink)}
+@media (max-width:640px){.nc-switch{left:8px;bottom:8px;font-size:10px;gap:2px}.nc-switch a{padding:4px 6px}.nc-k{display:none}}
+html:has(.ls-root.open,.fs-root.open) .nc-switch{visibility:hidden}   /* never over a note */
+@media (prefers-reduced-motion:reduce){.ls-slip{will-change:auto}}

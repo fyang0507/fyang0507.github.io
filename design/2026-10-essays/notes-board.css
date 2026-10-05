@@ -1,0 +1,72 @@
+/* design/2026-10-essays/notes-board.css — the notes board (notes-board.html) and its catalogue (notes-catalogue.html).
+   The site's tokens (../../lib/shared/site-tokens.css), so the board reads in the site's paper, ink and faces. */
+.nb{margin:0;background:var(--paper);color:var(--ink);font:16px/1.62 var(--text)}
+.nb main{max-width:1240px;margin:0 auto;padding:40px 28px 110px}
+.nb .kicker{margin:0 0 8px;font:12px/1.4 var(--util);letter-spacing:.08em;text-transform:uppercase;color:var(--pencil)}
+.nb h1{margin:0 0 14px;font:600 34px/1.15 var(--disp);letter-spacing:-.01em}
+.nb h2{margin:52px 0 10px;padding-top:16px;border-top:1.5px solid var(--ink);font:600 25px/1.25 var(--disp)}
+.nb h3{margin:24px 0 6px;font:600 17px/1.35 var(--text)}
+.nb .cn{margin-left:.3em;font-family:"Noto Serif SC","Songti SC",serif;font-weight:500;color:var(--soft)}
+.nb p,.nb li{max-width:86ch}
+.nb a{color:var(--ink);text-decoration-color:var(--pencil);text-underline-offset:3px}
+.nb code,.nb .u{font:13px/1.5 var(--util)}
+.nb mark{padding:0 1px;background:var(--hl);color:inherit}
+.nb .ref{font:500 11px/1 var(--util);color:var(--ink)}
+.nb blockquote{margin:16px 0;padding:2px 0 2px 18px;border-left:2px solid var(--line-strong);color:var(--soft)}
+.nb .lede{font-size:17.5px}
+.nb .note{color:var(--soft);font-size:14.5px}
+
+/* numbers */
+.nb .big{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
+.nb .big div{flex:1 1 150px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper2)}
+.nb .big b{display:block;font:600 30px/1.1 var(--disp)}
+.nb .big span{font:12px/1.4 var(--util);color:var(--soft)}
+.nb table{border-collapse:collapse;margin:8px 0 14px;font-size:14.5px}
+.nb th,.nb td{padding:5px 12px 5px 0;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.nb th{font-weight:500}
+.nb .ex{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:10px 0}
+.nb .ex div{padding:10px 14px;border-left:2px solid var(--line-strong);background:var(--paper2);font-size:15px}
+.nb .ex .w{font:12px/1.4 var(--util);color:var(--pencil)}
+
+/* candidates */
+.nb .cand{margin:34px 0 0;padding:22px 24px 24px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper2)}
+.nb .cand.rec{border-color:var(--ink)}
+.nb .cand-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.nb .letter{display:inline-grid;place-items:center;width:34px;height:34px;border:1.5px solid var(--ink);border-radius:50%;font:600 16px/1 var(--util)}
+.nb .cand.rec .letter{background:var(--ink);color:var(--paper2)}
+.nb .cand-h h3{margin:0;font:600 23px/1.2 var(--disp)}
+.nb .tag{font:12px/1.4 var(--util);color:var(--soft)}
+.nb .why-cn{margin:12px 0 4px;font-family:"Noto Serif SC","Songti SC",serif;font-size:16.5px;line-height:1.85}
+.nb .try{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.nb .try a{padding:6px 12px;border:1px solid var(--line-strong);border-radius:999px;background:var(--paper);font:12.5px/1.2 var(--util);text-decoration:none}
+.nb .try a:hover{border-color:var(--ink)}
+.nb .shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) repeat(2,minmax(0,.36fr));gap:12px;margin:16px 0 6px;align-items:start}
+.nb figure{margin:0}
+.nb figure img{display:block;width:100%;height:auto;border:1px solid var(--line);background:#fff}
+.nb figcaption{margin-top:5px;font:11.5px/1.4 var(--util);color:var(--soft)}
+.nb .spec{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 14px;margin:14px 0 0;font-size:14.5px}
+.nb .spec dt{font:12px/1.6 var(--util);color:var(--pencil)}
+.nb .spec dd{margin:0}
+.nb .sheet img{display:block;width:100%;height:auto;border:1px solid var(--line)}
+.nb .record{white-space:pre-wrap;margin:14px 0 0;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--paper2);font:13px/1.75 "Noto Serif SC","Songti SC",serif}
+@media (max-width:900px){.nb .shots{grid-template-columns:repeat(2,minmax(0,1fr))}.nb .spec{grid-template-columns:minmax(0,1fr)}}
+
+/* the catalogue */
+.cat .tally td,.cat .tally th{padding-right:22px}
+.cat .essay h2{font-size:19px}
+.cat .lang{font:12px/1 var(--util);color:var(--pencil)}
+.cat .rep{font:12.5px/1.5 var(--util);color:var(--soft)}
+.cat .rows{width:100%;table-layout:fixed;font-size:13.5px;line-height:1.55}
+.cat .rows th{font:11.5px/1.4 var(--util);color:var(--pencil)}
+.cat .rows th:nth-child(1){width:34px}.cat .rows th:nth-child(2){width:44%}.cat .rows th:nth-child(3){width:12%}.cat .rows th:nth-child(4){width:17%}
+.cat .rows td{padding:8px 12px 8px 0;overflow-wrap:anywhere}
+.cat .n{font:500 12px/1.5 var(--util)}
+.cat .ctx{color:var(--soft)}
+.cat .ctx mark{color:var(--ink)}
+.cat .br{color:var(--pencil)}
+.cat .proof{margin-top:5px;font:12px/1.5 var(--util);color:var(--ink)}
+.cat .tg,.cat .nt{color:var(--soft)}
+.cat .vd b{font-weight:600}
+.cat .vd div{margin-top:3px;color:var(--soft);font-size:12.5px}
+.cat tr.vW .vd b{font-weight:700;color:var(--ink)}
+.cat tr.vR .vd b{font-weight:500;color:var(--soft)}
