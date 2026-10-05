@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<base href="../../">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Reading · notes candidates · design 2026-10</title>
+<meta name="description" content="Bilingual essays by Fred Yang.">
+<link rel="icon" href="./favicon.png" type="image/png" sizes="512x512">
+<link rel="apple-touch-icon" href="./favicon.png">
+<script>(function(){var p=new URLSearchParams(location.search).get('post');if(!/^[0-9]{4}-[0-9]{2}-[0-9]{2}_[a-z0-9_-]+$/.test(p||''))return;var s=document.createElement('script');s.src='./content/bodies/'+p+'.js';s.fetchPriority='high';s.setAttribute('data-fy-body',p);s.onload=s.onerror=function(e){s.setAttribute('data-state',e.type)};document.head.appendChild(s);})();</script>
+<script src="./lib/shared/support.js"></script>
+<link rel="stylesheet" href="./lib/shared/site-tokens.css">
+<link rel="stylesheet" href="./lib/shared/site-nav.css">
+<link rel="stylesheet" href="./lib/shared/pen.css">
+<style>@view-transition{navigation:auto}@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
+<link rel="stylesheet" href="./lib/shared/transitions.css">
+<link rel="stylesheet" href="./lib/reading/reading.css">
+<link rel="stylesheet" href="./lib/reading/rail.css">
+<link rel="stylesheet" href="./lib/reading/notes.css">
+<link rel="stylesheet" href="./design/2026-10-essays/notes-cands.css">
+<link rel="expect" href="#site-nav" blocking="render">
+<script>(function(){var r=document.documentElement;var q=new URLSearchParams(location.search);function s(k){try{return localStorage.getItem(k)}catch(e){return null}}var l=q.get('lang')||s('fy-lang')||'zh';var saved=q.get('theme')||s('fy-theme');var t=saved||(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.classList.add(l==='zh'?'lang-zh':'lang-en');r.classList.toggle('dark',t==='dark');r.setAttribute('data-theme',t);r.setAttribute('lang',l);})();</script>
+<script src="./content/posts-index.js" defer fetchpriority="high"></script>
+<script type="module" src="./lib/reading/essay.js"></script>
+<script src="./lib/shared/motion.js" defer blocking="render"></script>
+<script src="./lib/shared/transitions-tab.js" defer blocking="render"></script>
+<script src="./lib/shared/transitions.js" defer blocking="render"></script>
+<script src="./lib/shared/pen.js" defer></script>
+<script src="./lib/shared/pen-tier.js" defer></script>
+<script src="./lib/shared/site.js" defer></script>
+<script type="module" src="./design/2026-10-essays/notes-main.js"></script>
+</head>
+<body>
+<nav class="rnav" aria-label="Article · 文章">
+  <div class="nav-plate" aria-hidden="true"></div>
+  <div class="nav-title" aria-hidden="true"><span class="nav-title-t"></span></div>
+  <div class="nav-row">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="34" height="34" role="img" aria-label="Fred Yang"><g class="site-identity-seal"><path class="seal-body" d="M4 5 Q30 3.4 60 4.2 Q80 4.6 96 3.8 Q97.2 30 96.4 61.5 L94.9 63.6 L96.7 65.4 Q97 84 96.6 96.2 Q60 97.4 30 96.6 Q14 96.4 3.6 96.8 Q2.8 70 3.4 40 Q3.2 20 4 5 Z"/><g class="seal-cut" stroke-width="3.6"><path d="M55 12 L89 12 L89 22"/><path d="M55 22 L89 22"/><path d="M55 22 L55 32 L89 32 L89 44 L84 44"/><path d="M66 8.5 L66 38 L58.5 46"/><path d="M78 8.5 L78 47"/></g><g class="seal-cut" stroke-width="3.1"><path d="M60 54 L84 54"/><path d="M55.5 65.5 L55.5 59.5 L88.5 59.5 L88.5 65.5"/><path d="M72 54 L72 68.5"/><path d="M61 63.5 L61 67.5"/><path d="M65.5 63.5 L65.5 67.5"/><path d="M78.5 63.5 L78.5 67.5"/><path d="M83 63.5 L83 67.5"/><path d="M56.5 72 L88 72 L88 91 L56.5 91 Z"/><path d="M56.5 81.5 L88 81.5"/><path d="M72.2 72 L72.2 91"/></g><g class="seal-cut" stroke-width="3.4"><path d="M20.5 10.5 L12 21"/><path d="M21.5 25.5 L11 38"/><path d="M16.3 31.5 L16.3 91"/><path d="M25 14 L46.5 14"/><path d="M35.8 9 L35.8 19.5"/><path d="M26 24.5 L45.5 24.5 L45.5 36 L26 36 Z"/><path d="M32.5 24.5 L32.5 36"/><path d="M39 24.5 L39 36"/><path d="M24 44 L47.5 44"/><path d="M25.6 55 L28.6 62.5"/><path d="M31.8 50.5 L31.8 82 Q31.8 86.5 36.3 86.5 L46 86.5 L46 77.5"/><path d="M36.6 52.5 L39.6 59.5"/><path d="M43 51.5 L46.4 58.5"/></g></g></svg>
+      <a class="back" href="Writing.dc.html"><span class="back-arrow" aria-hidden="true">←&nbsp;</span><span class="back-t"><span class="en">all writing</span><span class="zh">全部文章</span></span></a>
+    </div>
+    <div class="right">
+      <button class="btn" type="button" data-act="lang" aria-label="Switch language · 切换语言"><span class="en">中</span><span class="zh">EN</span></button>
+      <button class="btn" type="button" data-act="theme" aria-label="Dark mode · 深色" aria-pressed="false">◐</button>
+    </div>
+  </div>
+</nav>
+<div class="nav-space" aria-hidden="true"></div>
+<div class="site-top rd-top">
+  <header class="site-shell-header site-shell-header--reading" id="site-nav">
+    <nav class="site-index site-index--reading" aria-label="Primary navigation">
+      <a class="site-home" href="index.html"><img class="site-home-object" src="./assets/sticker-peek.png" alt="" aria-hidden="true"><span class="site-nav-label"><span class="en">home</span></span></a>
+      <a class="site-tab site-tab--writing" href="Writing.dc.html" aria-current="page"><span class="site-nav-object site-nav-book"></span><span class="site-nav-label"><span class="en">writing</span></span></a>
+      <a class="site-tab site-tab--building" href="Building.dc.html"><span class="site-nav-object site-nav-laptop"></span><span class="site-nav-label"><span class="en">building</span></span></a>
+      <a class="site-tab site-tab--shooting" href="Gallery.dc.html"><span class="site-nav-object site-nav-camera" aria-hidden="true"></span><span class="site-nav-label"><span class="en">shooting</span></span></a>
+      <a class="site-tab site-tab--about" href="About.dc.html"><span class="site-nav-object site-nav-frame"></span><span class="site-nav-label"><span class="en">about</span></span></a>
+      <div class="site-rule" aria-hidden="true"></div>
+      <span class="site-tabmark" aria-hidden="true"></span>
+    </nav>
+  </header>
+</div>
+<x-dc>
+<main class="wrap rd-main" data-mount="reading">
+  <!-- lib/reading writes the essay into this skeleton (its text, both bodies, the neighbours), then the hero, the
+       margin rail and the notes attach to it. It carries no template values, so it is right whenever React renders. -->
+  <article>
+    <header class="article-intro">
+      <div class="kick-row">
+        <span class="kicker"><span class="en" data-f="tagsEn"></span><span class="zh" data-f="tagsZh"></span></span>
+        <span class="meta"><time><span class="en" data-f="dateEn"></span><span class="zh" data-f="dateZh"></span></time><span class="dot">·</span><span><span class="en" data-f="minEn"></span><span class="zh" data-f="minZh"></span></span><span class="dot">·</span><span>中 / EN</span></span>
+      </div>
+      <h1 class="title"><span class="en" data-f="title"></span><span class="zh" data-f="titleZh"></span></h1>
+      <div class="eyebrow"><span class="en" data-f="subtitle"></span><span class="zh" data-f="subtitleZh"></span></div>
+    </header>
+    <div class="body-col">
+      <div class="rail-col"></div>
+      <div class="post-body zh" lang="zh"></div>
+      <div class="post-body en" lang="en"></div>
+    </div>
+  </article>
+  <nav class="pn" aria-label="More essays · 更多文章"></nav>
+  <footer>
+    <div class="row">
+      <span>© 2026 Fred Yang · 杨</span>
+      <span><a href="mailto:fredyang0507@gmail.com">email</a> · <a href="https://github.com/fyang0507" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.linkedin.com/in/fyang0507/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://www.instagram.com/yangruntong/" target="_blank" rel="noopener noreferrer">Instagram</a></span>
+    </div>
+  </footer>
+</main>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,43 @@
+/* design/2026-10-essays/pn-a-back.css — round 2 of candidate A: the way back to all writing (pn-a-back.js). Each
+   hangs from or sits on the plank (pn-a.css: the top face is 0–14 px of .pa-plank, the lip 14–34 px), in the plank's
+   own ink, quieter than the books: --soft words that turn ink with the pen. */
+.pa-back-t{position:relative;display:inline-block;font:500 11px/1.2 var(--util);letter-spacing:.06em;color:var(--soft);white-space:nowrap}
+html.lang-zh .pa-back-t{font:500 12px/1.2 var(--util-cn);letter-spacing:.04em}
+.pa-back[data-pen-tier="1"] .pa-back-t,.pa-back[data-pen-tier="2"] .pa-back-t{color:var(--ink)}
+.pn.pn-a .pa-back{position:absolute;-webkit-tap-highlight-color:transparent}
+.pn.pn-a .pa-back:focus-visible{outline:none}
+.pa-back::before{content:"";position:absolute;inset:-8px -6px}   /* a finger's reach, past the paper */
+.pa-back--tab::before{inset:-4px -6px -22px}
+.pa-back--print::before{inset:-12px -6px -22px}
+
+/* 吊牌 · a paper tag on a thread from the plank's underside, a little askew; pointed at, it swings once and settles */
+.pn.pn-a .pa-back--tag{left:30px;top:33px;padding-top:11px;transform-origin:50% 0;transform:rotate(-4deg);transition:transform .7s var(--ease-settle)}
+@media (hover:hover){.pn.pn-a .pa-back--tag:hover{transform:rotate(0)}}
+.pn.pn-a .pa-back--tag:focus-visible{transform:rotate(0)}
+.pa-thread{position:absolute;z-index:2;left:50%;top:0;width:1px;height:17px;background:var(--pencil)}
+.pa-tag{position:relative;display:block;padding:12px 10px 6px;background:var(--slip);border:1.2px solid var(--ed);border-radius:2px 2px 3px 3px}
+.pa-hole{position:absolute;left:50%;top:3.5px;width:6px;height:6px;margin-left:-3px;border:1px solid var(--ed);border-radius:50%;background:var(--paper)}
+.pa[data-back="tag"] .pa-plank{margin-bottom:48px}
+
+/* 「全部」签 · Writing's own "all" index tab, out from under the lip; pointed at, it comes out a little further */
+.pn.pn-a .pa-back--tab{z-index:-1;left:28px;top:29px;transition:transform .45s var(--ease-settle)}
+@media (hover:hover){.pn.pn-a .pa-back--tab:hover{transform:translateY(3px)}}
+.pn.pn-a .pa-back--tab:focus-visible{transform:translateY(3px)}
+.pa-tab{display:flex;align-items:baseline;gap:9px;padding:9px 11px 6px;background:var(--pages);border:1.5px solid var(--ed);border-top:0;border-radius:0 0 4px 4px}
+.pa-back-n{font:11px/1 var(--util);color:var(--soft)}
+.pa[data-back="tab"] .pa-plank{margin-bottom:34px}
+
+/* 印在板边 · printed straight on the lip, as a library shelf carries its range; nothing else */
+.pn.pn-a .pa-back--print{left:16px;top:14px;height:20px;display:flex;align-items:center}
+.pa-back--print .pa-back-t{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+html.lang-zh .pa-back--print .pa-back-t{font-size:11.5px;letter-spacing:.1em;text-transform:none}
+
+@media (max-width:640px){
+  .pn.pn-a .pa-back--tag,.pn.pn-a .pa-back--tab{left:18px}
+  .pn.pn-a .pa-back--print{left:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pn.pn-a .pa-back{transition:none}
+  .pn.pn-a .pa-back--tag:hover,.pn.pn-a .pa-back--tag:focus-visible{transform:rotate(-4deg)}
+  .pn.pn-a .pa-back--tab:hover,.pn.pn-a .pa-back--tab:focus-visible{transform:none}
+}

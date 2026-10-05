@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>书架页的中英切换 · Writing's CN/EN switch · design/2026-10-essays</title>
+<link rel="icon" href="../../favicon.png" type="image/png">
+<link rel="stylesheet" href="../../lib/shared/site-tokens.css">
+<style>
+  /* the board's Chinese is set in the system's serif: the site's subsets carry only the site's own characters */
+  *{box-sizing:border-box}
+  body{--text:"Fraunces","Songti SC","Noto Serif SC",serif;font:17px/1.6 var(--text);color:var(--ink);background:var(--paper);margin:0}
+  section,.cand{scroll-margin-top:64px}
+  .top{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;padding:12px 4vw;background:var(--paper);border-bottom:1.5px solid var(--ink);font:12px/1.4 var(--util);letter-spacing:.03em;color:var(--pencil)}
+  .top b{font-weight:500;color:var(--ink)}
+  .top a{color:var(--soft)} .top a:hover{color:var(--ink);text-decoration:underline}
+  main{width:min(1180px,92vw);margin:0 auto;padding:34px 0 80px}
+  h1{font:400 clamp(34px,4.6vw,52px)/1.1 var(--disp);margin:0 0 8px}
+  h1 .en{display:block;font:500 clamp(17px,1.8vw,21px)/1.3 "Fraunces",serif;color:var(--soft);margin-top:8px}
+  h2{font:500 26px/1.25 var(--text);margin:56px 0 6px}
+  h3{font:500 15px/1.3 var(--util);letter-spacing:.04em;color:var(--soft);margin:22px 0 8px}
+  p{max-width:820px;margin:10px 0}
+  .soft{color:var(--soft)} .util{font:12.5px/1.6 var(--util);letter-spacing:.03em;color:var(--pencil)}
+  .quote{margin:22px 0;padding:4px 0 4px 18px;border-left:3px solid var(--ink);font:22px/1.45 var(--text)}
+  .quote small{display:block;font:12px/1.5 var(--util);color:var(--pencil);margin-top:4px}
+  .cand{margin-top:54px;padding-top:26px;border-top:1.5px solid var(--line-strong)}
+  .cand h2{margin-top:0}
+  .cand h2 .tag{font:500 13px/1 var(--util);letter-spacing:.06em;color:var(--pencil);margin-left:10px;vertical-align:middle}
+  .why{font-size:18.5px;line-height:1.75;max-width:860px}
+  .line{font-family:"Fraunces",serif;color:var(--soft);max-width:860px}
+  .open{display:flex;flex-wrap:wrap;gap:8px 18px;margin:14px 0 4px;font:13px/1.4 var(--util)}
+  .open a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+  .frames{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;margin-top:14px}
+  .fr{position:relative;width:calc(var(--w) * var(--k) * 1px);height:calc(var(--h) * var(--k) * 1px);overflow:hidden;border:1.5px solid var(--ink);border-radius:3px;background:var(--paper)}
+  .fr iframe{position:absolute;left:0;top:0;border:0;transform:scale(var(--k));transform-origin:0 0}
+  .fr-cap{font:11.5px/1.4 var(--util);color:var(--pencil);margin-top:6px}
+  .rec{margin-top:54px;padding:22px 26px;border:1.5px solid var(--ink);border-radius:3px;background:var(--page)}
+  .rec h2{margin-top:0}
+  table{border-collapse:collapse;width:100%;margin-top:12px;font-size:14.5px;line-height:1.5}
+  th,td{text-align:left;vertical-align:top;padding:8px 10px;border-top:1px solid var(--line-strong)}
+  th{font:500 12px/1.4 var(--util);letter-spacing:.04em;color:var(--soft);white-space:nowrap}
+  .sheet{display:block;width:100%;height:auto;margin-top:12px;border:1.5px solid var(--line-strong)}
+  ol li,ul li{margin:6px 0;max-width:860px}
+  code{font:13.5px var(--util)}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Board">
+  <b>design/2026-10-essays</b><span>switch- · 书架页的中英切换</span>
+  <a href="#a">A 题头</a><a href="#b">B 挂牌</a><a href="#c">C 拨片</a><a href="#now">现在</a><a href="#rec">推荐</a><a href="#record">记录</a><a href="#sheets">对照</a><a href="#q">问题</a>
+  <a href="../../Writing.dc.html">live Writing ↗</a>
+</nav>
+<main>
+  <h1>书架页的中英切换<span class="en">Writing's CN/EN switch — three candidates, playable on the real page</span></h1>
+  <div class="quote">书架页的中英切换有点不太明显<small>Fred, 2026-10-05</small></div>
+  <p class="why">现在的切换在索引上方：一行 11.5 px 的等宽小字「中文 · EN」，排法和下面「年份 · every year」的表头一样，选中时也和「all 全部」「所有年份」一样上麦色，所以读起来只是又一个筛选项；英文那一边只写了「EN」。</p>
+  <p class="line">Today's 中文 · EN heads the index in 11.5 px mono, set like the year ledger's head and banded like every other choice there, so it reads as one more filter, and English is only "EN".</p>
+  <p class="util">每个方案都是真实的书架页（加载线上的同一批文件），切换走 lib/writing/lang.js 自己的状态：书脊、手里的书、fy-lang、?lang= 都和现在一样。全屏打开后，把窗口拉到 760 px 以下就是手机布局；左下角的小条可以在方案之间来回切换，语言会记住。Each candidate is the real Writing page with one switch swapped in; open it full size and narrow the window under 760 px for the phone layout. The bar at the bottom left moves between candidates.</p>
+
+  <section class="cand" id="a">
+    <h2>A 题头 <span class="tag">by the title · type</span></h2>
+    <p class="why">把书架的语言写进页面标题：「在写。」旁边并排「中文 / English」，用书脊上同样的字体（钉钉进步体、Fraunces 500），选中的那个由笔上麦色，上面一行小字「书架 shelf」说明它管的是书架。进页面最先读到的地方就说清楚书架现在是什么语言、另一种是什么，而且不添任何新物件。</p>
+    <p class="line">The pair stands on the title's baseline, right of 在写。, set in the faces the spines use: the first thing you read says which language the shelf is in and offers the other, with no new object on the page.</p>
+    <div class="open"><a href="switch-writing.html?c=a">open A full size ↗</a><span class="util">phone: narrow the window, or the frame on the right</span></div>
+    <div class="frames">
+      <div><div class="fr" style="--w:1440;--h:900;--k:.5"><iframe src="switch-writing.html?c=a&amp;bar=0" width="1440" height="900" loading="lazy" title="A at 1440"></iframe></div><div class="fr-cap">1440 × 900 · live, at half size</div></div>
+      <div><div class="fr" style="--w:390;--h:844;--k:.62"><iframe src="switch-writing.html?c=a&amp;bar=0" width="390" height="844" loading="lazy" title="A at 390"></iframe></div><div class="fr-cap">390 × 844 · live</div></div>
+    </div>
+  </section>
+
+  <section class="cand" id="b">
+    <h2>B 挂牌 <span class="tag">on the bookcase · object</span></h2>
+    <p class="why">书架头上钉一颗钉子，挂一块双面牌，像小店门口的「营业中 / OPEN」：露在外面的那一面就是书架现在的语言，牌脚用另一种语言自己的文字写着怎么翻过去（flip · English / 翻面 · 中文）。点一下，牌子在绳上翻面、在钉子上晃一下，翻到侧面的那一刻书脊跟着换，落定后笔再给新的一面上色——是这页书架上一件会动的东西，而不是又一个开关。</p>
+    <p class="line">A two-sided sign on a nail at the head of the shelf, as a shop hangs OPEN: the face you see is the shelf's language. Tap it and it turns over on its string and swings on its nail (physics clock); the spines turn as it passes edge-on, and the pen bands the new face once it lands (hand's clock). On a phone it hangs over the swipe shelf, a wide, short card.</p>
+    <div class="open"><a href="switch-writing.html?c=b">open B full size ↗</a><span class="util">tap the sign; hover shows the way to the other side</span></div>
+    <div class="frames">
+      <div><div class="fr" style="--w:1440;--h:900;--k:.5"><iframe src="switch-writing.html?c=b&amp;bar=0" width="1440" height="900" loading="lazy" title="B at 1440"></iframe></div><div class="fr-cap">1440 × 900 · live, at half size</div></div>
+      <div><div class="fr" style="--w:390;--h:844;--k:.62"><iframe src="switch-writing.html?c=b&amp;bar=0" width="390" height="844" loading="lazy" title="B at 390"></iframe></div><div class="fr-cap">390 × 844 · live (scroll the frame to the shelf)</div></div>
+    </div>
+  </section>
+
+  <section class="cand" id="c">
+    <h2>C 拨片 <span class="tag">by the index · control</span></h2>
+    <p class="why">位置不变，还在索引上方，但做成一枚一眼能认出的拨片：凹下去的纸槽分成两半，写全「中文」和「English」，一块纸片垫在选中的那一半下面，按索引标签同样的弹簧滑过去，笔再给字上色；左边的标签说明它改的是什么：书架语言 · shelf reads in。改动最小、最像一个控件。</p>
+    <p class="line">Today's place, made a control you can't miss: a recessed paper slot with two equal halves, the paper slide springing under the chosen one on the index tabs' spring while the pen bands the word.</p>
+    <div class="open"><a href="switch-writing.html?c=c">open C full size ↗</a></div>
+    <div class="frames">
+      <div><div class="fr" style="--w:1440;--h:900;--k:.5"><iframe src="switch-writing.html?c=c&amp;bar=0" width="1440" height="900" loading="lazy" title="C at 1440"></iframe></div><div class="fr-cap">1440 × 900 · live, at half size</div></div>
+      <div><div class="fr" style="--w:390;--h:844;--k:.62"><iframe src="switch-writing.html?c=c&amp;bar=0" width="390" height="844" loading="lazy" title="C at 390"></iframe></div><div class="fr-cap">390 × 844 · live</div></div>
+    </div>
+  </section>
+
+  <section class="cand" id="now">
+    <h2>现在 · today <span class="tag">for comparison</span></h2>
+    <div class="open"><a href="switch-writing.html?c=now">open today's full size ↗</a></div>
+    <div class="frames">
+      <div><div class="fr" style="--w:1440;--h:900;--k:.5"><iframe src="switch-writing.html?c=now&amp;bar=0" width="1440" height="900" loading="lazy" title="today at 1440"></iframe></div><div class="fr-cap">1440 × 900 · live, at half size</div></div>
+      <div><div class="fr" style="--w:390;--h:844;--k:.62"><iframe src="switch-writing.html?c=now&amp;bar=0" width="390" height="844" loading="lazy" title="today at 390"></iframe></div><div class="fr-cap">390 × 844 · live</div></div>
+    </div>
+  </section>
+
+  <section class="rec" id="rec">
+    <h2>推荐 · B 挂牌</h2>
+    <p class="why">三个里只有 B 把语言放在书架本身上、字最大，放在看完标题后眼睛自然落到的书架头（小鸟就站在它下面）；而且它用的是这个网站已有的语言：纸做的东西、因为你碰了它才动、两个时钟各管一半。代价是多一件物件、书架下移一行，另一种语言只印在牌脚的小字里。如果你更想什么都不加，A 最干净：同样一眼能看到，还顺便预告书脊的字体。C 是稳妥的退路。</p>
+    <p class="line">B is the only one that puts the language on the shelf itself, at the largest size, where the eye lands after the title, and it does so in the site's own terms: a paper thing that moves because you touched it, on both clocks. It costs an object and a row of space, and the other language is small print on its foot. A is the cleanest if you'd rather add nothing; C is the safe fallback.</p>
+  </section>
+
+  <section id="record">
+    <h2>记录 · design record</h2>
+    <p class="util">execution mode: multi-stage (candidates, Fred's pick, then refine and port) · source: Fred's note and today's switch (lib/writing/lang.js) · all three keep lang.js's behaviour, the pen (Tier.wire states), the tokens, and no coral at rest</p>
+    <table>
+      <tr><th></th><th>A 题头</th><th>B 挂牌</th><th>C 拨片</th></tr>
+      <tr><th>source-form distance</th><td>low: a literal pair of words</td><td>low: a recognisable shop sign, card, string and nail</td><td>low: a recognisable two-way slide switch</td></tr>
+      <tr><th>primary carrier</th><td>line-led: type, and the pen's band</td><td>line-led: one ink edge for card, string and holes</td><td>line-led: ink edges for slot and slide</td></tr>
+      <tr><th>resolution</th><td>low: one pair, one caption</td><td>low–moderate: card, two faces, string, nail</td><td>low: a slot and a slide</td></tr>
+      <tr><th>expression anchor</th><td>the pair set in the spines' own faces on the title's baseline</td><td>the turn on its string and the swing on its nail; the band arrives after the card lands</td><td>the slide springing under the chosen half, as the index tabs spring</td></tr>
+      <tr><th>colour plan</th><td>ink and soft type; wheat band = chosen; coral only for hover and focus</td><td>page paper, ink; wheat band = the face showing; coral only for hover and focus</td><td>paper2 slot, page slide, ink; wheat band = chosen; coral only for hover and focus</td></tr>
+      <tr><th>phone</th><td>beside the title, same pair at 20 px</td><td>over the swipe shelf's head, a wide, short card; the cue moves right</td><td>the first row of the index strip, as today</td></tr>
+      <tr><th>a port changes</th><td>a mount host in the masthead; the index row goes</td><td>a sign module and its CSS; one button, not two; the index row goes</td><td>lang.js's Switch rebuilt as the slot; same place</td></tr>
+    </table>
+  </section>
+
+  <section id="sheets">
+    <h2>对照 · today vs. candidates</h2>
+    <p class="util">frozen captures from this round (2026-10-05), at rest, above the fold · the live frames above follow the site as it changes</p>
+    <h3>1440 and 390, each language</h3>
+    <img class="sheet" src="switch-contact.jpg" alt="Contact sheet: today's switch and candidates A, B and C at 1440 and 390 pixels, in Chinese and in English" loading="lazy">
+    <h3>each control up close, in its place</h3>
+    <img class="sheet" src="switch-detail.jpg" alt="Close-ups of each switch in its place on the page, at 1440 and 390 pixels, in Chinese and in English" loading="lazy">
+  </section>
+
+  <section id="q">
+    <h2>问题 · for Fred</h2>
+    <ol>
+      <li>选哪一个——A、B、C，还是组合（比如 B 的牌子挂在 A 的位置）？ Which one, or which parts combined?</li>
+      <li>如果选 B：牌子上只露当前语言、另一种只在牌脚小字里，够明显吗？还是两种都要印在正面？ If B: is the other language as small print on the sign's foot enough?</li>
+      <li>桌面上往下翻书架时，切换要不要一直留在视野里？现在的会滚出去，三个方案也都不是固定的。 Should the switch stay in view as you scroll down the shelf?</li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* design/2026-10-essays/pn-c.css — candidate C, the pencil line goes on (pn-c.js). A contents of three lines in the
+   text column. Where the margin rail is (html.rail-mode, rail.js) the pencil runs at the rail's x, 56 px left of the
+   text; where the rail is a strip, it runs down the column's own left edge and the lines step in from it. */
+.pn.pn-c{display:block;max-width:640px;margin:60px auto 10px}
+.pc{--pc-x:6px;--pc-in:26px;position:relative}
+html.rail-mode .pc{--pc-x:-56px;--pc-in:2px}
+.pc-ink{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.pc-line{fill:none;stroke:var(--pencil);stroke-width:1.7;stroke-linecap:round}
+.pc-dash{fill:none;stroke:var(--pencil);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:3 6}
+.pc-tick{fill:none;stroke:var(--pencil);stroke-width:1.5;stroke-linecap:round}
+.pc-tick.pc-here{stroke:var(--ink);stroke-width:1.9}
+.pc-tick.pc-open{stroke-dasharray:2.5 3}
+
+.pc-list{list-style:none;margin:0;padding:0}
+.pc-row + .pc-row{border-top:1px solid var(--line)}
+.pn.pn-c .pc-a{display:grid;grid-template-columns:104px minmax(0,1fr) auto;align-items:baseline;column-gap:20px;padding:17px 2px 16px var(--pc-in);color:var(--ink);-webkit-tap-highlight-color:transparent}
+a.pc-a:focus-visible{outline:none}
+.pc-d{font:12px/1.3 var(--util);letter-spacing:.04em;color:var(--pencil);white-space:nowrap}
+.pc-b{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0}
+.pc-t{position:relative;display:inline-block;max-width:100%;font:500 19px/1.3 "Fraunces",serif;letter-spacing:-.005em;color:var(--ink)}
+html.lang-zh .pc-t{font:400 19px/1.4 var(--disp-cn);letter-spacing:.02em}
+.pc-m{font:11.5px/1.4 var(--util);letter-spacing:.03em;color:var(--pencil)}
+.pc-k{font:500 11px/1.3 var(--util);letter-spacing:.12em;text-transform:uppercase;color:var(--pencil);white-space:nowrap}
+html.lang-zh .pc-k{font:500 12px/1.3 var(--util-cn);letter-spacing:.06em;text-transform:none}
+.pc-cur .pc-d,.pc-cur .pc-k{color:var(--soft)}
+.pc-q{font:15px/1.45 var(--text);color:var(--pencil)}
+html.lang-zh .pc-q{font:15px/1.6 var(--text-cn)}
+.pc-g{margin:0 0 -2px;font:20px/1 var(--hand-cn);color:var(--pencil)}
+.pc-quiet .pc-b{flex-direction:row;align-items:baseline;gap:12px}
+
+/* phone: the date and the direction share a line over the title */
+@media (max-width:640px){
+  .pn.pn-c{margin-top:44px}
+  .pn.pn-c .pc-a{grid-template-columns:minmax(0,1fr) auto;row-gap:7px;padding:15px 0 14px var(--pc-in)}
+  .pc-d{grid-area:1/1}
+  .pc-k{grid-area:1/2;text-align:right}
+  .pc-b{grid-area:2/1/3/3}
+  .pc-t,html.lang-zh .pc-t{font-size:17.5px}
+}

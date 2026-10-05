@@ -1,0 +1,28 @@
+/* design/2026-10-essays · book-board.css — the board's chrome (book-board.js), not part of the move. The switcher has
+   its own name, so it holds still while a move plays under it. */
+.bk-switch{view-transition-name:book-board;position:fixed;left:12px;bottom:12px;z-index:2147483000;max-width:min(600px,calc(100vw - 24px));
+  padding:8px 10px 8px;background:var(--paper);border:1.5px solid var(--ink);border-radius:4px;box-shadow:0 2px 0 color-mix(in srgb,var(--ink) 14%,transparent);
+  font:11.5px/1.4 "IBM Plex Mono","PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;color:var(--soft)}
+::view-transition-group(book-board){z-index:9}
+.bk-row{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.bk-k{margin-right:4px;color:var(--pencil);letter-spacing:.04em}
+.bk-switch button{font:inherit;color:var(--ink);background:var(--paper2);border:1px solid var(--line-strong);border-radius:3px;padding:3px 7px;cursor:pointer}
+.bk-switch button span{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;color:var(--soft)}
+.bk-switch button[aria-pressed=true]{background:var(--hl);border-color:var(--hl-ink)}
+.bk-switch button[aria-pressed=true] span{color:var(--ink)}
+.bk-switch button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.bk-why{margin:7px 0 0;font:13px/1.55 "PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;color:var(--ink);max-width:56ch}
+.bk-how{margin:5px 0 0;color:var(--pencil)}
+.bk-how a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:2px}
+.bk-more{display:none}
+/* on a phone the held book sits low on the screen: the switcher is one row, its note behind 说明 */
+@media (max-width:640px){
+  .bk-switch{left:6px;right:6px;bottom:6px;max-width:none;padding:5px 6px}
+  .bk-k,.bk-how{display:none}
+  .bk-switch button{padding:3px 5px}
+  .bk-more{display:inline-block;margin-left:auto}
+  .bk-why{display:none;font-size:12px;margin-top:5px}
+  .bk-switch:has(.bk-more[aria-expanded=true]) .bk-why{display:block}
+}
+/* B: while the book opens, its board stays shut: the page goes when it is square to you (book-board.js) */
+html[data-book-c=b] .wr[data-opening] .leaf{transform:none!important}
