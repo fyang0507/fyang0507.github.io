@@ -1,8 +1,33 @@
-// reading-hero.mjs — the hero invariants: no halftone at scroll 0 (and never under reduced motion or in dark mode),
-// the nav lands at sL and is opaque at every scroll position, and the language and theme toggles re-render nothing.
+// reading-hero.mjs — the hero invariants, on light and dark paper: no halftone at scroll 0 (and never under reduced
+// motion), the halftone prints as soon as the page scrolls and the title reads over its every dot, the nav lands at
+// sL and is opaque at every scroll position, the language and theme toggles re-render nothing, and a theme toggled
+// mid-scroll repaints the plate exactly as a fresh load in that theme paints it.
 //   node /tmp/fyshot/run.mjs scripts/verify/reading-hero.mjs      (env: see reading-lib.mjs)
 import { BASE, POSTS, url, context, watch, ready, scroll, geo, paperOnly, report, sleep } from './reading-lib.mjs';
 const BASE_URL = BASE + 'Reading.dc.html';
+const DARK = '&theme=dark';
+
+// The title over the halftone: the worst contrast between the title's colour and any opaque pixel the plate's canvas
+// holds (paper, dots and their edges on paper; the plate's cover is fainter than any dot). POSTS.cover is the
+// lightest cover, so on dark paper it prints the brightest dots there are.
+const titleOverDots = (page) => page.evaluate(() => {
+  const lin = (v) => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+  const lum = (c) => .2126 * lin(c[0]) + .7152 * lin(c[1]) + .0722 * lin(c[2]);
+  const T = lum(getComputedStyle(document.querySelector('.article-intro .title')).color.match(/[\d.]+/g).map(Number));
+  const cv = document.querySelector('.plate canvas'), d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+  let worst = 99;
+  for (let i = 0; i < d.length; i += 4) {
+    if (d[i + 3] < 255) continue;
+    const L = lum([d[i], d[i + 1], d[i + 2]]);
+    worst = Math.min(worst, (Math.max(T, L) + .05) / (Math.min(T, L) + .05));
+  }
+  return +worst.toFixed(2);
+});
+// a digest of the plate's canvas pixels, to compare two pages
+const plateDigest = (page) => page.evaluate(async () => {
+  const cv = document.querySelector('.plate canvas'), d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+  return [...new Uint8Array(await crypto.subtle.digest('SHA-256', d))].slice(0, 8).map((x) => x.toString(16).padStart(2, '0')).join('');
+});
 
 // The nav is opaque when its paper plate is shown, fills the bar and has an opaque background (reduced motion: the bar
 // itself turns to paper the moment anything is under it). Then the pixels: once landed, the bar's empty middle is
@@ -32,23 +57,29 @@ async function barPixels(page, h) {
 
 export default async (page, ctx) => {
   const browser = page.context().browser(), rows = [];
-  for (const [w, h] of [[1440, 900], [390, 844]]) {
-    const errors = [], c = await context(browser, w, h), p = await c.newPage(); watch(p, errors);
-    await p.goto(url(POSTS.cover)); await ready(p);
+  for (const [theme, w, h] of [['light', 1440, 900], ['light', 390, 844], ['dark', 1440, 900], ['dark', 390, 844]]) {
+    const errors = [], c = await context(browser, w, h, { dark: theme === 'dark' }), p = await c.newPage(); watch(p, errors);
+    await p.goto(url(POSTS.cover, theme === 'dark' ? DARK : '')); await ready(p);
+    const t = w + (theme === 'dark' ? ' dark' : '');   // the row tag
     const g = await geo(p);
     const top = await paperOnly(p);
-    rows.push([w + ' scroll 0: depth 0 and paper only', top.ok && +top.depth === 0, top]);
+    rows.push([t + ' scroll 0: depth 0 and paper only', top.ok && +top.depth === 0, top]);
     await scroll(p, 1, 200);
     const one = await p.evaluate(() => +document.querySelector('.plate').dataset.depth);
-    rows.push([w + ' 1px of scroll: depth > 0', one > 0, one]);
+    rows.push([t + ' 1px of scroll: depth > 0', one > 0, one]);
     await scroll(p, 180, 250);
     const mid = await paperOnly(p);
     const h1 = await p.evaluate(() => { const t = document.querySelector('.article-intro .title'), cs = getComputedStyle(t); return { vis: cs.visibility, op: cs.opacity, flying: getComputedStyle(document.querySelector('.fly')).visibility }; });
-    rows.push([w + ' mid-flight: the h1 is only transparent, still in the accessibility tree', h1.flying === 'visible' && h1.vis === 'visible' && h1.op === '0', h1]);
-    rows.push([w + ' 180px: the halftone prints (dots present)', !mid.ok && mid.bad > 200, { bad: mid.bad, depth: mid.depth }]);
+    rows.push([t + ' mid-flight: the h1 is only transparent, still in the accessibility tree', h1.flying === 'visible' && h1.vis === 'visible' && h1.op === '0', h1]);
+    rows.push([t + ' 180px: the halftone prints (dots present)', !mid.ok && mid.bad > 200, { bad: mid.bad, depth: mid.depth }]);
+    if (theme === 'dark') {   // the light title over the light dots: large text, 3:1 (light paper holds its dark dots back to ~2.3:1)
+      const cr = [];
+      for (const y of [60, 180, 300]) { await scroll(p, y, 250); cr.push(await titleOverDots(p)); }
+      rows.push([t + ' the title reads over every dot (contrast >= 3 at 60, 180, 300px)', cr.every((x) => x >= 3), cr.join(' ')]);
+    }
     await p.evaluate(() => window.scrollTo({ top: 0, behavior: 'smooth' })); await sleep(1200);
     const back = await paperOnly(p);
-    rows.push([w + ' back at 0: clean again', back.ok && +back.depth === 0, back]);
+    rows.push([t + ' back at 0: clean again', back.ok && +back.depth === 0, back]);
     // nav: lands at sL, opaque at every position
     const ys = [0, 40, Math.round(g.sL / 2), Math.round(g.sL) - 2, Math.round(g.sL) + 2, Math.round(g.sL) + 400, Math.round(g.max / 2), g.max];
     let navOk = true, landOk = true; const seen = [];
@@ -60,8 +91,8 @@ export default async (page, ctx) => {
       if (landed !== want) landOk = false;
       seen.push(y + ':' + (n.ok ? 'o' : 'X') + (landed ? 'L' + px : '-'));
     }
-    rows.push([w + ' nav opaque at every scroll position', navOk, seen.join(' ')]);
-    rows.push([w + ' nav .landed exactly from sL', landOk, 'sL=' + Math.round(g.sL)]);
+    rows.push([t + ' nav opaque at every scroll position', navOk, seen.join(' ')]);
+    rows.push([t + ' nav .landed exactly from sL', landOk, 'sL=' + Math.round(g.sL)]);
     // toggles: nothing in the hero is removed, and the halftone state survives
     await scroll(p, 0, 400);
     await p.evaluate(() => {
@@ -72,17 +103,37 @@ export default async (page, ctx) => {
     });
     for (const act of ['lang', 'theme', 'lang', 'theme']) { await p.click('[data-act="' + act + '"]'); await sleep(350); }
     const removed = await p.evaluate(() => { window.__mo.disconnect(); return window.__removed; });
-    rows.push([w + ' language and theme toggles remove no hero nodes', removed === 0, removed]);
+    rows.push([t + ' language and theme toggles remove no hero nodes', removed === 0, removed]);
     const after = await paperOnly(p);
-    rows.push([w + ' after toggles at 0: still clean', after.ok, after]);
-    rows.push([w + ' no console errors', errors.length === 0, errors.slice(0, 3)]);
+    rows.push([t + ' after toggles at 0: still clean', after.ok, after]);
+    rows.push([t + ' no console errors', errors.length === 0, errors.slice(0, 3)]);
     await c.close();
   }
-  // reduced motion and dark mode never print dots, anywhere in the hero
-  for (const mode of ['reduced', 'dark']) {
+  // a theme toggled mid-scroll re-screens the cover in place: the plate is pixel for pixel what a fresh load in that
+  // theme paints at that scroll. Every digest is its page's first canvas readback: Chrome changes how it rasterises a
+  // canvas after a few readbacks, which moves its anti-aliasing by a level or two.
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    const errors = [];
+    const at180 = async (dark, toggles) => {
+      const c = await context(browser, w, h, { dark }), p = await c.newPage(); watch(p, errors);
+      await p.goto(url(POSTS.multi, dark ? DARK : '')); await ready(p);
+      await scroll(p, 180, 300);
+      for (let i = 0; i < toggles; i++) { await p.click('[data-act="theme"]'); await sleep(350); }
+      const r = { digest: await plateDigest(p), dots: !(await paperOnly(p)).ok };
+      await c.close();
+      return r;
+    };
+    const light = await at180(false, 0), dark = await at180(true, 0), once = await at180(false, 1), twice = await at180(false, 2);
+    rows.push([w + ' theme toggled at 180px: the plate equals a fresh dark load, still printing', once.digest === dark.digest && once.digest !== light.digest && once.dots, { light: light.digest, dark: dark.digest, once: once.digest }]);
+    rows.push([w + ' toggled back: the plate equals a fresh light load', twice.digest === light.digest && twice.dots, { light: light.digest, twice: twice.digest }]);
+    rows.push([w + ' mid-scroll toggles: no console errors', errors.length === 0, errors.slice(0, 3)]);
+  }
+  // reduced motion never prints dots, anywhere in the hero, on either paper
+  for (const mode of ['reduced', 'reduced dark']) {
     for (const [w, h] of [[1440, 900], [390, 844]]) {
-      const errors = [], c = await context(browser, w, h, { reduced: mode === 'reduced' }), p = await c.newPage(); watch(p, errors);
-      await p.goto(url(POSTS.cover, mode === 'dark' ? '&theme=dark' : '')); await ready(p);
+      const dark = mode === 'reduced dark';
+      const errors = [], c = await context(browser, w, h, { reduced: true, dark }), p = await c.newPage(); watch(p, errors);
+      await p.goto(url(POSTS.cover, dark ? DARK : '')); await ready(p);
       const g = await geo(p);
       let ok = true; const r = [];
       for (const y of [0, 1, 60, 180, Math.round(g.sL / 2), Math.round(g.sL) - 10]) { await scroll(p, y, 250); const s = await paperOnly(p); if (!s.ok) ok = false; r.push(y + ':' + s.bad + (s.bad ? '/' + s.worst : '') + '@' + s.depth); }
