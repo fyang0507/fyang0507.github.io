@@ -63,7 +63,7 @@ export async function seek(page, ms) {
 export function drawn(page, names, part) {
   return page.evaluate(([names, part]) => {
     const html = document.documentElement;
-    const mat = (s) => { if (!s || s === 'none') return [1, 0, 0, 1, 0, 0]; const n = s.slice(s.indexOf('(') + 1).match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number); return s.startsWith('matrix3d') ? [n[0], n[1], n[4], n[5], n[12], n[13]] : n.slice(0, 6); };
+    const mat = (s) => { if (!s || s === 'none') return [1, 0, 0, 1, 0, 0]; const n = s.slice(s.indexOf('(') + 1).match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number); return s.startsWith('matrix3d') ? [n[0] / n[15], n[1] / n[15], n[4] / n[15], n[5] / n[15], n[12] / n[15], n[13] / n[15]] : n.slice(0, 6); };
     const mul = (A, B) => [A[0] * B[0] + A[2] * B[1], A[1] * B[0] + A[3] * B[1], A[0] * B[2] + A[2] * B[3], A[1] * B[2] + A[3] * B[3], A[0] * B[4] + A[2] * B[5] + A[4], A[1] * B[4] + A[3] * B[5] + A[5]];
     const eff = (cs) => { const o = cs.transformOrigin.split(' ').map(parseFloat); return mul([1, 0, 0, 1, o[0], o[1]], mul(mat(cs.transform), [1, 0, 0, 1, -o[0], -o[1]])); };
     const out = {};
@@ -85,7 +85,7 @@ export function gap(a, b) { return Math.max(...Object.keys(b).map((k) => a[k] ? 
 export function xy(m) {
   if (!m) return null;
   const n = m.slice(m.indexOf('(') + 1).match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi).map(Number);
-  return m.startsWith('matrix3d') ? { x: n[12], y: n[13], a: n[0], b: n[1] } : { x: n[4], y: n[5], a: n[0], b: n[1] };
+  return m.startsWith('matrix3d') ? { x: n[12] / n[15], y: n[13] / n[15], a: n[0] / n[15], b: n[1] / n[15] } : { x: n[4], y: n[5], a: n[0], b: n[1] };
 }
 
 // WebKit through the same playwright-core the runner uses

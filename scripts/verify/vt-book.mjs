@@ -13,7 +13,7 @@
 // none   reduced motion: no transition either way, and the book is put back
 // Plus: no console errors.
 import { writeFileSync } from 'fs';
-import { ORIGIN, hook, bfcache, check } from './vt-lib.mjs';
+import { ORIGIN, hook, bfcache, check, seek, drawn } from './vt-lib.mjs';
 
 const WS = (process.env.VT_W || '1440,390').split(',').map(Number);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -26,6 +26,7 @@ async function instrument(c) {
     addEventListener('load', () => addEventListener('pageswap', () => { try { sessionStorage.setItem('vt-names-old', JSON.stringify(count())); } catch (e) { /* storage off */ } }));
     addEventListener('pagereveal', (e) => { if (e.viewTransition) e.viewTransition.ready.then(() => { window.__names = count(); }, () => {}); });
     addEventListener('pageshow', (e) => { window.__persisted = e.persisted; });
+    addEventListener('pageswap', () => { const h = document.querySelector('.wr[data-mount=writing]'), k = h && h.getAttribute('data-opening'), hit = k && document.querySelector('.bk-hit[data-post="' + k + '"]'), e = hit && document.querySelectorAll('.sh-world > .book')[+hit.dataset.i].querySelector('.leaf-front'), r = e && e.getBoundingClientRect(); try { sessionStorage.setItem('vt-live', r ? JSON.stringify({ x: r.left, y: r.top, w: r.width, h: r.height }) : ''); } catch (x) { /* storage off */ } });
     addEventListener('pagereveal', () => { window.__rv = (window.__rv || 0) + 1; const w = document.querySelector('[data-mount=writing]'); window.__langAt = w ? w.dataset.lang : null; });
   });
 }
@@ -137,6 +138,18 @@ export default async (_p, ctx) => {
     await page.evaluate(() => document.querySelector('.pn').scrollIntoView({ block: 'center' })); await sleep(400);
     r = await traced(page, scratch, async () => { await page.evaluate(() => document.querySelector('.pn-tag').click()); await page.waitForFunction(() => /Writing\.dc\.html$/.test(location.pathname), null, { timeout: 9000 }); return settle(page, n); });
     check(res, tag + ' shelf tag: it is Back (restored from the cache, a book move), the book put back', r.persisted === true && r.kind === 'book' && await page.evaluate(() => !document.querySelector('[data-opening]')), { persisted: r.persisted, kind: r.kind });
+    // the move's first frame is the book as it stands: the front board, drawn at 0 ms, is where the live one was (no pop as it begins)
+    const fp = await context.newPage();
+    await fp.goto(ORIGIN + '/Writing.dc.html', { waitUntil: 'load' }); await sleep(1500);
+    const at5 = await pull(fp, W);
+    await fp.evaluate(() => sessionStorage.setItem('vt-freeze', '1'));
+    await Promise.all([fp.waitForURL(/Reading\.dc\.html/, { timeout: 9000 }), fp.mouse.click(at5.x, at5.y)]);
+    await fp.waitForFunction(() => window.__vt && window.__vt.ready, null, { timeout: 9000 });
+    await seek(fp, 0);
+    const live = await fp.evaluate(() => JSON.parse(sessionStorage.getItem('vt-live') || 'null')), d0 = (await drawn(fp, ['book-cover'], 'old'))['book-cover'];
+    const off = live && d0 ? Math.max(...['x', 'y', 'w', 'h'].map((k) => Math.abs(live[k] - d0[k]))) : null;
+    check(res, tag + ' first frame: the front board drawn at 0 ms is where the live one stood (within 1 px)', off !== null && off < 1, { live, drawn: d0, off });
+    await fp.close();
     // the language chosen on Reading is the one the shelf shows when Back restores it from the cache: already at the first frame of the move
     const lg = await context.newPage();
     await lg.goto(ORIGIN + '/Writing.dc.html', { waitUntil: 'load' }); await lg.evaluate(() => localStorage.setItem('fy-lang', 'zh')); await lg.reload({ waitUntil: 'load' }); await sleep(1500);
