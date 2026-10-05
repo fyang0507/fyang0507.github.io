@@ -1,4 +1,4 @@
-// vt-book.mjs — the book move (FYBook, transitions-tab.js): the book in your hand on Writing → its essay on Reading, and
+// vt-book.mjs — the book move (FYBook, transitions-book.js): the book in your hand on Writing → its essay on Reading, and
 // the way back. In Chromium with the back/forward cache on, at 1440 and 390.
 //   node /tmp/fyshot/run.mjs scripts/verify/vt-book.mjs      env: VT_ORIGIN (:4173) · VT_W (default 1440,390)
 // in     pull a book, click it: a view transition of kind book, ready and finished; every animation the move adds changes only
@@ -9,8 +9,10 @@
 //        but Writing's URL typed) it stays a plain link: the paper swap onto a fresh shelf, composited
 // frames every frame the compositor presents in the move, in and back: none bare paper (almost no variance) and none that jumps
 //        (mean change from the frame before) past what the move's own speed makes
+// dark   all of it again with the essay in dark (its plate is dimmer, under a ceiling; the move lands on that one)
 // none   reduced motion: no transition either way, and the book is put back
 // Plus: no console errors.
+import { writeFileSync } from 'fs';
 import { ORIGIN, hook, bfcache, check } from './vt-lib.mjs';
 
 const WS = (process.env.VT_W || '1440,390').split(',').map(Number);
@@ -40,6 +42,7 @@ async function traced(page, scratch, go) {
   ev.filter((e) => e.name === 'Animation').forEach((e) => { const k = e.pid + ':' + (e.id2 ? e.id2.local || e.id2.global : e.id); Object.assign(by[k] = by[k] || {}, e.args && e.args.data); });
   r.trace = Object.values(by).filter((d) => /^::view-transition/.test(d.nodeName || '') && !d.displayName);
   const shots = ev.filter((e) => e.name === 'Screenshot' && e.args && e.args.snapshot).sort((a, b) => a.ts - b.ts).map((e) => e.args.snapshot);
+  r.shots = shots;
   r.frames = await scratch.evaluate(async (list) => {
     const c = document.createElement('canvas'), x = c.getContext('2d', { willReadFrequently: true }); c.width = 160; c.height = 100;
     let prev = null; const out = [];
@@ -86,17 +89,19 @@ function judge(res, T, r, names) {
     { old: r.old && Object.keys(r.old).filter((k) => /^book/.test(k)), now: r.names && Object.keys(r.names).filter((k) => /^book/.test(k)) });
   check(res, T + ': fy-vt consumed, nothing left on the page', r.left === null && r.vtAttr === null, { left: r.left, vt: r.vtAttr });
 }
-// no frame bare paper, none that jumps (the move's own fastest step is under 10; the browser's first frame at the end pose was 20+)
-function frames(res, T, r) {
+// no frame bare paper, none that jumps (the move's own fastest step is under 10; the browser's first frame at the end pose was 20+;
+// to and from a dark essay the page's own change from dark to light is some 18 in a frame, so the limit there is 24)
+function frames(res, T, r, max = 16) {   // VT_DUMP=<dir> writes the frames around the biggest jump when it fails
   const f = r.frames, still = f.filter((x) => x.sd < 6).length, jump = Math.max(...f.map((x) => x.diff));
   const top = f.map((x, i) => [i, +x.diff.toFixed(1)]).sort((a, b) => b[1] - a[1]).slice(0, 3);
-  check(res, T + ': no bare-paper frame, no jump', f.length > 20 && !still && jump < 16, { frames: f.length, bare: still, biggest: top });
+  if (process.env.VT_DUMP && jump >= max) top.slice(0, 1).forEach(([i]) => [i - 1, i, i + 1].forEach((k) => writeFileSync(`${process.env.VT_DUMP}/${T.replace(/ /g, '-')}-${k}.jpg`, Buffer.from(r.shots[k], 'base64'))));
+  check(res, T + ': no bare-paper frame, no jump', f.length > 20 && !still && jump < max, { frames: f.length, bare: still, biggest: top });
 }
 
 export default async (_p, ctx) => {
   const res = [], errs = [], browser = await bfcache();
-  for (const W of WS) {
-    const H = W > 500 ? 900 : 844, context = await browser.newContext({ viewport: { width: W, height: H } });
+  for (const [W, dark] of WS.flatMap((w) => [[w, false], [w, true]])) {   // Writing is light only; the essay follows the colour scheme, and its plate is dimmer in dark
+    const tag = W + (dark ? ' dark' : ''), H = W > 500 ? 900 : 844, context = await browser.newContext({ viewport: { width: W, height: H }, colorScheme: dark ? 'dark' : 'light' });
     await instrument(context);
     const page = await context.newPage(), scratch = await context.newPage();
     await scratch.goto('about:blank');
@@ -106,31 +111,32 @@ export default async (_p, ctx) => {
     const at = await pull(page, W);
     let n = await reveals(page);
     let r = await traced(page, scratch, async () => { await Promise.all([page.waitForURL(/Reading\.dc\.html/, { timeout: 9000 }), page.mouse.click(at.x, at.y)]); return settle(page); });
-    judge(res, W + ' in', r, ['book-cover', 'book-obi']); frames(res, W + ' in', r);
-    check(res, W + ' in: no overflow after', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    judge(res, tag + ' in', r, ['book-cover', 'book-obi']); frames(res, tag + ' in', r, dark ? 24 : 16);
+    check(res, tag + ' in: no overflow after', await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await sleep(800);
     r = await traced(page, scratch, async () => { await page.goBack({ waitUntil: 'commit' }); return settle(page, n); });
-    check(res, W + ' back: restored from the back/forward cache', r.persisted === true);
-    judge(res, W + ' back', r, ['book-cover', 'book-obi']); frames(res, W + ' back', r);
+    check(res, tag + ' back: restored from the back/forward cache', r.persisted === true);
+    judge(res, tag + ' back', r, ['book-cover', 'book-obi']); frames(res, tag + ' back', r, dark ? 24 : 16);
     await sleep(900);
-    check(res, W + ' back: the book is put back afterwards', await page.evaluate(() => !document.querySelector('[data-opening]') && !document.documentElement.hasAttribute('data-vt-go')));
+    check(res, tag + ' back: the book is put back afterwards', await page.evaluate(() => !document.querySelector('[data-opening]') && !document.documentElement.hasAttribute('data-vt-go')));
     // "← all writing" on an essay opened from the shelf: Back (the book move, from the cache)
     const at2 = await pull(page, W);
     n = await reveals(page);
     await Promise.all([page.waitForURL(/Reading\.dc\.html/, { timeout: 9000 }), page.mouse.click(at2.x, at2.y)]);
     await settle(page); await sleep(900);
     r = await traced(page, scratch, async () => { await page.evaluate(() => document.querySelector('.rnav .back').click()); await page.waitForFunction(() => /Writing\.dc\.html$/.test(location.pathname), null, { timeout: 9000 }); return settle(page, n); });
-    check(res, W + ' link back: it is Back (restored from the cache, the book move)', r.persisted === true && r.kind === 'book' && !!r.names && !!r.names['book-cover'], { persisted: r.persisted, kind: r.kind, names: r.names && Object.keys(r.names) });
+    check(res, tag + ' link back: it is Back (restored from the cache, the book move)', r.persisted === true && r.kind === 'book' && !!r.names && !!r.names['book-cover'], { persisted: r.persisted, kind: r.kind, names: r.names && Object.keys(r.names) });
     await sleep(900);
-    check(res, W + ' link back: the shelf as you left it, the book put back', await page.evaluate(() => !document.querySelector('[data-opening]')));
+    check(res, tag + ' link back: the shelf as you left it, the book put back', await page.evaluate(() => !document.querySelector('[data-opening]')));
     // an essay opened with nothing from the shelf before it (a page of its own): the link is a plain link (a fresh shelf, the paper swap)
     const lone = await context.newPage();
     lone.on('pageerror', (e) => errs.push(e.message));
     await lone.goto(ORIGIN + '/Reading.dc.html?post=' + POST, { waitUntil: 'load' }); await sleep(1200);
     r = await traced(lone, scratch, async () => { await lone.evaluate(() => document.querySelector('.rnav .back').click()); await lone.waitForURL(/Writing\.dc\.html/, { timeout: 9000 }); return settle(lone); });
-    check(res, W + ' link back, nothing before it: the paper swap onto a fresh shelf, composited',
+    check(res, tag + ' link back, nothing before it: the paper swap onto a fresh shelf, composited',
       r.vt && r.fin && r.persisted !== true && r.anims.filter((a) => !a.ua).every((a) => a.moving.every((p) => p === 'transform' || p === 'opacity')) && !r.trace.some((d) => d.compositeFailed), { vt: r.vt, persisted: r.persisted, kind: r.kind });
     await context.close();
+    if (dark) continue;
     // reduced motion: no transition either way
     const rm = await browser.newContext({ viewport: { width: W, height: H }, reducedMotion: 'reduce' });
     await instrument(rm);
@@ -140,11 +146,11 @@ export default async (_p, ctx) => {
     const a2 = await pull(p2, W);
     await Promise.all([p2.waitForURL(/Reading\.dc\.html/, { timeout: 9000 }), p2.mouse.click(a2.x, a2.y)]);
     r = await settle(p2);
-    check(res, W + ' reduced motion: in, no transition', r.vt === false);
+    check(res, tag + ' reduced motion: in, no transition', r.vt === false);
     await sleep(600);
     await p2.goBack({ waitUntil: 'commit' });
     r = await settle(p2);
-    check(res, W + ' reduced motion: back, no transition, the book put back', r.vt === false && await p2.evaluate(() => !document.querySelector('[data-opening]')));
+    check(res, tag + ' reduced motion: back, no transition, the book put back', r.vt === false && await p2.evaluate(() => !document.querySelector('[data-opening]')));
     await rm.close();
   }
   await browser.close();

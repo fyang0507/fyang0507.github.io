@@ -112,6 +112,8 @@ html[data-vt=book]::view-transition-old(site-head){z-index:1}
 .fy-book-photo img{display:block;width:100%;height:100%;object-fit:cover;opacity:.5;filter:saturate(.78) sepia(.05)}
 html:not(:active-view-transition) .fy-book-photo{opacity:0}
 .fy-book-shot{position:fixed;z-index:0;pointer-events:none}
+html.dark .fy-book-photo img{opacity:.45;filter:saturate(.6) brightness(.92)}
+html.dark .fy-book-photo::after{content:"";position:absolute;inset:0;background:var(--cap);opacity:var(--cap-a);mix-blend-mode:darken}
 /* the browser's own animations of every part are held at their first frame until transitions-tab.js replaces them (data-vt-go):
    real Chrome can draw the first frame before that runs, and with them killed that frame was the move's last pose */
 html[data-vt=book]:not([data-vt-go])::view-transition-group(*),html[data-vt=book]:not([data-vt-go])::view-transition-image-pair(*),html[data-vt=book]:not([data-vt-go])::view-transition-old(*),html[data-vt=book]:not([data-vt-go])::view-transition-new(*){animation-play-state:paused}
