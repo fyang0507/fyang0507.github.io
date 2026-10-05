@@ -8,7 +8,7 @@ In Fred's order and words, each with where it went.
 
 1. 「essay hero image没有往下滑动的transition」. He first said the English version, then corrected it to dark mode: the hero's halftone print on scroll was missing in dark mode. Shipped as #43, with a brighter dark cover, a paper outline on the cover text in both themes, and a ceiling for very light covers. No board.
 2. 「书架页的中英切换有点不太明显」. Board `switch-*`, B 挂牌. Shipped as #47.
-3. 「书架页点击选中的书到文章页之间没有transition」. Board `book-*`, B 封面成题图. Production PR pending.
+3. 「书架页点击选中的书到文章页之间没有transition」. Board `book-*`, B 封面成题图. Shipped as #49.
 4. 「章节标识不够大（1.0，2.0…），接在章节标识后的章节标题被放在了第二行（如生活故事2中的“小诗三首”和“一些短剧”）」. Shipped as #44. No board.
 5. 「footer email没有capitalize E」. Fixed directly in c2b99b4.
 6. 「参考资料/reference没有列到左侧的nav里面」. Shipped as #44, which also unified the 参考资料 / References headings and fixed the Surge AI typo.
@@ -51,7 +51,7 @@ A catalogue of all 268 notes found the guessed quote span right only 37% of the 
 
 The board recommended A. Fred picked A, with the phone slip still rising from the bottom and the page gliding so the slip never covers its ref, no back-links from the references list, and no hand-authored spans. Shipped as #45.
 
-### book: the move from the book in your hand to the essay (PR pending)
+### book: the move from the book in your hand to the essay (PR #49)
 
 Files: `book-index.html` (start here), `book-writing.dc.html`, `book-reading.dc.html`, `book-board.css`, `book-board.js`, `book-vt.css`, `book-vt.js`.
 
@@ -59,7 +59,9 @@ Files: `book-index.html` (start here), `book-writing.dc.html`, `book-reading.dc.
 - B 封面成题图 (the cover becomes the plate): 「取下腰封，封面的照片展开成文章顶部的题图：手里那本书的封面，就是文章的头图。省掉“翻开”那一下，书架早 0.25 秒交出页面。」 The cost the board names: the board no longer swings open to the title page.
 - C 翻过扉页 (turn the title page): 「像读书一样翻过扉页：扉页绕书脊翻过来，它的背面就是文章，翻到底时铺满整个窗口。」 The loudest of the three, a full-window 3-D turn.
 
-The board recommended A. Fred's note: 「书架页点击选中的书到文章页之间没有 transition。」 Fred preferred B and was fine with the board no longer swinging open. "← 全部文章" acts like Back when you came from the shelf, and the timing stays at about 1.5 s. He saw a flash mid-move. 8f21b8b fixed it on the board: the old-out/new-in crossfade showed bare paper. A one-frame flash remained in Arc incognito; 4c1b9b1 holds the browser's own animations at their first frame, but that could not be confirmed. Fred said to ship it and check in production. The port is in progress on `writing/book-move`; its PR is pending.
+The board recommended A. Fred's note: 「书架页点击选中的书到文章页之间没有 transition。」 Fred preferred B and was fine with the board no longer swinging open. "← 全部文章" acts like Back when you came from the shelf, and the timing stays at about 1.5 s. He saw a flash mid-move. 8f21b8b fixed it on the board: the old-out/new-in crossfade showed bare paper. A one-frame flash remained in Arc incognito; 4c1b9b1 holds the browser's own animations at their first frame, but that could not be confirmed. Fred said to ship it and check in production. The port is #49 (branch `writing/book-move`).
+
+Shipped: candidate B, with "← 全部文章" (the top bar and the end-of-essay shelf's tag) acting like Back when you came from the shelf, and the move in its own `lib/shared/transitions-book.js`, loaded only on Writing and Reading.
 
 ## Shipped
 
@@ -69,7 +71,7 @@ The board recommended A. Fred's note: 「书架页点击选中的书到文章页
 - #45: footnotes, candidate A (notes board).
 - #46: the previous/next shelf with the 吊牌 way back (pn board).
 - #47: Writing's 挂牌 switch (switch board).
-- The book move, candidate B (book board): pending, on `writing/book-move`.
+- The book move, candidate B (book board): #49, branch `writing/book-move`.
 
 ## Open
 
