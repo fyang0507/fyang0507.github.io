@@ -85,7 +85,7 @@ The dependency-free renderer supports:
 - Standalone images with optional quoted captions
 - Blockquotes and flat ordered or unordered lists
 - Footnotes using `[^key]` references and definitions
-- A final sequential numeric reference appendix such as `[1] Source`
+- A final sequential numeric reference appendix such as `[1] Source`, titled by the heading line above it (`## References`, `参考资料`), else `参考资料` in the Chinese body and `References` in the English; that title is also its entry at the end of Reading's margin rail
 
 Use `---zh---` exactly once to separate English from Chinese. Newlines are literal content: one source newline becomes one rendered line break, and repeated blank lines remain repeated breaks. Do not add Markdown trailing spaces as a separate hard-break convention.
 

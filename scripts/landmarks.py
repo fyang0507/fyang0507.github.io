@@ -18,6 +18,9 @@ fill: minute ticks at paragraph starts ("3 min") for essays with no structure,
 or inside a stretch structure leaves unmarked (> 40% of the reading time, or
 > 4 min).
 
+last: the reference appendix (content_markdown.py), when the essay has one,
+labelled with its own title.
+
 Marker lines become <h2 class="lm lm-sec|lm-head">; the blank lines around a
 heading become its margins, and every other line break is kept. An essay's
 English and Chinese bodies should get the same structure; check them with
@@ -129,6 +132,16 @@ def classify(h: str, alone: bool) -> dict | None:
     return None
 
 
+def appendix_mark(appendix: str) -> dict | None:
+    """The reference appendix as a landmark: its title is the label, its first entry the peek."""
+    head = re.search(r'<section class="appendix"[^>]*>\s*<h2 class="appendix-title">([\s\S]*?)</h2>', appendix)
+    if not head:
+        return None
+    first = re.search(r'<li class="appendix-item"[^>]*><span class="appendix-number">[^<]*</span>([\s\S]*?)</li>', appendix)
+    return {"kind": "ref", "label": short_label(text(head.group(1))), "title": "",
+            "peek": clip(text(first.group(1)), 64) if first else ""}
+
+
 def tokenize(body: str) -> list[dict]:
     """The body as blocks; <p> blocks (and loose text between blocks) become lines split at <br>."""
     out: list[dict] = []
@@ -238,11 +251,17 @@ def build(html: str, reading_min: int, pre: str) -> dict:
     marks = sorted(marks + minutes, key=lambda f: f["at"])
     if kind != "minutes" and minutes:
         kind += "+minutes"
+    ref = appendix_mark(appendix)
+    if ref:                                                  # after the fill, which it must not change
+        ref["at"] = total
+        marks.append(ref)
     for i, f in enumerate(marks):
         f["id"] = f"{pre}lm{i + 1}"
         if not f.get("minute"):
             minute = math.floor(min_at(f["at"]) * 10 + 0.5) / 10
             f["minute"] = int(minute) if minute.is_integer() else minute
+    if ref:
+        appendix = appendix.replace('<section class="appendix"', f'<section class="appendix" id="{ref["id"]}"', 1)
     marked = {id(f) for f in marks}
     ticks = {(f["block"], f["line"]): f for f in minutes}
 
@@ -326,8 +345,9 @@ EXPLAINED = {
 
 
 def check() -> int:
-    """Every essay's English and Chinese landmarks must agree in kind and in count per mark kind (minute
-    ticks aside, since they follow each language's own text length), or be explained above."""
+    """Every essay's English and Chinese landmarks must agree in kind and in count per mark kind, or be
+    explained above. Minute ticks aside, since they follow each language's own text length, and the
+    references, since a translation may cite sources its original doesn't."""
     import importlib.util
 
     spec = importlib.util.spec_from_file_location("generate_content", Path(__file__).with_name("generate-content.py"))
@@ -341,7 +361,7 @@ def check() -> int:
             lm = p["landmarks" + lang]
             counts = {}
             for m in lm["marks"]:
-                if m["kind"] != "min":
+                if m["kind"] not in ("min", "ref"):
                     counts[m["kind"]] = counts.get(m["kind"], 0) + 1
             shape[lang] = (lm["kind"].split("+")[0], counts)
         agree = shape["En"] == shape["Zh"] or not (p["htmlEn"] and p["htmlZh"])

@@ -47,7 +47,8 @@ def reference_heading(line: str) -> str | None:
 
 
 def split_reference_appendix(markdown: str) -> tuple[str, list[tuple[str, str]], str, list[str]]:
-    """Separate the imported numeric reference list from the essay body."""
+    """Separate the imported numeric reference list from the essay body; its title is the source's
+    heading, or "" where the list has none."""
     lines = markdown.strip().splitlines()
     entry_starts: list[int] = []
     for index, line in enumerate(lines):
@@ -100,9 +101,8 @@ def split_reference_appendix(markdown: str) -> tuple[str, list[tuple[str, str]],
             appendix_start = cursor
 
         body = "\n".join(lines[:appendix_start]).strip()
-        title = heading or ("参考资料" if re.search(r"[\u3400-\u9fff]", body) else "References")
         postscript = lines[index:]
-        return body, references, title, postscript
+        return body, references, heading or "", postscript
 
     return markdown.strip(), [], "", []
 
@@ -255,6 +255,7 @@ def markdown_to_html(markdown: str, prefix: str) -> str:
     reference anchor carries the body's `prefix` ("zh-ref-1", "#en-fn-a").
     """
     markdown, reference_items, appendix_title, appendix_postscript = split_reference_appendix(markdown)
+    appendix_title = appendix_title or ("参考资料" if prefix == "zh-" else "References")
     references = dict(reference_items)
     source_lines = markdown.strip().splitlines()
     footnotes: dict[str, str] = {}

@@ -140,7 +140,7 @@ html.lang-zh .post-body .lm-t,html.lang-zh .post-body .lm-head{font-family:var(-
 .post-body .lm-head{margin:2.3em 0 .75em}
 .post-body > .lm:first-child{margin-top:0}
 .lm-anchor{display:inline;scroll-margin-top:calc(var(--n1) + 28px)}
-.appendix{clear:both;position:relative;margin-top:58px;padding-top:30px;border-top:1px solid var(--line);color:var(--soft)}
+.appendix{clear:both;position:relative;margin-top:58px;padding-top:30px;border-top:1px solid var(--line);color:var(--soft);scroll-margin-top:calc(var(--n1) + 28px)}
 .appendix::before{content:"✦";position:absolute;top:0;left:50%;transform:translate(-50%,-50%);padding:0 12px;background:var(--paper);color:var(--pencil);font-size:12px}
 .post-body .appendix-title{margin:0 0 18px;font-family:var(--util);font-size:12px;font-weight:500;line-height:1.5;letter-spacing:.14em;text-transform:uppercase;color:var(--pencil)}
 html.lang-zh .post-body .appendix-title{font-family:var(--util-cn);letter-spacing:.08em;text-transform:none}
