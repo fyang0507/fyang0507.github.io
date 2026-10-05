@@ -1,0 +1,114 @@
+/* lib/reading/shelf.css — the end of an essay, Writing's shelf (shelf.js inserts this sheet, so it never blocks
+   first render). Writing's paper books seen square on: flat tones and ink edges, no light source; the camera sits on
+   the gap, so the book left of it shows its right board and the one right of it its left. The spine tones are
+   Writing's own (lib/writing/writing.css .wr: change them together); dark paper gets its own. */
+.pn{max-width:640px;margin:52px auto 6px}
+.pn-shelf{--H:148px;--k:1.25;--dy:5px;--dx:6px;--edge:1.5px;--ed:var(--ink);
+  --tone-0:#C9BDA3;--tone-1:#D8CBB0;--tone-2:#B7AB8F;--tone-3:#E4DAC7;--tone-s:#3D362A;--tone-s-ink:#EFE5D3;
+  --wood:var(--plank);--wood-lip:var(--lip);--pages:var(--page)}
+html.dark .pn-shelf{--ed:#BDB09A;--tone-0:#4A4033;--tone-1:#3E352A;--tone-2:#564A39;--tone-3:#352D23;--tone-s:#CDBF9F;--tone-s-ink:#1E1913;
+  --wood:#2C241B;--wood-lip:#251E16;--pages:#3A3127}
+
+/* the row: older | the gap | newer, the gap on the centre line; the books stand 9 px into the plank's top face */
+.pn-row{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:end;margin-bottom:-9px}
+.pn-item{position:relative;display:flex;align-items:flex-end;gap:18px;min-width:0;color:var(--ink);-webkit-tap-highlight-color:transparent}
+.pn-prev{justify-self:end}
+.pn-next{justify-self:start}
+
+/* the label beside each book: what it is, its name (the pen's line hangs from it), when and how long */
+.pn-lab{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;max-width:224px;padding-bottom:20px}
+.pn-prev .pn-lab{align-items:flex-end;text-align:right}
+.pn-k{font:500 11px/1.3 var(--util);letter-spacing:.12em;text-transform:uppercase;color:var(--pencil)}
+html.lang-zh .pn-k{font:500 12px/1.3 var(--util-cn);letter-spacing:.06em;text-transform:none}
+.pn-t{position:relative;display:inline-block;max-width:100%;font:500 18px/1.28 var(--disp);letter-spacing:-.005em;color:var(--ink)}
+html.lang-zh .pn-t{font:400 18px/1.36 var(--disp-cn);letter-spacing:.02em}
+.pn-m{margin-top:8px;font:11.5px/1.4 var(--util);letter-spacing:.03em;color:var(--pencil);white-space:nowrap}
+.pn-q{font:15px/1.45 var(--text);color:var(--pencil)}
+html.lang-zh .pn-q{font:15px/1.6 var(--text-cn)}
+.pn-quiet .pn-lab{padding-bottom:24px}
+
+/* ---- a book: its spine, the board on the camera's side, the page block on top ---- */
+.pn-book{position:relative;flex:none;width:calc(var(--w) * var(--k) * 1px);height:calc(var(--H) * var(--h));transition:transform .5s var(--ease-settle)}
+.pn-book[data-tone="0"]{--tone:var(--tone-0)}.pn-book[data-tone="1"]{--tone:var(--tone-1)}
+.pn-book[data-tone="2"]{--tone:var(--tone-2)}.pn-book[data-tone="3"]{--tone:var(--tone-3)}.pn-book[data-tone="s"]{--tone:var(--tone-s)}
+/* out of its support: each neighbour leans into the gap, about its foot corner on the gap's side */
+.pn-l{transform-origin:100% 100%;transform:rotate(5deg)}
+.pn-r{transform-origin:0 100%;transform:rotate(-5deg)}
+/* pointed at (or focused), it comes up out of the lean, on the physics clock */
+@media (hover:hover){a.pn-item:hover .pn-book{transform:translateY(-10px)}}
+a.pn-item:focus-visible .pn-book{transform:translateY(-10px)}
+.pn-spine{position:absolute;inset:0;z-index:2;overflow:hidden;background:var(--tone);border:var(--edge) solid var(--ed)}
+.pn-pages{position:absolute;z-index:1;left:0;right:0;bottom:100%;height:var(--dy);margin-bottom:calc(var(--edge) * -1);
+  background:var(--pages) repeating-linear-gradient(90deg,transparent 0 3px,color-mix(in srgb,var(--ed) 22%,transparent) 3px 3.8px);
+  border:var(--edge) solid var(--ed);border-bottom:0;transform-origin:0 100%}
+.pn-l .pn-pages{transform:skewX(-50deg)}
+.pn-r .pn-pages{transform:skewX(50deg)}
+.pn-board{position:absolute;z-index:1;top:0;bottom:0;width:var(--dx);background:var(--tone);border:var(--edge) solid var(--ed)}
+.pn-l .pn-board{left:100%;margin-left:calc(var(--edge) * -1);border-left:0;transform-origin:0 0;transform:skewY(-40deg)}
+.pn-r .pn-board{right:100%;margin-right:calc(var(--edge) * -1);border-right:0;transform-origin:100% 0;transform:skewY(40deg)}
+.pn-band{position:absolute;left:3px;right:3px;height:0;border-top:1px solid color-mix(in srgb,var(--ed) 26%,transparent)}
+.pn-band.b1{top:6px}.pn-band.b2{top:10px}.pn-band.b3{bottom:7px}
+.pn-st{position:absolute;top:8%;left:50%;transform:translateX(-50%);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-wrap:balance;
+  writing-mode:vertical-rl;text-orientation:mixed;font-family:var(--disp-cn);font-size:12px;line-height:1.25;letter-spacing:.03em;color:var(--ink)}
+.pn-st[lang=en]{text-orientation:sideways;font-family:"Fraunces",serif;font-weight:500;line-height:1.15;letter-spacing:.01em}
+.pn-badge{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);padding:3px 3px 2px;border-radius:1px;background:var(--paper);color:var(--ink);font:500 9.5px/1 var(--util);letter-spacing:.02em}
+.pn-book[data-tone="s"] .pn-st{color:var(--tone-s-ink)}
+.pn-book[data-tone="s"] .pn-band{border-color:color-mix(in srgb,var(--tone-s-ink) 30%,transparent)}
+html.dark .pn-book[data-tone="s"] .pn-badge{background:#1E1913;color:#EFE5D3}
+
+/* the gap the book in your hand came from: as wide as its spine */
+.pn-gap{flex:none;width:calc(var(--w) * var(--k) * 1px + 4px);height:2px}
+
+/* no newer essay: Writing's つづく ghost, dashed, where the next book will stand */
+.pn-ghost{position:relative;flex:none;width:calc(40px * var(--k));height:calc(var(--H) * .7);margin-left:calc(var(--dx) + 2px)}
+.pn-gfront{position:absolute;inset:0;display:grid;place-items:center;border:1.5px dashed var(--pencil);border-bottom:0}
+.pn-gfront span{font:calc(15px * var(--k))/1 var(--hand-cn);color:var(--pencil);writing-mode:vertical-rl}
+.pn-gtop{position:absolute;left:0;right:0;bottom:100%;height:var(--dy);margin-bottom:-1.5px;border:1.5px dashed var(--pencil);border-bottom:0;transform-origin:0 100%;transform:skewX(50deg)}
+
+/* ---- the plank: its top face and lip (0–14 and 14–34 px), the contact under each book, the gap pencilled ---- */
+.pn-plank{position:relative;z-index:1;margin-bottom:48px}
+.pn-wood{display:block;width:100%;height:36px;overflow:visible}
+.pn-face{fill:var(--wood);stroke:var(--ed);stroke-width:1.5;stroke-linejoin:round}
+.pn-lip{fill:var(--wood-lip);stroke:var(--ed);stroke-width:1.5;stroke-linejoin:round}
+.pn-stip circle{fill:var(--ed);fill-opacity:.62;transition:opacity .12s linear}
+/* a lifted book has left its contact behind */
+@media (hover:hover){.pn-shelf:has(a.pn-prev:hover) .pn-c-l,.pn-shelf:has(a.pn-next:hover) .pn-c-r{opacity:0}}
+.pn-shelf:has(a.pn-prev:focus-visible) .pn-c-l,.pn-shelf:has(a.pn-next:focus-visible) .pn-c-r{opacity:0}
+.pn-here{position:absolute;left:50%;top:15px;transform:translateX(-50%) rotate(-2deg);white-space:nowrap;font:600 17px/1 var(--hand);color:var(--soft)}
+html.lang-zh .pn-here{font:15px/1.15 var(--hand-cn);top:16px}
+
+/* ---- the way back: a paper tag on a thread from the plank's underside, a little askew. shelf.js swings it square on
+   a spring while it is pointed at or focused (.up); the thread runs into its punched hole ---- */
+.pn-tag{position:absolute;left:30px;top:45px;display:block;padding:12px 10px 6px;background:var(--slip);border:1.2px solid var(--ed);border-radius:2px 2px 3px 3px;
+  transform-origin:50% -11px;transform:rotate(-4deg);-webkit-tap-highlight-color:transparent}
+.pn-tag.up{transform:none}
+.pn-tag:focus-visible{outline:none}
+.pn-tag::before{content:"";position:absolute;left:50%;top:-11px;width:1px;height:17.5px;background:var(--pencil)}
+.pn-tag::after{content:"";position:absolute;inset:-14px -8px -8px}   /* a finger's reach, past the paper */
+.pn-hole{position:absolute;left:50%;top:3.5px;width:6px;height:6px;margin-left:-3px;border:1px solid var(--ed);border-radius:50%;background:var(--paper)}
+.pn-tag-t{position:relative;display:inline-block;font:500 11px/1.2 var(--util);letter-spacing:.06em;color:var(--soft);white-space:nowrap}
+html.lang-zh .pn-tag-t{font:500 12px/1.2 var(--util-cn);letter-spacing:.04em}
+.pn-tag[data-pen-tier="1"] .pn-tag-t,.pn-tag[data-pen-tier="2"] .pn-tag-t{color:var(--ink)}
+
+/* phone: each name stands over its book, so the gap stays between the books */
+@media (max-width:640px){
+  .pn{margin-top:40px}
+  .pn-shelf{--H:104px;--k:1}
+  .pn-item{flex-direction:column;gap:12px}
+  .pn-prev{align-items:flex-end}
+  .pn-next{align-items:flex-start}
+  .pn-next .pn-lab{order:-1}
+  .pn-lab{max-width:none;padding-bottom:0}
+  .pn-prev .pn-lab{padding-right:4px}
+  .pn-next .pn-lab{padding-left:4px}
+  .pn-t,html.lang-zh .pn-t{font-size:16px}
+  .pn-quiet .pn-lab{padding-bottom:18px}
+  .pn-tag{left:18px}
+}
+/* reduced motion: the books keep their lean and their contact, the tag hangs where it is */
+@media (prefers-reduced-motion:reduce){
+  .pn-book,.pn-stip circle{transition:none}
+  .pn-stip circle{opacity:1!important}
+  a.pn-item:hover .pn-l,a.pn-item:focus-visible .pn-l{transform:rotate(5deg)}
+  a.pn-item:hover .pn-r,a.pn-item:focus-visible .pn-r{transform:rotate(-5deg)}
+}
