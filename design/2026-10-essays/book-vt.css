@@ -2,8 +2,9 @@
    port would add to lib/shared/transitions.css. Names go on with classes, only for the move they travel in. */
 .fy-book-page{view-transition-name:book-page}     /* A, C: the title page (.p1) of the book in your hand */
 .fy-book-title{view-transition-name:book-title}   /* A: its title (.p1-t) ↔ the essay's title */
-.fy-book-cover{view-transition-name:book-cover}   /* B: the board's photo (.cv-img) ↔ the essay's plate */
+.fy-book-cover{view-transition-name:book-cover}   /* B: the front board (.leaf-front) ↔ the whole cover where the plate shows it */
 .fy-book-obi{view-transition-name:book-obi}       /* B: the obi (.obi), which slips off */
+.fy-book-lifted .p1,.fy-book-lifted .leaf-back{visibility:hidden}   /* B: the pages behind the board that travels */
 
 /* stacking: the page (root) < the sheet or the frame < the obi < the header < the title */
 ::view-transition-group(book-page),::view-transition-group(book-cover){z-index:1}
@@ -12,12 +13,12 @@ html[data-book]::view-transition-group(site-head),html[data-book]::view-transiti
 ::view-transition-group(book-title){z-index:5}
 /* A: the title page's paper is the sheet: it grows to the window and the essay prints through it */
 html[data-book=a]::view-transition-group(book-page){background:var(--page)}
-/* B: the frame is a clip that holds still in the group's own box; the transform carries that box. Going in, the board's
-   photo lies over the plate's and fades off it */
+/* B: the frame is a clip that holds still in the group's own box; the transform carries that box */
 ::view-transition-group(book-cover){overflow:clip}
-html:not([data-book-back])::view-transition-old(book-cover){z-index:1}
-/* C, the way back: the essay is the leaf turning back over the shelf */
-html[data-book-back=c]::view-transition-old(root){z-index:1}
+/* The header strip: the new strip is whole from the first frame and the old one fades off it, on top (a fade out over
+   a fade in lets the bare paper through, and that read as the page reloading). C, the way back: the essay is the leaf
+   turning back over the shelf */
+html[data-book]::view-transition-old(site-head),html[data-book-back=c]::view-transition-old(root){z-index:1}
 /* C: a leaf seen edge-on has no back to show */
 ::view-transition-group(book-page){backface-visibility:hidden}
 
@@ -30,3 +31,5 @@ html[data-book=a] .rd-main:not(.fy-book-intro) .article-intro .title{visibility:
 .fy-book-photo{position:fixed;z-index:0;pointer-events:none;background:var(--paper);overflow:hidden}
 .fy-book-photo img{display:block;width:100%;height:100%;object-fit:cover;opacity:.5;filter:saturate(.78) sepia(.05)}
 html:not(:active-view-transition) .fy-book-photo{opacity:0}
+/* B, the way back: the same drawn into a canvas at pageswap, for the snapshot of the essay you leave */
+.fy-book-shot{position:fixed;z-index:0;pointer-events:none}

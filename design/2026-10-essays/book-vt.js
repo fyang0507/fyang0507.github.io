@@ -94,6 +94,7 @@
     var o0 = M.clamp(t0 / dur, 0, 1), o1 = M.clamp(t1 / dur, o0, 1);
     return [{ opacity: a, offset: 0 }, { opacity: a, offset: o0, easing: ease || 'linear' }, { opacity: b, offset: o1 }, { opacity: b, offset: 1 }];
   }
+  var EIO = 'cubic-bezier(.4,0,.6,1)';
   function step(a, b, t, dur) { return M.held([{ opacity: a }, { opacity: b, offset: M.clamp(t / dur, 0, 1) }, { opacity: b }]); }
 
   /* ---- the header strip: from one page's place to the other's, every part on the tab moves' spring ---- */
@@ -109,8 +110,9 @@
         var hOld = g.w1 * g.h0 / g.w0;   // the browser draws the old strip as wide as the new one
         pa('group', n, [{ transform: unfold(tr(a0[0] - g.w1, a0[1] - g.h1), g.w1, g.h1) }, { transform: unfold(tr(a1[0] - g.w1, a1[1] - g.h1), g.w1, g.h1) }], { duration: sp.dur, easing: sp.ease });
         var own = unfold(mul(tr(g.w1 - g.w0, g.h1 - g.h0), sc(g.w0 / g.w1)), g.w1, hOld);
-        pa('old', n, fade(1, 0, 0, 150, 260).map(function (f) { f.transform = own; return f; }), { duration: 260 });
-        pa('new', n, fade(0, 1, 60, 260, 260), { duration: 260 });
+        // the new strip is whole from the first frame and the old one fades off it (book-vt.css lays it on top): the
+        // labels both strips share never dim, and no frame shows neither
+        pa('old', n, fade(1, 0, 0, 120, 120, EIO).map(function (f) { f.transform = own; return f; }), { duration: 120 });
       } else if (g) {
         kill(A, n, ['group']);
         pa('group', n, [{ transform: unfold(mul(g.m0, sc(g.w0 / g.w1, g.h0 / g.h1)), g.w1, g.h1) }, { transform: unfold(g.m1, g.w1, g.h1) }], { duration: sp.dur, easing: sp.ease });
@@ -124,11 +126,12 @@
       }
     });
   }
-  // the root: the page you leave nearly gone before the next comes up (the tab moves' paper swap)
+  // the root, where nothing travels: the page you arrive at comes up over the one you leave, which stays whole under it.
+  // (The tab moves' paper swap, the old nearly gone before the new comes up, bottoms out at bare paper, and that read as the
+  // page reloading: in WebKit's Back, which has no back/forward cache here, one frame in four was blank.)
   function paper(A) {
     kill(A, 'root', ['old', 'new']);
-    pa('old', 'root', [{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: 'cubic-bezier(.4,0,1,1)' });
-    pa('new', 'root', [{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: 70, easing: 'cubic-bezier(0,0,.2,1)' });
+    pa('new', 'root', [{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: EIO });
     ['book-page', 'book-title', 'book-cover', 'book-obi'].forEach(function (n) {
       if (!has(A, 'group', n) && !box(n)) return;
       kill(A, n, ['group', 'old', 'new']);
@@ -149,8 +152,8 @@
     return [0.5 - cw / z, 0.5 - ch / z, 0.5 + cw / z, 0.5 + ch / z];
   }
   function cropMap(R, k) { var Sx = R[2] / (k[2] - k[0]), Sy = R[3] / (k[3] - k[1]); return [R[0] - k[0] * Sx, R[1] - k[1] * Sy, Sx, Sy]; }
-  function under(P, k) { return [P[0] + k[0] * P[2], P[1] + k[1] * P[3], (k[2] - k[0]) * P[2], (k[3] - k[1]) * P[3]]; }   // a photo region's screen rect
   function onto(G, r, w, h) { return mul(inv(G), mul(tr(r[0], r[1]), sc(r[2] / w, r[3] / h))); }   // a w × h box onto rect r, inside group G
+  function cover(R, a) { var w = Math.max(R[2], R[3] * a), h = w / a; return [R[0] + (R[2] - w) / 2, R[1] + (R[3] - h) / 2, w, h]; }   // a box of aspect a covering R
 
   /* ---- the essay's intro, laid out unseen where React will put it: where its title sits and where the plate ends ---- */
   var X = {};
@@ -179,25 +182,42 @@
     return el;
   }
 
+  // the same, drawn now from the plate's own image (a canvas paints at once; a new img might not, before the snapshot that
+  // follows pageswap), for the way back: the plate itself is half transparent, and the essay would show through it
+  function shot(img, P) {
+    var c = document.createElement('canvas'), k = Math.min(2, devicePixelRatio || 1), g;
+    c.className = 'fy-book-shot fy-book-cover'; c.setAttribute('aria-hidden', 'true');
+    c.width = Math.round(P[2] * k); c.height = Math.round(P[3] * k);
+    c.style.cssText = 'left:' + P[0].toFixed(1) + 'px;top:' + P[1].toFixed(1) + 'px;width:' + P[2].toFixed(1) + 'px;height:' + P[3].toFixed(1) + 'px';
+    g = c.getContext('2d');
+    g.fillStyle = getComputedStyle(html).getPropertyValue('--paper').trim() || '#FBF6EC'; g.fillRect(0, 0, c.width, c.height);
+    g.globalAlpha = 0.5; g.drawImage(img, 0, 0, c.width, c.height);
+    document.body.appendChild(c);
+    return c;
+  }
+  // where the plate's paper begins at the top of the essay (hero.js: B0 − pad, its hand-cut edge up to J above that)
+  function cut(b0) { var v = function (n) { return parseFloat(getComputedStyle(html).getPropertyValue(n)) || 0; }; return b0 - v('--pad') - scrollY - Math.round(v('--cell') * 1.6) / 2; }
+
   /* ---- the moves in ---- */
   // A · the title page opens out into the page
   function sheet(A, pg, back) {
     var W = innerWidth, H = innerHeight, sp = spring(170, 22), E0 = pg.m, E1 = sc(W / pg.w, H / pg.h), part = back ? 'new' : 'old';
-    var g0 = back ? E1 : E0, g1 = back ? E0 : E1, Tc = back ? 0 : sp.first(0.995), D = back ? 160 + sp.dur : Tc + 220;
+    var g0 = back ? E1 : E0, g1 = back ? E0 : E1, t0 = back ? 0 : sp.first(0.7), tr0 = sp.first(0.35), D = Math.max(sp.dur, t0 + 260);
     kill(A, 'book-page', ['group', 'old', 'new']);
-    pa('group', 'book-page', [{ transform: unfold(g0, pg.w, pg.h) }, { transform: unfold(g1, pg.w, pg.h) }], { duration: sp.dur, delay: back ? 160 : 0, easing: sp.ease });
-    pa('group', 'book-page', back ? fade(0, 1, 0, 160, D) : fade(1, 0, Tc, D, D), { duration: D });
+    pa('group', 'book-page', [{ transform: unfold(g0, pg.w, pg.h) }, { transform: unfold(g1, pg.w, pg.h) }], { duration: sp.dur, easing: sp.ease });
+    // in: paper until the sheet has covered most of the window, then the essay prints through it while it lands; back:
+    // the essay goes to paper while the sheet folds back toward the book. The window is never one blank sheet
+    pa('group', 'book-page', back ? fade(0, 1, 0, 140, D, EIO) : fade(1, 0, t0, t0 + 260, D, EIO), { duration: D });
     // the print on the page (head, subtitle, foot) keeps its proportions while the paper stretches, and goes (or comes)
-    var t0 = back ? 160 + sp.dur - 140 : 0, t1 = t0 + 140;
+    var p0 = sp.dur - 140;
     pa(part, 'book-page', frames(D, function (t) {
-      var p = sp.at(back ? t - 160 : t), m = mix(g0, g1, p), u = Math.min(m[0], m[3]);
-      return { transform: unfold(sc(u / m[0], u / m[3]), pg.w, pg.h), opacity: back ? M.clamp((t - t0) / 140, 0, 1) : 1 - M.clamp(t / 120, 0, 1) };
+      var p = sp.at(t), m = mix(g0, g1, p), u = Math.min(m[0], m[3]);
+      return { transform: unfold(sc(u / m[0], u / m[3]), pg.w, pg.h), opacity: back ? M.clamp((t - p0) / 140, 0, 1) : 1 - M.clamp(t / 120, 0, 1) };
     }), { duration: D, easing: 'linear' });
-    // the pages swap under the sheet once it fills the window (in: as it lands; back: as it has covered the essay)
-    var at = back ? 160 : Tc;
+    // around the sheet the page you arrive at fades in over the one you leave, which stays whole under it until covered:
+    // no frame shows neither. In, that is done while the sheet is still paper, so the essay is all that prints through it
     kill(A, 'root', ['old', 'new']);
-    pa('old', 'root', step(1, 0, at, D), { duration: D });
-    pa('new', 'root', step(0, 1, at, D), { duration: D });
+    pa('new', 'root', back ? fade(0, 1, 40, 260, D, EIO) : fade(0, 1, tr0, tr0 + 160, D, EIO), { duration: D });
     return D;
   }
   function title(A, g, fs0, fs1, delay) {
@@ -209,29 +229,32 @@
     pa('new', 'book-title', fade(0, 1, delay + sp.dur * 0.04, delay + sp.dur * 0.28, D), { duration: D });
   }
   // B · the cover opens out into the plate: the group is the frame (a clip that holds still in its own box), its
-  // transform carries that box from the board to the band; inside it the photo is always the same photo, at one scale
-  function frameMove(A, g, Rb, Pb, Pp, crop, back, D) {
-    var W = innerWidth, sp = spring(130, 20), gw = g.w1, gh = g.h1, hOld = gw * g.h0 / g.w0, R1 = [0, 0, W, X.B || Pp[3]];
+  // transform carries that box from the board to the plate, down to where the plate's paper begins (y)
+  // Back, the frame first holds as the plate for `hold` ms and comes on over it, then shrinks: the way in run backwards
+  function frameMove(A, g, Rb, Pb, Pp, y, back, D, lift, hold) {
+    var W = innerWidth, sp = spring(130, 20), gw = g.w1, gh = g.h1, hOld = gw * g.h0 / g.w0, R1 = [0, 0, W, y], h = hold || 0, T = h + sp.dur;
     var R0 = back ? R1 : Rb, R2 = back ? Rb : R1, F0 = back ? Pp : Pb, F1 = back ? Pb : Pp;
-    var band = [(0 - Pp[0]) / Pp[2], (0 - Pp[1]) / Pp[3], (W - Pp[0]) / Pp[2], (R1[3] - Pp[1]) / Pp[3]];   // the plate's part of the photo
-    var at = function (t) { var p = sp.at(t), R = mix(R0, R2, p), F = mix(F0, F1, p); return { G: [R[2] / gw, 0, 0, R[3] / gh, R[0], R[1]], F: F }; };
-    var Gk = frames(sp.dur, function (t) { return { transform: unfold(at(t).G, gw, gh) }; });
-    var Ok = frames(sp.dur, function (t) { var s = at(t); return { transform: unfold(onto(s.G, back ? under(s.F, band) : under(s.F, crop), gw, hOld), gw, hOld) }; });
-    var Nk = frames(sp.dur, function (t) { var s = at(t); return { transform: unfold(onto(s.G, back ? under(s.F, crop) : s.F, gw, gh), gw, gh) }; });
+    var at = function (t) { var p = sp.at(Math.max(0, t - h)), R = mix(R0, R2, p), F = mix(F0, F1, p); return { G: [R[2] / gw, 0, 0, R[3] / gh, R[0], R[1]], F: F, R: R }; };
+    var Gk = frames(T, function (t) { return { transform: unfold(at(t).G, gw, gh) }; });
+    // the whole cover (the replica: in, the new image; back, the old) is held to one scale and place, so it always fills
+    // the frame; the board, which comes and goes, fills the frame too while it does: never a picture inside a picture
+    var Ok = frames(T, function (t) { var s = at(t); return { transform: unfold(onto(s.G, back ? s.F : cover(s.R, g.w0 / g.h0), gw, hOld), gw, hOld) }; });
+    var Nk = frames(T, function (t) { var s = at(t); return { transform: unfold(onto(s.G, back ? cover(s.R, g.w1 / g.h1) : s.F, gw, gh), gw, gh) }; });
     kill(A, 'book-cover', ['group', 'old', 'new']);
-    pa('group', 'book-cover', Gk, { duration: sp.dur, easing: 'linear' });
-    // one photo stays opaque and the other fades over it (the board off the plate in, the board onto the plate back): no
-    // engine's crossfade can show the page through it (WebKit doesn't blend the two plus-lighter)
-    var x0 = sp.dur * (back ? 0.16 : 0.03), x1 = sp.dur * (back ? 0.42 : 0.22);
-    pa('old', 'book-cover', Ok, { duration: sp.dur, easing: 'linear' });
-    pa('new', 'book-cover', Nk, { duration: sp.dur, easing: 'linear' });
-    if (back) pa('new', 'book-cover', fade(0, 1, x0, x1, sp.dur), { duration: sp.dur });
-    else pa('old', 'book-cover', fade(1, 0, x0, x1, sp.dur), { duration: sp.dur });
-    // in: the frame has become the plate; it goes and the essay's own plate, intro and nav are there under it
-    if (!back) pa('group', 'book-cover', fade(1, 0, sp.dur, D, D), { duration: D });
-    return sp.dur;
+    pa('group', 'book-cover', Gk, { duration: T, easing: 'linear' });
+    // the photo you arrive at fades in over the one you leave, which stays whole under it: both fill the frame, so it is
+    // never see-through, in any engine
+    var x0 = h + sp.dur * (back ? 0.16 : 0.03), x1 = h + sp.dur * (back ? 0.42 : 0.22);
+    pa('old', 'book-cover', Ok, { duration: T, easing: 'linear' });
+    pa('new', 'book-cover', Nk, { duration: T, easing: 'linear' });
+    pa('new', 'book-cover', fade(0, 1, x0, x1, T), { duration: T });
+    // in: the frame has become the plate; it lifts off and the essay's own plate, intro and nav are there under it.
+    // Back: it comes on over the plate first, so the essay's intro and nav go under the photo, not out in one frame
+    if (!back) pa('group', 'book-cover', fade(1, 0, lift, D, D, EIO), { duration: D });
+    else pa('group', 'book-cover', fade(0, 1, 0, h, T, EIO), { duration: T });
+    return T;
   }
-  function obi(A, back) {   // the obi slips off the foot of the board (in), or slides back up onto it (back)
+  function obi(A, back, wait) {   // the obi slips off the foot of the board (in), or slides back up onto it (back)
     var b = box('book-obi');
     if (!b) return;
     var dur = 300, g = 2600;
@@ -239,8 +262,8 @@
     pa('group', 'book-obi', frames(dur, function (t) {
       var s = (back ? dur - t : t) / 1000, y = 0.5 * g * s * s, r = 5 * M.smooth(0, 0.25, s);
       return { transform: unfold(mul(b.m, mul(tr(0, y), mul(tr(b.w / 2, b.h / 2), mul([Math.cos(r * Math.PI / 180), Math.sin(r * Math.PI / 180), -Math.sin(r * Math.PI / 180), Math.cos(r * Math.PI / 180), 0, 0], tr(-b.w / 2, -b.h / 2))))), b.w, b.h) };
-    }), { duration: dur, delay: back ? 260 : 0, easing: 'linear' });
-    pa(back ? 'new' : 'old', 'book-obi', back ? fade(0, 1, 0, 120, dur) : fade(1, 0, 110, 260, dur), { duration: dur, delay: back ? 260 : 0 });
+    }), { duration: dur, delay: wait || 0, easing: 'linear' });
+    pa(back ? 'new' : 'old', 'book-obi', back ? fade(0, 1, 0, 120, dur) : fade(1, 0, 110, 260, dur), { duration: dur, delay: wait || 0 });
   }
   // C · turn the title page: about the spine, toward you; its other side is the essay, coming round to fill the window
   function turn(A, pg, back) {
@@ -272,12 +295,13 @@
     b: function (A, rec) {
       var g = ends(A, 'book-cover');
       if (!g || !X.P) return paper(A);
-      var Rb = rect(g.m0, g.w0, g.h0), crop = boardCrop(X.ar), D = spring(130, 20).dur + 220;
-      frameMove(A, g, Rb, cropMap(Rb, crop), X.P, crop, false, D);
+      // the shelf stays while the cover grows; once it has taken most of the band, the shelf dissolves off the essay,
+      // which lies whole under it (book-vt.css), and then the frame lifts off the essay's own plate
+      var sp = spring(130, 20), D = sp.dur + 220, cover = sp.first(0.85), Rb = rect(g.m0, g.w0, g.h0), crop = boardCrop(X.ar);
+      frameMove(A, g, Rb, cropMap(Rb, crop), X.P, X.cut, false, D, Math.max(sp.first(0.97), cover + 200));
       obi(A, false);
       kill(A, 'root', ['old', 'new']);
-      pa('old', 'root', fade(1, 0, 0, 160, D, 'cubic-bezier(.4,0,1,1)'), { duration: D });
-      pa('new', 'root', fade(0, 1, 100, 340, D), { duration: D });
+      pa('new', 'root', fade(0, 1, cover, cover + 200, D, EIO), { duration: D });
       header(A);
     },
     c: function (A) {
@@ -292,18 +316,17 @@
       var pg = box('book-page'), t = ends(A, 'book-title');
       if (!pg) return paper(A);
       sheet(A, pg, true);
-      if (t) title(A, t, rec.fs || 52, parseFloat(getComputedStyle(document.querySelector('.fy-book-title')).fontSize) || 22, 120);
+      if (t) title(A, t, rec.fs || 52, parseFloat(getComputedStyle(document.querySelector('.fy-book-title')).fontSize) || 22, 40);
       header(A);
     },
     b: function (A, rec) {
       var g = ends(A, 'book-cover');
       if (!g || !rec.ar || !rec.b0) return paper(A);
-      X.B = rec.b0;
-      var Rb = rect(g.m1, g.w1, g.h1), crop = boardCrop(rec.ar), Pp = plateMap(innerWidth, rec.b0, rec.ar), d = frameMove(A, g, Rb, cropMap(Rb, crop), Pp, crop, true, 0);
-      obi(A, true);
+      // the frame comes on over the plate while the shelf fades in over the essay (hold), then it shrinks into the cover
+      var hold = 150, Rb = rect(g.m1, g.w1, g.h1), Pp = plateMap(innerWidth, rec.b0, rec.ar), d = frameMove(A, g, Rb, cropMap(Rb, boardCrop(rec.ar)), Pp, rec.cut, true, 0, 0, hold);
+      obi(A, true, d - 300);
       kill(A, 'root', ['old', 'new']);
-      pa('old', 'root', fade(1, 0, 0, 160, d, 'cubic-bezier(.4,0,1,1)'), { duration: d });
-      pa('new', 'root', fade(0, 1, 60, 300, d), { duration: d });
+      pa('new', 'root', fade(0, 1, 20, hold + 40, d, EIO), { duration: d });
       header(A);
     },
     c: function (A) {
@@ -316,7 +339,11 @@
 
   /* ---- names: classes, only for the move they travel in ---- */
   function name(el, n) { if (el) el.classList.add('fy-book-' + n); }
-  function unname() { [].forEach.call(document.querySelectorAll('.fy-book-page, .fy-book-title, .fy-book-cover, .fy-book-obi'), function (n) { if (!n.classList.contains('fy-book-photo') && !n.closest('.fy-book-intro')) n.classList.remove('fy-book-page', 'fy-book-title', 'fy-book-cover', 'fy-book-obi'); }); }
+  function unname() {
+    [].forEach.call(document.querySelectorAll('.fy-book-page, .fy-book-title, .fy-book-cover, .fy-book-obi, .fy-book-lifted'), function (n) {
+      if (!n.classList.contains('fy-book-photo') && !n.closest('.fy-book-intro')) n.classList.remove('fy-book-page', 'fy-book-title', 'fy-book-cover', 'fy-book-obi', 'fy-book-lifted');
+    });
+  }
   function opening() {
     var h = document.querySelector('.wr[data-mount=writing]'), key = h && h.getAttribute('data-opening'), hit = key && document.querySelector('.bk-hit[data-post="' + key + '"]');
     return hit ? { key: key, box: document.querySelectorAll('.sh-world > .book')[+hit.dataset.i] } : null;
@@ -324,7 +351,9 @@
   function nameBook(o, c) {
     var q = function (s) { return o.box.querySelector(s); };
     if (c === 'a') { name(q('.p1'), 'page'); name(q('.p1-t'), 'title'); }
-    if (c === 'b') { name(q('.cv-img'), 'cover'); name(q('.obi'), 'obi'); }
+    // B: the whole front board travels (photo and edge); the pages behind it are hidden while it does, so where the book
+    // was the shelf simply shows (named alone, the photo left the board's dark cloth behind in the shelf's picture)
+    if (c === 'b') { name(q('.leaf-front'), 'cover'); name(q('.obi'), 'obi'); o.box.classList.add('fy-book-lifted'); }
     if (c === 'c') name(q('.p1'), 'page');
   }
 
@@ -345,7 +374,10 @@
       var h1 = document.querySelector('.rd-main:not(.fy-book-intro) .article-intro .title'), pl = document.querySelector('.plate'), img = pl && pl.querySelector('img');
       rec.top = c === 'c' || scrollY < 40;
       if (rec.top && c === 'a' && h1) { name(h1, 'title'); rec.fs = parseFloat(getComputedStyle(h1).fontSize); }
-      if (rec.top && c === 'b' && img && img.naturalWidth) { name(pl, 'cover'); rec.ar = img.naturalWidth / img.naturalHeight; rec.b0 = pl.offsetHeight; }
+      if (rec.top && c === 'b' && img && img.naturalWidth) {
+        rec.ar = img.naturalWidth / img.naturalHeight; rec.b0 = pl.offsetHeight; rec.cut = cut(rec.b0);
+        shot(img, plateMap(html.clientWidth, rec.b0, rec.ar));
+      }
     }
     set(KEY, JSON.stringify(rec));
     if (vt && !go) vt.skipTransition();
@@ -357,7 +389,7 @@
     var vt = e.viewTransition, rec = take(), c = cand(), back = HERE === 'shelf';
     html.setAttribute('data-book-c', c);
     unname();
-    [].forEach.call(document.querySelectorAll('.fy-book-intro, .fy-book-photo'), function (n) { n.remove(); });
+    [].forEach.call(document.querySelectorAll('.fy-book-intro, .fy-book-photo, .fy-book-shot'), function (n) { n.remove(); });
     var reset = function () { if (back && window.BOOK_RESET) { var f = window.BOOK_RESET; window.BOOK_RESET = null; f(); } };
     var ok = vt && rec && rec.c === c && c !== 'now' && !M.reduced() && rec.to === HERE && rec.from !== HERE;
     if (!ok) { if (vt) { vt.ready.catch(function () {}); vt.skipTransition(); } reset(); return; }
@@ -368,7 +400,7 @@
         var I = intro(p);
         made.push(I.el); X.B = I.b0;
         if (c === 'a') { I.h1.classList.add('fy-book-title'); X.fs = parseFloat(getComputedStyle(I.h1).fontSize); kind = 'in'; }
-        if (c === 'b' && p.cover) { X.ar = rec.ar || 1.5; X.P = plateMap(html.clientWidth, I.b0, X.ar); made.push(photo(p, X.P)); kind = 'in'; }
+        if (c === 'b' && p.cover) { X.ar = rec.ar || 1.5; X.P = plateMap(html.clientWidth, I.b0, X.ar); X.cut = cut(I.b0); made.push(photo(p, X.P)); kind = 'in'; }
       } else if (c === 'c') kind = 'in';
     } else if (window.BOOK_RESET && rec.top) {
       var o = opening();
