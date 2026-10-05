@@ -5,6 +5,7 @@
 export const BASE = process.env.READING_BASE || 'http://127.0.0.1:4173/';
 export const POSTS = {
   cover: '2026-08-29_google-just-wants-to-coast-to-a-win',   // sections 1.0…10.0, 9 refs (three double)
+  darkest: '2019-12-02_the-promised-and-the-forsaken',        // the darkest cover: light paper's worst case for light text
   multi: '2025-12-06_the-stories-we-live-05',                // a [1, 2] citation, subtitle
   minutes: '2019-01-09_he-and-his-cat',                      // no structure: minute ticks
   headings: '2026-05-02_the-god-in-the-edit',                // headings + minute ticks

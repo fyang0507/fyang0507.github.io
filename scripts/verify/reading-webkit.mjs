@@ -1,5 +1,6 @@
 // reading-webkit.mjs — WebKit smoke pass (Playwright's WebKit build, the Safari engine): the page mounts, the top is
-// clean, the hero prints and lands, a note opens (margin at 1440, slip at 390), both toggles work; 0 errors.
+// clean, the hero prints (on light and dark paper) and lands, a note opens (margin at 1440, slip at 390), both toggles
+// work; 0 errors.
 //   node /tmp/fyshot/run.mjs scripts/verify/reading-webkit.mjs      (env: see reading-lib.mjs)
 import { createRequire } from 'module';
 import { POSTS, url, context, watch, ready, scroll, geo, paperOnly, report, sleep } from './reading-lib.mjs';
@@ -25,6 +26,16 @@ export default async (page, ctx) => {
     await p.click('[data-act="lang"]'); await sleep(300); await p.click('[data-act="theme"]'); await sleep(300);
     rows.push(['webkit ' + w + ': toggles flip', await p.evaluate(() => document.documentElement.classList.contains('lang-en') && document.documentElement.classList.contains('dark')), '']);
     rows.push(['webkit ' + w + ': 0 errors', errors.length === 0, errors.slice(0, 3)]);
+    await c.close();
+  }
+  for (const [w, h] of [[1440, 900], [390, 844]]) {   // dark paper prints too
+    const errors = [], c = await context(wk, w, h, { touch: w < 700, dark: true }), p = await c.newPage(); watch(p, errors);
+    await p.goto(url(POSTS.multi, '&theme=dark')); await ready(p);
+    const top = await paperOnly(p);
+    await scroll(p, 180, 400);
+    const mid = await paperOnly(p);
+    rows.push(['webkit ' + w + ' dark: clean at scroll 0, prints on scroll', top.ok && !mid.ok, { top: top.bad, mid: mid.bad, depth: mid.depth }]);
+    rows.push(['webkit ' + w + ' dark: 0 errors', errors.length === 0, errors.slice(0, 3)]);
     await c.close();
   }
   await wk.close();
