@@ -1,10 +1,12 @@
 // reading-hero.mjs — the hero invariants. On light and dark paper: no halftone at scroll 0 (and never under reduced
 // motion), the halftone prints as soon as the page scrolls, the nav lands at sL and is opaque at every scroll
-// position, and the language and theme toggles re-render nothing. On dark paper, where the light title flies over
-// light dots: the title reads over every dot, and every text over the plate reads at rest and in flight. A theme
+// position, and the language and theme toggles re-render nothing. Every text over the plate reads at rest and in flight,
+// on both papers (the lightest, the darkest and a subtitled cover). On dark paper, where the light title flies over
+// light dots, the title reads over every dot, and the lightest cover still shows as dark (reading.css --cap). A theme
 // toggled mid-scroll repaints the plate exactly as a fresh load in that theme paints it; a cover whose srcset swaps
 // files on a resize is screened again from the new file; a cover that fails prints no dots.
 //   node /tmp/fyshot/run.mjs scripts/verify/reading-hero.mjs      (env: see reading-lib.mjs)
+import { textContrast } from './reading-contrast.mjs';
 import { BASE, POSTS, url, context, watch, ready, scroll, geo, paperOnly, report, sleep } from './reading-lib.mjs';
 const BASE_URL = BASE + 'Reading.dc.html';
 const DARK = '&theme=dark';
@@ -25,53 +27,6 @@ const titleOverDots = (page) => page.evaluate(() => {
   }
   return +worst.toFixed(2);
 });
-// Every text over the plate, from pixels: a screenshot, then one with only the glyph fill hidden (chips and the paper
-// case stay). A text's surround is the pixels touching its glyphs' anti-aliased edges (half a css px at DPR 2); its
-// contrast is its colour against the surround's worst pixel (the brightest for light text). Large text (title,
-// subtitle) needs 3:1, the labels 4.5:1.
-const TEXTS = [['title', '.article-intro .title, .fly .fly-line', 3], ['subtitle', '.article-intro .eyebrow, .fly .fly-eb', 3], ['kicker', '.article-intro .kicker', 4.5],
-  ['meta', '.article-intro .meta', 4.5], ['nav', '.rnav .back-arrow, .rnav .back-t, .rnav .btn', 4.5], ['header labels', '#site-nav .site-nav-label', 4.5]];
-const HIDE = TEXTS.map((t) => t[1].split(', ').map((s) => s + ',' + s + ' *').join(',')).join(',') + '{color:transparent!important;-webkit-text-fill-color:transparent!important;transition:none!important}';
-async function textContrast(page) {
-  const texts = await page.evaluate((TEXTS) => {
-    const out = [];
-    for (const [kind, sel, min] of TEXTS) document.querySelectorAll(sel).forEach((el) => {
-      const r = el.getBoundingClientRect();
-      if (getComputedStyle(el).visibility === 'hidden' || r.width < 2 || r.bottom < 0 || r.top > innerHeight) return;
-      let op = 1; for (let e = el; e; e = e.parentElement) op *= +getComputedStyle(e).opacity;
-      if (op >= .9) out.push({ kind, min, c: getComputedStyle(el.querySelector('.eyebrow') || el).color.match(/[\d.]+/g).map(Number), r: [r.left, r.top, r.right, r.bottom] });
-    });
-    return out;
-  }, TEXTS);
-  const a = (await page.screenshot()).toString('base64');
-  await page.evaluate((css) => { const s = document.createElement('style'); s.id = 'fy-hide'; s.textContent = css; document.head.appendChild(s); }, HIDE);
-  await sleep(60);
-  const b = (await page.screenshot()).toString('base64');
-  await page.evaluate(() => document.getElementById('fy-hide').remove());
-  return page.evaluate(async ({ a, b, texts }) => {
-    const load = async (s) => { const im = new Image(); im.src = 'data:image/png;base64,' + s; await im.decode(); const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0); return g.getImageData(0, 0, c.width, c.height); };
-    const IA = await load(a), A = IA.data, B = (await load(b)).data, W = IA.width, H = IA.height, k = W / innerWidth, R = Math.max(1, Math.round(k / 2));
-    const lin = (v) => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
-    const lum = (d, i) => .2126 * lin(d[i]) + .7152 * lin(d[i + 1]) + .0722 * lin(d[i + 2]);
-    const diff = (i) => Math.max(Math.abs(A[i] - B[i]), Math.abs(A[i + 1] - B[i + 1]), Math.abs(A[i + 2] - B[i + 2]));
-    return texts.map((t) => {
-      const T = lum(t.c, 0), x0 = Math.max(0, Math.floor(t.r[0] * k) - R), x1 = Math.min(W, Math.ceil(t.r[2] * k) + R), y0 = Math.max(0, Math.floor(t.r[1] * k) - R), y1 = Math.min(H, Math.ceil(t.r[3] * k) + R);
-      const w = x1 - x0, h = y1 - y0, M = new Uint8Array(w * h);
-      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (diff(((y + y0) * W + x + x0) * 4) > 40) M[y * w + x] = 1;
-      let worst = null;
-      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-        const i = ((y + y0) * W + x + x0) * 4;
-        if (M[y * w + x] || diff(i) > 8) continue;           // a glyph or its anti-aliased edge
-        let near = false;
-        for (let dy = -R; dy <= R && !near; dy++) for (let dx = -R; dx <= R; dx++) { const yy = y + dy, xx = x + dx; if (yy >= 0 && yy < h && xx >= 0 && xx < w && M[yy * w + xx]) { near = true; break; } }
-        if (!near) continue;
-        const L = lum(B, i);
-        if (worst === null || (T > .2 ? L > worst : L < worst)) worst = L;
-      }
-      return worst === null ? null : { kind: t.kind, min: t.min, ratio: +((Math.max(T, worst) + .05) / (Math.min(T, worst) + .05)).toFixed(2) };
-    }).filter(Boolean);
-  }, { a, b, texts });
-}
 // a digest of the plate's canvas pixels, to compare two pages
 const plateDigest = (page) => page.evaluate(async () => {
   const cv = document.querySelector('.plate canvas'), d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
@@ -158,23 +113,38 @@ export default async (page, ctx) => {
     rows.push([t + ' no console errors', errors.length === 0, errors.slice(0, 3)]);
     await c.close();
   }
-  // on dark paper every text over the plate reads, at rest and in flight: on the lightest cover (POSTS.cover) and on
-  // one with a subtitle (POSTS.multi), whose light parts are the dark paper's worst case
-  for (const post of [POSTS.cover, POSTS.multi]) {
+  // on both papers every text over the plate reads, at rest and in flight: on the lightest cover (POSTS.cover), on
+  // one with a subtitle (POSTS.multi) and on the darkest (POSTS.darkest), the light paper's worst case
+  for (const dark of [false, true]) for (const post of [POSTS.cover, POSTS.multi, POSTS.darkest]) {
     for (const [w, h] of [[1440, 900], [390, 844]]) {
-      const errors = [], c = await context(browser, w, h, { dark: true, dpr: 2 }), p = await c.newPage(); watch(p, errors);
-      await p.goto(url(post, DARK)); await ready(p);
+      const errors = [], c = await context(browser, w, h, { dark, dpr: 2 }), p = await c.newPage(); watch(p, errors);
+      await p.goto(url(post, dark ? DARK : '')); await ready(p);
       const worst = {};
-      for (const y of [0, 180]) {
+      for (const y of [0, 90, 180, 300]) {
         await scroll(p, y, 300);
         for (const m of await textContrast(p)) if (!worst[m.kind] || m.ratio < worst[m.kind].ratio) worst[m.kind] = m;
       }
       const bad = Object.values(worst).filter((m) => m.ratio < m.min);
-      rows.push([w + ' dark ' + post.slice(0, 10) + ': every text over the plate reads (large 3:1, labels 4.5:1) at 0 and 180px', bad.length === 0 && 'title' in worst,
+      rows.push([w + (dark ? ' dark ' : ' light ') + post.slice(0, 10) + ': every text over the plate reads (large 3:1, labels 4.5:1) at 0, 90, 180 and 300px', bad.length === 0 && 'title' in worst,
         Object.values(worst).map((m) => m.kind + ' ' + m.ratio).join(', ')]);
-      rows.push([w + ' dark ' + post.slice(0, 10) + ': no console errors', errors.length === 0, errors.slice(0, 3)]);
+      rows.push([w + (dark ? ' dark ' : ' light ') + post.slice(0, 10) + ': no console errors', errors.length === 0, errors.slice(0, 3)]);
       await c.close();
     }
+  }
+  // the dark ceiling: the lightest cover's plate, as shown, stays dark (its 97th-percentile brightness, 0-255; uncapped it is 115)
+  {
+    const c = await context(browser, 1440, 900, { dark: true }), p = await c.newPage();
+    await p.goto(url(POSTS.cover, DARK)); await ready(p); await sleep(1200);
+    const b = (await p.screenshot({ clip: { x: 0, y: 120, width: 1440, height: 400 } })).toString('base64');
+    const q = await p.evaluate(async (b64) => {
+      const im = new Image(); im.src = 'data:image/png;base64,' + b64; await im.decode();
+      const cv = document.createElement('canvas'); cv.width = im.width; cv.height = im.height; const g = cv.getContext('2d'); g.drawImage(im, 0, 0);
+      const d = g.getImageData(0, 0, cv.width, cv.height).data, L = [];
+      for (let i = 0; i < d.length; i += 4) L.push((d[i] + d[i + 1] + d[i + 2]) / 3);
+      return L.sort((x, y) => x - y)[Math.floor(L.length * .97)];
+    }, b);
+    rows.push(['dark: the lightest cover shows as dark paper (plate p97 brightness <= 76)', q <= 76, Math.round(q)]);
+    await c.close();
   }
   // a theme toggled mid-scroll re-screens the cover in place: the plate is pixel for pixel what a fresh load in that
   // theme paints at that scroll. Every digest is its page's first canvas readback: Chrome changes how it rasterises a
